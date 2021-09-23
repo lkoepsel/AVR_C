@@ -4,9 +4,9 @@
 
 #define BLINK_DELAY_MS 50
 
-uint16_t main (void)
+int main (void)
 {
-    uint8_t UNO_pin = 13;
+    uint8_t UNO_pin = 6;
     on_led();
     pinMode(UNO_pin, OUTPUT);
     for (uint8_t i=0;i<40;i++) {
@@ -14,6 +14,7 @@ uint16_t main (void)
         _delay_ms(BLINK_DELAY_MS);
         digitalWrite(UNO_pin, LOW);
         _delay_ms(BLINK_DELAY_MS);
-        off_led();
     }
+    off_led();
+    return(0);
 }
