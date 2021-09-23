@@ -6,7 +6,7 @@ int main (void)
 {   
     clear_all_TC();
 
-    short int ard, duty_cycle;
+    uint8_t ard, duty_cycle;
 
     ard = 10;
     duty_cycle = 127; // 127 = 50%

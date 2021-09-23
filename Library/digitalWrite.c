@@ -1,7 +1,7 @@
 #include "digitalWrite.h"
 
-short int digitalWrite(short int apin, short int level) {
-    short int errno = 0;
+uint8_t digitalWrite(uint8_t apin, uint8_t level) {
+    uint8_t errno = 0;
     switch (apin) {
         // UNO PINS 0-7 PORT D        
         case 0:

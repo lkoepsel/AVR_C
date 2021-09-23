@@ -1,7 +1,7 @@
 # Programming the Arduino Uno in Pure C
 ## Arduino Framework Replacement Routines
-* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW
+* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only)
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only)
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
 	* n = n/255 Duty Cycle, i.e; n=127, 127/255 = 49.8% duty cycle
@@ -35,7 +35,6 @@ Specific lines to be aware of:
 # the easiest way to determine the correct one is to use the Arduino IDE 
 # and check the Port (Tools -> Port)
 #### Commands
-```bash
 # simple command to check syntax, similar to Verify in the Arduino IDE
 make
 # command to compile/link/load, similar to Upload in the Arduino IDE

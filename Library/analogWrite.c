@@ -35,7 +35,7 @@ TCCRnB - Timer/Counter0 Control Register B
 #include <avr/io.h>
 #include <util/delay.h>
 
-void blink (short int times)
+void blink (uint8_t times)
 {
     // Set the built-in LED PB5 to be an output
     DDRB |= _BV(DDB5);
@@ -58,7 +58,7 @@ void clear_all_TC(void) {
     TCCR2B = 0;
 }
 
-short int analogWrite(short int apin, short int cycle) {
+uint8_t analogWrite(uint8_t apin, uint8_t cycle) {
 
     if (apin == 3) {
         // set UNO pin 3/PD3 to output, 488.3Hz

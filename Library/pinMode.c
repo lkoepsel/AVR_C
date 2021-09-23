@@ -1,8 +1,8 @@
 #include "pinMode.h"
 
 
-short int pinMode(short int apin, short int mode) {
-    short int errno = 0;
+uint8_t pinMode(uint8_t apin, uint8_t mode) {
+    uint8_t errno = 0;
     switch (apin) {
         // UNO PINS 0-7 PORT D        
         case 0:
