@@ -2,7 +2,7 @@
 #include "analogWrite.h"
 #include "avr_uno.h"
 
-int main (void)
+uint16_t main (void)
 {   
     clear_all_TC();
 

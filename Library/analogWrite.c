@@ -40,7 +40,7 @@ void blink (uint8_t times)
     // Set the built-in LED PB5 to be an output
     DDRB |= _BV(DDB5);
     // Enter an infinite loop
-    for (int i=0;i<times;i++) {
+    for (uint8_t i=0;i<times;i++) {
         PORTB |= _BV(PORTB5);
         _delay_ms(delay);
         PORTB &= ~(_BV(PORTB5));
