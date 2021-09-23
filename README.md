@@ -13,11 +13,14 @@
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
 
-## Includes required for commands
-### #include "avr_UNO.h" - General definitions
-### #include "analogWrite.h" 
-### #include "pinMode.h"
-### #include "digitalWrite.h"
+### Includes required for using routines
+* #include "avr_UNO.h" - General definitions
+* #include "analogWrite.h" 
+* #include "pinMode.h"
+* #include "digitalWrite.h"
+
+### Work in Progress
+This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
 
 ## Examples 
 Examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
