@@ -12,7 +12,7 @@ BAUD  = 9600UL
 ## A directory for common include files and the simple USART library.
 ## If you move either the current folder or the Library folder, you'll 
 ##  need to change this path to match.
-LIBDIR = ../avr_UNO
+LIBDIR = ../../Library
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
 ##########          Set up once, then forget about it           ##########

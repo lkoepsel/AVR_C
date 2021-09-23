@@ -19,3 +19,41 @@
 ### #include "pinMode.h"
 ### #include "digitalWrite.h"
 
+## Examples 
+Examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
+
+Specific lines to be aware of:
+15 LIBDIR = ../../Library
+Assumes using the structure of the git folder, meaning the examples are two layers down from the Library. Adjust accordingly.
+25 PROGRAMMER_ARGS = -F -V -P /dev/ttyACM0 -b 115200	
+Assumes the Uno is plugged into a specific USB port, the easiest way to determine the correct one is to use the Arduino IDE and check the Port
+#### Commands
+```bash
+# simple command to check syntax, similar to Verify in the Arduino IDE
+make
+# command to compile/link/load, similar to Upload in the Arduino IDE
+make flash
+# command to show the size of the code
+make size
+# command to clear out all the cruft created in compiling/linking/loading
+make all_clean
+```
+
+
+To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
+
+## Sources
+I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](www.wellys.com).
+
+Other great sources of information are:
+ [Arduino in C | Freedom Embedded](https://balau82.wordpress.com/arduino-in-c/)
+* https://www.xanthium.in/atmega328p-10bit-sar-adc-usart-serial-transmit-to-pc-data-acquisition-tutorial
+* https://www.arduino.cc/en/Tutorial/BuiltInExamples/ArduinoISP
+* https://github.com/rsbohn/ArduinoISP
+* https://stackoverflow.com/questions/1588788/wrapping-c-class-api-for-c-consumption
+* https://github.com/balau/arduino_c
+* https://johanneshoff.com/arduino-command-line.html
+* https://avogadrosnumber.wordpress.com/2017/09/02/blink-and-led-in-c-on-the-arduino-uno/
+* http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html
+* https://www.tderflinger.com/en/arduino-blinking-led-pure-c
+* https://github.com/sagarsp/arduino-blink-c
