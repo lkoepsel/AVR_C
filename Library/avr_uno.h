@@ -8,3 +8,7 @@
 void off_led () ;
 
 void on_led () ;
+
+void set_bit (volatile uint8_t *port, uint8_t bit) ;
+
+void clr_bit (volatile uint8_t *port, uint8_t bit) ;

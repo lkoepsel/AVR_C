@@ -20,7 +20,10 @@
 * #include "digitalWrite.h"
 
 ### Work in Progress
+UPDATE: Refactored code in pinMode and digitalWrite to reduce size considerably. This [hint](http://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_port_pass) helped, as I was having issues determining how to pass an I/O port. 
+
 This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
+
 
 ## Examples 
 Examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.

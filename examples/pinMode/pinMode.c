@@ -6,7 +6,7 @@
 
 int main (void)
 {
-    uint8_t UNO_pin = 6;
+    uint8_t UNO_pin = 9;
     on_led();
     pinMode(UNO_pin, OUTPUT);
     for (uint8_t i=0;i<40;i++) {

@@ -13,3 +13,13 @@ void on_led ()
     DDRB |= _BV(DDB5);
     PORTB |= (_BV(PORTB5));
 }
+
+void set_bit (volatile uint8_t *port, uint8_t bit)
+{
+*port |= _BV(bit);
+}
+
+void clr_bit (volatile uint8_t *port, uint8_t bit)
+{
+*port &= ~(_BV(bit));
+}
