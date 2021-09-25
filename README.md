@@ -1,7 +1,5 @@
 # Programming the Arduino Uno in Pure C
 ## Arduino Framework Replacement Routines
-* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only)
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only)
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
 	* n = n/255 Duty Cycle, i.e; n=127, 127/255 = 49.8% duty cycle
@@ -12,12 +10,19 @@
 		* UNO pin 9/PB1, 976.6Hz
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
-
+* **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only)
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only)
+* **getChar(char)**: same as C getChar (non-interrupt at this time)
+* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only)
+* **printf(string, variables)**: same as C printf, limited functionality to be documented
+* **puts(string)**: same as C puts
 ### Includes required for using routines
 * #include "avr_UNO.h" - General definitions
 * #include "analogWrite.h" 
 * #include "pinMode.h"
 * #include "digitalWrite.h"
+
+Library still needs work to be setup correctly. At this time, any routine needs to be included to be used.
 
 ### Work in Progress
 UPDATE: Refactored code in pinMode and digitalWrite to reduce size considerably. This [hint](http://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_port_pass) helped, as I was having issues determining how to pass an I/O port. 
