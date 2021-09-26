@@ -66,10 +66,7 @@ To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) require
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
 
 Other sources of information which were helpful:
+* [AVR Libc](https://www.nongnu.org/avr-libc/)
 * [Arduino in C | Freedom Embedded](https://balau82.wordpress.com/arduino-in-c/)
-* https://www.xanthium.in/atmega328p-10bit-sar-adc-usart-serial-transmit-to-pc-data-acquisition-tutorial
-* https://www.arduino.cc/en/Tutorial/BuiltInExamples/ArduinoISP
-* https://avogadrosnumber.wordpress.com/2017/09/02/blink-and-led-in-c-on-the-arduino-uno/
-* http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html
-* https://www.tderflinger.com/en/arduino-blinking-led-pure-c
-* https://github.com/sagarsp/arduino-blink-c
+* [Programming Arduino in "Pure C"]http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html
+* [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/)
