@@ -1,5 +1,9 @@
-# Programming the Arduino Uno in Pure C
-## Arduino Framework Replacement Routines
+# Programming the Arduino Uno in C
+The intention of this repository is to provide a framework in C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontoller).
+
+In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
+## Arduino Framework  and standard C Replacement Routines
+### Arduino Framework
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
 	* n = n/255 Duty Cycle, i.e; n=127, 127/255 = 49.8% duty cycle
@@ -12,10 +16,12 @@
 		* UNO pin 11/PB3, 488.3Hz
 * **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only)
 * **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only)
-* **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only)
+### Standard C routines adapted for the ATmega328P
+* **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf, limited functionality to be documented
 * **puts(string)**: same as C puts
+
 ### Includes required for using routines
 * #include "avr_UNO.h" - General definitions
 * #include "analogWrite.h" 
