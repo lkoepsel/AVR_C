@@ -1,5 +1,5 @@
 # Programming the Arduino Uno in C
-The intention of this repository is to provide a framework in C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontoller).
+The intention of this repository is to provide a framework in C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontroller).
 
 In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
 ## Arduino Framework  and standard C Replacement Routines
