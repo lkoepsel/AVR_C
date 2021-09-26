@@ -68,5 +68,8 @@ I also write about C, MicroPython and Forth programming on microcontrollers at [
 Other sources of information which were helpful:
 * [AVR Libc](https://www.nongnu.org/avr-libc/)
 * [Arduino in C | Freedom Embedded](https://balau82.wordpress.com/arduino-in-c/)
-* [Programming Arduino in "Pure C"]http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html
+* [Programming Arduino in "Pure C"](http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html)
 * [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/)
+* [EMBEDDS: AVR Tutorials](https://embedds.com/avr-tutorials/)
+* [CCRMA: AVR](https://ccrma.stanford.edu/wiki/AVR#AVR_Microcontrollers)
+* [Efundies: AVR](https://efundies.com/category/avr/)
