@@ -14,8 +14,8 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 		* UNO pin 9/PB1, 976.6Hz
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
-* **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only)
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only)
+* **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only)  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only)
 ### Standard C routines adapted for the ATmega328P
 * **getChar(char)**: same as C getChar (non-interrupt at this time)

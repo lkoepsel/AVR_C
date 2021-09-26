@@ -16,14 +16,18 @@ int main (void)
     DDRD = 0xff;
     DDRB = 0xff;
 
-    uint8_t pin, UNO_pin = 9;
-    pinMode(UNO_pin, INPUT);
+    uint8_t pin;
     puts("Testing digitalRead");
-    printf("Using Pin %d\n", UNO_pin);
     while(1) {
-        pin = digitalRead(UNO_pin);
-        printf("Value is: %d\n", pin);
-        _delay_ms(1000);
+        for(int8_t i=2;i<=13;i++) {
+            pinMode(i, INPUT_PULLUP);
+            printf("Using Pin %d\n", i);
+            for (uint8_t j=0;j<=9;j++) {
+                pin = digitalRead(i);
+                printf("Value is: %d\n", pin);
+                _delay_ms(500);
+            }
+        }
     }
     return(0);
 }
