@@ -10,12 +10,14 @@
 
 int main (void)
 {
-    uint8_t UNO_pin = 10;
-    uint8_t pin;
     uart_init();
     stdout = &uart_output;
     stdin  = &uart_input;
-    pinMode(UNO_pin, INPUT_PULLUP);
+    DDRD = 0xff;
+    DDRB = 0xff;
+
+    uint8_t pin, UNO_pin = 9;
+    pinMode(UNO_pin, INPUT);
     puts("Testing digitalRead");
     printf("Using Pin %d\n", UNO_pin);
     while(1) {
