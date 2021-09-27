@@ -39,6 +39,24 @@ This is a work in progress, the initial version is proof of concept and uses a s
 ## Examples 
 Examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
 
+### analogWrite: 
+Demo file for using analogWrite(), requires a scope (Labrador used) to see the output of the PWM signal
+
+### blink: 
+Essentially the same as the Arduino blink sketch. LED can be set to any Arduino pin (0-13).
+
+### pinMode:
+Demo file for using pinMode(), provides a short digital waveform on a pin to demonstrate pinMode is working.
+
+### pinTest:
+Demo file for using pinTest(), a multi-layer loop through pins (2-13) to allow for checking if INPUT and INPUT_PULL are working. Uses a button with one side to 5V (INPUT) or GND (INPUT_PULLUP), other side to pin to test.
+
+### simple:
+Demo file from avr-gcc on-line User Manual [Simple Project](https://www.nongnu.org/avr-libc/user-manual/group__demo__project.html), edited specific to ATmega328P. It is well-worth reviewing as it shows how to use an interrupt. The best way to understand it, is to use a scope (Labrador) to view the waveform change.
+
+### usart:
+Demo file for testing the serial interface (USB). Requires a serial program like minicom or Putty to test.
+
 Specific lines to be aware of:
 ```bash
 15 LIBDIR = ../../Library

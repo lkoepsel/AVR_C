@@ -3,7 +3,7 @@
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
 ##########------------------------------------------------------##########
-
+# MCU   = atmega32u4
 MCU   = atmega328p
 F_CPU = 16000000UL  
 BAUD  = 9600UL
@@ -13,7 +13,6 @@ BAUD  = 9600UL
 ## If you move either the current folder or the Library folder, you'll 
 ##  need to change this path to match.
 LIBDIR = ../../Library
-
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
 ##########          Set up once, then forget about it           ##########
@@ -23,7 +22,7 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 #PROGRAMMER_TYPE = dragon_dw
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -F -V -P /dev/ttyACM0 -b 115200
+PROGRAMMER_ARGS = -F -V -P /dev/ttyACM0 -b 115200	
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
@@ -46,20 +45,27 @@ AVRDUDE = avrdude
 ##########------------------------------------------------------##########
 
 ## The name of your project (without the .c)
-# TARGET = serialLoopback
+TARGET = blink
 ## Or name it automatically after the enclosing directory
-TARGET = $(lastword $(subst /, ,$(CURDIR)))
+# TARGET = $(lastword $(subst /, ,$(CURDIR)))
 
 # Object files: will find all .c/.h files in current directory
 #  and in LIBDIR.  If you have any other (sub-)directories with code,
 #  you can add them in to SOURCES below in the wildcard statement.
+# See Note re: CPPFLAGS if using/not using LIBDIR
 SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
 OBJECTS=$(SOURCES:.c=.o)
 HEADERS=$(SOURCES:.c=.h)
 
-## Compilation options, type man avr-gcc if you're curious.
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LIBDIR)
-CFLAGS = -Os -g -std=gnu99 -Wall
+## Compilation options, type man avr-gcc if you're curious. 
+## Use this CPPFLAGS with LIBDIR if a library directory is known 
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR)
+## Else, use this one which simply uses the local directory
+# CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.
+# use below to setup gdb and debugging
+CFLAGS = -Og -ggdb -std=gnu99 -Wall
+# Use below to optimize size
+#CFLAGS = -Os -g -std=gnu99 -Wall
 ## Use short (8-bit) data types 
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 ## Splits up object files per function
@@ -146,6 +152,10 @@ flash_usbtiny: PROGRAMMER_TYPE = usbtiny
 flash_usbtiny: PROGRAMMER_ARGS =  # USBTiny works with no further arguments
 flash_usbtiny: flash
 
+flash_dragon: PROGRAMMER_TYPE = dragon
+flash_dragon: PROGRAMMER_ARGS =  -c dragon_isp -P usb 
+flash_dragon: flash
+
 flash_usbasp: PROGRAMMER_TYPE = usbasp
 flash_usbasp: PROGRAMMER_ARGS =  # USBasp works with no further arguments
 flash_usbasp: flash
@@ -155,9 +165,9 @@ flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P /dev/ttyACM0
 ## (for windows) flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P com5
 flash_arduinoISP: flash
 
-flash_dragon: PROGRAMMER_TYPE = dragon
-flash_dragon: PROGRAMMER_ARGS = -c dragon_isp -P usb
-flash_dragon: flash
+flash_109: PROGRAMMER_TYPE = avr109
+flash_109: PROGRAMMER_ARGS = -b 9600 -P /dev/ttyUSB0
+flash_109: flash
 
 ##########------------------------------------------------------##########
 ##########       Fuse settings and suitable defaults            ##########
