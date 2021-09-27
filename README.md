@@ -18,10 +18,25 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 * **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
 * **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only).
-### Standard C routines adapted for the ATmega328P
+### Standard C functions adapted for the ATmega328P
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf, limited functionality to be documented
 * **puts(string)**: same as C puts
+
+### Existing C functions in avr-gcc, which mirror Arduino functionality
+int 	isalnum (int \__c)
+int 	isalpha (int \__c)
+int 	isascii (int \__c)
+int 	isblank (int \__c) 
+int 	iscntrl (int \__c)
+int 	isdigit (int \__c)
+int 	isgraph (int \__c)
+int 	islower (int \__c)
+int 	isprint (int \__c)
+int 	ispunct (int \__c)
+int 	isspace (int \__c)
+int 	isupper (int \__c)
+int 	isxdigit (int \__c)
 
 ### Includes required for using routines
 * #include "avr_UNO.h" - General definitions
@@ -32,10 +47,7 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 Library still needs work to be setup correctly. At this time, any routine needs to be included to be used.
 
 ### Work in Progress
-UPDATE: Refactored code in pinMode and digitalWrite to reduce size considerably. This [hint](http://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_port_pass) helped, as I was having issues determining how to pass an I/O port. 
-
 This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
-
 
 ## Examples 
 ### analogWrite: 
@@ -70,7 +82,9 @@ Specific lines to be aware of:
 # Assumes the Uno is plugged into a specific USB port, 
 # the easiest way to determine the correct one is to use the Arduino IDE 
 # and check the Port (Tools -> Port)
-#### Commands
+```
+## Make Commands for Examples
+```
 # simple command to check syntax, similar to Verify in the Arduino IDE
 make
 # command to compile/link/load, similar to Upload in the Arduino IDE
@@ -80,7 +94,6 @@ make size
 # command to clear out all the cruft created in compiling/linking/loading
 make all_clean
 ```
-
 
 To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
 
