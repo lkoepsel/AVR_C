@@ -19,24 +19,26 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 * **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only).
 ### Standard C functions adapted for the ATmega328P
+Requires both #include "uart.h" and #include <stdio.h>
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf, limited functionality to be documented
 * **puts(string)**: same as C puts
 
 ### Existing C functions in avr-gcc, which mirror Arduino functionality
-int 	isalnum (int \__c)
-int 	isalpha (int \__c)
-int 	isascii (int \__c)
-int 	isblank (int \__c) 
-int 	iscntrl (int \__c)
-int 	isdigit (int \__c)
-int 	isgraph (int \__c)
-int 	islower (int \__c)
-int 	isprint (int \__c)
-int 	ispunct (int \__c)
-int 	isspace (int \__c)
-int 	isupper (int \__c)
-int 	isxdigit (int \__c)
+Requires #include <ctype.h>
+* int 	isalnum (int \__c)
+* int 	isalpha (int \__c)
+* int 	isascii (int \__c)
+* int 	isblank (int \__c) 
+* int 	iscntrl (int \__c)
+* int 	isdigit (int \__c)
+* int 	isgraph (int \__c)
+* int 	islower (int \__c)
+* int 	isprint (int \__c)
+* int 	ispunct (int \__c)
+* int 	isspace (int \__c)
+* int 	isupper (int \__c)
+* int 	isxdigit (int \__c)
 
 ### Includes required for using routines
 * #include "avr_UNO.h" - General definitions
