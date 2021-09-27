@@ -10,10 +10,12 @@ int main(void)
     /* set LED to output*/
     pinMode(LED, OUTPUT);
 
-    while(1) {
+    for (int i=0;i<10;i++) {
         /* turn led on */
-        digitalWrite(LED, TOG);
-        delay(BLINK_DELAY_MS);
+        on_led();
+        _delay_ms(BLINK_DELAY_MS);
+        off_led();
+        _delay_ms(BLINK_DELAY_MS);
     }
     return(0); 
 }

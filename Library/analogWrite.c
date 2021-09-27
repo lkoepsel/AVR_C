@@ -35,19 +35,6 @@ TCCRnB - Timer/Counter0 Control Register B
 #include <avr/io.h>
 #include <util/delay.h>
 
-void blink (uint8_t times)
-{
-    // Set the built-in LED PB5 to be an output
-    DDRB |= _BV(DDB5);
-    // Enter an infinite loop
-    for (uint8_t i=0;i<times;i++) {
-        PORTB |= _BV(PORTB5);
-        _delay_ms(delay);
-        PORTB &= ~(_BV(PORTB5));
-        _delay_ms(delay);
-    }
-}
-
 void clear_all_TC(void) {
     // reset both timer/counter registers
     TCCR0A = 0;

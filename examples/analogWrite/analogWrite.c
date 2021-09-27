@@ -1,23 +1,20 @@
 /* test analogWrite(pin, n): setup the Timer/Counters to provide a PWM signal */
 #include "analogWrite.h"
-#include "avr_uno.h"
 
-uint16_t main (void)
+int main (void)
 {   
     clear_all_TC();
+    off_led();
 
     uint8_t ard, duty_cycle;
 
-    ard = 10;
+    ard = 3;
     duty_cycle = 127; // 127 = 50%
-    if (analogWrite(ard, duty_cycle)) {
-        blink(2);
-    }
+    analogWrite(ard, duty_cycle);
 
-    ard = 11;
+    ard = 5;
     duty_cycle = 63; // 63 = 25%
-    if (analogWrite(ard, duty_cycle)) {
-        blink(4);
-    }
-    off_led();
+    analogWrite(ard, duty_cycle);
+
+    return(0);
 }

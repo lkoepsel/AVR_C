@@ -2,16 +2,18 @@
 
 void off_led ()
 {
-    // Set the built-in LED PB5 to be an output
-    DDRB |= _BV(DDB5);
+    DDRB |= (_BV(PORTB5));
     PORTB &= ~(_BV(PORTB5));
 }
 
 void on_led ()
 {
-    // Set the built-in LED PB5 to be an output
-    DDRB |= _BV(DDB5);
     PORTB |= (_BV(PORTB5));
+}
+
+void tog_led ()
+{
+    PINB |= (_BV(PORTB5));
 }
 
 void set_bit (volatile uint8_t *port, uint8_t bit)
@@ -22,4 +24,9 @@ void set_bit (volatile uint8_t *port, uint8_t bit)
 void clr_bit (volatile uint8_t *port, uint8_t bit)
 {
 *port &= ~(_BV(bit));
+}
+
+void tog_bit (volatile uint8_t *port, uint8_t bit)
+{
+    *port |= _BV(bit);
 }

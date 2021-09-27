@@ -4,7 +4,7 @@ The intention of this repository is to provide a framework in C which mirrors th
 In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
 ## Arduino Framework  and standard C Replacement Routines
 ### Arduino Framework
-* **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal
+* **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal.
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
 	* n = n/255 Duty Cycle, i.e; n=127, 127/255 = 49.8% duty cycle
 	* Pin PWM Frequencies
@@ -14,9 +14,10 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 		* UNO pin 9/PB1, 976.6Hz
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
+* **delay(n)**: performs a blocking delay of n ms. n must be a constant and can be upto 65535.
 * **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only)  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
-* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only)
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
+* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only).
 ### Standard C routines adapted for the ATmega328P
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf, limited functionality to be documented
@@ -37,8 +38,6 @@ This is a work in progress, the initial version is proof of concept and uses a s
 
 
 ## Examples 
-Examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
-
 ### analogWrite: 
 Demo file for using analogWrite(), requires a scope (Labrador used) to see the output of the PWM signal
 
@@ -54,8 +53,13 @@ Demo file for using pinTest(), a multi-layer loop through pins (2-13) to allow f
 ### simple:
 Demo file from avr-gcc on-line User Manual [Simple Project](https://www.nongnu.org/avr-libc/user-manual/group__demo__project.html), edited specific to ATmega328P. It is well-worth reviewing as it shows how to use an interrupt. The best way to understand it, is to use a scope (Labrador) to view the waveform change.
 
+### tenthTimer:
+Uses the simple framework from above to create a interrupt-based timer which provides a 100Hz signal (10ms period) with a 50% duty cycle. Could be used for multi-tasking, long counters etc.
+
 ### usart:
 Demo file for testing the serial interface (USB). Requires a serial program like minicom or Putty to test.
+
+Examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
 
 Specific lines to be aware of:
 ```bash
