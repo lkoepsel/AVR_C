@@ -15,7 +15,7 @@
  
 #include <stdio.h>
 
-#include "usart.h"
+#include "chario.h"
 #include "uart.h"
 
 int main(void) {    
@@ -26,10 +26,11 @@ int main(void) {
                 
     char input;
 
+    
+    puts("AVR UART Char Test");
     while(1) {
-        puts("Hello world!");
         input = getchar();
-        printf("You wrote %c\n", input);        
+        printf("You entered %c\n", input);        
     }
         
     return 0;
