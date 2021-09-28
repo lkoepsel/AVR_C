@@ -68,7 +68,7 @@ Demo file for using pinTest(), a multi-layer loop through pins (2-13) to allow f
 Demo file from avr-gcc on-line User Manual [Simple Project](https://www.nongnu.org/avr-libc/user-manual/group__demo__project.html), edited specific to ATmega328P. It is well-worth reviewing as it shows how to use an interrupt. The best way to understand it, is to use a scope (Labrador) to view the waveform change.
 
 ### tenthTimer:
-Uses the simple framework from above to create a interrupt-based timer which provides a 100Hz signal (10ms period) with a 50% duty cycle. Could be used for multi-tasking, long counters etc.
+Uses the simple framework from above to create a interrupt-based timer which provides a 100Hz signal (10ms period) with a 50% duty cycle. Could be used for multi-tasking, long counters etc. There are other settings which can be used to increase or decrease the frequency. See comments.
 
 ### usart:
 Demo file for testing the serial interface (USB). Requires a serial program like minicom or Putty to test.
