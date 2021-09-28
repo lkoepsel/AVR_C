@@ -70,6 +70,13 @@ Demo file from avr-gcc on-line User Manual [Simple Project](https://www.nongnu.o
 ### tenthTimer:
 Uses the simple framework from above to create a interrupt-based timer which provides a 100Hz signal (10ms period) with a 50% duty cycle. Could be used for multi-tasking, long counters etc. There are other settings which can be used to increase or decrease the frequency. See comments.
 
+### twoTimers:
+* Interrupt driven timers which toggle pins (8) 100Hz and (7) 500Hz using timer 0 and timer 1.
+* All at 50% duty cycle
+* Example Settings:
+* T0: 500Hz Pin 7: COM0A1 WGM01 WGM00 CS01 CS00
+* T1: 100Hz Pin 8: COM1A1 WGM13 WGM11 WGM10 CS11 CS10 OCR1A=624
+
 ### usart:
 Demo file for testing the serial interface (USB). Requires a serial program like minicom or Putty to test.
 
