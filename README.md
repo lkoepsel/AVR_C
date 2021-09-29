@@ -106,6 +106,12 @@ make all_clean
 
 To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
 
+## Serial Solutions
+#### In use
+* [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/) Works well, integrated into avr-gcc to enable using printf, puts, and getchar. Uses polling which is slow and blocking.
+#### Reviewing to determine how to use due to its interrupts
+* [Peter Fleury AVR Software](http://www.peterfleury.epizy.com/avr-software.html) Works, not integrated into avr-gcc library, so not native. It uses interrupts and buffering so it is fast and non-blocking.
+
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
 
@@ -113,7 +119,6 @@ Other sources of information which were helpful:
 * [AVR Libc](https://www.nongnu.org/avr-libc/)
 * [Arduino in C | Freedom Embedded](https://balau82.wordpress.com/arduino-in-c/)
 * [Programming Arduino in "Pure C"](http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html)
-* [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/)
 * [EMBEDDS: AVR Tutorials](https://embedds.com/avr-tutorials/)
 * [CCRMA: AVR](https://ccrma.stanford.edu/wiki/AVR#AVR_Microcontrollers)
 * [Efundies: AVR](https://efundies.com/category/avr/)
