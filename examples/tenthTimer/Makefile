@@ -45,7 +45,7 @@ AVRDUDE = avrdude
 ##########------------------------------------------------------##########
 
 ## The name of your project (without the .c)
-TARGET = tenthTimer
+TARGET = main
 ## Or name it automatically after the enclosing directory
 # TARGET = $(lastword $(subst /, ,$(CURDIR)))
 

@@ -14,8 +14,6 @@
  */
  
 #include <stdio.h>
-
-#include "chario.h"
 #include "uart.h"
 
 int main(void) {    
