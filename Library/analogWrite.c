@@ -31,9 +31,7 @@ TCCRnB - Timer/Counter0 Control Register B
 3. Setup Timer Register B
 */
 
-#define delay 500
-#include <avr/io.h>
-#include <util/delay.h>
+#include "analogWrite.h"
 
 void clear_all_TC(void) {
     // reset both timer/counter registers

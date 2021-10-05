@@ -1,6 +1,4 @@
-#define delay 500
 #include <avr/io.h>
-#include <util/delay.h>
 
 void blink (uint8_t times);
 

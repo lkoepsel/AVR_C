@@ -6,6 +6,16 @@
  
 int main(void)
 {
+    struct bank
+    {
+        uint8_t l1;
+        uint8_t l2;
+        uint8_t l3;
+    };
+
+    struct bank 
+    uint8_t LED = 13;
+    uint8_t LED = 13;
     uint8_t LED = 13;
     /* set LED to output*/
     pinMode(LED, OUTPUT);

@@ -1,5 +1,4 @@
 #include "digitalRead.h"
-#include <stdio.h>
 
 uint8_t digitalRead(uint8_t apin) {
     // UNO PINS 0-7 PORT D        
