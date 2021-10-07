@@ -1,4 +1,6 @@
 #include <avr/io.h>
+#include <util/delay.h>
+
 #define INPUT 0
 #define OUTPUT 1
 #define INPUT_PULLUP 2
