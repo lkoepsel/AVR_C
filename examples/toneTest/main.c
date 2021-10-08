@@ -25,29 +25,38 @@
 #include <stdio.h>
 #include "uart.h"
 
-volatile uint16_t count7;
+volatile uint16_t count0;
+volatile uint16_t count1;
+volatile uint8_t pin0 = 7;
+volatile uint8_t pin1 = 8;
 
 ISR (TIMER0_OVF_vect)      
 {
 
-    if (count7 != 0) {
-        count7 -= 1;
-        digitalWrite(7, TOG);
+    if (count0 != 0) {
+        count0--;
+        digitalWrite(pin0, TOG);
     }
+    digitalWrite(pin0, LOW);
 }
 
 ISR (TIMER1_OVF_vect)      
 {
-    digitalWrite(8, TOG);
+
+    if (count1 != 0) {
+        count1--;
+        digitalWrite(pin1, TOG);
+    }
+    digitalWrite(pin1, LOW);
 }
 
 void ioinit (void)          
 {
 
-    int note7 = 55;
-    int note8 = 23;
-    int duration7 = 1;
-    // int duration8 = 8;
+    int note0 = 55;
+    int note1 = 55;
+    int duration0 = 8;
+    int duration1 = 2;
 
     /* Timer 0 is 8-bit PWM, PIN 7
     * COM0A1:0 =10 => Clear OC0A on Compare Match, set OC0A at BOTTOM
@@ -56,8 +65,8 @@ void ioinit (void)
     * Set OCR0A value via notes.h
     */ 
     TCCR0A |=  _BV(COM0A1) | _BV(WGM00);
-    TCCR0B = pgm_read_byte(&(notes_TCCR0B[note7]));
-    OCR0A = pgm_read_word(&(notes_OCR0A[note7]));
+    TCCR0B = pgm_read_byte(&(notes_TCCR0B[note0]));
+    OCR0A = pgm_read_word(&(notes_OCR0A[note0]));
 
     /* Timer 1 is 10-bit PWM, PIN 8 
     * COM1A1:0 =10 => Clear OC1A/OC1B on Compare Match when up-counting
@@ -66,21 +75,32 @@ void ioinit (void)
     * Set OCR1A value via notes.h
     */
     TCCR1A |=  _BV(COM1A1) | _BV(WGM10);
-    TCCR1B = pgm_read_byte(&(notes_TCCR1B[note8]));
-    OCR1A = pgm_read_word(&(notes_OCR1A[note8]));
+    TCCR1B = pgm_read_byte(&(notes_TCCR1B[note1]));
+    OCR1A = pgm_read_word(&(notes_OCR1A[note1]));
 
     /* Set up pins for signal */
-    pinMode(7, OUTPUT);
-    pinMode(8, OUTPUT);
+    pinMode(pin0, OUTPUT);
+    pinMode(pin1, OUTPUT);
+
+    /* Use duration to determine count for interrupt 
+    *  duration is a power of 2, so shift to divide by 2
+    *  # of toggles is twice the freq, so count = duration/2
+    */
+    count0 = pgm_read_word(&(notes_freq[note0]));
+    for (int i=(duration0 >> 1);i!=0;(i >>= 1)) {
+        count0 >>= 1;
+        printf("i= %d count0=%d\n", i, count0);
+    }
 
     /* Use duration to determine count for interrupt */
-    // int shift7 = duration7 / 2;
-    count7 = pgm_read_word(&(notes_freq[note7]));
-    for (int i=duration7 / 2;i!=0;i /=2) {
-        count7 /= 2;
-        printf("i= %d count7=%d\n", i, count7);
+    count1 = pgm_read_word(&(notes_freq[note1]));
+    for (int i=(duration1 >>= 1);i!=0;i >>= 1) {
+        count1 >>= 1;
+        printf("i= %d count1=%d\n", i, count1);
     }
-    printf("count7= %d\n", count7);
+    printf("count0= %d\n", count0);
+    printf("count1= %d\n", count1);
+
     /* Enable timer 1 overflow interrupt and enable interrupts. */
     TIMSK0 = _BV (TOIE0);
     TIMSK1 = _BV (TOIE1);
