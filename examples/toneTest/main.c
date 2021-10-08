@@ -22,10 +22,18 @@
 #include "digitalWrite.h"
 #include "notes.h"
 
+#include <stdio.h>
+#include "uart.h"
+
+volatile uint16_t count7;
 
 ISR (TIMER0_OVF_vect)      
 {
-    digitalWrite(7, TOG);
+
+    if (count7 != 0) {
+        count7 -= 1;
+        digitalWrite(7, TOG);
+    }
 }
 
 ISR (TIMER1_OVF_vect)      
@@ -38,14 +46,14 @@ void ioinit (void)
 
     int note7 = 55;
     int note8 = 23;
+    int duration7 = 1;
+    // int duration8 = 8;
+
     /* Timer 0 is 8-bit PWM, PIN 7
     * COM0A1:0 =10 => Clear OC0A on Compare Match, set OC0A at BOTTOM
     * WGM02:0 = 101 => Phase Correct, TOP = OCRA
-    * CS02:0 = 010 => clkI/O/8 (Prescaler)
-    * Set OCR0A value to 126 => 16MHz / 1024 / 126 = 124Hz (divide by 4)
-    * Limits for Timer 0:
-    * 16MHz / 64 / 127 / 4 => 492Hz
-    * 16MHz / 1024 / 126 /4 => 31Hz
+    * CS02:0 = clkI/O/value (Prescaler) found in notes.h
+    * Set OCR0A value via notes.h
     */ 
     TCCR0A |=  _BV(COM0A1) | _BV(WGM00);
     TCCR0B = pgm_read_byte(&(notes_TCCR0B[note7]));
@@ -54,8 +62,8 @@ void ioinit (void)
     /* Timer 1 is 10-bit PWM, PIN 8 
     * COM1A1:0 =10 => Clear OC1A/OC1B on Compare Match when up-counting
     * WGM13:0 = 1001 => PWM, Phase and Frequency Correct, TOP = OCR1A
-    * CS12:0 = 011 => clkI/O/64 (From prescaler)
-    * 
+    * CS12:0 = clkI/O/value (Prescaler) found in notes.h
+    * Set OCR1A value via notes.h
     */
     TCCR1A |=  _BV(COM1A1) | _BV(WGM10);
     TCCR1B = pgm_read_byte(&(notes_TCCR1B[note8]));
@@ -65,6 +73,14 @@ void ioinit (void)
     pinMode(7, OUTPUT);
     pinMode(8, OUTPUT);
 
+    /* Use duration to determine count for interrupt */
+    // int shift7 = duration7 / 2;
+    count7 = pgm_read_word(&(notes_freq[note7]));
+    for (int i=duration7 / 2;i!=0;i /=2) {
+        count7 /= 2;
+        printf("i= %d count7=%d\n", i, count7);
+    }
+    printf("count7= %d\n", count7);
     /* Enable timer 1 overflow interrupt and enable interrupts. */
     TIMSK0 = _BV (TOIE0);
     TIMSK1 = _BV (TOIE1);
@@ -73,6 +89,10 @@ void ioinit (void)
 
 int main (void)
 {
+    uart_init();
+    stdout = &uart_output;
+    stdin  = &uart_input;
+
     ioinit ();
 
     /* loop forever, the interrupts are doing the rest */
