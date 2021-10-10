@@ -3,11 +3,12 @@
 */
 #include "tone.h"
 #include "avr_uno.h"
+#include "delay.h"
 
 
 int main (void)
 {
-
+    uint8_t musicPin = 2;
     // notes in the melody:
     int melody[] = {
 
@@ -31,10 +32,9 @@ int main (void)
 
         for (int thisNote = 0; thisNote < 8; thisNote++) {
 
-        tone(8, melody[thisNote], noteDuration[thisNote]);
-// TODO: STATIC DELAY needs to be fixed to allow for an array of delays
-        delay(d4);
-        notone(8);
+        tone(musicPin, melody[thisNote], noteDuration[thisNote]);
+        delay(noteDelay[thisNote]);
+        tone(musicPin, 0, d8);
         delay(internote);
 
         }

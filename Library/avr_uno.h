@@ -7,7 +7,6 @@
 #define TOG 3
 #define HIGH 1
 #define LOW 0
-#define delay _delay_ms
 
 #define A0 0
 #define A1 1
