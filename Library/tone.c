@@ -485,13 +485,32 @@ const uint8_t notes_OCR0A[89] PROGMEM = {
 
 ISR (TIMER0_OVF_vect)      
 {
-    digitalWrite(pin0, TOG);
+    if (count0 < 0) {
+        digitalWrite(pin0, TOG);
+    }
+    else if (count0 == 0) {
+        digitalWrite(pin0, LOW);
+    }
+    else {
+        count0--;
+        digitalWrite(pin0, TOG);
+    }
 }
 
-void tone (uint8_t pin, uint8_t note)          
+void tone (uint8_t pin, uint8_t note, uint8_t duration)          
 {
 
     pin0 = pin;
+
+    if (duration == 0) {
+        count0 = -1;
+    }
+    else if ((duration == 2) || (duration == 4) || (duration == 8) || (duration == 16)) {
+        count0 = pgm_read_word(&(notes_freq[note])) / (duration / 2);
+    }
+    else {
+        count0 = 0;
+    }
 
     /* Timer 0 is 8-bit PWM, PIN 7
     * COM0A1:0 =10 => Clear OC0A on Compare Match, set OC0A at BOTTOM
@@ -504,9 +523,18 @@ void tone (uint8_t pin, uint8_t note)
     OCR0A = pgm_read_word(&(notes_OCR0A[note]));
 
     /* Set up pins for signal */
-    pinMode(pin0, OUTPUT);
-
-    /* Enable timer 1 overflow interrupt and enable interrupts. */
+    if (note == 0) {
+        pinMode(pin0, INPUT);
+    }
+    else {
+        pinMode(pin0, OUTPUT);
+    
+    }    /* Enable timer 1 overflow interrupt and enable interrupts. */
     TIMSK0 = _BV (TOIE0);
     sei ();
+}
+
+void notone(uint8_t pin) {
+    TIMSK0 &= ~(_BV (TOIE0));
+    pinMode(pin0, INPUT);
 }

@@ -23,10 +23,20 @@
 #include "pinMode.h"
 #include "digitalWrite.h"
 
-volatile uint16_t count0;
+volatile int16_t count0;
 volatile uint8_t pin0;
 
-void tone (uint8_t pin, uint8_t note);       
+void tone (uint8_t pin, uint8_t note, uint8_t duration);       
+
+void notone(uint8_t pin);
+
+/* delay values for note durations, must be used after every note
+*/
+#define d2 500
+#define d4 250
+#define d8 125
+#define d16 63
+#define internote 50
 
 /*
 * offsets required for timer/counters 

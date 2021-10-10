@@ -15,31 +15,27 @@ int main (void)
     };
 
     // note durations: 4 = quarter note, 8 = eighth note, etc.:
-    int noteDurations[] = {
+    int noteDuration[] = {
 
       4, 8, 8, 4, 4, 4, 4, 4
+    };
+
+    int noteDelay[] = {
+
+      d4, d8, d8, d4, d4, d4, d4, d4
     };
 
 
     /* loop forever, the interrupts are doing the rest */
     while (1)  {         
+
         for (int thisNote = 0; thisNote < 8; thisNote++) {
 
-          // to calculate the note duration, take one second divided by the note type.
-
-          //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-
-          int noteDuration = 1000 / noteDurations[thisNote];
-
-          tone(8, melody[thisNote], noteDuration);
-
-          // to distinguish the notes, set a minimum time between them.
-
-          // the note's duration + 30% seems to work well:
-
-          int pauseBetweenNotes = noteDuration * 1.30;
-
-          delay(250);
+        tone(8, melody[thisNote], noteDuration[thisNote]);
+// TODO: STATIC DELAY needs to be fixed to allow for an array of delays
+        delay(d4);
+        notone(8);
+        delay(internote);
 
         }
         delay(1000);

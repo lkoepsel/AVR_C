@@ -11,7 +11,7 @@ int main (void)
 {
 
     while (1) {
-        tone(8, NOTE_F7);
+        tone(8, NOTE_A1);
         sleep_mode();
     }
     return (0);
