@@ -32,13 +32,14 @@ int main (void)
 
         for (int thisNote = 0; thisNote < 8; thisNote++) {
 
-        tone(musicPin, melody[thisNote], noteDuration[thisNote]);
+        tone(musicPin, melody[thisNote]);
         delay(noteDelay[thisNote]);
-        tone(musicPin, 0, d8);
-        delay(internote);
+
+        notone(musicPin);
+         delay(d4);
 
         }
-        delay(1000);
+        delay(31250);
     }
     return (0);
 }

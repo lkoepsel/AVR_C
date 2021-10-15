@@ -2,6 +2,10 @@
 * tone(uint8_t pin, uint16_t norw, uint8_t duration)
 */
 #include "tone.h"
+#include "delay.h"
+
+volatile uint8_t *PINport;
+uint8_t volatile PINbit = PB2;
 
 /*
 * frequencies for each note, freq = x per sec
@@ -485,32 +489,11 @@ const uint8_t notes_OCR0A[89] PROGMEM = {
 
 ISR (TIMER0_OVF_vect)      
 {
-    if (count0 < 0) {
-        digitalWrite(pin0, TOG);
-    }
-    else if (count0 == 0) {
-        digitalWrite(pin0, LOW);
-    }
-    else {
-        count0--;
-        digitalWrite(pin0, TOG);
-    }
+    *PINport |= _BV(PINbit);
 }
 
-void tone (uint8_t pin, uint8_t note, uint8_t duration)          
+void tone (uint8_t pin, uint8_t note)          
 {
-
-    pin0 = pin;
-
-    if (duration == 0) {
-        count0 = -1;
-    }
-    else if ((duration == 2) || (duration == 4) || (duration == 8) || (duration == 16)) {
-        count0 = pgm_read_word(&(notes_freq[note])) / (duration / 2);
-    }
-    else {
-        count0 = 0;
-    }
 
     /* Timer 0 is 8-bit PWM, PIN 7
     * COM0A1:0 =10 => Clear OC0A on Compare Match, set OC0A at BOTTOM
@@ -522,19 +505,22 @@ void tone (uint8_t pin, uint8_t note, uint8_t duration)
     TCCR0B = pgm_read_byte(&(notes_TCCR0B[note]));
     OCR0A = pgm_read_word(&(notes_OCR0A[note]));
 
-    /* Set up pins for signal */
-    if (note == 0) {
-        pinMode(pin0, INPUT);
-    }
-    else {
-        pinMode(pin0, OUTPUT);
+// TODO: NEED TO ADD ABILITY TO GET PORT AND PIN FROM FUNCTION CALL LIKE DIGITALWRITE
+    PINport = &PIND;
+    PINbit = PB2;
+
+    pinMode(pin, OUTPUT);
     
-    }    /* Enable timer 1 overflow interrupt and enable interrupts. */
+    /* Enable timer 1 overflow interrupt and enable interrupts. */
     TIMSK0 = _BV (TOIE0);
     sei ();
+    delay(31250/8);
+    TIMSK0 &= ~(_BV (TOIE0));
+    digitalWrite(pin, LOW);
+    return;
 }
 
 void notone(uint8_t pin) {
     TIMSK0 &= ~(_BV (TOIE0));
-    pinMode(pin0, INPUT);
+    digitalWrite(pin, LOW);
 }

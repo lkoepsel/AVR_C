@@ -1,20 +1,24 @@
-/*
-* delayTest()
-* Simple timer which toggles pin at 1000Hz or 1ms timer. All at 50% duty cycle.
-* Once tested, will be used as a dynamic delay.
+/* delayTest()
+*   gcc-based delay() for simplicity and is accurate, blocking to meet needs
+*   Uses built-in delay_ms for delay, allows for passing a variable
 */
 #include <avr/io.h>
 #include "pinMode.h"
-#include "digitalWrite.h"
 #include "delay.h"
 
 int main (void)
 {
-    pinMode(7, OUTPUT);
-    /* loop forever, the interrupts are doing the rest */
+    uint8_t testPin = 2;
+    pinMode(testPin, OUTPUT);
+
     while(1)  {
-        delay(100);
-        digitalWrite(7, TOG);
+        // HIGH width is 2000us or 2ms
+        PORTD |= _BV(PD2);
+        delay(2);
+
+        // LOW width is 4000us or 4ms
+        PORTD &= ~(_BV(PD2));
+        delay(4);
     }
     return (0);
 }
