@@ -492,31 +492,36 @@ ISR (TIMER0_OVF_vect)
     *PINport |= _BV(PINbit);
 }
 
-void tone (uint8_t pin, uint8_t note)          
+void tone (uint8_t pin, uint8_t note, uint16_t duration)          
 {
 
-    /* Timer 0 is 8-bit PWM, PIN 7
-    * COM0A1:0 =10 => Clear OC0A on Compare Match, set OC0A at BOTTOM
-    * WGM02:0 = 101 => Phase Correct, TOP = OCRA
-    * CS02:0 = clkI/O/value (Prescaler) found in notes
-    * Set OCR0A value via notes
-    */ 
-    TCCR0A |=  _BV(COM0A1) | _BV(WGM00);
-    TCCR0B = pgm_read_byte(&(notes_TCCR0B[note]));
-    OCR0A = pgm_read_word(&(notes_OCR0A[note]));
-
-// TODO: NEED TO ADD ABILITY TO GET PORT AND PIN FROM FUNCTION CALL LIKE DIGITALWRITE
-    PINport = &PIND;
-    PINbit = PB2;
-
-    pinMode(pin, OUTPUT);
+    if (note == 0) {
+        notone(pin);
+        delay(duration);
+    }
+    else {
     
-    /* Enable timer 1 overflow interrupt and enable interrupts. */
-    TIMSK0 = _BV (TOIE0);
-    sei ();
-    delay(31250/8);
-    TIMSK0 &= ~(_BV (TOIE0));
-    digitalWrite(pin, LOW);
+        /* Timer 0 is 8-bit PWM, PIN 7
+        * COM0A1:0 =10 => Clear OC0A on Compare Match, set OC0A at BOTTOM
+        * WGM02:0 = 101 => Phase Correct, TOP = OCRA
+        * CS02:0 = clkI/O/value (Prescaler) found in notes
+        * Set OCR0A value via notes
+        */ 
+        TCCR0A |=  _BV(COM0A1) | _BV(WGM00);
+        TCCR0B = pgm_read_byte(&(notes_TCCR0B[note]));
+        OCR0A = pgm_read_word(&(notes_OCR0A[note]));
+    
+    // TODO: NEED TO ADD ABILITY TO GET PORT AND PIN FROM FUNCTION CALL LIKE DIGITALWRITE
+        PINport = &PIND;
+        PINbit = PB2;
+        pinMode(pin, OUTPUT);
+    
+        /* Enable timer 1 overflow interrupt and enable interrupts. */
+        TIMSK0 = _BV (TOIE0);
+        sei ();
+        delay(duration);
+        notone(pin);
+    }
     return;
 }
 

@@ -4,11 +4,14 @@
 #include "tone.h"
 #include "avr_uno.h"
 #include "delay.h"
+#include "pinMode.h"
 
 
 int main (void)
 {
     uint8_t musicPin = 2;
+    pinMode(musicPin, OUTPUT);
+
     // notes in the melody:
     int melody[] = {
 
@@ -39,7 +42,7 @@ int main (void)
          delay(d4);
 
         }
-        delay(31250);
+        delay(2000);
     }
     return (0);
 }

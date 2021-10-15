@@ -23,18 +23,17 @@
 #include "pinMode.h"
 #include "digitalWrite.h"
 
-void tone (uint8_t pin, uint8_t note);       
+void tone (uint8_t pin, uint8_t note, uint16_t duration);       
 
 void notone(uint8_t pin);
 
-/* delay values for note durations, must be used after every note
+/* note duration delay values, must be used after every note in (tone)
 */
-#define ticksValue 31250
-#define d2 ticksValue/2
-#define d4 ticksValue/4
-#define d8 ticksValue/8
-#define d16 ticksValue/16
-#define internote ticksValue/32
+#define d2 500
+#define d4 250
+#define d8 125
+#define d16 63
+#define internote 125
 
 /*
 * offsets required for timer/counters 

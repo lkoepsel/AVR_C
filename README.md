@@ -17,7 +17,7 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 * **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
 * **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only).
-* **delay(n/31250 ms)**: Blocking delay. Current version uses 31250 as the value for 1 second. Uses Timer 1 with a scalar of /256 and an 16-bit register to a delay divisible by 31250 ticks. Use 31250/n as the value to achieve a % second delay. For example, 31250/2 is one half of a second delay. Longest delay can be 31250 * 2 for 2 seconds. To achieve a specific number of milliseconds, use n * 31.25. For example, for n = 312 or 10 * 31.25 ( or 31250/100) achieves a 10ms delay.
+* **delay(n/31250 ms)**: Blocking delay uses built-in delay_ms, however allows for a variable as an argument. 
 ### Standard C functions adapted for the ATmega328P
 Requires both #include "uart.h" and #include <stdio.h>
 * **getChar(char)**: same as C getChar (non-interrupt at this time)

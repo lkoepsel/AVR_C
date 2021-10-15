@@ -13,47 +13,37 @@ int main (void)
     pinMode(13, OUTPUT);
 
     while(1) {
-        tone(musicPin, NOTE_C4);
+        tone(musicPin, NOTE_C4, d4);
         notone(musicPin);
-        delay(31250/2);
-        digitalWrite(13, TOG);
-        // notone(musicPin);        
-        // delay(31250/16);
+        delay(internote);
     
-        // tone(musicPin, NOTE_G3);
-        // delay(d8);
-        // notone(musicPin);
-        // delay(internote);
+        tone(musicPin, NOTE_G3, d8);
+        notone(musicPin);
+        delay(internote);
     
-        // tone(musicPin, NOTE_G3);
-        // delay(d8);
-        // notone(musicPin);
-        // delay(internote);
+        tone(musicPin, NOTE_G3, d8);
+        notone(musicPin);
+        delay(internote);
     
-        // tone(musicPin, NOTE_A3);
-        // delay(d4);
-        // notone(musicPin);
-        // delay(internote);
+        tone(musicPin, NOTE_A3, d4);
+        notone(musicPin);
+        delay(internote);
     
-        // tone(musicPin, NOTE_G3);
-        // delay(d4);
-        // notone(musicPin);
-        // delay(internote);
+        tone(musicPin, NOTE_G3, d4);
+        notone(musicPin);
+        delay(internote);
     
-        // tone(musicPin, 0);
-        // delay(d4);
-        // notone(musicPin);
-        // delay(internote);
+        tone(musicPin, 0, d4);
+        notone(musicPin);
+        delay(internote);
     
-        // tone(musicPin, NOTE_B3);
-        // delay(d4);
-        // notone(musicPin);
-        // delay(internote);
+        tone(musicPin, NOTE_B3, d4);
+        notone(musicPin);
+        delay(internote);
     
-        // tone(musicPin, NOTE_C4);
-        // delay(d4);
-        // notone(musicPin);
-        // delay(internote);
+        tone(musicPin, NOTE_C4, d4);
+        notone(musicPin);
+        delay(internote);
     }
     return (0);
 }
