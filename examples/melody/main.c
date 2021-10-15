@@ -1,48 +1,71 @@
 /*
-* toneTest()
+
+  Melody
+
+  Plays a melody
+
+  circuit:
+
+  - 8 ohm speaker on digital pin 8
+
+  created 21 Jan 2010
+
+  modified 30 Aug 2011
+
+  by Tom Igoe
+
+  This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/Tone
+
 */
+
 #include "tone.h"
 #include "avr_uno.h"
 #include "delay.h"
 #include "pinMode.h"
 
 
-int main (void)
-{
+int main() {
+
     uint8_t musicPin = 2;
-    pinMode(musicPin, OUTPUT);
+    pinMode(13, OUTPUT);
 
     // notes in the melody:
     int melody[] = {
 
-      NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+    NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
     };
 
     // note durations: 4 = quarter note, 8 = eighth note, etc.:
-    int noteDuration[] = {
+    int noteDurations[] = {
 
-      4, 8, 8, 4, 4, 4, 4, 4
+    d4, d8, d8, d4, d4, d4, d4, d4
     };
 
-    int noteDelay[] = {
+    // iterate over the notes of the melody:
 
-      d4, d8, d8, d4, d4, d4, d4, d4
-    };
+    for (int thisNote = 0; thisNote < 8; thisNote++) {
 
+      // note duration is pre-calculated and defined using a "d"
 
-    /* loop forever, the interrupts are doing the rest */
-    while (1)  {         
+      //e.g. quarter note = d4, eighth note = d8, etc.
 
-        for (int thisNote = 0; thisNote < 8; thisNote++) {
+      tone(musicPin, melody[thisNote], noteDurations[thisNote]);
 
-        tone(musicPin, melody[thisNote]);
-        delay(noteDelay[thisNote]);
+      // to distinguish the notes, set a minimum time between them.
 
-        notone(musicPin);
-         delay(d4);
+      // the note's duration + 30% seems to work well:
+      // a better way is to use 25% so it doesn't required multiplication
+      // 25% is divide by 4 or shift right twice
 
-        }
-        delay(2000);
+      int pauseBetweenNotes = noteDurations[thisNote] + (noteDurations[thisNote] >> 2);
+
+      delay(pauseBetweenNotes);
+
+      // stop the tone playing:
+
+      noTone(musicPin);
+
     }
-    return (0);
 }

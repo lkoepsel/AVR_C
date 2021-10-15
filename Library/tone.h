@@ -25,7 +25,7 @@
 
 void tone (uint8_t pin, uint8_t note, uint16_t duration);       
 
-void notone(uint8_t pin);
+void noTone(uint8_t pin);
 
 /* note duration delay values, must be used after every note in (tone)
 */

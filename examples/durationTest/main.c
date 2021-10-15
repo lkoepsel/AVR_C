@@ -1,7 +1,6 @@
 /*
 * durationTest() - very simple test to test a tone duration
-* requires an oscilloscope to see freq on the pin
-* tone requires a delay to account for the note time and desired silence
+* requires a speaker to hear the melody on the pin
 */
 #include "tone.h"
 #include "avr_uno.h"
@@ -14,35 +13,35 @@ int main (void)
 
     while(1) {
         tone(musicPin, NOTE_C4, d4);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_G3, d8);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_G3, d8);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_A3, d4);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_G3, d4);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, 0, d4);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_B3, d4);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_C4, d4);
-        notone(musicPin);
+        noTone(musicPin);
         delay(internote);
     }
     return (0);

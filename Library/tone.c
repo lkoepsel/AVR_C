@@ -496,7 +496,7 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
 {
 
     if (note == 0) {
-        notone(pin);
+        noTone(pin);
         delay(duration);
     }
     else {
@@ -520,12 +520,12 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
         TIMSK0 = _BV (TOIE0);
         sei ();
         delay(duration);
-        notone(pin);
+        noTone(pin);
     }
     return;
 }
 
-void notone(uint8_t pin) {
+void noTone(uint8_t pin) {
     TIMSK0 &= ~(_BV (TOIE0));
     digitalWrite(pin, LOW);
 }
