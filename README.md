@@ -1,12 +1,14 @@
 # Programming the Arduino Uno in C
-The intention of this repository is to provide a framework in C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontroller).
+This repository provides a framework in  Standard C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontroller).
 
 In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
 ## Arduino Framework  and standard C Replacement Routines
+Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
+
 ### Arduino Framework
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal.
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
-	* n = n/255 Duty Cycle, i.e; n=127, 127/255 = 49.8% duty cycle
+	* n = n/255 Duty Cycle, i.e; n=127, 127/255 \~= 50% duty cycle
 	* Pin PWM Frequencies
 		* UNO pin 3/PD3, 488.3Hz
 		* UNO pin 5/PD5, 976.6Hz
@@ -15,38 +17,22 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
 * **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH or LOW (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code.
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only).
-* **delay(n/31250 ms)**: Blocking delay uses built-in delay_ms, however allows for a variable as an argument. 
+* **delay(ms)**: Blocking delay uses built-in \_delay_ms, however allows for a variable as an argument. 
 ### Standard C functions adapted for the ATmega328P
 Requires both #include "uart.h" and #include <stdio.h>
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
-* **printf(string, variables)**: same as C printf, limited functionality to be documented
-* **puts(string)**: same as C puts
-
-### Existing C functions in avr-gcc, which mirror Arduino functionality
-Requires #include <ctype.h>
-* int 	isalnum (int \__c)
-* int 	isalpha (int \__c)
-* int 	isascii (int \__c)
-* int 	isblank (int \__c) 
-* int 	iscntrl (int \__c)
-* int 	isdigit (int \__c)
-* int 	isgraph (int \__c)
-* int 	islower (int \__c)
-* int 	isprint (int \__c)
-* int 	ispunct (int \__c)
-* int 	isspace (int \__c)
-* int 	isupper (int \__c)
-* int 	isxdigit (int \__c)
+* **printf(string, variables)**: same as C printf(), limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
+* **puts(string)**: same as C puts()
 
 ### Includes required for using routines
 * #include "avr_UNO.h" - General definitions
 * #include "analogWrite.h" 
 * #include "pinMode.h"
 * #include "digitalWrite.h"
-
-Library still needs work to be setup correctly. At this time, any routine needs to be included to be used.
+f
+Library still needs work to be setup correctly. At present, any function called requires an #include "function.h" to be used.
 
 ### Work in Progress
 This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
@@ -57,6 +43,9 @@ Demo file for using analogWrite(), requires a scope (Labrador used) to see the o
 
 ### blink: 
 Essentially the same as the Arduino blink sketch. LED can be set to any Arduino pin (0-13).
+
+### chario:
+Simple character I/O test using the UART. The USB cable is the only cable required.
 
 ### pinMode:
 Demo file for using pinMode(), provides a short digital waveform on a pin to demonstrate pinMode is working.

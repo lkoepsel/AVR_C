@@ -1,25 +1,19 @@
-/* delayTest()
-*   gcc-based delay() for simplicity and is accurate, blocking to meet needs
-*   Uses built-in delay_ms for delay, allows for passing a variable
-*/
-#include <avr/io.h>
+#include "avr_uno.h"
 #include "pinMode.h"
-#include "delay.h"
-
-int main (void)
+#include "digitalWrite.h"
+ 
+#define BLINK_DELAY_MS 500
+ 
+int main(void)
 {
-    uint8_t testPin = 2;
-    pinMode(testPin, OUTPUT);
+    uint8_t LED = 13;
+    /* set LED to output*/
+    pinMode(LED, OUTPUT);
 
-    while(1)  {
-        // HIGH width is 2000us or 2ms
-        PORTD |= _BV(PD2);
-        delay(2);
-
-        // LOW width is 4000us or 4ms
-        PORTD &= ~(_BV(PD2));
-        delay(4);
+    while(1) {
+        /* turn led on */
+        digitalWrite(LED, TOG);
+        delay(BLINK_DELAY_MS);
     }
-    return (0);
+    return(0); 
 }
-                
