@@ -45,8 +45,10 @@ Demo file for using analogWrite(), requires a scope (Labrador used) to see the o
 Essentially the same as the Arduino blink sketch. LED can be set to any Arduino pin (0-13).
 
 ### chario:
-Simple character I/O test using the UART. The USB cable is the only cable required.
+Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
 
+### delayTest: 
+Demonstrates how to use the delay function.
 ### pinMode:
 Demo file for using pinMode(), provides a short digital waveform on a pin to demonstrate pinMode is working.
 

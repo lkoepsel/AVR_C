@@ -8,6 +8,7 @@ void off_led ()
 
 void on_led ()
 {
+    DDRB |= (_BV(PORTB5));
     PORTB |= (_BV(PORTB5));
 }
 

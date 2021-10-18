@@ -11,10 +11,17 @@
  * Licensed under the MIT license:
  *   http://www.opensource.org/licenses/mit-license.php
  *
+ *      Added delays to determine if board is receiving data via TX/RX LEDs
+ *      Some boards won't work with some serial programs:
+ *          Adafruit Metro - won't minicom and moserial
+ *          Adafruit Metro - will Arduino Serial Monitor
+ * YMMV
+ *
  */
  
 #include <stdio.h>
 #include "uart.h"
+#include "delay.h"
 
 int main(void) {    
 
@@ -25,9 +32,12 @@ int main(void) {
     char input;
 
     
-    puts("AVR UART Char Test");
+    puts("AVR UART");
+    delay(2000);
+    puts("Char Test");
     while(1) {
         input = getchar();
+        delay(2000);
         printf("You entered %c\n", input);        
     }
         

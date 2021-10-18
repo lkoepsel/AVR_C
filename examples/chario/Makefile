@@ -6,7 +6,7 @@
 
 MCU   = atmega328p
 F_CPU = 16000000UL  
-BAUD  = 9600UL
+BAUD  = 9600
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## A directory for common include files and the simple USART library.
@@ -22,7 +22,7 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 #PROGRAMMER_TYPE = dragon_dw
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -F -V -P /dev/ttyACM0 -b 115200	
+PROGRAMMER_ARGS = -F -V -P /dev/ttyUSB0 -b 115200	
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
