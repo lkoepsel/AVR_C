@@ -46,6 +46,13 @@ Essentially the same as the Arduino blink sketch. LED can be set to any Arduino 
 
 ### delayTest: 
 Demonstrates how to use the delay function.
+
+### durationTest:
+An inline test of playing a melody using tone(). This version is easier to test and debug than melody.
+
+### melody: 
+Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework.
+
 ### pinMode:
 Demo file for using pinMode(), provides a short digital waveform on a pin to demonstrate pinMode is working.
 
@@ -68,10 +75,7 @@ Uses the simple framework from above to create a interrupt-based timer which pro
 * T0: 500Hz Pin 7: COM0A1 WGM01 WGM00 CS01 CS00
 * T1: 100Hz Pin 8: COM1A1 WGM13 WGM11 WGM10 CS11 CS10 OCR1A=624
 
-### usart:
-Demo file for testing the serial interface (USB). Requires a serial program like minicom or Putty to test.
-
-### Makefile
+## Makefile
 The examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
 
 [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
@@ -86,7 +90,7 @@ Specific lines to be aware of:
 # the easiest way to determine the correct one is to use the Arduino IDE 
 # and check the Port (Tools -> Port)
 ```
-## Make Commands for Examples
+### Make Commands for Examples
 ```
 # simple command to check syntax, similar to Verify in the Arduino IDE
 make
