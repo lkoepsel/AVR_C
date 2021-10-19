@@ -44,9 +44,6 @@ Demo file for using analogWrite(), requires a scope (Labrador used) to see the o
 ### blink: 
 Essentially the same as the Arduino blink sketch. LED can be set to any Arduino pin (0-13).
 
-### chario:
-Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
-
 ### delayTest: 
 Demonstrates how to use the delay function.
 ### pinMode:
@@ -54,6 +51,9 @@ Demo file for using pinMode(), provides a short digital waveform on a pin to dem
 
 ### pinTest:
 Demo file for using pinTest(), a multi-layer loop through pins (2-13) to allow for checking if INPUT and INPUT_PULL are working. Uses a button with one side to 5V (INPUT) or GND (INPUT_PULLUP), other side to pin to test.
+
+### serialio:
+Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
 
 ### simple:
 Demo file from avr-gcc on-line User Manual [Simple Project](https://www.nongnu.org/avr-libc/user-manual/group__demo__project.html), edited specific to ATmega328P. It is well-worth reviewing as it shows how to use an interrupt. The best way to understand it, is to use a scope (Labrador) to view the waveform change.
@@ -71,7 +71,10 @@ Uses the simple framework from above to create a interrupt-based timer which pro
 ### usart:
 Demo file for testing the serial interface (USB). Requires a serial program like minicom or Putty to test.
 
-Examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
+### Makefile
+The examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
+
+[Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
 
 Specific lines to be aware of:
 ```bash

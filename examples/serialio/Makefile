@@ -22,7 +22,7 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 #PROGRAMMER_TYPE = dragon_dw
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -F -V -P /dev/ttyACM0 -b 115200	
+PROGRAMMER_ARGS = -F -V -P /dev/ttyUSB0 -b 115200	
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
