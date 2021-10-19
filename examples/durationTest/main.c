@@ -8,7 +8,7 @@
 
 int main (void)
 {
-    uint8_t musicPin = 2;
+    uint8_t musicPin = 12;
     pinMode(13, OUTPUT);
 
     while(1) {

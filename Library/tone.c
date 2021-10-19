@@ -511,9 +511,18 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
         TCCR0B = pgm_read_byte(&(notes_TCCR0B[note]));
         OCR0A = pgm_read_word(&(notes_OCR0A[note]));
     
-    // TODO: NEED TO ADD ABILITY TO GET PORT AND PIN FROM FUNCTION CALL LIKE DIGITALWRITE
-        PINport = &PIND;
-        PINbit = PB2;
+        // UNO PINS 0-7 PORT D        
+        if ((pin >= 0) && (pin <= 7)) {
+            PINport = &PIND;
+            PINbit = pin;
+        }
+
+        // UNO PINS 8-13 PORT B        
+        else if ((pin >= 8) && (pin <= 13)) {
+            PINport = &PINB;
+            PINbit = pin - 8;
+        }  
+
         pinMode(pin, OUTPUT);
     
         /* Enable timer 1 overflow interrupt and enable interrupts. */

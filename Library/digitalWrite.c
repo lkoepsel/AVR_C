@@ -1,7 +1,7 @@
 #include "digitalWrite.h"
 
 uint8_t digitalWrite(uint8_t apin, uint8_t level) {
-    uint8_t bit, errno;
+    uint8_t bit, errno = 0;
     // UNO PINS 0-7 PORT D        
     if ((apin >= 0) && (apin <= 7)) {
         bit = apin;
