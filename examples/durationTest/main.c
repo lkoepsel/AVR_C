@@ -3,7 +3,7 @@
 * requires a speaker to hear the melody on the pin
 */
 #include "tone.h"
-#include "avr_uno.h"
+#include "unolib.h"
 #include "delay.h"
 
 int main (void)

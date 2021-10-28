@@ -15,6 +15,10 @@
 *   notes_TCCR1B: scalar settings for a specific note, 
 *   notes_OCR1A:  timer counter value req'd for a specific note
 */
+
+#ifndef TONE_H
+#define TONE_H
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
@@ -128,3 +132,5 @@ void noTone(uint8_t pin);
 #define NOTE_CS8 86
 #define NOTE_D8  87
 #define NOTE_DS8 88
+
+#endif

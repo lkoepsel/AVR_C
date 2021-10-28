@@ -21,14 +21,14 @@
 */
 
 #include "tone.h"
-#include "avr_uno.h"
+#include "unolib.h"
 #include "delay.h"
 #include "pinMode.h"
 
 
 int main() {
 
-    uint8_t musicPin = 2;
+    uint8_t musicPin = 12;
     pinMode(13, OUTPUT);
 
     // notes in the melody:

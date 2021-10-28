@@ -27,7 +27,7 @@ Requires both #include "uart.h" and #include <stdio.h>
 * **puts(string)**: same as C puts()
 
 ### Includes required for using routines
-* #include "avr_UNO.h" - General definitions
+* #include "unolib.h" - General definitions
 * #include "analogWrite.h" 
 * #include "pinMode.h"
 * #include "digitalWrite.h"

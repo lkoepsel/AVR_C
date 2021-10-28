@@ -15,7 +15,7 @@ uint8_t digitalWrite(uint8_t apin, uint8_t level) {
             tog_bit(&PIND, bit);
         }
         else {
-            errno = 1;
+            errno = -1;
         }
         return(errno);
     }
@@ -33,7 +33,7 @@ uint8_t digitalWrite(uint8_t apin, uint8_t level) {
             tog_bit(&PINB, bit);
         }
         else {
-            errno = 1;
+            errno = -1;
         }
     }
     else {

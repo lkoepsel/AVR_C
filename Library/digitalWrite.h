@@ -1,6 +1,13 @@
+/* digitalWrite(pin, level): set pin on Ports B and D to a level LOW/HIGH/TOG
+*/
+
+#ifndef DIGITALWRITE_H
+#define DIGITALWRITE_H
+
 #include <util/delay.h>
 #include <avr/io.h>
-#include "avr_uno.h"
+#include "unolib.h"
 
 uint8_t digitalWrite(uint8_t apin, uint8_t level) ;
 
+#endif

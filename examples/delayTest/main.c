@@ -1,8 +1,8 @@
-#include "avr_uno.h"
+#include "unolib.h"
 #include "pinMode.h"
 #include "digitalWrite.h"
 #include "delay.h"
- 
+
 #define BLINK_DELAY_MS 500
  
 int main(void)
@@ -12,7 +12,7 @@ int main(void)
     pinMode(LED, OUTPUT);
 
     while(1) {
-        /* turn led on */
+        /* toggle led on and off */
         digitalWrite(LED, TOG);
         delay(BLINK_DELAY_MS);
     }

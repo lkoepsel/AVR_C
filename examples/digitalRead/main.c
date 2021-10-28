@@ -1,10 +1,10 @@
-#include "avr_uno.h"
-#include "pinMode.h"
-#include "digitalRead.h"
-#include <avr/io.h>
-#include <util/delay.h>
 #include <stdio.h>
 #include "uart.h"
+#include <avr/io.h>
+#include "delay.h"
+#include "unolib.h"
+#include "pinMode.h"
+#include "digitalRead.h"
 
 #define BLINK_DELAY_MS 50
 
@@ -13,8 +13,8 @@ int main (void)
     uart_init();
     stdout = &uart_output;
     stdin  = &uart_input;
-    DDRD = 0xff;
-    DDRB = 0xff;
+    // DDRD = 0xff;
+    // DDRB = 0xff;
 
     uint8_t pin;
     puts("Testing digitalRead");
@@ -25,7 +25,7 @@ int main (void)
             for (uint8_t j=0;j<=9;j++) {
                 pin = digitalRead(i);
                 printf("Value is: %d\n", pin);
-                _delay_ms(500);
+                delay(500);
             }
         }
     }

@@ -14,7 +14,7 @@ int main(void) {
     uart_init();
     stdout = &uart_output;
     stdin  = &uart_input;
-                
+    
     char input;
 
     

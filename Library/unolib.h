@@ -1,19 +1,18 @@
+/* unolib: various commands to:
+*	turn the built-in led on/off/tog
+*	for ports B and D, set/clr/tog bit
+*/
+
+#ifndef UNOLIB_H
+#define UNOLIB_H
+
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define INPUT 0
-#define OUTPUT 1
-#define INPUT_PULLUP 2
-#define TOG 3
-#define HIGH 1
-#define LOW 0
 
-#define A0 0
-#define A1 1
-#define A2 2
-#define A3 3
-#define A4 4
-#define A5 5
+enum {INPUT, OUTPUT, INPUT_PULLUP};
+enum {LOW, HIGH, TOG};
+enum {A0, A1, A2, A3, A4, A5};
 
 void off_led () ;
 
@@ -26,3 +25,5 @@ void set_bit (volatile uint8_t *port, uint8_t bit) ;
 void clr_bit (volatile uint8_t *port, uint8_t bit) ;
 
 void tog_bit (volatile uint8_t *port, uint8_t bit) ;
+
+#endif
