@@ -1,11 +1,17 @@
 # Programming the Arduino Uno in C
-This repository provides a framework in  Standard C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontroller).
+This repository provides a framework in  Standard C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontroller).
 
 In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
 ## Arduino Framework  and standard C Replacement Routines
 Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
 
 ### Arduino Framework
+
+#### Requires an #include for any function
+* #include "unolib.h" - General definitions
+Library still needs work to be setup correctly. At present, any function called requires an #include "functionname.h" to be used. For example, to use analogRead(), #include "analogRead.h".
+
+* **analogRead(pin)**: read one of the 6 Analog pins (A0-A5). Returns a 10-bit value in reference to AREF see [analogReference()](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/). In this case, it only DEFAULT value of 5V.
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal.
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
 	* n = n/255 Duty Cycle, i.e; n=127, 127/255 \~= 50% duty cycle
@@ -16,23 +22,26 @@ Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/
 		* UNO pin 9/PB1, 976.6Hz
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
-* **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable.
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code.
-* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only).
+* **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. Is not configured to use A0-A5.
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code. Is not configured to use A0-A5.
+* **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only). Is not configured to use A0-A5.
 * **delay(ms)**: Blocking delay uses built-in \_delay_ms, however allows for a variable as an argument. 
 ### Standard C functions adapted for the ATmega328P
-Requires both #include "uart.h" and #include <stdio.h>
+Requires the following in the file which needs to use the serial I/O functions puts(), printf() and getchar(). scanf() has yet to be debugged. See example *serialio* to see implementation.
+
+```C
+# in the include section at the top of the file
+#include "uart.h"
+#include <stdio.h>
+
+# at the top of the main function, prior to using I/O functions
+    uart_init();
+    stdout = &uart_output;
+    stdin  = &uart_input;
+```
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf(), limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
 * **puts(string)**: same as C puts()
-
-### Includes required for using routines
-* #include "unolib.h" - General definitions
-* #include "analogWrite.h" 
-* #include "pinMode.h"
-* #include "digitalWrite.h"
-f
-Library still needs work to be setup correctly. At present, any function called requires an #include "function.h" to be used.
 
 ### Work in Progress
 This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
