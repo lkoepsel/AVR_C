@@ -47,26 +47,26 @@ Requires the following in the file which needs to use the serial I/O functions p
 This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
 
 ## Examples 
+### analogRead: 
+Demo file for using analogRead(), requires a pot to be setup with outerpins to GND and 5V. Then connect center pin to one of A0-A5, adjust pot to see value chance in a serial monitor.
+
 ### analogWrite: 
 Demo file for using analogWrite(), requires a scope (Labrador used) to see the output of the PWM signal
 
 ### blink: 
-Essentially the same as the Arduino blink sketch. LED can be set to any Arduino pin (0-13).
+Minimal blink sketch. Intended as a minimal test program while working on code, it doesn't use the AVR_C Library.
 
 ### delayTest: 
-Demonstrates how to use the delay function.
+Demonstrates how to use the delay function. Same as blink, however, uses the AVR_C library.
+
+### digitalRead: 
+Uses loops to go through each digital pin (2-13) and print out level on pin. Uses INPUT_PULLUP, so pin needs to be grounded to show 0, otherwise it will be a 1. 
 
 ### durationTest:
 An inline test of playing a melody using tone(). This version is easier to test and debug than melody.
 
 ### melody: 
 Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework.
-
-### pinMode:
-Demo file for using pinMode(), provides a short digital waveform on a pin to demonstrate pinMode is working.
-
-### pinTest:
-Demo file for using pinTest(), a multi-layer loop through pins (2-13) to allow for checking if INPUT and INPUT_PULL are working. Uses a button with one side to 5V (INPUT) or GND (INPUT_PULLUP), other side to pin to test.
 
 ### serialio:
 Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
