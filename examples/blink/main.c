@@ -1,22 +1,20 @@
-/* blink
-*   example of low level code for blinking on-board LED
-*/
-#include <avr/io.h>
-#include <util/delay.h>
+#include "unolib.h"
+#include "pinMode.h"
+#include "digitalWrite.h"
+#include "delay.h"
 
-int main (void)
+#define BLINK_DELAY_MS 500
+ 
+int main(void)
 {
-    // set data direction register (PinMode())
-    DDRB |= _BV(DDD5);
+    uint8_t LED = 13;
+    /* set LED to output*/
+    pinMode(LED, OUTPUT);
 
-    while(1)  {
-        // toggle pin by writing a 1 to input register (see page 85 14.2.2)
-        // digitalWrite(pin, TOG)
-        PINB |= _BV(PORTB5);
-
-        // delay using avr-libc delay macro
-        // delay()
-        _delay_ms(500);
+    while(1) {
+        /* toggle led on and off */
+        digitalWrite(LED, TOG);
+        delay(BLINK_DELAY_MS);
     }
-    return (0);
+    return(0); 
 }
