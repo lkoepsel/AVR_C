@@ -1,4 +1,8 @@
-
+##########------------------------------------------------------##########
+##########              System-specific Details                 ##########
+########## These need to be changed specific to your  system    ##########
+##########------------------------------------------------------##########
+SERIAL = /dev/ttyACM0
 ##########------------------------------------------------------##########
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
@@ -22,7 +26,7 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 #PROGRAMMER_TYPE = dragon_dw
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -F -V -P /dev/ttyACM0 -b 115200	
+PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200	
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
