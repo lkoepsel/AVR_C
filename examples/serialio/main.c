@@ -11,9 +11,7 @@
 
 int main(void) {    
 
-    uart_init();
-    stdout = &uart_output;
-    stdin  = &uart_input;
+    init_serial;
     
     char input;
 
