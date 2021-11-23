@@ -2,7 +2,7 @@
 ##########              System-specific Details                 ##########
 ########## These need to be changed specific to your  system    ##########
 ##########------------------------------------------------------##########
-SERIAL = /dev/ttyACM0
+SERIAL = $(AVR_PORT)
 ##########------------------------------------------------------##########
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########

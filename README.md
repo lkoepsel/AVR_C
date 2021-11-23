@@ -35,9 +35,7 @@ Requires the following in the file which needs to use the serial I/O functions p
 #include <stdio.h>
 
 # at the top of the main function, prior to using I/O functions
-    uart_init();
-    stdout = &uart_output;
-    stdin  = &uart_input;
+	init_serial;
 ```
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf(), limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
