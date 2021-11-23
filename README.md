@@ -7,7 +7,6 @@ Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/
 
 ### Arduino Framework
 
-#### Using the functions
 **Each function used requires an #include in order to be used (example):**
 ```C
 #include "functionname.h"
