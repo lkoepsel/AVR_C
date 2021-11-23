@@ -7,9 +7,11 @@ Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/
 
 ### Arduino Framework
 
-#### Requires an #include for any function
-* #include "unolib.h" - General definitions
-Library still needs work to be setup correctly. At present, any function called requires an #include "functionname.h" to be used. For example, to use analogRead(), #include "analogRead.h".
+#### Requires an #include for any function used:
+**#include "unolib.h" - General definitions as well as any function called requires an #include "functionname.h" to be used. This keeps the code smaller than a large file containing all of the functions available.**
+
+For example, to use analogRead(): 
+#include "analogRead.h"
 
 * **analogRead(pin)**: read one of the 6 Analog pins (A0-A5). Returns a 10-bit value in reference to AREF see [analogReference()](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/). In this case, it only DEFAULT value of 5V.
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal.
@@ -23,11 +25,12 @@ Library still needs work to be setup correctly. At present, any function called 
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
 * **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. Is not configured to use A0-A5.
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code. Is not configured to use A0-A5.
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code. digitalWrite() is not written to use A0-A5.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only). Is not configured to use A0-A5.
-* **delay(ms)**: Blocking delay uses built-in \_delay_ms, however allows for a variable as an argument. 
-### Standard C functions adapted for the ATmega328P
-Requires the following in the file which needs to use the serial I/O functions puts(), printf() and getchar(). scanf() has yet to be debugged. See example *serialio* to see implementation.
+* **delay(ms)**: Blocking delay uses Standard C built-in \_delay_ms, however allows for a variable to be used as an argument. 
+* **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it.
+#### Standard C functions adapted for the ATmega328P
+Requires the following in the file which needs to use the serial I/O functions puts(), printf() and getchar(). scanf() has yet to be debugged. See example *serialio* to see implementation. The two output puts() and printf() implementations replace Serial.print in the Arduino framework.
 
 ```C
 # in the include section at the top of the file
@@ -54,9 +57,6 @@ Demo file for using analogWrite(), requires a scope (Labrador used) to see the o
 ### blink: 
 Minimal blink sketch. Intended as a minimal test program while working on code, it doesn't use the AVR_C Library.
 
-### delayTest: 
-Demonstrates how to use the delay function. Same as blink, however, uses the AVR_C library.
-
 ### digitalRead: 
 Uses loops to go through each digital pin (2-13) and print out level on pin. Uses INPUT_PULLUP, so pin needs to be grounded to show 0, otherwise it will be a 1. 
 
@@ -66,26 +66,25 @@ An inline test of playing a melody using tone(). This version is easier to test 
 ### melody: 
 Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework.
 
+### millis:
+Shows an example of using millis() to demonstrate the effectiveness of the delay command. Prints the time delta based on using a delay(1000).
+
 ### serialio:
 Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
 
 ### simple:
 Demo file from avr-gcc on-line User Manual [Simple Project](https://www.nongnu.org/avr-libc/user-manual/group__demo__project.html), edited specific to ATmega328P. It is well-worth reviewing as it shows how to use an interrupt. The best way to understand it, is to use a scope (Labrador) to view the waveform change.
 
-### tenthTimer:
-Uses the simple framework from above to create a interrupt-based timer which provides a 100Hz signal (10ms period) with a 50% duty cycle. Could be used for multi-tasking, long counters etc. There are other settings which can be used to increase or decrease the frequency. See comments.
-
-### twoTimers:
-* Interrupt driven timers which toggle pins (8) 100Hz and (7) 500Hz using timer 0 and timer 1.
-* All at 50% duty cycle
-* Example Settings:
-* T0: 500Hz Pin 7: COM0A1 WGM01 WGM00 CS01 CS00
-* T1: 100Hz Pin 8: COM1A1 WGM13 WGM11 WGM10 CS11 CS10 OCR1A=624
-
 ## Makefile
 The examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
 
 [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
+
+I also added a line at the beginning of the Makefile for an environment variable called AVR_PORT. If you add:
+```bash
+export AVR_PORT=/dev/ttyACM0 # replace this port name with the one you are using
+```
+in your .bashrc or .zshrc file, the Makefile will pick this for serial communications with the Uno. (be sure to *source* or restart after editing the rc file)
 
 Specific lines to be aware of:
 ```bash
