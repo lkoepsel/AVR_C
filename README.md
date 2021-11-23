@@ -7,11 +7,15 @@ Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/
 
 ### Arduino Framework
 
-#### Requires an #include for any function used:
-**#include "unolib.h" - General definitions as well as any function called requires an #include "functionname.h" to be used. This keeps the code smaller than a large file containing all of the functions available.**
+#### Using the functions
+**Each function used requires an #include in order to be used (example):
+```C
+#include "functionname.h"
 
-For example, to use analogRead(): 
-#include "analogRead.h"
+#include "analogRead.h" # for example to use analogRead()
+#include "unolib.h" # also add this file for general definitions
+```
+This keeps the code smaller than with a large file containing all of the functions available. Also  **
 
 * **analogRead(pin)**: read one of the 6 Analog pins (A0-A5). Returns a 10-bit value in reference to AREF see [analogReference()](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/). In this case, it only DEFAULT value of 5V.
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal.
