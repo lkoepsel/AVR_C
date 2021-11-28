@@ -31,7 +31,7 @@ This keeps the code smaller than with a large file containing all of the functio
 * **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code. digitalWrite() is not written to use A0-A5.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only). Is not configured to use A0-A5.
 * **delay(ms)**: Blocking delay uses Standard C built-in \_delay_ms, however allows for a variable to be used as an argument. 
-* **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it.
+* **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it. millis() uses a SCALAR1 value to determine the clock rate. Change the value of SCALAR1 in the Library/sysclock.h file to change the period of the clock. **IF YOU DO CHANGE THE VALUE OF THE SCALAR1**, you will need to run make LIB_clean to clean the Library folder and force it to recompile the functions.
 #### Standard C functions adapted for the ATmega328P
 Requires the following in the file which needs to use the serial I/O functions puts(), printf() and getchar(). scanf() has yet to be debugged. See example *serialio* to see implementation. The two output puts() and printf() implementations replace Serial.print in the Arduino framework.
 
