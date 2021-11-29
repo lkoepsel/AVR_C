@@ -48,9 +48,10 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 
 ### Added functions beyond Arduino Framework
 * **buttons[i]** - provides a debounced button response. Each button must attach to an Uno pin
-	* Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse
-	* buttons[i].uno are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
-	* buttons[i].pressed indicates if the button has been pressed (true or non-zero)
+	* Requires sysclock to have a *SCALAR1 = SCALAR01_64*, as this provides a 8 millis pulse to run the button check function
+	* *buttons[i].uno* are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
+	* *buttons[i].pressed* indicates if the button has been pressed (true or non-zero)
+	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
 	See example in *button* folder as to how to use
 
