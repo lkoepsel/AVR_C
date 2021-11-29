@@ -31,7 +31,7 @@ This keeps the code smaller than with a large file containing all of the functio
 * **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code. digitalWrite() is not written to use A0-A5.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only). Is not configured to use A0-A5.
 * **delay(ms)**: Blocking delay uses Standard C built-in \_delay_ms, however allows for a variable to be used as an argument. 
-* **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it. millis() uses a SCALAR1 value to determine the clock rate. Change the value of SCALAR1 in the Library/sysclock.h file to change the period of the clock. **IF YOU DO CHANGE THE VALUE OF THE SCALAR1**, you will need to run make LIB_clean to clean the Library folder and force it to recompile the functions.
+* **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it. millis() uses a SCALAR1 value to determine the clock rate. Change the value of SCALAR1 in the Library/sysclock.h file to change the period of the clock (default value of SCALAR01_8 for a 1millisecond clock. **IF YOU DO CHANGE THE VALUE OF THE SCALAR1**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile the functions.
 #### Standard C functions adapted for the ATmega328P
 Requires the following in the file which needs to use the serial I/O functions puts(), printf() and getchar(). scanf() has yet to be debugged. See example *serialio* to see implementation. The two output puts() and printf() implementations replace Serial.print in the Arduino framework.
 
@@ -46,6 +46,12 @@ Requires the following in the file which needs to use the serial I/O functions p
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf(), limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
 * **puts(string)**: same as C puts()
+
+### Added functions above Arduino Framework
+* **buttons[i]** - provides a debounced button response. Each button must attach to a pin, as be setup as INPUT_PULLUP. Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse. 
+	*pins[i]* are the ports attached to buttons, like digitalRead, function will translate pin to port
+	*buttons[i]* are the pressed indications for the button, true is pressed
+See example in *button* folder as to how to use
 
 ### Work in Progress
 This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
