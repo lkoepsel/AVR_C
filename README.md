@@ -1,18 +1,18 @@
 # Programming the Arduino Uno in C
-This repository provides a framework in  Standard C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment than one like the Raspberry Pi Pico (32-bit microcontroller).
+This repository provides a framework in  Standard C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment as compared to the Raspberry Pi Pico (32-bit microcontroller).
 
 In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
 ## Arduino Framework  and standard C Replacement Routines
 Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
 
-### Arduino Framework
+### Arduino Framework Functions
 
 **Each function used requires an #include in order to be used (example):**
 ```C
-#include "functionname.h"
+#include "functionname.h" /* format of include */
 
-#include "analogRead.h" # for example to use analogRead()
-#include "unolib.h" # also add this file for general definitions
+#include "analogRead.h" /* for example to use analogRead() */
+#include "unolib.h" /* add this file for general definitions */
 ```
 This keeps the code smaller than with a large file containing all of the functions available.
 
@@ -32,9 +32,8 @@ This keeps the code smaller than with a large file containing all of the functio
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only). Is not configured to use A0-A5.
 * **delay(ms)**: Blocking delay uses Standard C built-in \_delay_ms, however allows for a variable to be used as an argument. 
 * **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it. millis() uses a SCALAR1 value to determine the clock rate. Change the value of SCALAR1 in the Library/sysclock.h file to change the period of the clock (default value of SCALAR01_8 for a 1millisecond clock. **IF YOU DO CHANGE THE VALUE OF THE SCALAR1**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile the functions.
-#### Standard C functions adapted for the ATmega328P
-Requires the following in the file which needs to use the serial I/O functions puts(), printf() and getchar(). scanf() has yet to be debugged. See example *serialio* to see implementation. The two output puts() and printf() implementations replace Serial.print in the Arduino framework.
-
+### Standard C I/O functions adapted for the ATmega328P
+Use these standard C I/O functions instead of the Arduino Serial class. See example *serialio* for an example implementation. Requires the following in the file:
 ```C
 # in the include section at the top of the file
 #include "uart.h"
@@ -47,16 +46,13 @@ Requires the following in the file which needs to use the serial I/O functions p
 * **printf(string, variables)**: same as C printf(), limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
 * **puts(string)**: same as C puts()
 
-### Added functions above Arduino Framework
+### Added functions beyond Arduino Framework
 * **buttons[i]** - provides a debounced button response. Each button must attach to an Uno pin
-* Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse
-* buttons[i].uno are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
-* buttons[i].pressed indicates if the button has been pressed (true or non-zero)
+	* Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse
+	* buttons[i].uno are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
+	* buttons[i].pressed indicates if the button has been pressed (true or non-zero)
 
-See example in *button* folder as to how to use
-
-### Work in Progress
-This is a work in progress, the initial version is proof of concept and uses a significant amount of storage. Over-time I'll optimize for size and add error-checking (as possible).
+	See example in *button* folder as to how to use
 
 ## Examples 
 ### analogRead: 
@@ -64,6 +60,9 @@ Demo file for using analogRead(), requires a pot to be setup with outerpins to G
 
 ### analogWrite: 
 Demo file for using analogWrite(), requires a scope (Labrador used) to see the output of the PWM signal
+
+### button: 
+Demo file for using debounced buttons, requires a button attached to a Uno digital pin with INPUT_PULLUP. *buttons[i].pressed* provides a indication of the button pressed.
 
 ### blink: 
 Minimal blink sketch. Intended as a minimal test program while working on code, it doesn't use the AVR_C Library.
@@ -116,6 +115,8 @@ make flash
 # command to show the size of the code
 make size
 # command to clear out all the cruft created in compiling/linking/loading
+make all_clean
+# command to clear out the Library object files *file.o*, sometimes required if changes to Library files aren't appearing to work
 make all_clean
 ```
 
