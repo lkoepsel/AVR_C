@@ -117,8 +117,8 @@ make flash
 make size
 # command to clear out all the cruft created in compiling/linking/loading
 make all_clean
-# command to clear out the Library object files *file.o*, sometimes required if changes to Library files aren't appearing to work
-make all_clean
+# command to clear out the Library object files *file.o*, sometimes required if changes to Library files aren't appearing to work, uses LIBDIR folder as the folder to clean
+make LIB_clean
 ```
 
 To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
