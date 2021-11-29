@@ -1,8 +1,7 @@
 #include "sysclock.h"
 #include "unolib.h"
 volatile uint16_t sys_ctr = 0;
-// volatile uint8_t buttons[max_buttons];
-// volatile uint8_t pins[max_buttons];
+
 extern button buttons[max_buttons];
 
 ISR (TIMER1_COMPA_vect)      
@@ -43,13 +42,13 @@ uint8_t read_button(uint8_t uno) {
     // UNO PINS 0-7 PORT D        
     if ((uno >= 0) && (uno <= 7)) {
         // Mask Port D input with pin then shift right to get the value in bit 0
-        return((PIND & (1 << uno)) >> uno);
+        return((PIND & (1 << uno)) == 0);
     }
 
     // UNO PINS 8-13 PORT B        
     else if ((uno >= 8) && (uno <= 13)) {
         uno -= 8;
-        return((PINB & (1 << uno)) >> uno);
+        return((PINB & (1 << uno)) == 0);
     }
 
     return(0);
