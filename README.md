@@ -49,8 +49,8 @@ Requires the following in the file which needs to use the serial I/O functions p
 
 ### Added functions above Arduino Framework
 * **buttons[i]** - provides a debounced button response. Each button must attach to a pin, as be setup as INPUT_PULLUP. Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse. 
-	*pins[i]* are the ports attached to buttons, like digitalRead, function will translate pin to port
-	*buttons[i]* are the pressed indications for the button, true is pressed
+	* *pins[i]* are the ports attached to buttons, like digitalRead, function will translate pin to port
+	* *buttons[i]* are the pressed indications for the button, true is pressed
 See example in *button* folder as to how to use
 
 ### Work in Progress

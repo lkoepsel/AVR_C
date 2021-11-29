@@ -1,7 +1,7 @@
 /*
 * button - each button must attach to a pin, as be setup as INPUT_PULLUP
 * Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse
-* pins[i] are the ports attached to buttons, like digitalRead, function will translate pin to port
+* buttons[i].pins are the ports attached to buttons, like digitalRead, function will translate pin to port
 * buttons[i] are the pressed indications for the button, true is pressed
 */ 
 #include <avr/io.h>
@@ -12,20 +12,19 @@
 #include "unolib.h"
 #include "pinMode.h"
 
-extern volatile uint8_t buttons[max_buttons];
-extern volatile uint8_t pins[max_buttons];
+extern button buttons[max_buttons];
 
 int main (void)
 {
     /* initialize buttons to ports, and instantiate using i     */
-    /* pins[i] are the Uno port numbers                         */
-    /* buttons[i] are the buttons which correspond to pins[i]   */
+    /* buttons[i].pins are the Uno port numbers                         */
+    /* buttons[i] are the buttons which correspond to buttons[i].pins   */
     uint8_t i = 0;
-    pins[i] = 11;
-    pinMode(pins[i], INPUT_PULLUP);
+    buttons[i].uno = 11;
+    pinMode(buttons[i].uno, INPUT_PULLUP);
     ++i;
-    pins[i] = 12;
-    pinMode(pins[i], INPUT_PULLUP);
+    buttons[i].uno = 12;
+    pinMode(buttons[i].uno, INPUT_PULLUP);
 
     init_serial;
     puts("Testing Button Presses");
@@ -38,7 +37,7 @@ int main (void)
     for (;;)  {         
 
         for (int i = 0; i < max_buttons; i++) {
-            if (buttons[i]) {
+            if (buttons[i].pressed) {
                 printf("Button %u was pressed.\n", i);
             }
         }

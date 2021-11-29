@@ -17,6 +17,13 @@
 #define max_buttons 2
 #define BOUNCE_MASK 0b11000111
 
+typedef struct button {
+   uint8_t uno;                 // Uno pin numbers for button
+   uint8_t pressed;             // true if button has been pressed
+} button;
+
+button buttons[max_buttons];
+
 uint16_t millis();
 
 uint8_t read_button(uint8_t button);

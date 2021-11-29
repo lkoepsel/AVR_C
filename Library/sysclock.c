@@ -1,14 +1,15 @@
 #include "sysclock.h"
 #include "unolib.h"
 volatile uint16_t sys_ctr = 0;
-volatile uint8_t buttons[max_buttons];
-volatile uint8_t pins[max_buttons];
+// volatile uint8_t buttons[max_buttons];
+// volatile uint8_t pins[max_buttons];
+extern button buttons[max_buttons];
 
 ISR (TIMER1_COMPA_vect)      
 {
     sys_ctr--;
     for (int i = 0; i < max_buttons; i++) {
-        buttons[i] = is_button_pressed(i);
+        buttons[i].pressed = is_button_pressed(i);
     }
 }
 
@@ -37,18 +38,18 @@ void init_sysclock (void)
     sei ();
 }
 
-uint8_t read_button(uint8_t bpin) {
+uint8_t read_button(uint8_t uno) {
 
     // UNO PINS 0-7 PORT D        
-    if ((bpin >= 0) && (bpin <= 7)) {
+    if ((uno >= 0) && (uno <= 7)) {
         // Mask Port D input with pin then shift right to get the value in bit 0
-        return((PIND & (1 << bpin)) >> bpin);
+        return((PIND & (1 << uno)) >> uno);
     }
 
     // UNO PINS 8-13 PORT B        
-    else if ((bpin >= 8) && (bpin <= 13)) {
-        bpin -= 8;
-        return((PINB & (1 << bpin)) >> bpin);
+    else if ((uno >= 8) && (uno <= 13)) {
+        uno -= 8;
+        return((PINB & (1 << uno)) >> uno);
     }
 
     return(0);
@@ -61,8 +62,7 @@ uint8_t is_button_pressed(uint8_t instance){
     uint8_t pressed = 0;    
  
     button_history[instance] = button_history[instance] << 1;
-
-    button_history[instance] |= read_button(pins[instance]);
+    button_history[instance] |= read_button(buttons[instance].uno);
 
     if ((button_history[instance] & BOUNCE_MASK) == 0b00000111){ 
         pressed = 1;
