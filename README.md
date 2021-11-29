@@ -48,9 +48,11 @@ Requires the following in the file which needs to use the serial I/O functions p
 * **puts(string)**: same as C puts()
 
 ### Added functions above Arduino Framework
-* **buttons[i]** - provides a debounced button response. Each button must attach to a pin, as be setup as INPUT_PULLUP. Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse. 
-	* *pins[i]* are the ports attached to buttons, like digitalRead, function will translate pin to port
-	* *buttons[i]* are the pressed indications for the button, true is pressed
+* **buttons[i]** - provides a debounced button response. Each button must attach to an Uno pin
+* Requires sysclock to have a SCALAR1 = SCALAR01_64, as this provides a 8 millis pulse
+* buttons[i].uno are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
+* buttons[i].pressed indicates if the button has been pressed (true or non-zero)
+
 See example in *button* folder as to how to use
 
 ### Work in Progress
