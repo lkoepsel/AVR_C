@@ -2,9 +2,9 @@
 
 // -------- Functions --------- //
 static inline void initADC0(void) {
-  ADMUX |= (1 << REFS0);                  /* reference voltage on AVCC */
-  ADCSRA |= (1 << ADPS2);                   /* ADC clock prescaler /16 */
-  ADCSRA |= (1 << ADEN);                                 /* enable ADC */
+  ADMUX |= _BV(REFS0);                  /* reference voltage on AVCC */
+  ADCSRA |= _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);                   /* ADC clock prescaler /16 */
+  ADCSRA |= _BV(ADEN);                                 /* enable ADC */
 }
 
 uint16_t analogRead(uint8_t apin) {
@@ -34,7 +34,7 @@ uint16_t analogRead(uint8_t apin) {
 				break;
 	}
 
-	ADCSRA |= (1 << ADSC);                     /* start ADC conversion */
+	ADCSRA |= _BV(ADSC);                     /* start ADC conversion */
 	loop_until_bit_is_clear(ADCSRA, ADSC);          /* wait until done */
 	return(ADC);                            /* Return with value read */
 }
