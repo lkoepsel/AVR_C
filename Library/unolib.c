@@ -19,12 +19,12 @@ void tog_led ()
 
 void set_bit (volatile uint8_t *port, uint8_t bit)
 {
-*port |= _BV(bit);
+    *port |= _BV(bit);
 }
 
 void clr_bit (volatile uint8_t *port, uint8_t bit)
 {
-*port &= ~(_BV(bit));
+    *port &= ~(_BV(bit));
 }
 
 void tog_bit (volatile uint8_t *port, uint8_t bit)
