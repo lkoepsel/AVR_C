@@ -175,32 +175,22 @@ void Task1(void)
 
 void Task2(void)
 {
-    // static uint8_t status = 0x01;
-    // if( status )
-    //     PORTD |= _BV(PD5);
-    // else
-    //     PORTD &= ~_BV(PD5);
-    // status = !status;
+    static uint8_t status = 0x01;
+    if( status )
+        PORTD |= _BV(PD5);
+    else
+        PORTD &= ~_BV(PD5);
+    status = !status;
 }
 
 void Task3(void)
 {
-    // static uint8_t status = 0x01;
-    // if( status )
-    //     PORTD |= _BV(PD6);
-    // else
-    //     PORTD &= ~_BV(PD6);
-    // status = !status;
-}
-
-void Task4(void)
-{
-    // static uint8_t status = 0x01;
-    // if( status )
-    //     PORTD |= _BV(PD6);
-    // else
-    //     PORTD &= ~_BV(PD6);
-    // status = !status;
+    static uint8_t status = 0x01;
+    if( status )
+        PORTD |= _BV(PD6);
+    else
+        PORTD &= ~_BV(PD6);
+    status = !status;
 }
 
 int main(void)
@@ -225,9 +215,6 @@ int main(void)
 
     // task3 runs every 2 seconds
     addTask(3, Task3, 10);    
-
-    // task4 runs every 2 seconds
-    addTask(4, Task4, 10);    
 
     // enable all interrupts
     sei();    

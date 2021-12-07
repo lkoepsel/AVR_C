@@ -26,10 +26,10 @@ uint8_t LED2 = 5;
 uint8_t LED3 = 6;
 
 const uint8_t tasksNum = 3;
-const uint16_t tasksPeriodGCD = 50;
-const uint16_t period1 = 50;
-const uint16_t period2 = 100;
-const uint16_t period3 = 200;
+const uint16_t tasksPeriodGCD = 5;
+const uint16_t period1 = 5;
+const uint16_t period2 = 10;
+const uint16_t period3 = 20;
 
 uint16_t TickFct_1(uint8_t state);
 uint16_t TickFct_2(uint8_t state);
