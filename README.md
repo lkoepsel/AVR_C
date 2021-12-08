@@ -135,7 +135,20 @@ There are four multitasking examples in the *examples* folder. Only one of them 
 * **oneline** [A Multitasking Kernal in One Line of code](https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/) The simplest example of round robin multitasking. Only recommended as an simple illustration as to how to multitask using pointers to functions. Highest speed, smallest footprint 466 bytes, minimal scheduling.
 * **RR_Scheduler** [AVR Scheduler](https://sites.google.com/site/avrtutorials2/scheduler) This code is very good for understanding the intricacies of multitasking such as scheduling, prioritization and dispatch, I don't see the need for this capabilities at this time. 958 bytes, structured scheduling and solid approach to scheduling.
 * **RIOS** [Preemptive Multitasking for the AVR](http://www.cs.ucr.edu/~vahid/rios/rios_avr.htm) My issue with RIOS is that it asks the ISR to be the scheduler, which seems like a lot of code for the ISR to perform. 1368 bytes, uses ISR as the scheduler, and as more options as to scheduling using time slices.
- 
+
+## Possible ISR Conflicts
+When you wish to use the Timer/Counters, you might want to use a Timer/Counter ISR which is already defined. If you get an error such as:
+```
+...multiple definition of `__vector_16'...main.c:148: first defined here
+```
+The error is identifying a previously defined ISR vector has a conflict. The vector in question from line 148 of main.c is *TIMER0_OVF_vect* which is also defined in tone.c. Two solutions:
+1. If you are using the function tone, you must select a different Timer/Counter to use.
+2. If you are not using the function tone, you may comment out the specific lines defining the vector (in this case lines 490-493) and define the vector in your code.
+3. Use the same timer/counter, however a different vector which provides the timing you need. For instance, if the timing doesn't need to change, consider using TIMER0_COMPA_vect, which fires using a comparison to OCRA. I'll add more detail when I have a well-defined solution.
+
+The currently defined ISR vectors are:
+TIMER0_OVF_vect - tone.c line 490
+TIMER1_COMPA_vect - sysclock.c line 7
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
 

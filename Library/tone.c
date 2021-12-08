@@ -487,10 +487,10 @@ const uint8_t notes_OCR0A[89] PROGMEM = {
     100
 };
 
-// ISR (TIMER0_OVF_vect)      
-// {
-//     *PINport |= _BV(PINbit);
-// }
+ISR (TIMER0_OVF_vect)      
+{
+    *PINport |= _BV(PINbit);
+}
 
 void tone (uint8_t pin, uint8_t note, uint16_t duration)          
 {
