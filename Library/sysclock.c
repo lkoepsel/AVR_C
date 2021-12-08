@@ -4,6 +4,9 @@ volatile uint16_t sys_ctr = 0;
 
 extern button buttons[max_buttons];
 
+#ifndef TIMER1_COMPA_vect
+#define TIMER1_COMPA_vect
+
 ISR (TIMER1_COMPA_vect)      
 {
     sys_ctr--;
@@ -11,6 +14,7 @@ ISR (TIMER1_COMPA_vect)
         buttons[i].pressed = is_button_pressed(i);
     }
 }
+#endif
 
 uint16_t millis() {
 
