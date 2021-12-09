@@ -66,9 +66,9 @@ CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR)
 ## Else, use this one which simply uses the local directory
 # CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.
 # use below to setup gdb and debugging
-CFLAGS = -Og -ggdb -std=gnu99 -Wall
-# Use below to optimize size
-#CFLAGS = -Os -g -std=gnu99 -Wall
+# CFLAGS = -Og -ggdb -std=gnu99 -Wall
+# Use below to optimize size and some speed per avr-libc FAQ
+CFLAGS = -Os -mcall-prologues -g -std=gnu99 -Wall
 ## Use short (8-bit) data types 
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 ## Splits up object files per function

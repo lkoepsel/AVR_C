@@ -4,17 +4,20 @@ volatile uint16_t sys_ctr = 0;
 
 extern button buttons[max_buttons];
 
-#ifndef TIMER1_COMPA_vect
-#define TIMER1_COMPA_vect
-
+/* ISR for system counter and button presses 
+* 15ms of the delay is due to the button press checking in the ISR
+* if button presses aren't required, comment out the code
+*/
 ISR (TIMER1_COMPA_vect)      
 {
+    /* button press check: make SCALAR1 SCALAR01_64 in sysclock.h   */
+    /* and uncomment code below                                     */
+    // for (int i = 0; i < max_buttons; i++) {
+    //     buttons[i].pressed = is_button_pressed(i);
+    // }
+
     sys_ctr--;
-    for (int i = 0; i < max_buttons; i++) {
-        buttons[i].pressed = is_button_pressed(i);
-    }
 }
-#endif
 
 uint16_t millis() {
 
