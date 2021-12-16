@@ -4,6 +4,7 @@
 */
 
 #include <avr/io.h>
+#include "delay.h"
 
 #define NTASKS 3
 
@@ -52,6 +53,7 @@ int main(void)
     for (uint8_t taskcount=0; taskcount < NTASKS; ++taskcount)
         {
             tasks[taskcount].TickFct();
+            delay(100);
         }
     }
     return(0); 
