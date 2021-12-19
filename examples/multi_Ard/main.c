@@ -5,20 +5,13 @@
 
 #include <avr/io.h>
 #include "delay.h"
+#include "pinMode.h"
+#include "digitalWrite.h"
 
 #define NTASKS 10
 
 // Uno pin numbers
-#define LED0 2 
-#define LED1 3
-#define LED2 4
-#define LED3 5
-#define LED4 6
-#define LED5 7
-#define LED6 8
-#define LED7 9
-#define LED8 10
-#define LED9 11
+enum {LED0=2, LED1, LED2, LED3, LED4, LED5, LED6, LED8, LED7, LED9};
 
 typedef struct task {
    void (*TickFct)();    // Function to call for task's tick
@@ -28,68 +21,69 @@ task tasks[NTASKS];
 
 void zero (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED0);
+    digitalWrite(LED0, TOG);
     return;
 } 
 
 void one (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED1);
+    digitalWrite(LED1, TOG);
     return;
 } 
 
 void two (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED2);
+    digitalWrite(LED2, TOG);
     return;
 } 
 
 void three (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED3);
+    digitalWrite(LED3, TOG);
     return;
 } 
 
 void four (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED4);
+    digitalWrite(LED4, TOG);
     return;
 } 
 
 void five (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED5);
+    digitalWrite(LED5, TOG);
     return;
 } 
 
 void six (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED6);
+    digitalWrite(LED6, TOG);
     return;
 } 
 
 void seven (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED7);
+    digitalWrite(LED7, TOG);
     return;
 } 
 
 void eight (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED8);
+    digitalWrite(LED8, TOG);
     return;
 } 
 
 void nine (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED9);
+    digitalWrite(LED9, TOG);
     return;
 } 
 
 int main(void)
 {
-    DDRD |= _BV(LED0) | _BV(LED1) | _BV(LED2)  | _BV(LED3) | _BV(LED4) | _BV(LED5);
-    DDRB |= _BV(LED6) | _BV(LED7) | _BV(LED8)  | _BV(LED9);
+    for (int i=2;i<12;i++) {
+        pinMode(i, OUTPUT);
+    }
 
    uint8_t i = 0;
    tasks[i].TickFct = &zero;

@@ -7,7 +7,7 @@
  
 int main(void)
 {
-    uint8_t LED = 13;
+    uint8_t LED = 2;
     /* set LED to output*/
     pinMode(LED, OUTPUT);
 

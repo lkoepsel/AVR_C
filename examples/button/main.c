@@ -11,6 +11,7 @@
 #include "sysclock.h"
 #include "unolib.h"
 #include "pinMode.h"
+#include "button.h"
 
 extern button buttons[max_buttons];
 
