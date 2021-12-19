@@ -55,6 +55,15 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 
 	See example in *button* folder as to how to use
 
+### Multi-tasking
+THere are six examples of multi-tasking in the examples folder. Two are 3rd party code which I added for consideration as multitasking models. And the remaining four are a development, which I document in greater detail [here.](https://wellys.com/posts/avr_c_step6/)
+
+In a nutshell:
+* *multifunction* is the first iteration, simply a proof of concept that the *"single-line scheduler"* works.
+* *multi_Ard* takes the previous code example, which is fast and simplifies it using Arduino-type calls (pinMode and digitialWrite) for easier integration
+* *multi-array* moves away from a separate function framework to a common function using an array to multitask
+* *multi_struct* uses a similar approach as the previous code, however uses a struct to provide fully overlapping multi-tasking
+
 ## Examples 
 ### analogRead: 
 Demo file for using analogRead(), requires a pot to be setup with outerpins to GND and 5V. Then connect center pin to one of A0-A5, adjust pot to see value chance in a serial monitor.
