@@ -56,7 +56,7 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 	See example in *button* folder as to how to use
 
 ### Multi-tasking
-THere are six examples of multi-tasking in the examples folder. Two are 3rd party code which I added for consideration as multitasking models. And the remaining four are a development, which I document in greater detail [here.](https://wellys.com/posts/avr_c_step6/)
+There are six examples of multi-tasking in the examples folder. Two are 3rd party code which I added for consideration as multitasking models. And the remaining four are a development, which I document in greater detail [here.](https://wellys.com/posts/avr_c_step6/)
 
 In a nutshell:
 * *multifunction* is the first iteration, simply a proof of concept that the *"single-line scheduler"* works.
