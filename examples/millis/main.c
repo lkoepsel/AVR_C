@@ -20,6 +20,7 @@ int main (void)
     init_sysclock ();
     init_serial;
     uint16_t delay_time = 1000;
+    DDRB |= _BV(PB0);
 
     /* print the value of T/C 1 Control Register B to see scalar value  */
     /* lowest 3 bits are scalar, see datasheet page ~143 for values     */

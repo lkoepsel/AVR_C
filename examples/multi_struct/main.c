@@ -56,7 +56,7 @@ int main(void)
     tasks[i].pin = LED0;
     tasks[i].state = LOW;
     tasks[i].on = 2;
-    tasks[i].off = 4;
+    tasks[i].off = 8;
     tasks[i].elapsed = 0;
     i++;
     tasks[i].pin = LED1;
@@ -65,7 +65,7 @@ int main(void)
     tasks[i].off = 2;
     tasks[i].elapsed = 0;
     i++;
-    tasks[i].pin = LED7;
+    tasks[i].pin = LED2;
     tasks[i].state = LOW;
     tasks[i].on = 8;
     tasks[i].off = 2;
