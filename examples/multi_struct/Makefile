@@ -166,14 +166,14 @@ flash_usbasp: PROGRAMMER_TYPE = usbasp
 flash_usbasp: PROGRAMMER_ARGS =  # USBasp works with no further arguments
 flash_usbasp: flash
 
-flash_arduinoISP: PROGRAMMER_TYPE = avrisp
-flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P $(SERIAL) 
+flash_atmelice: PROGRAMMER_TYPE = atmelice
+flash_atmelice: PROGRAMMER_ARGS = -P $(SERIAL) 
 ## (for windows) flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P com5
 flash_arduinoISP: flash
 
-flash_109: PROGRAMMER_TYPE = avr109
-flash_109: PROGRAMMER_ARGS = -b 9600 -P /dev/ttyUSB0
-flash_109: flash
+flash_snap: PROGRAMMER_TYPE = snap_isp
+flash_snap: PROGRAMMER_ARGS = -P usb 
+flash_snap: flash
 
 ##########------------------------------------------------------##########
 ##########       Fuse settings and suitable defaults            ##########

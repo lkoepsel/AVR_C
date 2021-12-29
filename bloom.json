@@ -1,0 +1,27 @@
+{
+  "environments": {
+    "default": {
+      "debugTool": {
+        "name": "snap",
+        "releasePostDebugSession": false
+      },
+
+      "target": {
+        "name": "atmega328p",
+        "variantName": "atmega328p-pu",
+        "physicalInterface": "debug-wire",
+        "disableDebugWirePreDisconnect": true
+      },
+
+      "debugServer": {
+        "name": "avr-gdb-rsp",
+        "ipAddress": "127.0.0.1",
+        "port": "1442"
+      }
+    }
+  },
+
+  "insight": {
+    "enabled": true
+  }
+}

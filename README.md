@@ -5,6 +5,8 @@ In order to use this framework, one must install the avr-gcc tool chain appropri
 ## Arduino Framework  and standard C Replacement Routines
 Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
 
+For a robust debugging approach on Linux (Linu((x or WSL), you may add [Bloom](https://bloom.oscillate.io/) and avr-gdb. Bloom provides a GUI display of the 328's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Using gdb and Bloom to Debug](https://wellys.com/posts/avr_c_gdbbloom/).
+
 ### Arduino Framework Functions
 
 **Each function used requires an #include in order to be used (example):**

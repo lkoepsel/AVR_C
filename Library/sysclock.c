@@ -16,7 +16,6 @@ ISR (TIMER1_COMPA_vect)
     //     buttons[i].pressed = is_button_pressed(i);
     // }
 
-    PINB |= _BV(PB0);
     sys_ctr++;
 }
 
@@ -38,8 +37,7 @@ void init_sysclock (void)
     /* Set OCR1A (TOP) value to 1000 => 16MHz / 8 / 1000 = 2000
     *  Phase Correct timer divides by 2 => 1000 Hz 
     */
-    OCR1A = 40;
-    DDRB |= _BV(PB1);
+    OCR1A = SET_OCR1A;
 
     /* Enable timer 1 A and B interrupts */
     TIMSK1 |= _BV(OCIE1A);

@@ -37,6 +37,9 @@ uint16_t millis();
 #ifndef SCALAR2
 #define SCALAR2 SCALAR02_8
 #endif
+#ifndef SET_OCR1A
+#define SET_OCR1A 128
+#endif
 
 void init_sysclock (void);
 #endif

@@ -168,9 +168,9 @@ flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P $(SERIAL)
 ## (for windows) flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P com5
 flash_arduinoISP: flash
 
-flash_109: PROGRAMMER_TYPE = avr109
-flash_109: PROGRAMMER_ARGS = -b 9600 -P /dev/ttyUSB0
-flash_109: flash
+flash_snap: PROGRAMMER_TYPE = snap_isp
+flash_snap: PROGRAMMER_ARGS = -P usb 
+flash_snap: flash
 
 ##########------------------------------------------------------##########
 ##########       Fuse settings and suitable defaults            ##########
