@@ -55,26 +55,26 @@ int main(void)
     uint8_t i = 0;
     tasks[i].pin = LED2;
     tasks[i].state = LOW;
-    tasks[i].on = default_on * i;
-    tasks[i].off = default_on * i;
+    tasks[i].on = (default_on << i);
+    tasks[i].off = (default_on<<  i);
     tasks[i].elapsed = 0;
     i++;
     tasks[i].pin = LED3;
     tasks[i].state = LOW;
-    tasks[i].on = default_on * i;
-    tasks[i].off = default_on * i;
+    tasks[i].on = (default_on << i);
+    tasks[i].off = (default_on << i);
     tasks[i].elapsed = 0;
     i++;
     tasks[i].pin = LED4;
     tasks[i].state = LOW;
-    tasks[i].on = default_on * i;
-    tasks[i].off = default_on * i;
+    tasks[i].on = (default_on << i);
+    tasks[i].off = (default_on <<  i);
     tasks[i].elapsed = 0;
     i++;
     tasks[i].pin = LED5;
     tasks[i].state = LOW;
-    tasks[i].on = default_on * i;
-    tasks[i].off = default_on * i;
+    tasks[i].on = (default_on <<  i);
+    tasks[i].off = (default_on <<  i);
     tasks[i].elapsed = 0;
 
     // Added port and bit to enable using a set_bit or clr_bit, due to overhead of dW()

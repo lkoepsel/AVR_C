@@ -7,7 +7,7 @@ SERIAL = $(AVR_PORT)
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
 ##########------------------------------------------------------##########w
-MCU   = atmega328p
+MCU   = atmega328pb
 F_CPU = 16000000UL  
 BAUD  = 9600UL
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
@@ -134,6 +134,9 @@ all_clean:
 LIB_clean:
 	rm -f $(LIBDIR)/*.o
 
+end_ide:
+	pkill -2 Bloom && sleep 2
+
 ##########------------------------------------------------------##########
 ##########              Programmer-specific details             ##########
 ##########           Flashing code to AVR using avrdude         ##########
@@ -174,6 +177,10 @@ flash_arduinoISP: flash
 flash_snap: PROGRAMMER_TYPE = snap_isp
 flash_snap: PROGRAMMER_ARGS = -P usb 
 flash_snap: flash
+
+flash_xplain: PROGRAMMER_TYPE = xplainedmini
+flash_xplain: PROGRAMMER_ARGS =  # USBTiny works with no further arguments
+flash_xplain: flash
 
 ##########------------------------------------------------------##########
 ##########       Fuse settings and suitable defaults            ##########

@@ -131,6 +131,9 @@ clean:
 all_clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~ *.eeprom
 
+end_ide:
+	pkill -2 Bloom && sleep 2
+
 ##########------------------------------------------------------##########
 ##########              Programmer-specific details             ##########
 ##########           Flashing code to AVR using avrdude         ##########

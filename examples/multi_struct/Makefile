@@ -16,6 +16,7 @@ BAUD  = 9600UL
 ## If you move either the current folder or the Library folder, you'll 
 ##  need to change this path to match.
 LIBDIR = ../../Library
+ROOTDIR = ../../
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
 ##########          Set up once, then forget about it           ##########
@@ -133,6 +134,9 @@ all_clean:
 
 LIB_clean:
 	rm -f $(LIBDIR)/*.o
+
+end_ide:
+	pkill -2 Bloom && sleep 2
 
 ##########------------------------------------------------------##########
 ##########              Programmer-specific details             ##########

@@ -2,13 +2,12 @@
   "environments": {
     "default": {
       "debugTool": {
-        "name": "snap",
+        "name": "xplained-mini",
         "releasePostDebugSession": false
       },
 
       "target": {
-        "name": "atmega328p",
-        "variantName": "atmega328p-pu",
+        "name": "atmega328pb",
         "physicalInterface": "debug-wire",
         "disableDebugWirePreDisconnect": true
       },

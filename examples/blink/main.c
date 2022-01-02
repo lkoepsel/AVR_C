@@ -3,11 +3,11 @@
 #include "digitalWrite.h"
 #include "delay.h"
 
-#define BLINK_DELAY_MS 500
+#define BLINK_DELAY_MS 250
  
 int main(void)
 {
-    uint8_t LED = 13;
+    uint8_t LED = 2;
     /* set LED to output*/
     pinMode(LED, OUTPUT);
 
