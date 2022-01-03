@@ -1,6 +1,7 @@
 /* One line kernal for multitasking
 *  https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
-*
+*  Designed for speed, provides a 200kHz 1/n duty cycle signal
+*  With three functions, 200kHz 33% duty cycle signal
 */
 
 #include <avr/io.h>
@@ -8,9 +9,9 @@
 #define NTASKS 3
 
 // Uno pin numbers
-#define LED0 3 
-#define LED1 5
-#define LED2 6
+#define LED0 0 
+#define LED1 1
+#define LED2 2
 
 void zero (void) {
     /* toggle led on and off */

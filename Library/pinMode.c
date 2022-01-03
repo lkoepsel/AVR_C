@@ -6,14 +6,14 @@ uint8_t pinMode(uint8_t apin, uint8_t mode) {
         bit = apin;
         // UNO PINS 0-7 PORT D        
         if (mode == INPUT) {
-            clr_bit(&DDRD, bit);
+            clr_bit(DDRD, bit);
         }
         else if (mode == OUTPUT) {
-            set_bit(&DDRD, bit);
+            set_bit(DDRD, bit);
         }
         else if (mode == INPUT_PULLUP) {
-            clr_bit(&DDRD, bit);
-            set_bit(&PORTD, bit);
+            clr_bit(DDRD, bit);
+            set_bit(PORTD, bit);
         }
         else {
             errno = 1;
@@ -24,14 +24,14 @@ uint8_t pinMode(uint8_t apin, uint8_t mode) {
     else if ((apin >= 8) && (apin <= 13)) {
         bit = apin - 8;
         if (mode == INPUT) {
-            clr_bit(&DDRB, bit);
+            clr_bit(DDRB, bit);
         }
         else if (mode == OUTPUT) {
-            set_bit(&DDRB, bit);
+            set_bit(DDRB, bit);
         }
         else if (mode == INPUT_PULLUP) {
-            clr_bit(&DDRB, bit);
-            set_bit(&PORTB, bit);
+            clr_bit(DDRB, bit);
+            set_bit(PORTB, bit);
         }
         else {
             errno = 1;

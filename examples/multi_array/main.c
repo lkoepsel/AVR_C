@@ -8,10 +8,10 @@
 #include "pinMode.h"
 #include "digitalWrite.h"
 
-#define NTASKS 10
+#define NTASKS 3
 
 // Uno pin numbers
-enum {LED0=2, LED1, LED2, LED3, LED4, LED5, LED6, LED8, LED7, LED9};
+enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
 
 void toggle (uint8_t pin) {
     /* toggle led on and off */
@@ -21,13 +21,13 @@ void toggle (uint8_t pin) {
 
 int main(void)
 {
-    for (int i=2;i<12;i++) {
+    for (int i=0;i<NTASKS;i++) {
         pinMode(i, OUTPUT);
     }
 
     while (1)
     {
-    for (uint8_t pin=2; pin < NTASKS + 2; ++pin)
+    for (uint8_t pin=0; pin < NTASKS; ++pin)
         {
             toggle(pin);
         }

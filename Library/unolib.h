@@ -22,10 +22,14 @@ void on_led () ;
 
 void tog_led () ;
 
-void set_bit (volatile uint8_t *port, uint8_t bit) ;
+// void set_bit (volatile uint8_t *port, uint8_t bit) ;
 
-void clr_bit (volatile uint8_t *port, uint8_t bit) ;
+// void clr_bit (volatile uint8_t *port, uint8_t bit) ;
 
-void tog_bit (volatile uint8_t *port, uint8_t bit) ;
+// void tog_bit (volatile uint8_t *port, uint8_t bit) ;
+
+#define set_bit(port, bit) ((port) |= (1 << (bit)))
+#define clr_bit(port, bit) ((port) &= ~(1 << (bit)))
+#define tog_bit(port, bit) ((port) |= (1 << (bit)))
 
 #endif

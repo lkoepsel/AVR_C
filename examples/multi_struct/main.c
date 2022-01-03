@@ -9,8 +9,8 @@
 #include "sysclock.h"
 
 #define NTASKS 4
-#define default_on 4000
-#define default_off 4000
+#define default_on 127
+#define default_off 127
 
 typedef struct task {
    uint8_t pin;             // Uno pin 
@@ -25,7 +25,7 @@ typedef struct task {
 task tasks[NTASKS];
 
 // Uno pin numbers
-enum {LED2=2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
+enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
 
 void update (uint8_t taskID) {
     // Based on adafruit lesson on classes
@@ -53,25 +53,25 @@ int main(void)
 
     // struct: {pin, *port, bit, state, on, off, elapsed}
     uint8_t i = 0;
-    tasks[i].pin = LED2;
+    tasks[i].pin = LED0;
     tasks[i].state = LOW;
     tasks[i].on = (default_on << i);
     tasks[i].off = (default_on<<  i);
     tasks[i].elapsed = 0;
     i++;
-    tasks[i].pin = LED3;
+    tasks[i].pin = LED1;
     tasks[i].state = LOW;
     tasks[i].on = (default_on << i);
     tasks[i].off = (default_on << i);
     tasks[i].elapsed = 0;
     i++;
-    tasks[i].pin = LED4;
+    tasks[i].pin = LED2;
     tasks[i].state = LOW;
     tasks[i].on = (default_on << i);
     tasks[i].off = (default_on <<  i);
     tasks[i].elapsed = 0;
     i++;
-    tasks[i].pin = LED5;
+    tasks[i].pin = LED3;
     tasks[i].state = LOW;
     tasks[i].on = (default_on <<  i);
     tasks[i].off = (default_on <<  i);

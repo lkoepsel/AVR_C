@@ -6,13 +6,13 @@ uint8_t digitalWrite(uint8_t apin, uint8_t level) {
     if ((apin >= 0) && (apin <= 7)) {
         bit = apin;
         if (level == LOW) {
-            clr_bit(&PORTD, bit);
+            clr_bit(PORTD, bit);
         }
         else if (level == HIGH) {
-            set_bit(&PORTD, bit);
+            set_bit(PORTD, bit);
         }
         else if (level == TOG) {
-            tog_bit(&PIND, bit);
+            tog_bit(PIND, bit);
         }
         else {
             errno = -1;
@@ -24,13 +24,13 @@ uint8_t digitalWrite(uint8_t apin, uint8_t level) {
     else if ((apin >= 8) && (apin <= 13)) {
         bit = apin - 8;
         if (level == LOW) {
-            clr_bit(&PORTB, bit);
+            clr_bit(PORTB, bit);
         }
         else if (level == HIGH) {
-            set_bit(&PORTB, bit);
+            set_bit(PORTB, bit);
         }
         else if (level == TOG) {
-            tog_bit(&PINB, bit);
+            tog_bit(PINB, bit);
         }
         else {
             errno = -1;
