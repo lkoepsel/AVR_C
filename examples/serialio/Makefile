@@ -3,11 +3,12 @@
 ########## These need to be changed specific to your  system    ##########
 ##########------------------------------------------------------##########
 SERIAL = $(AVR_PORT)
+MCU = $(AVR_MCU)
 ##########------------------------------------------------------##########
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
 ##########------------------------------------------------------##########
-MCU   = atmega328pb
+# MCU   = atmega328pb
 F_CPU = 16000000UL  
 BAUD  = 9600
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
