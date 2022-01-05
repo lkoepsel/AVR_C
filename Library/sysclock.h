@@ -17,9 +17,9 @@
 
 uint16_t millis();
 
-// uint8_t read_button(uint8_t button);
+uint8_t read_button(uint8_t button);
 
-// uint8_t is_button_pressed(uint8_t button);
+uint8_t is_button_pressed(uint8_t button);
 
 /* Timer/Clock Scalar definitions
 *	format SCALARn_s where:
@@ -32,7 +32,7 @@ uint16_t millis();
 #define SCALAR0 SCALAR01_8
 #endif
 #ifndef SCALAR1
-#define SCALAR1 SCALAR01_1
+#define SCALAR1 SCALAR01_64
 #endif
 #ifndef SCALAR2
 #define SCALAR2 SCALAR02_8

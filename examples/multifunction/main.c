@@ -1,6 +1,7 @@
 /* One line kernal for multitasking
 *  https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
-*
+*  Uses direct pin manipulation using a set bit on Input Port
+*  Delivers 62kHz signal from 10 tasks
 */
 
 #include <avr/io.h>
@@ -15,10 +16,10 @@
 #define LED3 5
 #define LED4 6
 #define LED5 7
-#define LED6 8
-#define LED7 9
-#define LED8 10
-#define LED9 11
+#define LED6 0
+#define LED7 1
+#define LED8 2
+#define LED9 3
 
 typedef struct task {
    void (*TickFct)();    // Function to call for task's tick
@@ -64,25 +65,25 @@ void five (void) {
 
 void six (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED6);
+    PINB |= _BV(LED6);
     return;
 } 
 
 void seven (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED7);
+    PINB |= _BV(LED7);
     return;
 } 
 
 void eight (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED8);
+    PINB |= _BV(LED8);
     return;
 } 
 
 void nine (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED9);
+    PINB |= _BV(LED9);
     return;
 } 
 

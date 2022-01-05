@@ -18,17 +18,17 @@ extern button buttons[max_buttons];
 int main (void)
 {
     /* initialize buttons to ports, and instantiate using i     */
-    /* buttons[i].uno are the Uno pin numbers                         */
-    /* buttons[i].pressed indicate the button is pressed   */
-    uint8_t i = 0;
-    buttons[i].uno = 10;
-    pinMode(buttons[i].uno, INPUT_PULLUP);
-    ++i;
-    buttons[i].uno = 11;
-    pinMode(buttons[i].uno, INPUT_PULLUP);
-
+    /* buttons[i].uno are the Uno pin numbers                   */
+    /* buttons[i].pressed indicate the button is pressed        */
     init_serial;
     puts("Testing Button Presses");
+
+    uint8_t i = 0;
+    buttons[i].uno = 8;
+    pinMode(buttons[i].uno, INPUT_PULLUP);
+    ++i;
+    buttons[i].uno = 9;
+    pinMode(buttons[i].uno, INPUT_PULLUP);
 
     init_sysclock ();
 

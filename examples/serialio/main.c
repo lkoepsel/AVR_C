@@ -15,7 +15,6 @@ int main(void) {
     
     char input;
 
-    
     puts("Serial I/O Test");
     while((input = getchar())!= EOF) {
         printf("You entered %c\n", input);        

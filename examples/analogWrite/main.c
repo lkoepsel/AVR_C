@@ -1,4 +1,6 @@
-/* test analogWrite(pin, n): setup two Timer/Counters to provide a PWM signal */
+/* test analogWrite(pin, n): setup two Timer/Counters to provide a PWM signal 
+*   Provides a 50% duty cycle, 488Hz on ard_pin1 and 25%, 976Hz signal on ard_pin2
+*/
 #include "analogWrite.h"
 
 int main (void)

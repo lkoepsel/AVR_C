@@ -7,7 +7,7 @@ SERIAL = $(AVR_PORT)
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
 ##########------------------------------------------------------##########
-MCU   = atmega328p
+MCU   = atmega328pb
 F_CPU = 16000000UL  
 BAUD  = 9600
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
@@ -131,6 +131,9 @@ clean:
 all_clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~ *.eeprom
 
+LIB_clean:
+	rm -f $(LIBDIR)/*.o
+
 end_ide:
 	pkill -2 Bloom && sleep 2
 
@@ -166,14 +169,18 @@ flash_usbasp: PROGRAMMER_TYPE = usbasp
 flash_usbasp: PROGRAMMER_ARGS =  # USBasp works with no further arguments
 flash_usbasp: flash
 
-flash_arduinoISP: PROGRAMMER_TYPE = avrisp
-flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P $(SERIAL) 
+flash_atmelice: PROGRAMMER_TYPE = atmelice
+flash_atmelice: PROGRAMMER_ARGS = -P $(SERIAL) 
 ## (for windows) flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P com5
-flash_arduinoISP: flash
+flash_atmelice: flash
 
 flash_snap: PROGRAMMER_TYPE = snap_isp
 flash_snap: PROGRAMMER_ARGS = -P usb 
 flash_snap: flash
+
+flash_xplain: PROGRAMMER_TYPE = xplainedmini
+flash_xplain: PROGRAMMER_ARGS =  # USBTiny works with no further arguments
+flash_xplain: flash
 
 ##########------------------------------------------------------##########
 ##########       Fuse settings and suitable defaults            ##########

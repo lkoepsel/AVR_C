@@ -9,9 +9,9 @@
 #define NTASKS 3
 
 // Uno pin numbers
-#define LED0 0 
-#define LED1 1
-#define LED2 2
+#define LED0 2
+#define LED1 3
+#define LED2 4
 
 void zero (void) {
     /* toggle led on and off */
@@ -35,7 +35,7 @@ void (*tasklist[NTASKS])() = {zero, one, two};
 
 int main(void)
 {
-    DDRD |= _BV(LED0) | _BV(LED1) | _BV(LED2);
+    DDRD |= (_BV(LED0) | _BV(LED1) | _BV(LED2));
 
     while (1)
     {
