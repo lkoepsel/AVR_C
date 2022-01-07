@@ -11,7 +11,7 @@
 
 int main(void) {    
 
-    init_serial;
+    init_serial();
     
     char input;
 

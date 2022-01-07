@@ -19,7 +19,7 @@ typedef struct button {
    uint8_t pressed;             // true if button has been pressed
 } button;
 
-// button buttons[max_buttons];
-
+uint8_t read_button(uint8_t button);
+uint8_t is_button_pressed(uint8_t button);
 
 #endif

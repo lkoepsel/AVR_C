@@ -16,10 +16,7 @@
 #include <avr/sleep.h>
 
 uint16_t millis();
-
-uint8_t read_button(uint8_t button);
-
-uint8_t is_button_pressed(uint8_t button);
+uint16_t micros();
 
 /* Timer/Clock Scalar definitions
 *	format SCALARn_s where:
@@ -41,5 +38,13 @@ uint8_t is_button_pressed(uint8_t button);
 #define SET_OCR1A 128
 #endif
 
-void init_sysclock (void);
+#define RESET_MASK  0b11111111
+
+void init_sysclock_0 (void);
+void init_sysclock_1 (void);
+void init_sysclock_2 (void);
+
+uint8_t is_RESET_pressed();
+uint8_t read_RESET();
+
 #endif

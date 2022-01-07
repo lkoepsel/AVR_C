@@ -21,7 +21,6 @@ uint8_t read_button(uint8_t uno) {
     return(0);
 }
 
-
 uint8_t is_button_pressed(uint8_t instance){
 
     static uint8_t button_history[max_buttons] = {0};

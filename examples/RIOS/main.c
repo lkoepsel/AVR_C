@@ -80,7 +80,7 @@ void init_processor() {
 int main(void)
 {
     init_processor();
-    init_serial;
+    init_serial();
 
     pinMode(LED1, OUTPUT);
     pinMode(LED2, OUTPUT);

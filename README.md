@@ -42,7 +42,7 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 #include <stdio.h>
 
 # at the top of the main function, prior to using I/O functions
-	init_serial;
+	init_serial();
 ```
 * **getChar(char)**: same as C getChar (non-interrupt at this time)
 * **printf(string, variables)**: same as C printf(), limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
@@ -50,13 +50,13 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 
 ### Added functions beyond Arduino Framework
 * **buttons[i]** - provides a debounced button response. Each button must attach to an Uno pin
-	* Requires sysclock to have a *SCALAR1 = SCALAR01_64*, as this provides a 8 millis pulse to run the button check function
+	* Requires sysclock to have a *SCALAR1 = SCALAR01_64*, as this provides a 8 millisecond pulse to run the button check function
 	* *buttons[i].uno* are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
 	* *buttons[i].pressed* indicates if the button has been pressed (true or non-zero)
 	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
 	See example in *button* folder as to how to use
-
+* **user-defined button RESET** - as debugWIRE uses the ~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. In the current iteration of *sysclock*, the RESET pin is defined as PB7. It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock()*. Two examples already have *reset* enabled, **button** and **analogRead**.
 ### Multi-tasking
 There are six examples of multi-tasking in the examples folder. Two are 3rd party code which I added for consideration as multitasking models. And the remaining four are a development, which I document in greater detail [here.](https://wellys.com/posts/avr_c_step6/)
 

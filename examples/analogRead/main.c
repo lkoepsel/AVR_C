@@ -5,10 +5,12 @@
 #include "unolib.h"
 #include "pinMode.h"
 #include "analogRead.h"
+#include "sysclock.h"
 
 int main (void)
 {
-    init_serial;
+    init_serial();
+    init_sysclock_2();
 
     uint8_t analog_pin = A0;
     uint16_t max_value = 0;
