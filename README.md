@@ -25,17 +25,9 @@ Much of the Standard C Library is provided by [AVR Libc](https://www.nongnu.org/
 ```
 This keeps the code smaller than with a large file containing all of the functions available.
 
-### Edit the Library!
-I encourage you to play around with the Library to better understand C and programming the Uno. **IF YOU DO CHANGE THE ROUTINES IN THE LIBRARY**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile all of the functions.
-
-My approach to the compile/link/load cycle while working on the Library is the following chain of *make* executions:
-```bash
-make LIB_clean && make all_clean && make flash
-```
-This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* would be sufficient.
 ### Arduino Framework Functions
 * **analogRead(pin)**: read one of the 6 Analog pins (A0-A5). Returns a 10-bit value in reference to AREF see [analogReference()](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/). In this case, it only DEFAULT value of VCC or 5V. To convert reading to voltage, multiply by 0.0048.
-* **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal.
+* **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal. Keep in mind, PWM using the Timer/Counters, see this [AVR Datasheet Note: PWM](https://wellys.com/posts/avr_c_step2/) as to which pin, a Timer/Counters is assigned. The examples such as *button* (T/C 2) and *micros* (T/C 1) also use the same Timer/Counters, so the conflict might be an issue. 
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
 	* n = n/255 Duty Cycle, i.e; n=127, 127/255 \~= 50% duty cycle
 	* Pin PWM Frequencies
@@ -66,13 +58,12 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 
 ### Added functions beyond Arduino Framework
 * **buttons[i]** - provides a debounced button response. Each button must attach to an Uno pin
-	* Requires sysclock to have a *SCALAR1 = SCALAR01_64*, as this provides a 8 millisecond pulse to run the button check function
+	* Requires sysclock(), see *examples/button* as to how to implement
 	* *buttons[i].uno* are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
 	* *buttons[i].pressed* indicates if the button has been pressed (true or non-zero)
 	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
-	See example in *button* folder as to how to use
-* **user-defined button RESET** - as debugWIRE uses the ~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. In the current iteration of *sysclock*, the RESET pin is defined as PB7. It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock()*. Two examples already have *reset* enabled, **button** and **analogRead**.
+* **user-defined button RESET** - as debugWIRE uses the ~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). In the current iteration of *sysclock*, the RESET pin is defined as PB7. It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock()*. Two examples already have *reset* enabled, **button** and **analogRead**.
 ### Multi-tasking
 There are six examples of multi-tasking in the examples folder. Two are 3rd party code which I added for consideration as multitasking models. And the remaining four are a development, which I document in greater detail [here.](https://wellys.com/posts/avr_c_step6/)
 
@@ -104,6 +95,9 @@ An inline test of playing a melody using tone(). This version is easier to test 
 ### melody: 
 Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework.
 
+### micros:
+Shows an example of using micros() to demonstrate how to measure time. Ticks are .5 microseconds, so a delay(10) would be 10 * 1000 / 2 = 5000 ticks. After 65,535 ticks, the clock rolls over to produce a Tock of milliseconds. To keep the overhead of printing/measuring to a minimum, the example stores the counts in an array.
+
 ### millis:
 Shows an example of using millis() to demonstrate the effectiveness of the delay command. Prints the time delta based on using a delay(1000).
 
@@ -118,13 +112,14 @@ The examples make use of a great Makefile courtesy of Elliot William's in his bo
 
 [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
 
-I also added a line at the beginning of the Makefile for an environment variable called AVR_PORT. If you add:
+I have added lines at the beginning of the Makefile for an environment variables. Once you've determined your setup, you may set the environmental varialble and it will be used in all of the makefiles. This makes it easy to switch environments, such as switching from Linux to macOS or from Arduino Uno to Microchip ATmega328PB XPLAINED. You will need to add:
 ```bash
 export AVR_PORT=/dev/ttyACM0 # replace this port name with the one you are using
+export AVR_MCU=atmega328p # replace this mcu name with the one you are using
 ```
-in your .bashrc or .zshrc file, the Makefile will pick this for serial communications with the Uno. (be sure to *source* or restart after editing the rc file)
+in your .bashrc or .zshrc file. The Makefile will pick this for serial communications with the Uno and for compiling/loading to the proper processor (be sure to *source* or restart after editing the rc file).
 
-Specific lines to be aware of:
+Additional lines to be aware of:
 ```bash
 15 LIBDIR = ../../Library
 # Assumes using the structure of the git folder, 
@@ -158,10 +153,22 @@ To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) require
 
 ## Multitasking
 There are four multitasking examples in the *examples* folder. Only one of them will be incorporated into the Library. The goal of each example is to explore the possible approaches for multitasking. 
+* **multi_struct** Based on *oneline*, this version uses a struct to contain the details as to the tasks to be performed. This version will be ultimately integrated into the AVR_C Library. I will continue to evolve *multi_struct* as I have several specific projects which require a particular version of multitasking.
+* **multi_Ard** Based on *oneline*, this version incorporates digitalWrite() from the AVR_C Library.
+* **multi_array** Based on *multi_Ard*, this version incorporates digitalWrite() and uses an array of tasks to perform multitasking.
 * **multifunction** Based on *oneline*, this version which will ultimately be integrated into the AVR_C Library. I will continue to evolve *multifunction* as I have several specific projects which require a particular version of multitasking.
 * **oneline** [A Multitasking Kernal in One Line of code](https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/) The simplest example of round robin multitasking. Only recommended as an simple illustration as to how to multitask using pointers to functions. Highest speed, smallest footprint 466 bytes, minimal scheduling.
 * **RR_Scheduler** [AVR Scheduler](https://sites.google.com/site/avrtutorials2/scheduler) This code is very good for understanding the intricacies of multitasking such as scheduling, prioritization and dispatch, I don't see the need for this capabilities at this time. 958 bytes, structured scheduling and solid approach to scheduling.
 * **RIOS** [Preemptive Multitasking for the AVR](http://www.cs.ucr.edu/~vahid/rios/rios_avr.htm) My issue with RIOS is that it asks the ISR to be the scheduler, which seems like a lot of code for the ISR to perform. 1368 bytes, uses ISR as the scheduler, and as more options as to scheduling using time slices.
+
+### Edit the Library!
+I encourage you to play around with the Library to better understand C and programming the Uno. **IF YOU DO CHANGE THE ROUTINES IN THE LIBRARY**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile all of the functions.
+
+My approach to the compile/link/load cycle while working on the Library is the following chain of *make* executions:
+```bash
+make LIB_clean && make all_clean && make flash
+```
+This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* will be sufficient.
 
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
