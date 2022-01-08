@@ -1,12 +1,19 @@
 # Programming the Arduino Uno in C
-This repository provides a framework in  Standard C which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment as compared to the Raspberry Pi Pico (32-bit microcontroller).
+This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment as compared to the Raspberry Pi Pico (32-bit microcontroller).
 
 In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
 
 For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](https://bloom.oscillate.io/) and avr-gdb. Bloom provides a GUI display of the 328's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Using gdb and Bloom to Debug](https://wellys.com/posts/avr_c_gdbbloom/).
 
+## Boards and Microcontrollers
+This code has been tested extensively with the Arduino Uno and the [Microchip ATmega328PB Xplained Mini ](https://www.microchip.com/en-us/development-tool/ATMEGA328PB-XMINI). I prefer the latter board for development as it includes a hardware debugger on the same board, which works well with [Bloom](https://bloom.oscillate.io/). And it only costs $12! If looking to purchase a new board to work with this code, I recommend the Microchip board. If you have an existing Uno, it will work very well. If you wish to add hardware debugging, you will want to purchase a debugWIRE compatible device such as the [Microchip MPLAB Snap](https://www.microchip.com/en-us/development-tool/PG164100).
+
+Other Microchip AVR-compatible microcontrollers will more than likely work.
+
+For specific information as to how to setup your environment specific to your board and microcontroller, see the content for **Makefile** below.
+
 ## Arduino Framework  and standard C Replacement Routines
-Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
+Much of the Standard C Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
 ### Arduino Framework Functions
 
 **Each function used requires an #include in order to be used (example):**
@@ -18,6 +25,15 @@ Much of the C Standard Library is provided by [AVR Libc](https://www.nongnu.org/
 ```
 This keeps the code smaller than with a large file containing all of the functions available.
 
+### Edit the Library!
+I encourage you to play around with the Library to better understand C and programming the Uno. **IF YOU DO CHANGE THE ROUTINES IN THE LIBRARY**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile all of the functions.
+
+My approach to the compile/link/load cycle while working on the Library is the following chain of *make* executions:
+```bash
+make LIB_clean && make all_clean && make flash
+```
+This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* would be sufficient.
+### Arduino Framework Functions
 * **analogRead(pin)**: read one of the 6 Analog pins (A0-A5). Returns a 10-bit value in reference to AREF see [analogReference()](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/). In this case, it only DEFAULT value of VCC or 5V. To convert reading to voltage, multiply by 0.0048.
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal.
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
@@ -29,11 +45,11 @@ This keeps the code smaller than with a large file containing all of the functio
 		* UNO pin 9/PB1, 976.6Hz
 		* UNO pin 10/PB2, 976.6Hz
 		* UNO pin 11/PB3, 488.3Hz
-* **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. Is not configured to use A0-A5.
-* **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code. digitalWrite() is not written to use A0-A5.
+* **digitalRead(pin)**: returns value (1 or 0) of Uno pin (pins 0-13 only). If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. digitalRead() is not configured to use A0-A5.
+* **digitalWrite(pin, level)**: set an UNO pin to HIGH, LOW or TOG (pins 0-13 only).  If using serial I/O (printf/puts/getchar) then Uno pins 0 and 1 are not usable. This version also adds TOG, which toggles the level. Much easier than checking the level and setting it to be the opposite level and requires less code. digitalWrite() is not configured to use A0-A5.
 * **pinMode(pin, mode)**: define INPUT, OUTPUT, INPUT_PULLUP for an UNO pin (pins 0-13 only). Is not configured to use A0-A5.
 * **delay(ms)**: Blocking delay uses Standard C built-in \_delay_ms, however allows for a variable to be used as an argument. 
-* **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it. millis() uses a SCALAR1 value to determine the clock rate. Change the value of SCALAR1 in the Library/sysclock.h file to change the period of the clock (default value of SCALAR01_8 for a 1millisecond clock. **IF YOU DO CHANGE THE VALUE OF THE SCALAR1**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile the functions.
+* **millis()**: Returns a long int containing the current millisecond tick count. Review the millis example to understand how to use it. millis() uses *sys_clock_2*, which is a system clock configured using Timer/Counter 2.  
 ### Standard C I/O functions adapted for the ATmega328P
 Use these standard C I/O functions instead of the Arduino Serial class. See example *serialio* for an example implementation. Requires the following in the file:
 ```C
