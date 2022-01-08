@@ -28,7 +28,6 @@ ISR (TIMER0_COMPA_vect)
 ISR (TIMER1_OVF_vect)      
 {
     sys_ctr_1++;
-
 }
 
 /* ISR for sysclock_2
@@ -95,7 +94,9 @@ void init_sysclock_1 (void)
     * Test using example/millis (delay(1000) = 40527 ticks)
     */
     TCCR1A = 0;
-    TCCR1B |= ( _BV(CS11) | _BV(CS10)) ;
+    TCCR1B |= ( _BV(CS11));
+    TIMSK1 |= (_BV(TOIE1));
+    sei();
 }
 
 void init_sysclock_2 (void)          
