@@ -38,7 +38,7 @@ uint16_t micros();
 #define SET_OCR1A 128
 #endif
 
-#define RESET_MASK  0b11111111
+#define RESET_MASK  0b11000111
 
 void init_sysclock_0 (void);
 void init_sysclock_1 (void);

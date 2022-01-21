@@ -115,12 +115,12 @@ void init_sysclock_2 (void)
     TCCR2B |= ( _BV(WGM22) | _BV(CS21) | _BV(CS20) ) ;
     OCR2A = 254;
     TIMSK2 |= _BV(OCIE2A);
-    /* User Push Button on ATmega328PB XPLAINED Board is PB7
-    *  It is already debounced and ready to be used as a ~Reset
-    *  It is ACTIVE LOW 
+    /* Use RESET_BUTTON as the pin for the reset button
+    *  Change to actual value using define in unolib.h
+    *  It is expected to be ACTIVE LOW 
     */
-    DDRB |= (_BV(PB7));
-    PORTB |= (_BV(PB7));
+    DDRB |= (_BV(RESET_BUTTON));
+    PORTB |= (_BV(RESET_BUTTON));
     sei ();
 }
 
@@ -132,7 +132,7 @@ uint8_t is_RESET_pressed(){
     reset_history = reset_history << 1;
     reset_history |= read_RESET();
 
-    if ((reset_history & RESET_MASK) == 0b11111111){ 
+    if ((reset_history & RESET_MASK) == 0b11000111){ 
         pressed = 1;
         reset_history = 0b11111111;
     }
@@ -141,5 +141,5 @@ uint8_t is_RESET_pressed(){
 
 uint8_t read_RESET() {
 
-    return((PINB & (1 << PB7)) == 0);
+    return((PINB & (1 << RESET_BUTTON)) == 0);
 }

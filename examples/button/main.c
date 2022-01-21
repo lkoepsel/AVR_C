@@ -30,10 +30,10 @@ int main (void)
     uint8_t count[max_buttons] = {0};
 
     uint8_t i = 0;
-    buttons[i].uno = 8;
+    buttons[i].uno = 9;
     pinMode(buttons[i].uno, INPUT_PULLUP);
     ++i;
-    buttons[i].uno = 9;
+    buttons[i].uno = 10;
     pinMode(buttons[i].uno, INPUT_PULLUP);
 
     init_sysclock_2 ();
