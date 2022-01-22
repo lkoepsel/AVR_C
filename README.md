@@ -1,16 +1,16 @@
 # Programming the Arduino Uno in Standard C
-This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P using C in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand some of the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in an easier environment as compared to the Raspberry Pi Pico (32-bit microcontroller).
+This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivilents using **Standard C** in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
 
-In order to use this framework, one must install the avr-gcc tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so is [here](https://wellys.com/posts/avr_c_setup/).
+In order to use this framework, one must install the *avr-gcc* tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so are [here](https://wellys.com/posts/avr_c_setup/).
 
-For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](https://bloom.oscillate.io/) and avr-gdb. Bloom provides a GUI display of the 328's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Using gdb and Bloom to Debug](https://wellys.com/posts/avr_c_gdbbloom/).
+For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Using gdb and Bloom to Debug](https://wellys.com/posts/avr_c_gdbbloom/).
 
 ## Boards and Microcontrollers
-This code has been tested extensively with the Arduino Uno and the [Microchip ATmega328PB Xplained Mini ](https://www.microchip.com/en-us/development-tool/ATMEGA328PB-XMINI). I prefer the latter board for development as it includes a hardware debugger on the same board, which works well with [Bloom](https://bloom.oscillate.io/). And it only costs $12! If looking to purchase a new board to work with this code, I recommend the Microchip board. If you have an existing Uno, it will work very well. If you wish to add hardware debugging, you will want to purchase a debugWIRE compatible device such as the [Microchip MPLAB Snap](https://www.microchip.com/en-us/development-tool/PG164100).
+This code has been tested extensively with the Arduino Uno and the [Microchip ATmega328PB Xplained Mini ](https://www.microchip.com/en-us/development-tool/ATMEGA328PB-XMINI). I prefer the latter board for development as it includes a hardware debugger on the same board, which works well with [Bloom](https://bloom.oscillate.io/) and it only costs $12! If looking to purchase a new board to work with this code, I recommend the Microchip board. 
 
-Other Microchip AVR-compatible microcontrollers will more than likely work.
+If you have an existing Uno, it will work very well. If you wish to add hardware debugging, you will want to purchase a debugWIRE compatible device such as the [Microchip MPLAB Snap](https://www.microchip.com/en-us/development-tool/PG164100) or the [Atmel ICE](https://www.microchip.com/en-us/development-tool/ATATMEL-ICE).
 
-For specific information as to how to setup your environment specific to your board and microcontroller, see the content for **Makefile** below.
+Other Microchip AVR-compatible microcontrollers will more than likely work, I haven't the time to test them. If the processor is not a ATmega328P, it will be important to set the MCU and processor frequency (F_CPU) variables in the Makefile. For specific information as to how to setup your environment specific to your board and microcontroller, see the content for **Makefile** below.
 
 ## Arduino Framework  and standard C Replacement Routines
 Much of the Standard C Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
@@ -26,7 +26,7 @@ Much of the Standard C Library is provided by [AVR Libc](https://www.nongnu.org/
 This keeps the code smaller than with a large file containing all of the functions available.
 
 ### Arduino Framework Functions
-* **analogRead(pin)**: read one of the 6 Analog pins (A0-A5). Returns a 10-bit value in reference to AREF see [analogReference()](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/). In this case, it only DEFAULT value of VCC or 5V. To convert reading to voltage, multiply by 0.0048.
+* **analogRead(pin)**: read one of the 6 Analog pins (A0-A5). Returns a 10-bit value in reference to AREF see [analogReference()](https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/). In this case, it only DEFAULT value of VCC or 5V. To convert reading to voltage, multiply by 0.0048 (for a reference voltage of 5V).
 * **analogWrite(pin, n)**: setup the Timer/Counters to provide a PWM signal. Keep in mind, PWM using the Timer/Counters, see this [AVR Datasheet Note: PWM](https://wellys.com/posts/avr_c_step2/) as to which pin, a Timer/Counters is assigned. The examples such as *button* (T/C 2) and *micros* (T/C 1) also use the same Timer/Counters, so the conflict might be an issue. 
 	* pin = Arduino UNO Pin Number, must have a "\~" in its name (3, 5, 6, 9, 10, 11)
 	* n = n/255 Duty Cycle, i.e; n=127, 127/255 \~= 50% duty cycle
@@ -52,18 +52,18 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 # at the top of the main function, prior to using I/O functions
 	init_serial();
 ```
-* **getChar(char)**: same as C getChar (non-interrupt at this time)
-* **printf(string, variables)**: same as C printf(), limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
-* **puts(string)**: same as C puts()
+* **getChar(char)**: same as C *getChar()* (non-interrupt at this time)
+* **printf(string, variables)**: same as C *printf()*, limited functionality to be documented. There are two ways to add printf and those are documented in the Makefile in the examples. It is also helpful to review the [avr-libc printf](https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html) documentation.
+* **puts(string)**: same as C *puts()*
 
 ### Added functions beyond Arduino Framework
 * **buttons[i]** - provides a debounced button response. Each button must attach to an Uno pin
-	* Requires sysclock(), see *examples/button* as to how to implement
+	* Requires *sysclock_2()*, see *examples/button* as to how to implement
 	* *buttons[i].uno* are the Uno pins attached to a button and like digitalRead, function will translate Uno pin to port/pin
 	* *buttons[i].pressed* indicates if the button has been pressed (true or non-zero)
 	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
-* **user-defined button RESET** - as debugWIRE uses the ~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). In the current iteration of *sysclock*, the RESET pin is defined as PB7. It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock()*. Two examples already have *reset* enabled, **button** and **analogRead**.
+* **user-defined button RESET** - as debugWIRE uses the ~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). In the current iteration of *sysclock*, the RESET pin is defined as PB7. It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock_2()*. Two examples already have *reset* enabled, **button** and **analogRead**.
 ### Multi-tasking
 There are six examples of multi-tasking in the examples folder. Two are 3rd party code which I added for consideration as multitasking models. And the remaining four are a development, which I document in greater detail [here.](https://wellys.com/posts/avr_c_step6/)
 
@@ -148,15 +148,15 @@ To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) require
 ## Serial Solutions
 #### In use
 * [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/) Works well, integrated into avr-gcc to enable using printf, puts, and getchar. Uses polling which is slow and blocking.
-#### Reviewing to determine how to use due to its interrupts
+#### In review to determine how to use due to its interrupts
 * [Peter Fleury AVR Software](http://www.peterfleury.epizy.com/avr-software.html) Works, not integrated into avr-gcc library, so not native. It uses interrupts and buffering so it is fast and non-blocking.
 
 ## Multitasking
 There are four multitasking examples in the *examples* folder. Only one of them will be incorporated into the Library. The goal of each example is to explore the possible approaches for multitasking. 
 * **multi_struct** Based on *oneline*, this version uses a struct to contain the details as to the tasks to be performed. This version will be ultimately integrated into the AVR_C Library. I will continue to evolve *multi_struct* as I have several specific projects which require a particular version of multitasking.
-* **multi_Ard** Based on *oneline*, this version incorporates digitalWrite() from the AVR_C Library.
-* **multi_array** Based on *multi_Ard*, this version incorporates digitalWrite() and uses an array of tasks to perform multitasking.
-* **multifunction** Based on *oneline*, this version which will ultimately be integrated into the AVR_C Library. I will continue to evolve *multifunction* as I have several specific projects which require a particular version of multitasking.
+* **multi_Ard** Based on *oneline*, this version incorporates *digitalWrite()* from the AVR_C Library.
+* **multi_array** Based on *multi_Ard*, this version incorporates *digitalWrite()* and uses an array of tasks to perform multitasking.
+* **multifunction** Based on *oneline*, this is the original version to test the limits as to how well the concept worked.
 * **oneline** [A Multitasking Kernal in One Line of code](https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/) The simplest example of round robin multitasking. Only recommended as an simple illustration as to how to multitask using pointers to functions. Highest speed, smallest footprint 466 bytes, minimal scheduling.
 * **RR_Scheduler** [AVR Scheduler](https://sites.google.com/site/avrtutorials2/scheduler) This code is very good for understanding the intricacies of multitasking such as scheduling, prioritization and dispatch, I don't see the need for this capabilities at this time. 958 bytes, structured scheduling and solid approach to scheduling.
 * **RIOS** [Preemptive Multitasking for the AVR](http://www.cs.ucr.edu/~vahid/rios/rios_avr.htm) My issue with RIOS is that it asks the ISR to be the scheduler, which seems like a lot of code for the ISR to perform. 1368 bytes, uses ISR as the scheduler, and as more options as to scheduling using time slices.
