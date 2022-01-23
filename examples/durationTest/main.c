@@ -1,6 +1,9 @@
 /*
-* durationTest() - very simple test to test a tone duration
+* durationTest() - very simple linear test to test a tone duration
 * requires a speaker to hear the melody on the pin
+* connect positive speaker wire to pin
+* connect negative speaker wire to ~10uF capacitor
+* connect remaining lead of capacitor to GND
 */
 #include "tone.h"
 #include "unolib.h"
@@ -8,8 +11,7 @@
 
 int main (void)
 {
-    uint8_t musicPin = 12;
-    pinMode(13, OUTPUT);
+    uint8_t musicPin = 11;
 
     while(1) {
         tone(musicPin, NOTE_C4, d4);

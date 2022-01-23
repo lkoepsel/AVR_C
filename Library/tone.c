@@ -5,13 +5,15 @@
 #include "delay.h"
 
 volatile uint8_t *PINport;
-uint8_t volatile PINbit = PB2;
+volatile uint8_t *DDRport;
+volatile uint8_t *PORTport;
+volatile uint8_t PINbit;
 
 /*
 * frequencies for each note, freq = x per sec
 * so can be used to time duration of note
 */
-const uint16_t notes_freq[89] PROGMEM = {
+const uint16_t notes_freq[NUM_NOTES] PROGMEM = {
     31,
     33,
     35,
@@ -104,202 +106,10 @@ const uint16_t notes_freq[89] PROGMEM = {
 };
 
 /*
-* scalars required for timer/counter 1
-* for setting correct parameters for a given note
-*/
-const uint8_t notes_TCCR1B[89] PROGMEM = {
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x14,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x13,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12,
-    0x12
-} ;
-
-/*
-* counter value required for timer/counter 1
-* for setting correct parameters for a given note
-*/
-const uint16_t notes_OCR1A[89] PROGMEM = {
-    504,
-    473,
-    446,
-    422,
-    401,
-    381,
-    355,
-    340,
-    319,
-    300,
-    284,
-    269,
-    1008,
-    962,
-    906,
-    856,
-    801,
-    762,
-    718,
-    672,
-    638,
-    601,
-    568,
-    534,
-    508,
-    477,
-    450,
-    425,
-    401,
-    379,
-    357,
-    338,
-    319,
-    300,
-    284,
-    268,
-    253,
-    239,
-    226,
-    213,
-    201,
-    189,
-    179,
-    169,
-    159,
-    151,
-    142,
-    134,
-    1012,
-    956,
-    903,
-    852,
-    804,
-    759,
-    716,
-    676,
-    638,
-    602,
-    568,
-    536,
-    506,
-    478,
-    451,
-    426,
-    402,
-    379,
-    358,
-    338,
-    319,
-    301,
-    284,
-    268,
-    253,
-    239,
-    226,
-    213,
-    201,
-    190,
-    179,
-    169,
-    159,
-    151,
-    142,
-    134,
-    127,
-    119,
-    113,
-    106,
-    100
-};
-
-/*
 * scalars required for timer/counter 0
 * for setting correct parameters for a given note
 */
-const uint8_t notes_TCCR0B[89] PROGMEM = {
+const uint8_t notes_TCCR0B[NUM_NOTES] PROGMEM = {
     0x0D,
     0x0D,
     0x0D,
@@ -395,7 +205,7 @@ const uint8_t notes_TCCR0B[89] PROGMEM = {
 * counter value required for timer/counter 0
 * for setting correct parameters for a given note
 */
-const uint8_t notes_OCR0A[89] PROGMEM = {
+const uint8_t notes_OCR0A[NUM_NOTES] PROGMEM = {
     126,
     118,
     112,
@@ -487,13 +297,202 @@ const uint8_t notes_OCR0A[89] PROGMEM = {
     100
 };
 
-#ifndef TIMER0_OVF_vect
-#define  TIMER0_OVF_vect
+/*
+* scalars required for timer/counter 1
+* for setting correct parameters for a given note
+*/
+const uint8_t notes_TCCR1B[NUM_NOTES] PROGMEM = {
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x14,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x13,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12,
+    0x12
+} ;
+
+/*
+* counter value required for timer/counter 1
+* for setting correct parameters for a given note
+*/
+const uint16_t notes_OCR1A[NUM_NOTES] PROGMEM = {
+    504,
+    473,
+    446,
+    422,
+    401,
+    381,
+    355,
+    340,
+    319,
+    300,
+    284,
+    269,
+    1008,
+    962,
+    906,
+    856,
+    801,
+    762,
+    718,
+    672,
+    638,
+    601,
+    568,
+    534,
+    508,
+    477,
+    450,
+    425,
+    401,
+    379,
+    357,
+    338,
+    319,
+    300,
+    284,
+    268,
+    253,
+    239,
+    226,
+    213,
+    201,
+    189,
+    179,
+    169,
+    159,
+    151,
+    142,
+    134,
+    1012,
+    956,
+    903,
+    852,
+    804,
+    759,
+    716,
+    676,
+    638,
+    602,
+    568,
+    536,
+    506,
+    478,
+    451,
+    426,
+    402,
+    379,
+    358,
+    338,
+    319,
+    301,
+    284,
+    268,
+    253,
+    239,
+    226,
+    213,
+    201,
+    190,
+    179,
+    169,
+    159,
+    151,
+    142,
+    134,
+    127,
+    119,
+    113,
+    106,
+    100
+};
+
 ISR (TIMER0_OVF_vect)      
 {
     *PINport |= _BV(PINbit);
 }
-#endif
 
 void tone (uint8_t pin, uint8_t note, uint16_t duration)          
 {
@@ -517,18 +516,23 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
         // UNO PINS 0-7 PORT D        
         if ((pin >= 0) && (pin <= 7)) {
             PINport = &PIND;
+            DDRport = &DDRD;
+            PORTport = &PORTD;
             PINbit = pin;
         }
 
         // UNO PINS 8-13 PORT B        
         else if ((pin >= 8) && (pin <= 13)) {
             PINport = &PINB;
+            DDRport = &DDRB;
+            PORTport = &PORTB;
             PINbit = pin - 8;
         }  
 
-        pinMode(pin, OUTPUT);
+        // set port pin to be OUTPUT
+        *DDRport |= _BV(PINbit);
     
-        /* Enable timer 1 overflow interrupt and enable interrupts. */
+        /* Enable timer 0 overflow interrupt and enable interrupts. */
         TIMSK0 = _BV (TOIE0);
         sei ();
         delay(duration);
@@ -537,7 +541,8 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
     return;
 }
 
+// for no tone on a pin, turn off interrupts and set pin LOW
 void noTone(uint8_t pin) {
     TIMSK0 &= ~(_BV (TOIE0));
-    digitalWrite(pin, LOW);
+    *PORTport &= ~(_BV(PINbit));
 }

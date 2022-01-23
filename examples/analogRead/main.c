@@ -26,7 +26,7 @@ int main (void)
             else if (analog_value < min_value) {
                 min_value = analog_value;
             }
-            float voltage = 0.004 * analog_value;
+            float voltage = 0.0048 * analog_value;
             printf("Pin: %d Value: %d Voltage: %6.2f Min: %d Max: %d\n",\
             analog_pin, analog_value, voltage, min_value, max_value);
             delay(2000);

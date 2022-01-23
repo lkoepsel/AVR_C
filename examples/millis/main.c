@@ -3,10 +3,7 @@
 * Sets up a system tick of 1 millisec (1kHz)
 * To test, uses the system delay (blocking, doesn't use clock)
 * to determine delta between a delay
-* There appears to be a lag of 18 milliseconds
-* as the delta for a delay of 1000 = 1018
-* 15ms of the delay is due to the button press checking in the ISR
-* if button presses aren't required, comment out the code
+* There can be a lag of 1-10 milliseconds at times
 */
 #include <avr/io.h>
 #include <stdio.h>

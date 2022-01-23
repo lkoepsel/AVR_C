@@ -3,6 +3,9 @@ AVR Round Robbin Scheduler
 Hardware: ATMega8 running at 8MHz
 https://sites.google.com/site/avrtutorials2/scheduler
 Updated 12/6/21 for ATmega328P(Uno)
+
+This is an example only as the ISR TIMER0_OVF_vect conflicts with tone()
+If you wish to test this code, comment out the ISR TIMER0_OVF_vect in tone.c
 */
 
 #include<avr/interrupt.h>
@@ -166,9 +169,9 @@ void Task1(void)
 {
     static uint8_t status = 0x01;
     if( status )
-        PORTD |= _BV(PD3);
+        PORTD |= _BV(PD2);
     else
-        PORTD &= ~_BV(PD3);
+        PORTD &= ~_BV(PD2);
     status = !status;
 }
 
@@ -177,9 +180,9 @@ void Task2(void)
 {
     static uint8_t status = 0x01;
     if( status )
-        PORTD |= _BV(PD5);
+        PORTD |= _BV(PD3);
     else
-        PORTD &= ~_BV(PD5);
+        PORTD &= ~_BV(PD3);
     status = !status;
 }
 
@@ -187,9 +190,9 @@ void Task3(void)
 {
     static uint8_t status = 0x01;
     if( status )
-        PORTD |= _BV(PD6);
+        PORTD |= _BV(PD4);
     else
-        PORTD &= ~_BV(PD6);
+        PORTD &= ~_BV(PD4);
     status = !status;
 }
 
@@ -200,7 +203,7 @@ int main(void)
     TCCR0B = _BV(CS01); 
     TIMSK0 = _BV(TOIE0); 
     // set PORTD bit3, 5 and 6 as outputs
-    DDRD = _BV(PD3)| _BV(PD5) | _BV(PD6);  
+    DDRD = _BV(PD2)| _BV(PD3) | _BV(PD4);  
 
     // set up the task list
     initScheduler();

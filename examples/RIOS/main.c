@@ -21,9 +21,9 @@ typedef struct task {
 task tasks[3];
 
 /* LEDs to indicate which task is running */
-uint8_t LED1 = 3;               
-uint8_t LED2 = 5;
-uint8_t LED3 = 6;
+uint8_t LED1 = 2;               
+uint8_t LED2 = 3;
+uint8_t LED3 = 4;
 
 const uint8_t tasksNum = 3;
 const uint16_t tasksPeriodGCD = 5;

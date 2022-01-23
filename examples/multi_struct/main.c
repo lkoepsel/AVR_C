@@ -16,11 +16,11 @@
 *  With On/Off set to 1, three tasks run at 500Hz
 */
 #define NTASKS 3
-#define DEFAULT_ON 1
-#define DEFAULT_OFF 1
+#define DEFAULT_ON 100
+#define DEFAULT_OFF 100
 
 typedef struct task {
-   volatile uint8_t pin;             // Uno pin 
+   volatile uint8_t pin;    // Uno pin 
    uint8_t state;           // Is led on or off
    uint16_t on;             // Time led is on
    uint16_t off;            // Time led is off
@@ -54,7 +54,7 @@ void update (uint8_t taskID) {
 
 int main(void)
 {
-    init_sysclock ();
+    init_sysclock_2 ();
 
     // struct: {pin, *port, bit, state, on, off, elapsed}
     uint8_t i = 0;
@@ -66,14 +66,14 @@ int main(void)
     i++;
     tasks[i].pin = LED3;
     tasks[i].state = LOW;
-    tasks[i].on = DEFAULT_ON;
-    tasks[i].off = DEFAULT_OFF;
+    tasks[i].on = (DEFAULT_ON << 1);
+    tasks[i].off = (DEFAULT_OFF << 1);
     tasks[i].elapsed = 0;
     i++;
     tasks[i].pin = LED4;
     tasks[i].state = LOW;
-    tasks[i].on = DEFAULT_ON;
-    tasks[i].off = DEFAULT_OFF;
+    tasks[i].on = (DEFAULT_ON << 2);
+    tasks[i].off = (DEFAULT_OFF << 2);
     tasks[i].elapsed = 0;
 
     // Added port and bit to enable using a set_bit or clr_bit, due to overhead of dW()

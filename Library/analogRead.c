@@ -2,7 +2,7 @@
 
 // -------- Functions --------- //
 static inline void initADC0(void) {
-  // ADMUX |= _BV(REFS0);              					    /* reference voltage on AREF (default) */
+  ADMUX |= _BV(REFS0);              					    /* reference voltage on AREF (default) */
   ADCSRA |= _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0); /* ADC clock prescaler /16 */
   ADCSRA |= _BV(ADEN);                            /* enable ADC */
 }

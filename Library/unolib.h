@@ -7,11 +7,14 @@
 #define UNOLIB_H
 
 /* User Push Button on ATmega328PB XPLAINED Board is PB7
-*  It is already debounced and ready to be used as a ~Reset
 *  It is ACTIVE LOW
 *  If using a different board or pin, adjust accordingly! 
 */
-#define RESET_BUTTON PB7
+#define RESET_BUTTON PB3
+
+/* Arduino Definitions handy for AVR_C      */
+#define LED_BUILTIN 13
+
 
 #include <avr/io.h>
 #include <util/delay.h>

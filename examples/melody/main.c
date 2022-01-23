@@ -18,18 +18,20 @@
 
   http://www.arduino.cc/en/Tutorial/Tone
 
+* requires a speaker to hear the melody on the pin
+* connect positive speaker wire to pin
+* connect negative speaker wire to ~10uF capacitor
+* connect remaining lead of capacitor to GND
 */
 
 #include "tone.h"
 #include "unolib.h"
 #include "delay.h"
-#include "pinMode.h"
 
 
 int main() {
 
-    uint8_t musicPin = 12;
-    pinMode(13, OUTPUT);
+    uint8_t musicPin = 11;
 
     // notes in the melody:
     int melody[] = {

@@ -4,6 +4,8 @@
  * Adapted from K&R The C Programming Language V3 page 17
  *
  *
+ * Requires serial monitor set to 9600, 8, 1, None with no line ending
+ * Use Arduino Serial Monitor, minicom, PUTTY or your favorite serial monitor
  */
  
 #include <stdio.h>

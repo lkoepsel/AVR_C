@@ -24,7 +24,6 @@
 #include <avr/sleep.h>
 #include <avr/pgmspace.h>
 
-#include "pinMode.h"
 #include "digitalWrite.h"
 
 void tone (uint8_t pin, uint8_t note, uint16_t duration);       
@@ -132,5 +131,6 @@ void noTone(uint8_t pin);
 #define NOTE_CS8 86
 #define NOTE_D8  87
 #define NOTE_DS8 88
-
+// set the size of the notes arrays, based on max offset + 1
+#define NUM_NOTES NOTE_DS8 + 1
 #endif
