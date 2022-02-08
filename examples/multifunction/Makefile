@@ -177,7 +177,7 @@ flash_snap: PROGRAMMER_ARGS = -P usb
 flash_snap: flash
 
 flash_xplain: PROGRAMMER_TYPE = xplainedmini
-flash_xplain: PROGRAMMER_ARGS =  # USBTiny works with no further arguments
+flash_xplain: PROGRAMMER_ARGS = 
 flash_xplain: flash
 
 ##########------------------------------------------------------##########
