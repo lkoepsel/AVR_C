@@ -63,12 +63,15 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 	* *buttons[i].pressed* indicates if the button has been pressed (true or non-zero)
 	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
-* **user-defined button RESET** - as debugWIRE uses the ~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). 
+* **user-defined button RESET** - as debugWIRE uses the \~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). 
 	In the current iteration of *sysclock_2*, the RESET pin is defined as PB7. To change it, set the value currently PB7 to be the pin you wish to use.
 	```
 	#define RESET_BUTTON PB7
 	```
 	It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock_2()*. Two examples already have *reset* enabled, **button** and **analogRead**.
+
+* **Random number generation** - using Mersenne Twister, TinyMT32, 32-bit unsigned integers can be created 4 times faster than random(). There is are two test routines, *tinymt*, which demonstrates how to setup and use it as well as *rand_test*, which compares the execution time of *tinymt* to *random()*.
+
 ### Multi-tasking
 There are six examples of multi-tasking in the examples folder. Two are 3rd party code which I added for consideration as multitasking models. And the remaining four are a development, which I document in greater detail [here.](https://wellys.com/posts/avr_c_step6/)
 

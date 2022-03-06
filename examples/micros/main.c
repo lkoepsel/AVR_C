@@ -47,7 +47,7 @@ int main (void)
         }
 
         for (uint8_t i=0; i<NTIMES;i++)  {
-            printf("%u %u\n", now[i], previous[i]);
+            printf("%u \n", now[i] - previous[i]);
         }
     }    /* return never executed */
     return (0);
