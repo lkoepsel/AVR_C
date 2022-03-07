@@ -9,7 +9,7 @@
 * every rollover, i.e; 100 has N=3 rollovers (100,000 % 32.77 = 3)
 * EX:
 *   delay(4) = 8166 ticks = 8000 * .5us = 4ms with a 166 * .5 /4 or 20us overhead
-*   delay(25) = 51010 ticks = 5000 * .5us = 25ms with a 1010 * .5 /25 or 20us overhead
+*   delay(25) = 51010 ticks = 50000 * .5us = 25ms with a 1010 * .5 /25 or 20us overhead
 *   delay(100) = 204019 ticks = 200000 * .5us = 100ms with a 4019 * .5 /100 or 20us overhead
 * CALC: IF (PREV > NOW)
 *   TRUE: (N * 65535) + (NOW + 65535) - PREV 

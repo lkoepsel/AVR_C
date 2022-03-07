@@ -100,6 +100,8 @@ Uses loops to go through each digital pin (2-13) and print out level on pin. Use
 ### durationTest:
 An inline test of playing a melody using tone(). This version is easier to test and debug than melody.
 
+### four states:
+A four state finite state machine which uses 2 pushbuttons, 2 red LEDs and 1 blue LED to move through states and indicate state status. One push button is *UP*, which moves through the states on being pressed, and the other push button is *ENTER*, which enters the state and in this case, lights a blue LED with varying intensity. The LEDs indicate the state in a binary fashion.
 ### melody: 
 Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework.
 
