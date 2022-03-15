@@ -17,3 +17,5 @@ build
 *.map
 *~
 *.eeprom
+*.bloom/
+*env*

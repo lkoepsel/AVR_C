@@ -1,15 +1,17 @@
 {
   "environments": {
     "default": {
+      "shutdownPostDebugSession": true,
       "debugTool": {
         "name": "xplained-mini",
         "releasePostDebugSession": false
       },
 
       "target": {
-        "name": "atmega328pb",
+        "name": "atmega328p",
         "physicalInterface": "debug-wire",
-        "disableDebugWirePreDisconnect": true
+        "disableDebugWirePreDisconnect": true,
+         "updateDwenFuseBit": true
       },
 
       "debugServer": {

@@ -19,6 +19,10 @@
  * 3. For every interrupt, the duty cycle will be incr or decr (easy to see on a scope)
  * 4. Removed extraneous code not specific to ATmeg328P
  */
+
+/* NOTE: The Makefile for this example does NOT use the AVR_C Library
+*  due to conflicts in the file with the ISR (TIMER1_OVF_vect) interrupt vector
+*/
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>

@@ -26,7 +26,6 @@ Final correct button press will blink all three LEDs
 /* Put your global variables here */
 #define UP 0
 #define ENTER 1
-#define OFF 0
 #define DIM 16
 #define MEDIUM 63
 #define BRIGHT 127

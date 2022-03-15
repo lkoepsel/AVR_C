@@ -4,7 +4,7 @@ Hardware: ATMega8 running at 8MHz
 https://sites.google.com/site/avrtutorials2/scheduler
 Updated 12/6/21 for ATmega328P(Uno)
 
-This is an example only as the ISR TIMER0_OVF_vect conflicts with tone()
+NOTE: This is an example only as the ISR TIMER0_OVF_vect conflicts with tone()
 If you wish to test this code, comment out the ISR TIMER0_OVF_vect in tone.c
 */
 

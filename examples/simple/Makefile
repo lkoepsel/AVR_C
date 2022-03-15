@@ -2,31 +2,32 @@
 ##########              System-specific Details                 ##########
 ########## These need to be changed specific to your  system    ##########
 ##########------------------------------------------------------##########
-SERIAL = $(AVR_PORT)
-MCU = $(AVR_MCU)
+include ../../env.make
+#SERIAL = $(AVR_PORT)
+#MCU = $(AVR_MCU)
 ##########------------------------------------------------------##########
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
-##########------------------------------------------------------##########
+##########------------------------------------------------------##########w
 # MCU   = atmega328pb
-F_CPU = 16000000UL  
-BAUD  = 9600UL
+#F_CPU = 16000000UL  
+# BAUD  = 9600UL
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## A directory for common include files and the simple USART library.
 ## If you move either the current folder or the Library folder, you'll 
 ##  need to change this path to match.
-LIBDIR = ../../Library
+# LIBDIR = ../../Library
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
 ##########          Set up once, then forget about it           ##########
 ##########        (Can override.  See bottom of file.)          ##########
 ##########------------------------------------------------------##########
 
-PROGRAMMER_TYPE = Arduino
+# PROGRAMMER_TYPE = Arduino
 #PROGRAMMER_TYPE = dragon_dw
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200	
+# PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200	
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
@@ -63,9 +64,9 @@ HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious. 
 ## Use this CPPFLAGS with LIBDIR if a library directory is known 
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR)
+# CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR)
 ## Else, use this one which simply uses the local directory
-# CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.
 # use below to setup gdb and debugging
 CFLAGS = -Og -ggdb -std=gnu99 -Wall
 # Use below to optimize size
@@ -103,7 +104,11 @@ $(TARGET).elf: $(OBJECTS)
 ## These targets don't have files named after them
 .PHONY: all disassemble disasm eeprom size clean squeaky_clean flash fuses
 
+
+complete: all flash all_clean
+
 all: $(TARGET).hex 
+
 
 debug:
 	@echo

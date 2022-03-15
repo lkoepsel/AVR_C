@@ -50,7 +50,7 @@ int main(int argc, char * argv[]) {
     init_serial();
 
     tinymt32_t tinymt;
-    # this value is from example, change to have different results
+    // this value is from example, change to have different results
     tinymt.mat1 = 0x8f7011ee; 
     uint32_t seed = 1;
     printf("tinymt32 0x%08" PRIx32, tinymt.mat1);

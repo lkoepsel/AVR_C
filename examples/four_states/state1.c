@@ -19,7 +19,7 @@ void state1() {
         }
     }
 
-    blue_led(OFF);
+    blue_led_off();
     printf("Exiting State 1, state = %d\n", state);
     return;
 }	

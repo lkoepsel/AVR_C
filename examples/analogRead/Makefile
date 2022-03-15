@@ -2,15 +2,16 @@
 ##########              System-specific Details                 ##########
 ########## These need to be changed specific to your  system    ##########
 ##########------------------------------------------------------##########
-SERIAL = $(AVR_PORT)
-MCU = $(AVR_MCU)
+include ../../env.make
+#SERIAL = $(AVR_PORT)
+#MCU = $(AVR_MCU)
 ##########------------------------------------------------------##########
 ##########              Project-specific Details                ##########
 ##########    Check these every time you start a new project    ##########
-##########------------------------------------------------------##########ww
+##########------------------------------------------------------##########w
 # MCU   = atmega328pb
-F_CPU = 16000000UL  
-BAUD  = 9600UL
+#F_CPU = 16000000UL  
+# BAUD  = 9600UL
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## A directory for common include files and the simple USART library.
@@ -23,10 +24,10 @@ LIBDIR = ../../Library
 ##########        (Can override.  See bottom of file.)          ##########
 ##########------------------------------------------------------##########
 
-PROGRAMMER_TYPE = Arduino
+# PROGRAMMER_TYPE = Arduino
 #PROGRAMMER_TYPE = dragon_dw
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200	
+# PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200	
 
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
@@ -103,7 +104,10 @@ $(TARGET).elf: $(OBJECTS)
 ## These targets don't have files named after them
 .PHONY: all disassemble disasm eeprom size clean squeaky_clean flash fuses
 
+complete: all flash all_clean
+
 all: $(TARGET).hex 
+
 
 debug:
 	@echo

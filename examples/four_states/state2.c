@@ -18,7 +18,7 @@ void state2() {
             blue_led(MEDIUM);
         }
     }
-    blue_led(OFF);
+    blue_led_off();
     printf("Exiting State 2, state = %d\n", state);
     return;
 }	

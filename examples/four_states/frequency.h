@@ -6,6 +6,8 @@
 
 #include "main.h"
 
+void blue_led_on();
+void blue_led_on();
 void blue_led(uint8_t intensity);
 void sound(uint16_t freq) ;
 #endif
