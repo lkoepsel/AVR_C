@@ -1,4 +1,32 @@
 # Programming the Arduino Uno in Standard C
+**UPDATE March 16, 2022**
+The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include*.
+
+The file, *env.make* is **not tracked by git** and it looks like this:
+```make
+MCU = atmega328pb
+SERIAL = /dev/ttyACM0
+F_CPU = 16000000UL  
+BAUD  = 9600UL
+PROGRAMMER_TYPE = xplainedmini
+PROGRAMMER_ARGS =
+```
+As shown, this one is for the 328PB Xplained Mini board and on a Linux system. For Make to work, you need to perform the following:
+1. Copy the contents above and paste them into a file called *env.make*
+2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
+3. Change the parameters to suit your board, for example, the Uno would need to look like this:
+```make
+MCU = atmega328p
+SERIAL = /dev/ttyACM0
+F_CPU = 16000000UL  
+BAUD  = 9600UL
+PROGRAMMER_TYPE = Arduino
+PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+```
+3. The repository has the new version of Makefiles which use this variable, so no change is needed there.
+
+The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
+
 This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivilents using **Standard C** in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
 
 In order to use this framework, one must install the *avr-gcc* tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so are [here](https://wellys.com/posts/avr_c_setup/).
@@ -11,7 +39,6 @@ This code has been tested extensively with the Arduino Uno and the [Microchip AT
 If you have an existing Uno, it will work very well. If you wish to add hardware debugging, you will want to purchase a debugWIRE compatible device such as the [Microchip MPLAB Snap](https://www.microchip.com/en-us/development-tool/PG164100) or the [Atmel ICE](https://www.microchip.com/en-us/development-tool/ATATMEL-ICE).
 
 Other Microchip AVR-compatible microcontrollers will more than likely work, I haven't the time to test them. If the processor is not a ATmega328P, it will be important to set the MCU and processor frequency (F_CPU) variables in the Makefile. For specific information as to how to setup your environment specific to your board and microcontroller, see the content for **Makefile** below.
-
 ## Arduino Framework  and standard C Replacement Routines
 Much of the Standard C Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
 ### Arduino Framework Functions
