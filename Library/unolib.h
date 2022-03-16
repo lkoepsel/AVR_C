@@ -10,7 +10,7 @@
 *  It is ACTIVE LOW
 *  If using a different board or pin, adjust accordingly! 
 */
-#define RESET_BUTTON PB3
+#define RESET_BUTTON PB7
 
 /* Arduino Definitions handy for AVR_C      */
 #define LED_BUILTIN 13

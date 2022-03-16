@@ -30,33 +30,12 @@ Final correct button press will blink all three LEDs
 #define MEDIUM 63
 #define BRIGHT 127
 
-// Frequencies are defined by 16x10^6/ (2 * scalar * TOP), scalar = 1 and TOP,
-// for which the definitions are below
-// #define FREQ_2K 2000
-// #define FREQ_4K 1000
-// #define FREQ_8K 500
-// #define FREQ_16K 249
-// #define FREQ_20K 200
-// #define FREQ_28K 143
-// #define FREQ_32K 125
-// #define FREQ_40K 101
-// #define FREQ_48K 83
-
-
 // state contains the current state of the FSM
 extern int state;
 
-extern int LED_bit0;
-extern int LED_bit1;
-extern int LED_bit2;
-
-extern int buttonState0;
-extern int BUTTON0;
-extern int priorState0;
-
-extern int buttonState1;
-extern int BUTTON1;
-extern int priorState1;
+extern uint8_t LED_bit0;
+extern uint8_t LED_bit1;
+extern uint8_t BLUE_LED;
 
 extern button buttons[max_buttons];
 

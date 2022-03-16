@@ -15,7 +15,7 @@ int main (void)
     duty_cycle = 127; // 127/255 = 50%
     analogWrite(ard_pin1, duty_cycle);
 
-    ard_pin2 = 5;
+    ard_pin2 = 2;
     duty_cycle = 63; // 63/255 = 25%
     analogWrite(ard_pin2, duty_cycle);
 

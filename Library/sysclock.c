@@ -132,7 +132,7 @@ uint8_t is_RESET_pressed(){
     reset_history = reset_history << 1;
     reset_history |= read_RESET();
 
-    if ((reset_history & RESET_MASK) == 0b11000111){ 
+    if ((reset_history & RESET_MASK) == 0b00000111){ 
         pressed = 1;
         reset_history = 0b11111111;
     }

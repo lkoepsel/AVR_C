@@ -5,8 +5,9 @@
 // state contains the current state of the FSM
 int state = 0;
 
-int LED_bit0 = 8;
-int LED_bit1 = 7;
+uint8_t LED_bit0 = 4;
+uint8_t LED_bit1 = 3;
+uint8_t BLUE_LED = 6;
 
 /* Main */ 
 int main() {
@@ -15,18 +16,18 @@ int main() {
    pinMode(LED_bit0, OUTPUT);
    pinMode(LED_bit1, OUTPUT);
 
-   buttons[UP].uno = 4;
+   buttons[UP].uno = 9;
    pinMode(buttons[UP].uno, INPUT_PULLUP);
-   buttons[ENTER].uno = 12;
+   buttons[ENTER].uno = 10;
    pinMode(buttons[ENTER].uno, INPUT_PULLUP);
 
    init_sysclock_2 ();
-
+   puts("Finite State Machine: Four States");
 // while(1) loop routine runs over and over again forever:
     while(1) {
         /* execution code goes here */
-        delay(50);
-        printf("Entering Switch, state = %d\n", state);
+        // delay(50);
+        printf("Entering FSM, state = %d\n", state);
         switch (state)
         {
              case 0:

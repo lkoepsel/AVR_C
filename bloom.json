@@ -8,7 +8,7 @@
       },
 
       "target": {
-        "name": "atmega328p",
+        "name": "atmega328pb",
         "physicalInterface": "debug-wire",
         "disableDebugWirePreDisconnect": true,
          "updateDwenFuseBit": true
