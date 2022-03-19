@@ -82,7 +82,7 @@ void nine (void) {
 
 int main(void)
 {
-    for (int i=0;i<NTASKS;i++) {
+    for (uint8_t i=0;i<NTASKS;i++) {
         pinMode(i, OUTPUT);
     }
 

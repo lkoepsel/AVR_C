@@ -11,9 +11,9 @@
 
 int main (void)
 {
-    int ledPin = 13; // LED connected to digital pin 13
-    int inPin = 9;   // pushbutton connected to digital pin 7
-    int val = 0;     // variable to store the read value
+    uint8_t ledPin = 13; // LED connected to digital pin 13
+    uint8_t inPin = 9;   // pushbutton connected to digital pin 7
+    uint8_t val = 0;     // variable to store the read value
 
     pinMode(ledPin, OUTPUT);      // sets the digital pin 13 as output
     pinMode(inPin, INPUT_PULLUP);      // sets the digital pin 7 as input_pullup

@@ -31,7 +31,7 @@ Final correct button press will blink all three LEDs
 #define BRIGHT 127
 
 // state contains the current state of the FSM
-extern int state;
+extern uint8_t state;
 
 extern uint8_t LED_bit0;
 extern uint8_t LED_bit1;

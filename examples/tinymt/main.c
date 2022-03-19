@@ -57,7 +57,7 @@ int main(int argc, char * argv[]) {
     printf(" seed = %lu\n", seed);
     tinymt32_init(&tinymt, seed);
     printf("32-bit unsigned integers r, where 0 <= r < 2^32\n");
-    for (int i = 0; i < 10; i++) {
+    for (uint8_t i=0; i < 10; i++) {
         for (int j = 0; j < 5; j++) {
             printf("%10" PRIu32 " ", tinymt32_generate_uint32(&tinymt));
         }

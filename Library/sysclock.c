@@ -42,7 +42,7 @@ ISR (TIMER2_COMPA_vect)
 
     sys_ctr_2++;
 
-    for (int i = 0; i < max_buttons; i++) {
+    for (uint8_t i=0; i < max_buttons; i++) {
         buttons[i].pressed = is_button_pressed(i);
     }
 

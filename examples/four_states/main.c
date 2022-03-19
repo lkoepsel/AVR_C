@@ -3,7 +3,7 @@
 
 /* Put your global variables here */
 // state contains the current state of the FSM
-int state = 0;
+uint8_t state = 0;
 
 uint8_t LED_bit0 = 4;
 uint8_t LED_bit1 = 3;

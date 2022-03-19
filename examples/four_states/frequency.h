@@ -5,6 +5,7 @@
 #define FREQUENCY_H
 
 #include "main.h"
+#include "analogWrite.h"
 
 void blue_led_on();
 void blue_led_off();

@@ -41,7 +41,7 @@ int main (void)
     /* loop forever, the interrupts are doing the rest */
     for (;;)  {         
 
-        for (int i = 0; i < max_buttons; i++) {
+        for (uint8_t i=0; i < max_buttons; i++) {
             if (buttons[i].pressed) {
                 count[i] += 1;
                 printf("Button %u was pressed, %u times.\n", i, count[i]);
