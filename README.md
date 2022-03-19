@@ -4,22 +4,26 @@ The method of changing parameters from local environmental variables such as *AV
 
 The file, *env.make* is **not tracked by git** and it looks like this:
 ```make
+## Microchip 328PB Xplained Mini environmental variables
 MCU = atmega328pb
-SERIAL = /dev/ttyACM0
+SERIAL = /dev/cu.usb*
 F_CPU = 16000000UL  
 BAUD  = 9600UL
+LIBDIR = ../../Library
 PROGRAMMER_TYPE = xplainedmini
-PROGRAMMER_ARGS =
+PROGRAMMER_ARGS = 
 ```
 As shown, this one is for the 328PB Xplained Mini board and on a Linux system. For Make to work, you need to perform the following:
 1. Copy the contents above and paste them into a file called *env.make*
 2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
 3. Change the parameters to suit your board, for example, the Uno would need to look like this:
 ```make
+Arduino UNO environmental variables
 MCU = atmega328p
 SERIAL = /dev/ttyACM0
 F_CPU = 16000000UL  
 BAUD  = 9600UL
+LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
