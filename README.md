@@ -18,7 +18,7 @@ As shown, this one is for the 328PB Xplained Mini board and on a Linux system. F
 2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
 3. Change the parameters to suit your board, for example, the Uno would need to look like this:
 ```make
-Arduino UNO environmental variables
+# Arduino UNO environmental variables
 MCU = atmega328p
 SERIAL = /dev/ttyACM0
 F_CPU = 16000000UL  
