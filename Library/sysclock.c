@@ -8,17 +8,15 @@
 volatile uint16_t sys_ctr_0 = 0;
 volatile uint16_t sys_ctr_1 = 0;
 volatile uint16_t sys_ctr_2 = 0;
-volatile uint16_t ctr_copy = 0;
 
 extern button buttons[max_buttons];
 
 /* ISR for sysclock_0
 * TC 0 setup for a 1MHz count, sys_ctr_0 tracks microseconds elapsed
 */
-ISR (TIMER0_COMPA_vect)      
+ISR (TIMER0_OVF_vect)      
 {
     sys_ctr_0++;
-    PIND |= _BV(PD2);
 }
 
 /* ISR for sysclock_1
@@ -49,52 +47,58 @@ ISR (TIMER2_COMPA_vect)
 }
 
 uint16_t micros() {
+    return(ticks() >> 4);
+}
+
+uint16_t ticks() {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-    ctr_copy = TCNT1;
+        return(TCNT1);
     }
-    return(ctr_copy);
+    return 0;
 }
 
 uint16_t millis() {
-
-      return(sys_ctr_2);
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        return(sys_ctr_2);
+    }
+    return 0;   
 }
 
 void init_sysclock_0 (void)          
 {
     /* Initialize timer 0
-    * TCCR2A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000011
     * WGM02 WGM01 WGM00 => Fast PWM, TOP = OCRA
-    * TCCR2B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ]
     * CS00 => scalar of 1
-    * Frequency = 16 x 10^6 / 1 / 8 = 2MHz
-    * Counter performs another divide by 2 => 1MHz
+    * TCCR2A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 01000011
+    * TCCR2B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001001
+    * Frequency = 16 x 10^6 / 1 / OCRA + 1 = .5MHz @ OCRA = 15
+    * Counter toggles every TOP (multiply by 2) => 1MHz
     * Test using example/millis (delay(1000) = 100000 ticks)
     */
-    TCCR0A |= (_BV(COM0A0) | _BV(WGM00) | _BV(WGM00));
-    TCCR0B |= ( _BV(WGM02) | _BV(CS00) ) ;
-    OCR0A = 4;
-    TIMSK0 |= _BV(OCIE0A);
-    DDRD |= (_BV(PD2) | _BV(PD6));
+    TCCR0A |= (_BV(COM0A0) | _BV(WGM00));
+    TCCR0B |= ( _BV(WGM02) | _BV(CS01) ) ;
+    OCR0A = 25;
+    TIMSK0 |= _BV(TOIE0);
+    DDRD |= _BV(PD6);
 
     sei ();
 }
 
 void init_sysclock_1 (void)          
 {
-    /* Initialize timer 2
+    /* Initialize timer 1 as a free running clock at 16MHz
     * TCCR1A [ COM1A1 COM1A0 COM1B1 COM1B0 0 0 WGM11 WGM10 ] = 00000000
     * WGM13 WGM12 WGM11 WGM10 => Normal, TOP = 0xFFFF
     * TCCR2B [ ICNC1 ICES1 0 WGM13 CS12 CS12 CS11 CS10 ]
-    * CS11 => scalar of 8
-    * Frequency = 16 x 10^6 / 1 / 40 = 50kHz
-    * -1 to account for overhead = 39
-    * Counter performs another divide by 2 => 25kHz
-    * Test using example/millis (delay(1000) = 40527 ticks)
+    * CS10 => scalar of 1
+    * tick = 1/(16MHz) = 62.5ns or 62.5 x 10^-9s
+    * Test using example/millis (delay(1)) = 16020 ticks
+    * (16.020x10^3 ticks)x(62.5x10^-9 secs/tick) = 1.00125 x 10^-3 seconds
     */
     TCCR1A = 0;
-    TCCR1B |= ( _BV(CS11));
+    TCCR1B |= ( _BV(CS10));
     TIMSK1 |= (_BV(TOIE1));
     sei();
 }

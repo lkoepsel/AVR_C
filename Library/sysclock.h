@@ -1,12 +1,9 @@
 /*
-* sysclock - use millis() which returns a long int of current tick counter
-* Sets up a system tick of 1 millisec (1kHz)
+* sysclock - use ticks() which returns a long int of current tick counter
+* Sets up a system tick of 62.5ns or 16MHz
 * To test, uses the system delay (blocking, doesn't use clock)
-* to determine delta between a delay
-* tick Settings:
-* To calculate: 16x10^6 / scalar / OCR1A / 2
-* 1kHz: 16x10^6 / 8 / 1000 / 2 =>  1000  
-
+* Measure pre-delay, measure post-delay, determine delta 
+* between a delay then shift right by 4 to get microseconds
 */
 #ifndef sysclock_h
 #define sysclock_h
@@ -15,8 +12,9 @@
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 
-uint16_t millis();
 uint16_t micros();
+uint16_t millis();
+uint16_t ticks();
 
 /* Timer/Clock Scalar definitions
 *	format SCALARn_s where:

@@ -2,11 +2,11 @@
 **UPDATE March 16, 2022**
 The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include*.
 
-The file, *env.make* is **not tracked by git** and it looks like this:
+The file, *env.make* is **not tracked by git** and it looks like this: (*macOS serial parameter)
 ```make
 ## Microchip 328PB Xplained Mini environmental variables
 MCU = atmega328pb
-SERIAL = /dev/cu.usb*
+SERIAL = /dev/cu.usbmodem3101
 F_CPU = 16000000UL  
 BAUD  = 9600UL
 LIBDIR = ../../Library
@@ -16,11 +16,11 @@ PROGRAMMER_ARGS =
 As shown, this one is for the 328PB Xplained Mini board and on a Linux system. For Make to work, you need to perform the following:
 1. Copy the contents above and paste them into a file called *env.make*
 2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
-3. Change the parameters to suit your board, for example, the Uno would need to look like this:
+3. Change the parameters to suit your board, for example, the Uno would need to look like this: (*macOS serial parameter)
 ```make
 # Arduino UNO environmental variables
 MCU = atmega328p
-SERIAL = /dev/ttyACM0
+SERIAL = /dev/cu.usbmodem3101
 F_CPU = 16000000UL  
 BAUD  = 9600UL
 LIBDIR = ../../Library
@@ -135,13 +135,10 @@ An inline test of playing a melody using tone(). This version is easier to test 
 A four state finite state machine which uses 2 pushbuttons, 2 red LEDs and 1 blue LED to move through states and indicate state status. One push button is *UP*, which moves through the states on being pressed, and the other push button is *ENTER*, which enters the state and in this case, lights a blue LED with varying intensity. The LEDs indicate the state in a binary fashion.
 ### melody: 
 Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework.
-
 ### micros:
-Shows an example of using micros() to demonstrate how to measure time. Ticks are .5 microseconds, so a delay(10) would be 10 * 1000 / 2 = 5000 ticks. After 65,535 ticks, the clock rolls over to produce a Tock of milliseconds. To keep the overhead of printing/measuring to a minimum, the example stores the counts in an array.
-
+Shows an example of using micros() to demonstrate how to measure time. Micros are a form of the system time-keeping mechanism *ticks*. A tick is 62.5us, which means 16 ticks = 1us. Calling micros will provide a number in microseconds, however, it will rollover every 4milliseconds, so it can't be used for measuring an event longer than 4 milliseconds without accounting for the rollover.
 ### millis:
 Shows an example of using millis() to demonstrate the effectiveness of the delay command. Prints the time delta based on using a delay(1000).
-
 ### serialio:
 Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
 

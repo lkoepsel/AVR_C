@@ -1,0 +1,21 @@
+/* avr_blink - uses bit setting by registers instead of digitalWrite()
+*   This allows you to use a scope to confirm delay is exactly 1 millisecond
+*   or other timing exercises, for example: (when measured)
+*   blink 2.0108 ms period while avr_blink 2.0026 ms period
+*/
+#include <delay.h>
+ 
+int main(void)
+{
+    /* set pin to output*/
+    DDRD |= (_BV(PORTD4));
+
+    while(1) {
+        /* toggle led on and off */
+        PORTD |= (_BV(PORTD4));
+        _delay_ms(1);
+        PORTD &= ~(_BV(PORTD4));
+        _delay_ms(1);
+    }
+    return(0); 
+}

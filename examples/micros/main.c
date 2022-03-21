@@ -1,54 +1,61 @@
-/* micros - demonstrate fine-degree timing counter using system clock
-* A system tick = .5 microseconds accessed via micros()
-* To test, use the system delay() (blocking, doesn't use clock)
-* To minimize overhead, system runs NTIMES filling an array
-* then prints out NTIMES number of lines
-* consisting of two times, post-delay and pre-delay. 
-* The difference between the two are the number of ticks which occured duing delay
-* In calculating anything over 32.77ms, add an N multiplier of 65535 for
-* every rollover, i.e; 100 has N=3 rollovers (100,000 % 32.77 = 3)
-* EX:
-*   delay(4) = 8166 ticks = 8000 * .5us = 4ms with a 166 * .5 /4 or 20us overhead
-*   delay(25) = 51010 ticks = 50000 * .5us = 25ms with a 1010 * .5 /25 or 20us overhead
-*   delay(100) = 204019 ticks = 200000 * .5us = 100ms with a 4019 * .5 /100 or 20us overhead
-* CALC: IF (PREV > NOW)
-*   TRUE: (N * 65535) + (NOW + 65535) - PREV 
-*   FALSE (N * 65535) + NOW - PREV 
+/*
+* micros - compare two microsecond counters using system clock
+* Each tick of ticks() is 62.5 ns and 16 ticks are 1 microsecond
+* To test, uses the system delay (blocking, doesn't use clock)
+* Measure pre-delay, measure post-delay, determine delta 
+* of delay then shift right by 4 to get microseconds
+* 
+* The clock wraps around at 4.0959ms, so add 65535 for every n 4.0959 ms
+* Calling ticks is more accurate than micros and won't provide bad values
+* as shown below
 */
 #include <avr/io.h>
 #include <stdio.h>
+#include <delay.h>
 #include "uart.h"
-#include "delay.h"
 #include "sysclock.h"
 #include "unolib.h"
-#include "pinMode.h"
 
-#define NTIMES 100
 int main (void)
 {
-    init_sysclock_1();
-    init_sysclock_2();
+    init_sysclock_1 ();
     init_serial();
-    uint16_t DELAY = 25;
-    uint16_t previous[NTIMES] = {0};
-    uint16_t now[NTIMES] = {0};
 
+    const uint8_t DELAY = 1;
+    const uint8_t MAX = 10;
+    uint16_t elapased_ticks[2][MAX];
 
-    /* print the value of T/C 1 Control Register B to see scalar value  */
-    /* lowest 3 bits are scalar, see datasheet page ~143 for values     */
-    printf("Testing System Ticks: TCCR1B = %u\n",  TCCR1B);
+    puts("Testing System Ticks (1 tick = 62.5ns)");
+    printf("Delay of %u ms\n", DELAY);
 
-    /* loop forever, the interrupts are doing the rest */
+    /* Two loops, one for ticks() and one for micros() */
+    printf("ticks() -> micros:\t");
+    for (uint8_t i=MAX;i>0;i--)  {         
+        elapased_ticks[0][i] = ticks();
+        _delay_ms(DELAY);
+        elapased_ticks[1][i] = ticks();
+
+    }
+    for (uint8_t i=MAX;i>0;i--)  {         
+        printf("%u ",
+         ((elapased_ticks[1][i]-elapased_ticks[0][i]) >> 4));
+    }
+    puts(" Complete");
+    printf("micros():\t\t");
+    for (uint8_t i=MAX;i>0;i--)  {         
+        elapased_ticks[0][i] = micros();
+        _delay_ms(DELAY);
+        elapased_ticks[1][i] = micros();
+
+    }
+    for (uint8_t i=MAX;i>0;i--)  {         
+        printf("%u ",
+         (elapased_ticks[1][i]-elapased_ticks[0][i]));
+    }
+    puts(" Complete");
     while(1) {
-        for (uint8_t i=0; i<NTIMES;i++)  {
-            previous[i] = micros();
-            delay(DELAY);
-            now[i] = micros();
-        }
-
-        for (uint8_t i=0; i<NTIMES;i++)  {
-            printf("%u \n", now[i] - previous[i]);
-        }
-    }    /* return never executed */
+        
+    }
+    /* return never executed */
     return (0);
 }
