@@ -8,6 +8,8 @@
 * The clock wraps around at 4.0959ms, so add 65535 for every n 4.0959 ms
 * Calling ticks is more accurate than micros and won't provide bad values
 * as shown below
+*
+* Requires: init_sysclock_1()
 */
 #include <avr/io.h>
 #include <stdio.h>

@@ -15,7 +15,6 @@
 /* Arduino Definitions handy for AVR_C      */
 #define LED_BUILTIN 13
 
-
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/wdt.h>

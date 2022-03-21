@@ -489,7 +489,7 @@ const uint16_t notes_OCR1A[NUM_NOTES] PROGMEM = {
     100
 };
 
-#if 0
+#if 0 // set to 1 to enable, conflicts with sysclock_0 and RR_Scheduler
 ISR (TIMER0_OVF_vect)      
 {
     *PINport |= _BV(PINbit);

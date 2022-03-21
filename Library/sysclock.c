@@ -4,13 +4,13 @@
 #include <util/atomic.h>
 #include <avr/interrupt.h>
 
-
 volatile uint16_t sys_ctr_0 = 0;
 volatile uint16_t sys_ctr_1 = 0;
 volatile uint16_t sys_ctr_2 = 0;
 
 extern button buttons[max_buttons];
 
+#if 0 // set to 1 to enable, conflicts with tone and RR_Scheduler
 /* ISR for sysclock_0
 * TC 0 setup for a 1MHz count, sys_ctr_0 tracks microseconds elapsed
 */
@@ -18,6 +18,7 @@ ISR (TIMER0_OVF_vect)
 {
     sys_ctr_0++;
 }
+#endif
 
 /* ISR for sysclock_1
 * 15ms of the delay is due to the button press checking in the ISR

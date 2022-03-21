@@ -14,6 +14,7 @@ If you wish to test this code, comment out the ISR TIMER0_OVF_vect in tone.c
 #include "pinMode.h"
 #include "unolib.h"
 
+#define tone 0 // see note on ISR below, 
 #define MAX_TASKS (10)
 
 // task states
@@ -145,6 +146,7 @@ void dispatchTasks(void)
     }    
 }    
 
+#if 0 // set to 1 to enable, conflicts with tone and sysclock_0
 // generates a "tick"
 // each tick 16x10^6/256/8 => 7812us apart
 ISR(TIMER0_OVF_vect)
@@ -162,6 +164,7 @@ ISR(TIMER0_OVF_vect)
         }
     }
 }
+#endif
 
 // Task definitions
 
