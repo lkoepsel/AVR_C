@@ -27,6 +27,8 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
+I've found it best to include sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is at the bottom of this page.
+
 3. The repository has the new version of Makefiles which use this variable, so no change is needed there.
 
 The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
@@ -210,6 +212,40 @@ make LIB_clean && make all_clean && make flash
 ```
 This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* will be sufficient.
 
+## env.make 
+Here is an env.make with 3 sections, one for each board to be used. Notice that only one section is active at a time:
+```make
+# This file contains the environmental variables to compile/link/load AVR_C
+# Only one section may be used at a time, each section describes a specific board
+# Comment out the sections which won't be used
+
+## Microchip 328PB Xplained Mini environmental variables
+# MCU = atmega328pb
+# SERIAL = /dev/cu.usbmodem3101
+# F_CPU = 16000000UL  
+# BAUD  = 9600UL
+# LIBDIR = ../../Library
+# PROGRAMMER_TYPE = xplainedmini
+# PROGRAMMER_ARGS = 
+
+## Microchip 168PB Xplained Mini environmental variables
+MCU = atmega168pb
+SERIAL = /dev/cu.usbmodem3101
+F_CPU = 16000000UL  
+BAUD  = 9600UL
+LIBDIR = ../../Library
+PROGRAMMER_TYPE = xplainedmini
+PROGRAMMER_ARGS = 
+
+# Arduino UNO environmental variables
+# MCU = atmega328p
+# SERIAL = /dev/cu.usbmodem3101
+# F_CPU = 16000000UL  
+# BAUD  = 9600UL
+# LIBDIR = ../../Library
+# PROGRAMMER_TYPE = Arduino
+# PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+```
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
 

@@ -8,14 +8,14 @@
 int main(void)
 {
     /* set pin to output*/
-    DDRD |= (_BV(PORTD4));
+    DDRB |= (_BV(PORTB5));
 
     while(1) {
         /* toggle led on and off */
-        PORTD |= (_BV(PORTD4));
-        _delay_ms(1);
-        PORTD &= ~(_BV(PORTD4));
-        _delay_ms(1);
+        PORTB |= (_BV(PORTB5));
+        _delay_ms(100);
+        PORTB &= ~(_BV(PORTB5));
+        _delay_ms(100);
     }
     return(0); 
 }
