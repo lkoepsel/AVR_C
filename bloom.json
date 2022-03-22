@@ -1,18 +1,19 @@
 {
   "environments": {
     "default": {
-      "shutdownPostDebugSession": true,
-      "debugTool": {
-        "name": "xplained-mini",
-        "releasePostDebugSession": false
-      },
+        "shutdownPostDebugSession": true,
+        "debugTool": {
+          "name": "xplained-mini",
+          "releasePostDebugSession": false
+        },
 
-      "target": {
-        "name": "atmega328pb",
-        "physicalInterface": "debug-wire",
-        "disableDebugWirePreDisconnect": true,
-         "updateDwenFuseBit": true
-      },
+        "target": {
+          "name": "atmega328pb",
+          "physicalInterface": "debug-wire",
+          "disableDebugWirePreDisconnect": true,
+          "updateDwenFuseBit": true,
+          "cycleTargetPowerPostDwenUpdate": true
+        },
 
       "debugServer": {
         "name": "avr-gdb-rsp",

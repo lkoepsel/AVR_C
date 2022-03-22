@@ -27,11 +27,17 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
+<<<<<<< Updated upstream
 I've found it best to include sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is at the bottom of this page.
 
 3. The repository has the new version of Makefiles which use this variable, so no change is needed there.
+=======
+The repository has the new version of Makefiles which use these variables, so no change is needed there.
+>>>>>>> Stashed changes
 
 The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
+
+**End Update**
 
 This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivilents using **Standard C** in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
 

@@ -13,6 +13,7 @@ void state0() {
         }
         // Enter Button
         if (buttons[ENTER].pressed) {
+            printf("State 0: Enter pressed, state = %d\n", state);
             state = 0;
             unpressed = 0;
         }

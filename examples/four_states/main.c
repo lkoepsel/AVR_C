@@ -22,12 +22,12 @@ int main() {
    pinMode(buttons[ENTER].uno, INPUT_PULLUP);
 
    init_sysclock_2 ();
-   puts("Finite State Machine: Four States");
+   puts("Finite State Machine (FSM4): Four States (0-3)");
 // while(1) loop routine runs over and over again forever:
     while(1) {
         /* execution code goes here */
         // delay(50);
-        printf("Entering FSM, state = %d\n", state);
+        printf("Entering FSM4, state = %d\n", state);
         switch (state)
         {
              case 0:

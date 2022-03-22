@@ -13,7 +13,7 @@ void state3() {
         }
         // Enter Button
         if (buttons[ENTER].pressed) {
-            printf("In Enter State 3, state = %d\n", state);
+            printf("State 3: Enter pressed, state = %d\n", state);
 
             blue_led(BRIGHT);
 
