@@ -41,6 +41,7 @@ uint16_t ticks();
 void init_sysclock_0 (void);
 void init_sysclock_1 (void);
 void init_sysclock_2 (void);
+void init_RESET(void);
 
 uint8_t is_RESET_pressed();
 uint8_t read_RESET();

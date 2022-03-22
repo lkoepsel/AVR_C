@@ -4,6 +4,8 @@
 * To test, uses the system delay (blocking, doesn't use clock)
 * to determine delta between a delay
 * There can be a lag of 1-10 milliseconds at times
+*
+* Requires init_sysclock_2()
 */
 #include <avr/io.h>
 #include <stdio.h>

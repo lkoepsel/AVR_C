@@ -10,7 +10,7 @@ volatile uint16_t sys_ctr_2 = 0;
 
 extern button buttons[max_buttons];
 
-#if 0 // set to 1 to enable, conflicts with tone and RR_Scheduler
+#if 1 // set to 1 to enable, conflicts with tone and RR_Scheduler
 /* ISR for sysclock_0
 * TC 0 setup for a 1MHz count, sys_ctr_0 tracks microseconds elapsed
 */
@@ -35,9 +35,11 @@ ISR (TIMER1_OVF_vect)
 */
 ISR (TIMER2_COMPA_vect)      
 {
+#if RESET_DEFINED
     if (is_RESET_pressed()) {
         soft_reset();
     }
+#endif
 
     sys_ctr_2++;
 
@@ -120,13 +122,16 @@ void init_sysclock_2 (void)
     TCCR2B |= ( _BV(WGM22) | _BV(CS21) | _BV(CS20) ) ;
     OCR2A = 254;
     TIMSK2 |= _BV(OCIE2A);
+    sei ();
+}
+
+void init_RESET() {
     /* Use RESET_BUTTON as the pin for the reset button
     *  Change to actual value using define in unolib.h
     *  It is expected to be ACTIVE LOW 
     */
     DDRB |= (_BV(RESET_BUTTON));
     PORTB |= (_BV(RESET_BUTTON));
-    sei ();
 }
 
 uint8_t is_RESET_pressed(){

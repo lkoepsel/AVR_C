@@ -8,7 +8,7 @@
 *       buttons is a struct with elements
 *           uno - uno pin for button
 *           pressed - if true, button has been pressed
-*       soft reset is setup by init_sysclock_2
+*       soft reset is setup by init_RESET()
 *       button is assumed to be on PB7, INPUT_PULLUP and will be debounced
 *       reset is performed by a WDT interrupt as described by AVR-GCC FAQ  
 */ 
@@ -30,13 +30,14 @@ int main (void)
     uint8_t count[max_buttons] = {0};
 
     uint8_t i = 0;
-    buttons[i].uno = 9;
+    buttons[i].uno = 4;
     pinMode(buttons[i].uno, INPUT_PULLUP);
     ++i;
-    buttons[i].uno = 10;
+    buttons[i].uno = 5;
     pinMode(buttons[i].uno, INPUT_PULLUP);
 
     init_sysclock_2 ();
+    init_RESET();
 
     /* loop forever, the interrupts are doing the rest */
     for (;;)  {         
