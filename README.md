@@ -1,8 +1,8 @@
 # Programming the Arduino Uno in Standard C
-**UPDATE March 16, 2022**
-The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include*.
+## env.make UPDATE March 16, 2022
+The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. **This change has already been made in the Makefiles in this repository.**
 
-The file, *env.make* is **not tracked by git** and it looks like this: (*macOS serial parameter)
+The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
 ```make
 ## Microchip 328PB Xplained Mini environmental variables
 MCU = atmega328pb
@@ -13,10 +13,10 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = xplainedmini
 PROGRAMMER_ARGS = 
 ```
-As shown, this one is for the 328PB Xplained Mini board and on a Linux system. For Make to work, you need to perform the following:
+As shown, this one is for the 328PB Xplained Mini board and on a Mac. For Make to work, you need to perform the following:
 1. Copy the contents above and paste them into a file called *env.make*
 2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
-3. Change the parameters to suit your board, for example, the Uno would need to look like this: (*macOS serial parameter)
+3. Change the parameters to suit your board, for example, the Uno would need to look like this: (*macOS SERIAL parameter)
 ```make
 # Arduino UNO environmental variables
 MCU = atmega328p
@@ -27,13 +27,9 @@ LIBDIR = ../../Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
-<<<<<<< Updated upstream
-I've found it best to include sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is at the bottom of this page.
+I've found it best to include full sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is at the bottom of this page.
 
-3. The repository has the new version of Makefiles which use this variable, so no change is needed there.
-=======
-The repository has the new version of Makefiles which use these variables, so no change is needed there.
->>>>>>> Stashed changes
+**Note: This repository has the new version of Makefiles which use this file, so no other changes are needed.**
 
 The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
 
@@ -160,6 +156,7 @@ The examples make use of a great Makefile courtesy of Elliot William's in his bo
 
 [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
 
+### ****Deprecated (use env.make)
 I have added lines at the beginning of the Makefile for an environment variables. Once you've determined your setup, you may set the environmental varialble and it will be used in all of the makefiles. This makes it easy to switch environments, such as switching from Linux to macOS or from Arduino Uno to Microchip ATmega328PB XPLAINED. You will need to add:
 ```bash
 export AVR_PORT=/dev/ttyACM0 # replace this port name with the one you are using
@@ -177,6 +174,8 @@ Additional lines to be aware of:
 # the easiest way to determine the correct one is to use the Arduino IDE 
 # and check the Port (Tools -> Port)
 ```
+****End of Deprecation (see env.make)
+
 ### Make Commands for Examples
 ```
 # simple command to check syntax, similar to Verify in the Arduino IDE
@@ -219,7 +218,7 @@ make LIB_clean && make all_clean && make flash
 This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* will be sufficient.
 
 ## env.make 
-Here is an env.make with 3 sections, one for each board to be used. Notice that only one section is active at a time:
+Here is an env.make with 3 sections, one for each board to be used. Notice that only one section is active at a time, the other two have been commented out.:
 ```make
 # This file contains the environmental variables to compile/link/load AVR_C
 # Only one section may be used at a time, each section describes a specific board
