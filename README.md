@@ -1,40 +1,8 @@
 # Programming the Arduino Uno in Standard C
-## env.make UPDATE March 16, 2022
-The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. **This change has already been made in the Makefiles in this repository.**
+**Note as of March 16, 2022
+The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Please see *env.make* note at the bottom of this README.**
 
-The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
-```make
-## Microchip 328PB Xplained Mini environmental variables
-MCU = atmega328pb
-SERIAL = /dev/cu.usbmodem3101
-F_CPU = 16000000UL  
-BAUD  = 9600UL
-LIBDIR = ../../Library
-PROGRAMMER_TYPE = xplainedmini
-PROGRAMMER_ARGS = 
-```
-As shown, this one is for the 328PB Xplained Mini board and on a Mac. For Make to work, you need to perform the following:
-1. Copy the contents above and paste them into a file called *env.make*
-2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
-3. Change the parameters to suit your board, for example, the Uno would need to look like this: (*macOS SERIAL parameter)
-```make
-# Arduino UNO environmental variables
-MCU = atmega328p
-SERIAL = /dev/cu.usbmodem3101
-F_CPU = 16000000UL  
-BAUD  = 9600UL
-LIBDIR = ../../Library
-PROGRAMMER_TYPE = Arduino
-PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
-```
-I've found it best to include full sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is at the bottom of this page.
-
-**Note: This repository has the new version of Makefiles which use this file, so no other changes are needed.**
-
-The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
-
-**End Update**
-
+## Introduction
 This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivilents using **Standard C** in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
 
 In order to use this framework, one must install the *avr-gcc* tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so are [here](https://wellys.com/posts/avr_c_setup/).
@@ -218,7 +186,42 @@ make LIB_clean && make all_clean && make flash
 This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* will be sufficient.
 
 ## env.make 
-Here is an env.make with 3 sections, one for each board to be used. Notice that only one section is active at a time, the other two have been commented out.:
+As stated above, instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. 
+
+The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
+```make
+## Microchip 328PB Xplained Mini environmental variables
+MCU = atmega328pb
+SERIAL = /dev/cu.usbmodem3101
+F_CPU = 16000000UL  
+BAUD  = 9600UL
+LIBDIR = ../../Library
+PROGRAMMER_TYPE = xplainedmini
+PROGRAMMER_ARGS = 
+```
+As shown, this one is for the 328PB Xplained Mini board and on a Mac. For Make to work, you need to perform the following:
+1. Copy the contents above and paste them into a file called *env.make*
+2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
+3. Change the parameters to suit your board, for example, the Uno would need to look like this: (*macOS SERIAL parameter)
+```make
+# Arduino UNO environmental variables
+MCU = atmega328p
+SERIAL = /dev/cu.usbmodem3101
+F_CPU = 16000000UL  
+BAUD  = 9600UL
+LIBDIR = ../../Library
+PROGRAMMER_TYPE = Arduino
+PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+```
+I've found it best to include full sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is below.
+
+**Note: This repository has the new version of Makefiles which uses this file, so no other changes are needed.**
+
+The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
+
+Here is an env.make with 3 sections, one for each board to be used. Notice that only one section is active at a time, the other two have been commented out.
+
+**Full version of the env.make file I am using:**
 ```make
 # This file contains the environmental variables to compile/link/load AVR_C
 # Only one section may be used at a time, each section describes a specific board
