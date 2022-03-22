@@ -1,5 +1,6 @@
 # Programming the Arduino Uno in Standard C
-**Note as of March 16, 2022
+**Note as of March 16, 2022**
+
 The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Please see *env.make* note at the bottom of this README.**
 
 ## Introduction
@@ -8,6 +9,15 @@ This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu
 In order to use this framework, one must install the *avr-gcc* tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so are [here](https://wellys.com/posts/avr_c_setup/).
 
 For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Using gdb and Bloom to Debug](https://wellys.com/posts/avr_c_gdbbloom/).
+
+## Steps to Use
+1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/)
+2. Obtain this repository, either via download using zip file or preferably, [use git and clone to your system](https://www.wellys.com/posts/avr_c_step5/).
+3. Open the *AVR_C* folder and add an env.make file (*see below*) based on your board and system.
+4. Navigate to *examples/blink* in your CLI and run *make* to compile, link and create an executable then run *make flash* to upload to your board.
+5. Look at the other examples to better understand how to use the code and begin writing your own!
+6. If you are running Linux and want to try hardware debugging, consider [using Bloom, avr-gdb and a debugger](https://www.wellys.com/posts/avr_c_gdb_bloomsetup/).
+
 
 ## Boards and Microcontrollers
 This code has been tested extensively with the Arduino Uno and the [Microchip ATmega328PB Xplained Mini ](https://www.microchip.com/en-us/development-tool/ATMEGA328PB-XMINI). I prefer the latter board for development as it includes a hardware debugger on the same board, which works well with [Bloom](https://bloom.oscillate.io/) and it only costs $12! If looking to purchase a new board to work with this code, I recommend the Microchip board. 
@@ -125,7 +135,7 @@ The examples make use of a great Makefile courtesy of Elliot William's in his bo
 [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
 
 ### ****Deprecated (use env.make)
-I have added lines at the beginning of the Makefile for an environment variables. Once you've determined your setup, you may set the environmental varialble and it will be used in all of the makefiles. This makes it easy to switch environments, such as switching from Linux to macOS or from Arduino Uno to Microchip ATmega328PB XPLAINED. You will need to add:
+*(To be clear, the Makefile is still used, the method of adding local variables such as SERIAL, MCU etc has changed. The method described here is no longer used.)* I have added lines at the beginning of the Makefile for an environment variables. Once you've determined your setup, you may set the environmental varialble and it will be used in all of the makefiles. This makes it easy to switch environments, such as switching from Linux to macOS or from Arduino Uno to Microchip ATmega328PB XPLAINED. You will need to add:
 ```bash
 export AVR_PORT=/dev/ttyACM0 # replace this port name with the one you are using
 export AVR_MCU=atmega328p # replace this mcu name with the one you are using
