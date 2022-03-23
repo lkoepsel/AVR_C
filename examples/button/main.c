@@ -18,7 +18,7 @@
 #include "button.h"
 #include "pinMode.h"
 
-extern button buttons[max_buttons];
+extern button buttons[MAX_BUTTONS];
 
 int main (void)
 {
@@ -27,7 +27,7 @@ int main (void)
     /* buttons[i].pressed indicate the button is pressed        */
     init_serial();
     puts("Testing Button Presses");
-    uint8_t count[max_buttons] = {0};
+    uint8_t count[MAX_BUTTONS] = {0};
 
     uint8_t i = 0;
     buttons[i].uno = 4;
@@ -42,7 +42,7 @@ int main (void)
     /* loop forever, the interrupts are doing the rest */
     for (;;)  {         
 
-        for (uint8_t i=0; i < max_buttons; i++) {
+        for (uint8_t i=0; i < MAX_BUTTONS; i++) {
             if (buttons[i].pressed) {
                 count[i] += 1;
                 printf("Button %u was pressed, %u times.\n", i, count[i]);

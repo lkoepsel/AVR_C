@@ -37,7 +37,7 @@ extern uint8_t LED_bit0;
 extern uint8_t LED_bit1;
 extern uint8_t BLUE_LED;
 
-extern button buttons[max_buttons];
+extern button buttons[MAX_BUTTONS];
 
 /* Main */ 
 int main();

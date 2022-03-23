@@ -36,8 +36,6 @@ uint16_t ticks();
 #define SET_OCR1A 128
 #endif
 
-#define RESET_MASK  0b11000111
-
 void init_sysclock_0 (void);
 void init_sysclock_1 (void);
 void init_sysclock_2 (void);

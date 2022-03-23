@@ -7,10 +7,11 @@
 volatile uint16_t sys_ctr_0 = 0;
 volatile uint16_t sys_ctr_1 = 0;
 volatile uint16_t sys_ctr_2 = 0;
+volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 
-extern button buttons[max_buttons];
+extern button buttons[MAX_BUTTONS];
 
-#if 1 // set to 1 to enable, conflicts with tone and RR_Scheduler
+#if 0 // set to 1 to enable, conflicts with tone and RR_Scheduler
 /* ISR for sysclock_0
 * TC 0 setup for a 1MHz count, sys_ctr_0 tracks microseconds elapsed
 */
@@ -21,32 +22,37 @@ ISR (TIMER0_OVF_vect)
 #endif
 
 /* ISR for sysclock_1
-* 15ms of the delay is due to the button press checking in the ISR
-* if button presses aren't required, comment out the code
+*  not currently used, as T/C 1 runs in free counting mode to provide
+*  62.5ns ticks
 */
-ISR (TIMER1_OVF_vect)      
-{
-    sys_ctr_1++;
-}
+// ISR (TIMER1_OVF_vect)      
+// {
+//     sys_ctr_1++;
+// }
 
 /* ISR for sysclock_2
-* 15ms of the delay is due to the button press checking in the ISR
-* if button presses aren't required, comment out the code
+*  Provides millis() counter and debouncing of RESET and buttons
+*  For debouncing to take affect, RESET_DEFINE must be 1
+*  Number of buttons to check will slightly increase execution time of millis()
 */
 ISR (TIMER2_COMPA_vect)      
 {
-#if RESET_DEFINED
-    if (is_RESET_pressed()) {
-        soft_reset();
-    }
-#endif
 
     sys_ctr_2++;
 
-    for (uint8_t i=0; i < max_buttons; i++) {
-        buttons[i].pressed = is_button_pressed(i);
+    #if RESET_DEFINED
+    //  X times divider for millis() otherwise buttons checked too often
+    bounce_delay--;
+    if (bounce_delay == 0) {
+        if (is_RESET_pressed()) {
+            soft_reset();
+        }
+        for (uint8_t i=0; i < MAX_BUTTONS; i++) {
+            buttons[i].pressed = is_button_pressed(i);
+        }
+        bounce_delay = BOUNCE_DIVIDER;
     }
-
+    #endif
 }
 
 uint16_t micros() {
@@ -120,7 +126,7 @@ void init_sysclock_2 (void)
     */
     TCCR2A |= (_BV(WGM20));
     TCCR2B |= ( _BV(WGM22) | _BV(CS21) | _BV(CS20) ) ;
-    OCR2A = 254;
+    OCR2A = 251;
     TIMSK2 |= _BV(OCIE2A);
     sei ();
 }
@@ -128,7 +134,7 @@ void init_sysclock_2 (void)
 void init_RESET() {
     /* Use RESET_BUTTON as the pin for the reset button
     *  Change to actual value using define in unolib.h
-    *  It is expected to be ACTIVE LOW 
+    *  It is expected to be ACTIVE LOW and on PORT B
     */
     DDRB |= (_BV(RESET_BUTTON));
     PORTB |= (_BV(RESET_BUTTON));

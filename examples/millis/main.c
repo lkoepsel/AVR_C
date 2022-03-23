@@ -20,10 +20,9 @@ int main (void)
     init_serial();
     uint16_t delay_time = 1000;
 
-    /* print the value of T/C 1 Control Register B to see scalar value  */
-    /* lowest 3 bits are scalar, see datasheet page ~143 for values     */
-    printf("Testing System Ticks: TCCR1B = %u\n",  TCCR2B);
+    printf("Testing millis()\n");
 
+    init_RESET();
     /* loop forever, the interrupts are doing the rest */
     for (;;)  {         
         uint16_t prior_ticks = millis();

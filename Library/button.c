@@ -1,7 +1,7 @@
 #include "button.h"
 #include "unolib.h"
 
-button buttons[max_buttons];
+button buttons[MAX_BUTTONS];
 
 
 uint8_t read_button(uint8_t uno) {
@@ -23,7 +23,7 @@ uint8_t read_button(uint8_t uno) {
 
 uint8_t is_button_pressed(uint8_t instance){
 
-    static uint8_t button_history[max_buttons] = {0};
+    static uint8_t button_history[MAX_BUTTONS];
     uint8_t pressed = 0;    
  
     button_history[instance] = button_history[instance] << 1;

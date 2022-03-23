@@ -1,7 +1,7 @@
 # Programming the Arduino Uno in Standard C
 **Note as of March 16, 2022**
 
-The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Please see *env.make* note at the bottom of this README.**
+The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Please see *env.make* note at the bottom of this README.
 
 ## Introduction
 This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivilents using **Standard C** in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
@@ -14,7 +14,9 @@ For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](htt
 1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/)
 2. Obtain this repository, either via download using zip file or preferably, [use git and clone to your system](https://www.wellys.com/posts/avr_c_step5/).
 3. Open the *AVR_C* folder and add an env.make file (*see below*) based on your board and system.
-4. Navigate to *examples/blink* in your CLI and run *make* to compile, link and create an executable then run *make flash* to upload to your board.
+4. Navigate to *examples/blink* in your CLI and run:
+	* *make* to compile, link and create an executable file
+	* *make flash* to upload executable file to your board.
 5. Look at the other examples to better understand how to use the code and begin writing your own!
 6. If you are running Linux and want to try hardware debugging, consider [using Bloom, avr-gdb and a debugger](https://www.wellys.com/posts/avr_c_gdb_bloomsetup/).
 
@@ -77,11 +79,12 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
 * **user-defined button RESET** - as debugWIRE uses the \~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). 
-	In the current iteration of *sysclock_2*, the RESET pin is defined as PB7. To change it, set the value currently PB7 to be the pin you wish to use.
+	In the current iteration of *sysclock_2*, the RESET pin is defined as PB7. To change it, set the value currently PB7 to be the pin you wish to use and RESET_DEFINED to 1 (see below). 
 	```
+	#define RESET_DEFINED 1
 	#define RESET_BUTTON PB7
 	```
-	It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock_2()*. Two examples already have *reset* enabled, **button** and **analogRead**.
+	It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock_2()*. Three examples already have *reset* enabled, **button**, **millis, and **analogRead**.
 
 * **Random number generation** - using Mersenne Twister, TinyMT32, 32-bit unsigned integers can be created.. There is are two test routines, *tinymt*, which demonstrates how to setup and use it as well as *rand_test*, which compares the execution time of *tinymt* to *random()*. It appears that rand() is 4 times faster than tinyMT, however, I haven't checked the "randomness" of the two routines.
 
