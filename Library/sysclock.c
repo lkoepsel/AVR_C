@@ -90,8 +90,6 @@ void init_sysclock_0 (void)
     TCCR0B |= ( _BV(WGM02) | _BV(CS01) ) ;
     OCR0A = 25;
     TIMSK0 |= _BV(TOIE0);
-    DDRD |= _BV(PD6);
-
     sei ();
 }
 
@@ -108,8 +106,9 @@ void init_sysclock_1 (void)
     */
     TCCR1A = 0;
     TCCR1B |= ( _BV(CS10));
-    TIMSK1 |= (_BV(TOIE1));
-    sei();
+    //  As it is free-running the T/C 1 Interrupts are not needed
+    // TIMSK1 |= (_BV(TOIE1));
+    // sei();
 }
 
 void init_sysclock_2 (void)          
