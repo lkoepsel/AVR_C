@@ -11,7 +11,7 @@ volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 
 extern button buttons[MAX_BUTTONS];
 
-#if 0 // set to 1 to enable, conflicts with tone and RR_Scheduler
+#if 0 // set to 1 to enable, conflicts with tone
 /* ISR for sysclock_0
 * TC 0 setup for a 1MHz count, sys_ctr_0 tracks microseconds elapsed
 */

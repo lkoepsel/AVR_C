@@ -127,11 +127,8 @@ Shows an example of using millis() to demonstrate the effectiveness of the delay
 ### serialio:
 Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
 
-### simple:
-Demo file from avr-gcc on-line User Manual [Simple Project](https://www.nongnu.org/avr-libc/user-manual/group__demo__project.html), edited specific to ATmega328P. It is well-worth reviewing as it shows how to use an interrupt. The best way to understand it, is to use a scope (Labrador) to view the waveform change.
-
 ### Note on ISR: ISR(TIMER0_OVF_vect)
-The Timer0 overflow interrupt is used by tone(), RR_Scheduler example and sysclock_0. Each one has the ISR commented out using a *#define 0*. Changing the #define value from 0 to 1 will allow the ISR to be compiled into the specific routine. Be sure to change it in only one of the three routines, otherwise there will be compilation/linker errors.
+The Timer0 overflow interrupt is used by tone() and sysclock_0. Each one has the ISR commented out using a *#define 0*. Changing the #define value from 0 to 1 will allow the ISR to be compiled into the specific routine. Be sure to change it in only one of the three routines, otherwise there will be compilation/linker errors.
 ## Makefile
 The examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
 
@@ -186,8 +183,6 @@ There are four multitasking examples in the *examples* folder. Only one of them 
 * **multi_array** Based on *multi_Ard*, this version incorporates *digitalWrite()* and uses an array of tasks to perform multitasking.
 * **multifunction** Based on *oneline*, this is the original version to test the limits as to how well the concept worked.
 * **oneline** [A Multitasking Kernal in One Line of code](https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/) The simplest example of round robin multitasking. Only recommended as an simple illustration as to how to multitask using pointers to functions. Highest speed, smallest footprint 466 bytes, minimal scheduling.
-* **RR_Scheduler** [AVR Scheduler](https://sites.google.com/site/avrtutorials2/scheduler) This code is very good for understanding the intricacies of multitasking such as scheduling, prioritization and dispatch, I don't see the need for this capabilities at this time. 958 bytes, structured scheduling and solid approach to scheduling. **See note on ISR below.**
-* **RIOS** [Preemptive Multitasking for the AVR](http://www.cs.ucr.edu/~vahid/rios/rios_avr.htm) My issue with RIOS is that it asks the ISR to be the scheduler, which seems like a lot of code for the ISR to perform. 1368 bytes, uses ISR as the scheduler, and as more options as to scheduling using time slices.
 
 ### Edit the Library!
 I encourage you to play around with the Library to better understand C and programming the Uno. **IF YOU DO CHANGE THE ROUTINES IN THE LIBRARY**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile all of the functions.
