@@ -27,7 +27,7 @@ int main (void)
     /* buttons[i].pressed indicate the button is pressed        */
     init_serial();
     puts("Testing Button Presses");
-    uint8_t count[MAX_BUTTONS] = {0};
+    uint8_t count[MAX_BUTTONS];
 
     uint8_t i = 0;
     buttons[i].uno = 4;
@@ -40,10 +40,12 @@ int main (void)
     init_RESET();
 
     /* loop forever, the interrupts are doing the rest */
-    for (;;)  {         
-
-        for (uint8_t i=0; i < MAX_BUTTONS; i++) {
-            if (buttons[i].pressed) {
+    for (;;)  
+    {
+        for (uint8_t i=0; i < MAX_BUTTONS; i++) 
+        {
+            if (buttons[i].pressed) 
+            {
                 count[i] += 1;
                 printf("Button %u was pressed, %u times.\n", i, count[i]);
             }

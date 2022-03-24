@@ -9,15 +9,15 @@ int main (void)
     // Not always needed, however helpful if you are getting unexpected results
     clear_all_TC();
 
-    uint8_t ard_pin1, ard_pin2, duty_cycle;
+    uint8_t duty_cycle;
 
-    ard_pin1 = 3;
+    const uint8_t pin1 = 3;
     duty_cycle = 127; // 127/255 = 50%
-    analogWrite(ard_pin1, duty_cycle);
+    analogWrite(pin1, duty_cycle);
 
-    ard_pin2 = 2;
+    const uint8_t pin2 = 2;
     duty_cycle = 63; // 63/255 = 25%
-    analogWrite(ard_pin2, duty_cycle);
+    analogWrite(pin2, duty_cycle);
 
     return(0);
 }

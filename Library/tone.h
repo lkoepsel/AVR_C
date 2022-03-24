@@ -24,8 +24,12 @@
 #include <avr/sleep.h>
 #include <avr/pgmspace.h>
 #include "sysclock.h"
-
 #include "digitalWrite.h"
+
+extern volatile uint8_t *PINport;
+extern volatile uint8_t *DDRport;
+extern volatile uint8_t *PORTport;
+extern volatile uint8_t PINbit;
 
 void tone (uint8_t pin, uint8_t note, uint16_t duration);       
 

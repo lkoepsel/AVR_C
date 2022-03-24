@@ -11,9 +11,10 @@
 
 int main (void)
 {
-    uint8_t musicPin = 11;
+    const uint8_t musicPin = 11;
 
-    while(1) {
+    while(1) 
+    {
         tone(musicPin, NOTE_C4, d4);
         noTone(musicPin);
         delay(internote);

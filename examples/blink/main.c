@@ -8,7 +8,8 @@ int main(void)
     /* set LED to output*/
     pinMode(LED_BUILTIN, OUTPUT);
 
-    while(1) {
+    while(1) 
+    {
         /* toggle led on and off */
         digitalWrite(LED_BUILTIN, HIGH);
         delay(200);

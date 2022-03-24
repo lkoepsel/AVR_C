@@ -16,6 +16,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
+#include "tone.h"
 
 uint16_t micros();
 uint16_t millis();

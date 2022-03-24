@@ -15,7 +15,7 @@ int main (void)
     init_serial();
     init_sysclock_2();
 
-    uint8_t analog_pin = A0;
+    const uint8_t analog_pin = A0;
     uint16_t max_value = 0;
     uint16_t min_value = 1023;
     uint16_t analog_value;
@@ -23,10 +23,12 @@ int main (void)
     puts("Testing analogRead");
     while(1) {
             analog_value = analogRead(analog_pin);
-            if (analog_value > max_value) {
+            if (analog_value > max_value) 
+            {
                 max_value = analog_value;
             }
-            else if (analog_value < min_value) {
+            else if (analog_value < min_value) 
+            {
                 min_value = analog_value;
             }
             float voltage = AREF_DIV * analog_value;

@@ -10,7 +10,8 @@ int main(void)
     /* set pin to output*/
     DDRB |= (_BV(PORTB5));
 
-    while(1) {
+    while(1) 
+    {
         /* toggle led on and off */
         PORTB |= (_BV(PORTB5));
         _delay_ms(100);
