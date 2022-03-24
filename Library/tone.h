@@ -23,6 +23,7 @@
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include <avr/pgmspace.h>
+#include "sysclock.h"
 
 #include "digitalWrite.h"
 

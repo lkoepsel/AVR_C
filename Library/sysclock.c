@@ -4,31 +4,15 @@
 #include <util/atomic.h>
 #include <avr/interrupt.h>
 
-volatile uint16_t sys_ctr_0 = 0;
-volatile uint16_t sys_ctr_1 = 0;
 volatile uint16_t sys_ctr_2 = 0;
 volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 
 extern button buttons[MAX_BUTTONS];
 
-#if 0 // set to 1 to enable, conflicts with tone
-/* ISR for sysclock_0
-* TC 0 setup for a 1MHz count, sys_ctr_0 tracks microseconds elapsed
-*/
 ISR (TIMER0_OVF_vect)      
 {
-    sys_ctr_0++;
+    *PINport |= _BV(PINbit);
 }
-#endif
-
-/* ISR for sysclock_1
-*  not currently used, as T/C 1 runs in free counting mode to provide
-*  62.5ns ticks
-*/
-// ISR (TIMER1_OVF_vect)      
-// {
-//     sys_ctr_1++;
-// }
 
 /* ISR for sysclock_2
 *  Provides millis() counter and debouncing of RESET and buttons
@@ -75,24 +59,6 @@ uint16_t millis() {
     return 0;   
 }
 
-void init_sysclock_0 (void)          
-{
-    /* Initialize timer 0
-    * WGM02 WGM01 WGM00 => Fast PWM, TOP = OCRA
-    * CS00 => scalar of 1
-    * TCCR2A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 01000011
-    * TCCR2B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001001
-    * Frequency = 16 x 10^6 / 1 / OCRA + 1 = .5MHz @ OCRA = 15
-    * Counter toggles every TOP (multiply by 2) => 1MHz
-    * Test using example/millis (delay(1000) = 100000 ticks)
-    */
-    TCCR0A |= (_BV(COM0A0) | _BV(WGM00));
-    TCCR0B |= ( _BV(WGM02) | _BV(CS01) ) ;
-    OCR0A = 25;
-    TIMSK0 |= _BV(TOIE0);
-    sei ();
-}
-
 void init_sysclock_1 (void)          
 {
     /* Initialize timer 1 as a free running clock at 16MHz
@@ -106,9 +72,6 @@ void init_sysclock_1 (void)
     */
     TCCR1A = 0;
     TCCR1B |= ( _BV(CS10));
-    //  As it is free-running the T/C 1 Interrupts are not needed
-    // TIMSK1 |= (_BV(TOIE1));
-    // sei();
 }
 
 void init_sysclock_2 (void)          
