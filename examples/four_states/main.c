@@ -22,11 +22,10 @@ int main() {
    pinMode(buttons[ENTER].uno, INPUT_PULLUP);
 
    init_sysclock_2 ();
+   init_RESET();
    puts("Finite State Machine (FSM4): Four States (0-3)");
 // while(1) loop routine runs over and over again forever:
     while(1) {
-        /* execution code goes here */
-        // delay(50);
         printf("Entering FSM4, state = %d\n", state);
         switch (state)
         {
@@ -37,26 +36,25 @@ int main() {
                 break;
              ;
              case 1:
-             // Audible State
+             // State 1
                 puts("state1");
                 state1();
                 break;
              ;
              case 2:
-             // Audible State
+             // State 2
                 puts("state2");
                 state2();
                 break;
              ;
              case 3:
-             // Audible State
+             // State 3
                 puts("state3");
                 state3();
                 break;
              ;
              default:
                puts("Default found");
-             //C Statements
              ;
         }
     }

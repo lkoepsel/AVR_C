@@ -10,7 +10,7 @@
 #include <avr/io.h>
 #include <avr/sleep.h>
 
-#define MAX_BUTTONS 0
+#define MAX_BUTTONS 2
 #define BOUNCE_MASK 0b11000111
 
 typedef struct button {

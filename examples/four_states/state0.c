@@ -6,6 +6,9 @@ void state0() {
     uint8_t unpressed = 1;
 
     while(unpressed) {
+        // Possible race condition requires a short delay prior to checking
+        // for first push of a button
+        delay(1);
         // Up Button
         if (buttons[UP].pressed) {
             state = 1;

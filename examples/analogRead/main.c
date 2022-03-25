@@ -1,3 +1,11 @@
+/* analogRead - This version of analogRead uses a 4.096V voltage shunt (a precise
+*  voltage reference) to provide AREF voltage. This approach provides a more 
+*  precise measurement than using VCC, the supply voltage. The conversion
+*. is more simple using this approach as to convert a analog reading of 10bits 
+*. (0-1023) to a reading from (0-4096), one simply shifts left 2 positions (x4)
+*. then the reading will be in volts * 100. 
+*  For example: 2.5V => 250 or 1.31V = 131
+*/
 #include <stdio.h>
 #include <avr/io.h>
 #include "uart.h"
@@ -7,13 +15,11 @@
 #include "analogRead.h"
 #include "sysclock.h"
 
-// use .004 for 4.096V AREF or .0048 for 5V
-#define AREF_DIV    .004
-
 int main (void)
 {
     init_serial();
     init_sysclock_2();
+    init_RESET();
 
     const uint8_t analog_pin = A0;
     uint16_t max_value = 0;
@@ -31,8 +37,8 @@ int main (void)
             {
                 min_value = analog_value;
             }
-            float voltage = AREF_DIV * analog_value;
-            printf("Pin: %d Value: %d Voltage: %6.2f Min: %d Max: %d\n",\
+            uint16_t voltage = (analog_value << 2);
+            printf("Pin: %d Value: %d Voltage: %d Min: %d Max: %d\n",\
             analog_pin, analog_value, voltage, min_value, max_value);
             delay(2000);
     }

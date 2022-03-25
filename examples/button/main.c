@@ -27,13 +27,13 @@ int main (void)
     /* buttons[i].pressed indicate the button is pressed        */
     init_serial();
     puts("Testing Button Presses");
-    uint8_t count[MAX_BUTTONS];
+    uint8_t count[MAX_BUTTONS] = {0};
 
     uint8_t i = 0;
-    buttons[i].uno = 4;
+    buttons[i].uno = 9;
     pinMode(buttons[i].uno, INPUT_PULLUP);
     ++i;
-    buttons[i].uno = 5;
+    buttons[i].uno = 10;
     pinMode(buttons[i].uno, INPUT_PULLUP);
 
     init_sysclock_2 ();
