@@ -84,6 +84,8 @@ complete: all flash all_clean
 
 all: $(TARGET).hex 
 
+static: 
+	cppcheck --std=c99 --platform=avr8 --enable=all ../../. 2> cppcheck.txt
 
 debug:
 	@echo
@@ -107,7 +109,7 @@ clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
 	$(TARGET).o $(TARGET).d $(TARGET).eep $(TARGET).lst \
 	$(TARGET).lss $(TARGET).sym $(TARGET).map $(TARGET)~ \
-	$(TARGET).eeprom
+	$(TARGET).eeprom cppcheck.txt
 
 all_clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~ *.eeprom core

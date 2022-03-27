@@ -43,12 +43,6 @@ for(;;) \
 } \
 } while(0)
 
-void LED_off () ;
-
-void LED_on () ;
-
-void LED_tog () ;
-
 #define set_bit(port, bit) ((port) |= (1 << (bit)))
 #define clr_bit(port, bit) ((port) &= ~(1 << (bit)))
 #define tog_bit(port, bit) ((port) |= (1 << (bit)))

@@ -32,25 +32,25 @@ int main (void)
 
     /* Two loops, one for ticks() and one for micros() */
     printf("ticks() -> micros:\t");
-    for (uint8_t i=MAX;i>0;i--)  {         
+    for (uint8_t i=MAX-1;i>0;i--)  {         
         elapased_ticks[0][i] = ticks();
         _delay_ms(DELAY);
         elapased_ticks[1][i] = ticks();
 
     }
-    for (uint8_t i=MAX;i>0;i--)  {         
+    for (uint8_t i=MAX-1;i>0;i--)  {         
         printf("%u ",
          ((elapased_ticks[1][i]-elapased_ticks[0][i]) >> 4));
     }
     puts(" Complete");
     printf("micros():\t\t");
-    for (uint8_t i=MAX;i>0;i--)  {         
+    for (uint8_t i=MAX-1;i>0;i--)  {         
         elapased_ticks[0][i] = micros();
         _delay_ms(DELAY);
         elapased_ticks[1][i] = micros();
 
     }
-    for (uint8_t i=MAX;i>0;i--)  {         
+    for (uint8_t i=MAX-1;i>0;i--)  {         
         printf("%u ",
          (elapased_ticks[1][i]-elapased_ticks[0][i]));
     }

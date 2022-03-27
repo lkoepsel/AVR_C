@@ -509,7 +509,7 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
         OCR0A = pgm_read_word(&(notes_OCR0A[note]));
     
         // UNO PINS 0-7 PORT D        
-        if ((pin >= 0) && (pin <= 7)) {
+        if (pin <= 7) {
             PINport = &PIND;
             DDRport = &DDRD;
             PORTport = &PORTD;
@@ -517,7 +517,7 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
         }
 
         // UNO PINS 8-13 PORT B        
-        else if ((pin >= 8) && (pin <= 13)) {
+        else if (pin <= 13) {
             PINport = &PINB;
             DDRport = &DDRB;
             PORTport = &PORTB;

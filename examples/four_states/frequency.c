@@ -36,18 +36,3 @@ void blue_led(uint8_t intensity) {
     // OCR0A = intensity;
 return;
 }   
-
-void sound(uint16_t freq) {
-    // Speaker, Audible Audio
-    // set UNO pin 10/PB2 to output, 7.8kHz, 50% duty cycle
-    DDRB |=  _BV(DDB1);
-    
-    // TCCR1A [ COM1A1 COM1A0 COM1B1 COM1B0 0 0 WGM11 WGM10  ] = 00100001
-    TCCR1A |= (_BV(COM1A0) | _BV(WGM10));
-
-    // TCCR1B [ 1CNC1 1CES1 0 WGM13 WGM12 CS12 CS11 CS10 ]
-    TCCR1B |= (_BV(WGM13) | _BV(CS10));
-
-    OCR1A = freq;
-return;
-}	

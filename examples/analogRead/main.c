@@ -24,11 +24,10 @@ int main (void)
     const uint8_t analog_pin = A0;
     uint16_t max_value = 0;
     uint16_t min_value = 1023;
-    uint16_t analog_value;
 
     puts("Testing analogRead");
     while(1) {
-            analog_value = analogRead(analog_pin);
+            uint16_t analog_value = analogRead(analog_pin);
             if (analog_value > max_value) 
             {
                 max_value = analog_value;
@@ -38,7 +37,7 @@ int main (void)
                 min_value = analog_value;
             }
             uint16_t voltage = (analog_value << 2);
-            printf("Pin: %d Value: %d Voltage: %d Min: %d Max: %d\n",\
+            printf("Pin: %u Value: %u Voltage: %u Min: %u Max: %u\n",\
             analog_pin, analog_value, voltage, min_value, max_value);
             delay(2000);
     }

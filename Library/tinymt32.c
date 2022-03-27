@@ -82,7 +82,7 @@ void tinymt32_init(tinymt32_t * random, uint32_t seed) {
  * @param init_key the array of 32-bit integers, used as a seed.
  * @param key_length the length of init_key.
  */
-void tinymt32_init_by_array(tinymt32_t * random, uint32_t init_key[],
+void tinymt32_init_by_array(tinymt32_t * random, const uint32_t init_key[],
                             int key_length) {
     const unsigned int lag = 1;
     const unsigned int mid = 1;

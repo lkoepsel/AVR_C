@@ -2,7 +2,7 @@
 
 uint8_t pinMode(uint8_t apin, uint8_t mode) {
     uint8_t bit, errno = 0;
-    if ((apin >= 0) && (apin <= 7)) {
+    if (apin <= 7) {
         bit = apin;
         // UNO PINS 0-7 PORT D        
         if (mode == INPUT) {
@@ -21,7 +21,7 @@ uint8_t pinMode(uint8_t apin, uint8_t mode) {
     }
 
     // UNO PINS 8-13 PORT B 0-5        
-    else if ((apin >= 8) && (apin <= 13)) {
+    else if (apin <= 13) {
         bit = apin - 8;
         if (mode == INPUT) {
             clr_bit(DDRB, bit);
