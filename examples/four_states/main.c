@@ -3,11 +3,12 @@
 
 /* Put your global variables here */
 // state contains the current state of the FSM
-uint8_t state = 0;
 
-uint8_t LED_bit0 = 4;
-uint8_t LED_bit1 = 3;
-uint8_t BLUE_LED = 6;
+const uint8_t LED_bit0 = 7;
+const uint8_t LED_bit1 = 9;
+const uint8_t BLUE_LED = 6;
+
+uint8_t state = 0;
 
 /* Main */ 
 int main() {
@@ -16,17 +17,17 @@ int main() {
    pinMode(LED_bit0, OUTPUT);
    pinMode(LED_bit1, OUTPUT);
 
-   buttons[UP].uno = 9;
+   buttons[UP].uno = 4;
    pinMode(buttons[UP].uno, INPUT_PULLUP);
-   buttons[ENTER].uno = 10;
+   buttons[ENTER].uno = 12;
    pinMode(buttons[ENTER].uno, INPUT_PULLUP);
 
    init_sysclock_2 ();
-   init_RESET();
+   // init_RESET();
    puts("Finite State Machine (FSM4): Four States (0-3)");
 // while(1) loop routine runs over and over again forever:
     while(1) {
-        printf("Entering FSM4, state = %d\n", state);
+        printf("Entering FSM, state = %d\n", state);
         switch (state)
         {
              case 0:

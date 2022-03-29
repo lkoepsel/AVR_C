@@ -41,7 +41,7 @@ HEADERS=$(SOURCES:.c=.h)
 ## Use this CPPFLAGS with LIBDIR if a library directory is known 
 # CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR)
 ## Else, use this one which simply uses the local directory
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -DSOFT_RESET=$(SOFT_RESET) -I.
 # use below to setup gdb and debugging
 CFLAGS = -Os -mcall-prologues -g3 -std=gnu99 -Wall -Werror -Wundef
 # Use below to optimize size and some speed per avr-libc FAQ

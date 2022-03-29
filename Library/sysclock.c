@@ -24,7 +24,7 @@ ISR (TIMER2_COMPA_vect)
 
     sys_ctr_2++;
 
-    #if RESET_DEFINED
+    #if SOFT_RESET
     //  X times divider for millis() otherwise buttons checked too often
     bounce_delay--;
     if (bounce_delay == 0) {
@@ -93,6 +93,7 @@ void init_sysclock_2 (void)
     sei ();
 }
 
+#if SOFT_RESET
 void init_RESET() {
     /* Use RESET_BUTTON as the pin for the reset button
     *  Change to actual value using define in unolib.h
@@ -121,3 +122,4 @@ uint8_t read_RESET() {
 
     return((PINB & (1 << RESET_BUTTON)) == 0);
 }
+#endif

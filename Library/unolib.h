@@ -12,9 +12,11 @@
 *  See: https://hackaday.com/2015/12/10/embed-with-elliot-debounce-your-noisy-buttons-part-ii/#more-180185
 *  for a explanation of the routine
 */
-#define RESET_DEFINED 1
+
+#if SOFT_RESET
 #define RESET_BUTTON PB7
 #define RESET_MASK  0b11000111
+#endif
 
 #define BOUNCE_DIVIDER 20 // divides millis by this number for checking reset button
 

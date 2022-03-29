@@ -79,12 +79,14 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
 * **user-defined button RESET** - as debugWIRE uses the \~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). 
-	In the current iteration of *sysclock_2*, the RESET pin is defined as PB7. To change it, set the value currently PB7 to be the pin you wish to use and RESET_DEFINED to 1 (see below). 
-	```
-	#define RESET_DEFINED 1
+	There is a environmental variable *SOFT_RESET* in *env.make* which needs to be set (=1) to enable a user-defined button to reset the board. It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of *sysclock.h* and an *init_sysclock_2()*. Three examples already have *reset* enabled, **button**, **millis, and **analogRead**. Additional variables to set are in *unolib.h*:
+	```C
+	#if SOFT_RESET
 	#define RESET_BUTTON PB7
+	#define RESET_MASK  0b11000111
+	#endif
 	```
-	It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of sysclock.h and an *init_sysclock_2()*. Three examples already have *reset* enabled, **button**, **millis, and **analogRead**.
+	I recommend not changing the mask, unless you are experiencing significant debounce issues. The button pin needs to be expressed as pin on port B and with a pin number as shown.
 
 * **Random number generation** - using Mersenne Twister, TinyMT32, 32-bit unsigned integers can be created.. There is are two test routines, *tinymt*, which demonstrates how to setup and use it as well as *rand_test*, which compares the execution time of *tinymt* to *random()*. It appears that rand() is 4 times faster than tinyMT, however, I haven't checked the "randomness" of the two routines.
 
