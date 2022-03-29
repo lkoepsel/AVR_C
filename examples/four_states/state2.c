@@ -10,11 +10,13 @@ void state2() {
         if (buttons[UP].pressed) {
             state = 3;
             unpressed = 0;
+            printf("State2: Up pressed, state = %d\n", state);
         }
         // Enter Button
         if (buttons[ENTER].pressed) {
+            state = 2;
+            unpressed = 1;
             printf("State 2: Enter pressed, state = %d\n", state);
-
             blue_led(MEDIUM);
         }
     }
