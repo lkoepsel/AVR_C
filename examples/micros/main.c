@@ -20,14 +20,14 @@
 
 int main (void)
 {
-    init_sysclock_1 ();
     init_serial();
+    puts("Testing System Ticks (1 tick = 62.5ns)");
 
+    init_sysclock_1 ();
     const uint8_t DELAY = 1;
     const uint8_t MAX = 10;
     uint16_t elapased_ticks[2][MAX];
 
-    puts("Testing System Ticks (1 tick = 62.5ns)");
     printf("Delay of %u ms\n", DELAY);
 
     /* Two loops, one for ticks() and one for micros() */
@@ -39,7 +39,7 @@ int main (void)
 
     }
     for (uint8_t i=MAX-1;i>0;i--)  {         
-        printf("%u ",
+        printf("%i ",
          ((elapased_ticks[1][i]-elapased_ticks[0][i]) >> 4));
     }
     puts(" Complete");
@@ -51,7 +51,7 @@ int main (void)
 
     }
     for (uint8_t i=MAX-1;i>0;i--)  {         
-        printf("%u ",
+        printf("%i ",
          (elapased_ticks[1][i]-elapased_ticks[0][i]));
     }
     puts(" Complete");

@@ -9,9 +9,9 @@
 #define NTASKS 3
 
 // Uno pin numbers
-#define LED0 2
-#define LED1 3
-#define LED2 4
+#define LED0 4
+#define LED1 6
+#define LED2 7
 
 void zero (void) {
     /* toggle led on and off */

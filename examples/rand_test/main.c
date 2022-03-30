@@ -19,7 +19,6 @@ uint32_t randos[gen_x][gen_y];
 int main (void)
 {
     init_sysclock_1();
-    // init_sysclock_2();
     init_serial();
     uint16_t tmt_init;
     uint16_t tmt_done;
