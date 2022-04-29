@@ -6,20 +6,17 @@
 
 #include <avr/io.h>
 #include "delay.h"
-
-#define NTASKS 10
+#define NTASKS 8
 
 // Uno pin numbers
-#define LED0 2 
-#define LED1 3
-#define LED2 4
-#define LED3 5
-#define LED4 6
-#define LED5 7
-#define LED6 0
-#define LED7 1
-#define LED8 2
-#define LED9 3
+const uint8_t LED0 = 2; 
+const uint8_t LED1 = 3;
+const uint8_t LED2 = 4;
+const uint8_t LED3 = 5;
+const uint8_t LED4 = 6;
+const uint8_t LED5 = 7;
+const uint8_t LED6 = 0;
+const uint8_t LED7 = 1;
 
 typedef struct task {
    void (*TickFct)();    // Function to call for task's tick
@@ -27,100 +24,83 @@ typedef struct task {
 
 task tasks[NTASKS];
 
-void zero (void) {
+void t0 (void) {
     /* toggle led on and off */
     PIND |= _BV(LED0);
     return;
 } 
 
-void one (void) {
+void t1 (void) {
     /* toggle led on and off */
     PIND |= _BV(LED1);
     return;
 } 
 
-void two (void) {
+void t2 (void) {
     /* toggle led on and off */
     PIND |= _BV(LED2);
     return;
 } 
 
-void three (void) {
+void t3 (void) {
     /* toggle led on and off */
     PIND |= _BV(LED3);
     return;
 } 
 
-void four (void) {
+void t4 (void) {
     /* toggle led on and off */
     PIND |= _BV(LED4);
     return;
 } 
 
-void five (void) {
+void t5 (void) {
     /* toggle led on and off */
     PIND |= _BV(LED5);
     return;
 } 
 
-void six (void) {
+void t6 (void) {
     /* toggle led on and off */
     PINB |= _BV(LED6);
     return;
 } 
 
-void seven (void) {
+void t7 (void) {
     /* toggle led on and off */
     PINB |= _BV(LED7);
     return;
 } 
 
-void eight (void) {
-    /* toggle led on and off */
-    PINB |= _BV(LED8);
-    return;
-} 
-
-void nine (void) {
-    /* toggle led on and off */
-    PINB |= _BV(LED9);
-    return;
-} 
 
 int main(void)
 {
     DDRD |= _BV(LED0) | _BV(LED1) | _BV(LED2)  | _BV(LED3) | _BV(LED4) | _BV(LED5);
-    DDRB |= _BV(LED6) | _BV(LED7) | _BV(LED8)  | _BV(LED9);
+    DDRB |= _BV(LED6) | _BV(LED7) ;
 
-   uint8_t i = 0;
-   tasks[i].TickFct = &zero;
-   ++i;
-   tasks[i].TickFct = &one;
-   ++i;
-   tasks[i].TickFct = &two;
-   ++i;
-   tasks[i].TickFct = &three;
-   ++i;
-   tasks[i].TickFct = &four;
-   ++i;
-   tasks[i].TickFct = &five;
-   ++i;
-   tasks[i].TickFct = &six;
-   ++i;
-   tasks[i].TickFct = &seven;
-   ++i;
-   tasks[i].TickFct = &eight;
-   ++i;
-   tasks[i].TickFct = &nine;
+    uint8_t i = 0;
+    tasks[i].TickFct = &t0;
+    ++i;
+    tasks[i].TickFct = &t1;
+    ++i;
+    tasks[i].TickFct = &t2;
+    ++i;
+    tasks[i].TickFct = &t3;
+    ++i;
+    tasks[i].TickFct = &t4;
+    ++i;
+    tasks[i].TickFct = &t5;
+    ++i;
+    tasks[i].TickFct = &t6;
+    ++i;
+    tasks[i].TickFct = &t7;
 
-    while (1)
+    for (;;)
     {
-    for (uint8_t taskcount=0; taskcount < NTASKS; ++taskcount)
+    for (int8_t taskcount=0; taskcount < NTASKS; ++taskcount)
         {
             tasks[taskcount].TickFct();
-            // delay(100);
         }
     }
     return(0); 
 }
-

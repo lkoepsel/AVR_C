@@ -102,7 +102,7 @@ void init_sysclock_2 (void)
     /* Initialize timer 2
     * TCCR2A [ COM2A1 COM2A0 COM2B1 COM2B0 0 0 WGM21 WGM20 ] = 00000001
     * WGM22 WGM20 => PWM, Phase Correct, TOP = OCRA
-    * TCCR2B [ FOC2A FOC2B 0 0 WGM22 CS22 CS21 CS20 ]
+    * TCCR2B [ FOC2A FOC2B 0 0 WGM22 CS22 CS21 CS20 ] = 00001011
     * CS22 CS20 => scalar of 32
     * Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
     * -1 to account for overhead = 254

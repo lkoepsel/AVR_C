@@ -4,8 +4,8 @@
 /* Put your global variables here */
 // state contains the current state of the FSM
 
-const uint8_t LED_bit0 = 4;
-const uint8_t LED_bit1 = 7;
+const uint8_t LED_bit0 = 7;
+const uint8_t LED_bit1 = 4;
 const uint8_t BLUE_LED = 6;
 
 uint8_t state = 0;
@@ -17,15 +17,15 @@ int main() {
    pinMode(LED_bit0, OUTPUT);
    pinMode(LED_bit1, OUTPUT);
 
-   buttons[UP].uno = 9;
+   buttons[UP].uno = 10;
    pinMode(buttons[UP].uno, INPUT_PULLUP);
-   buttons[ENTER].uno = 10;
+   buttons[ENTER].uno = 9;
    pinMode(buttons[ENTER].uno, INPUT_PULLUP);
 
    init_sysclock_2 ();
    // Use init_RESET() if you want to setup a soft reset using a user defined
    // button as on the ATmega328PB Xplained Mini
-   init_RESET();
+   // init_RESET();
    puts("Finite State Machine: Four States (0-3)");
 
     while(1) {

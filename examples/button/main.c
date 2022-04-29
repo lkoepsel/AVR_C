@@ -37,7 +37,7 @@ int main (void)
     init_sysclock_2 ();
    // Use init_RESET() if you want to setup a soft reset using a user defined
    // button as on the ATmega328PB Xplained Mini
-   init_RESET();
+   // init_RESET();
 
     /* loop forever, the interrupts are doing the rest */
     for (;;)  
