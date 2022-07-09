@@ -19,3 +19,4 @@ build
 *.eeprom
 *.bloom/
 *env*
+~*

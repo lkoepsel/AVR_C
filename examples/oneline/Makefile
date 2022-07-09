@@ -43,9 +43,14 @@ HEADERS=$(SOURCES:.c=.h)
 ## Else, use this one which simply uses the local directory
 CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -DSOFT_RESET=$(SOFT_RESET) -I.
 # use below to setup gdb and debugging
-CFLAGS = -Os -mcall-prologues -g3 -std=gnu99 -Wall -Werror -Wundef
+# If GCC is < 12.x
+CCFLAGS = -Og -ggdb -std=gnu11 -Wall -Wundef
+# If GCC 12+ Add --param=min-pagesize=0 to solve subscript error on AVR uC
+# "array subscript 0 is outside array bounds"
+# https://gcc.gnu.org/bugzilla//show_bug.cgi?id=105523
+# CFLAGS = -Og -ggdb -std=gnu11 -Wall -Wundef --param=min-pagesize=0 
 # Use below to optimize size and some speed per avr-libc FAQ
-## CFLAGS = -Os -mcall-prologues -g3 -std=gnu99 -Wall -Werror -Wundef
+# CFLAGS = -Os -g3 -std=gnu11 -Wall -Werror -Wundef
 ## Use short (8-bit) data types 
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 ## Splits up object files per function
