@@ -19,7 +19,7 @@ int main (void)
 {
     init_serial();
     init_sysclock_2();
-    init_RESET();
+//    init_RESET();
 
     const uint8_t analog_pin = A0;
     uint16_t max_value = 0;

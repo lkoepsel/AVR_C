@@ -9,6 +9,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <stdint.h>
 
 void delay(uint16_t ticks) ;
 #endif
