@@ -16,8 +16,8 @@
 *  With On/Off set to 1, three tasks run at 500Hz
 */
 #define NTASKS 3
-#define DEFAULT_ON 100
-#define DEFAULT_OFF 100
+#define DEFAULT_ON 500
+#define DEFAULT_OFF 500
 
 typedef struct task {
    volatile uint8_t pin;    // Uno pin 
@@ -35,7 +35,7 @@ enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
 void update (uint8_t taskID) {
     // Based on adafruit lesson on classes
     // Changed digitalWrite() to bit action, due to overhead of dW()
-    uint16_t now = millis();
+    uint16_t now = ticks();
 
     if((tasks[taskID].state == HIGH) && (now - tasks[taskID].elapsed >= tasks[taskID].on))
     {
@@ -54,26 +54,26 @@ void update (uint8_t taskID) {
 
 int main(void)
 {
-    init_sysclock_2 ();
+    init_sysclock_1 ();
 
     // struct: {pin, *port, bit, state, on, off, elapsed}
     uint8_t i = 0;
     tasks[i].pin = LED3;
     tasks[i].state = LOW;
-    tasks[i].on = 50;
-    tasks[i].off = 50;
+    tasks[i].on = DEFAULT_ON;
+    tasks[i].off = DEFAULT_OFF;
     tasks[i].elapsed = 0;
     i++;
     tasks[i].pin = LED5;
     tasks[i].state = LOW;
-    tasks[i].on = 100;
-    tasks[i].off = 100;
+    tasks[i].on = DEFAULT_ON;
+    tasks[i].off = DEFAULT_OFF;
     tasks[i].elapsed = 0;
     i++;
     tasks[i].pin = LED6;
     tasks[i].state = LOW;
-    tasks[i].on = 200;
-    tasks[i].off = 200;
+    tasks[i].on = DEFAULT_ON;
+    tasks[i].off = DEFAULT_OFF;
     tasks[i].elapsed = 0;
 
     // Added port and bit to enable using a set_bit or clr_bit, due to overhead of dW()

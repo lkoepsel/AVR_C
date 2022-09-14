@@ -1,17 +1,18 @@
 /* One line kernal for multitasking
 *  https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
 *  Uses direct pin manipulation using a set bit on Input Port
-*  Delivers 62kHz signal from 10 tasks
+*  Delivers 81kHz signal from 8 tasks
+*  Delivers 207kHz signal from 3 tasks
 */
 
 #include <avr/io.h>
 #include "delay.h"
-#define NTASKS 8
+#define NTASKS 3
 
 // Uno pin numbers
-const uint8_t LED0 = 2; 
-const uint8_t LED1 = 3;
-const uint8_t LED2 = 4;
+const uint8_t LED0 = 3; 
+const uint8_t LED1 = 5;
+const uint8_t LED2 = 6;
 const uint8_t LED3 = 5;
 const uint8_t LED4 = 6;
 const uint8_t LED5 = 7;

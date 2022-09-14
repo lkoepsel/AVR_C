@@ -1,9 +1,10 @@
 /*
 * micros - compare two microsecond counters using system clock
 * Each tick of ticks() is 62.5 ns and 16 ticks are 1 microsecond
+* ticks() = returns the number of ticks elapsed
+* micros() = returns the number of ticks * 16 or microseconds elapsed
 * To test, uses the system delay (blocking, doesn't use clock)
-* Measure pre-delay, measure post-delay, determine delta 
-* of delay then shift right by 4 to get microseconds
+* Get ticks, delay 1 millisecond, get ticks, determine delta and store
 * 
 * The clock wraps around at 4.0959ms, so add 65535 for every n 4.0959 ms
 * Calling ticks is more accurate than micros and won't provide bad values
@@ -31,7 +32,7 @@ int main (void)
     printf("Delay of %u ms\n", DELAY);
 
     /* Two loops, one for ticks() and one for micros() */
-    printf("ticks() -> micros:\t");
+    printf("ticks() in usec:\t");
     for (uint8_t i=MAX-1;i>0;i--)  {         
         elapased_ticks[0][i] = ticks();
         _delay_ms(DELAY);
@@ -43,7 +44,7 @@ int main (void)
          ((elapased_ticks[1][i]-elapased_ticks[0][i]) >> 4));
     }
     puts(" Complete");
-    printf("micros():\t\t");
+    printf("micros() in usec:\t\t");
     for (uint8_t i=MAX-1;i>0;i--)  {         
         elapased_ticks[0][i] = micros();
         _delay_ms(DELAY);
@@ -55,9 +56,9 @@ int main (void)
          (elapased_ticks[1][i]-elapased_ticks[0][i]));
     }
     puts(" Complete");
-    while(1) {
+    // while(1) {
         
-    }
+    // }
     /* return never executed */
-    return (0);
+    return 0;
 }

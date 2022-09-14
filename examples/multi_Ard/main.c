@@ -1,6 +1,6 @@
 /* One line kernal for multitasking
 *  https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
-*  Uses Arduino digitalWrite()
+*  Uses Arduino-style digitalWrite()
 *  Overhead from dw delivers 22kHz signal from 10 tasks
 */
 
@@ -9,7 +9,7 @@
 #include "pinMode.h"
 #include "digitalWrite.h"
 
-#define NTASKS 10
+#define NTASKS 3
 
 // Uno pin numbers
 enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};

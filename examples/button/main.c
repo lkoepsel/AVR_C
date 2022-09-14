@@ -29,9 +29,9 @@ int main (void)
     puts("Testing Button Presses");
     uint8_t count[MAX_BUTTONS] = {0};
 
-    buttons[0].uno = 9;
+    buttons[0].uno = 2;
     pinMode(buttons[0].uno, INPUT_PULLUP);
-    buttons[1].uno = 10;
+    buttons[1].uno = 4;
     pinMode(buttons[1].uno, INPUT_PULLUP);
 
     init_sysclock_2 ();
