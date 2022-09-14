@@ -7,17 +7,49 @@
  
 #include <stdio.h>
 #include "uart.h"
+#include "sysclock.h"
+#include "delay.h"
+
 
 int main(void) {    
 
     init_serial();
+    init_sysclock_1 ();
     
-    puts("Floating Point Test");
-    float x = 5000.00;
-    float y = 2500.00;
-    float z = x * y;
+    uint16_t now;
+    uint16_t elapsed;
+    float x = 32767.00;
+    float y = 32767.00;
 
-    printf("%f * %f = %f\n", x, y, z);        
+    puts("Floating Point Test");
+    for (uint16_t i = 0; i < 4; i++)
+    {
+        for (uint16_t j = 0; j < 4; j++)
+        {
+            now = ticks();
+            uint32_t k = i * j;
+            elapsed = ticks();
+
+
+            printf("Int: %u * %u = %lu in %u %u, %u ticks\n",\
+                i, j, k, elapsed, now, elapsed-now);        
+
+        }
+    }
+
+    for (uint16_t i = 0; i < 4; i++)
+    {
+        for (uint16_t j = 0; j < 4; j++)
+        {
+            now = ticks();
+            float z = x + i * y - j;
+            elapsed = ticks();
+
+            printf("Float: %f * %f = %e in %u %u, %u ticks\n",\
+                x, y, z, elapsed, now, elapsed-now);        
+
+        }
+    }
         
     return 0;
 }
