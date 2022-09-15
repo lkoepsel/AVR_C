@@ -18,13 +18,11 @@ int main(void) {
     
     uint16_t now;
     uint16_t elapsed;
-    float x = 32767.00;
-    float y = 32767.00;
 
-    puts("Floating Point Test");
-    for (uint16_t i = 0; i < 4; i++)
+    puts("Integer and Floating Point Test");
+    for (uint16_t i = 4; i < 6; i++)
     {
-        for (uint16_t j = 0; j < 4; j++)
+        for (uint16_t j = 25; j < 27; j++)
         {
             now = ticks();
             uint32_t k = i * j;
@@ -37,16 +35,16 @@ int main(void) {
         }
     }
 
-    for (uint16_t i = 0; i < 4; i++)
+    for (uint16_t i = 4; i < 8; i++)
     {
-        for (uint16_t j = 0; j < 4; j++)
+        for (uint16_t j = 25; j < 27; j++)
         {
             now = ticks();
-            float z = x + i * y - j;
+            float z = (float)i * (float)j;
             elapsed = ticks();
 
             printf("Float: %f * %f = %e in %u %u, %u ticks\n",\
-                x, y, z, elapsed, now, elapsed-now);        
+                (float)i, (float)j, z, elapsed, now, elapsed-now);        
 
         }
     }
