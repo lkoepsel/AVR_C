@@ -20,5 +20,5 @@ int main (void)
             analog_pin, analog_value, voltage, voltage);
             delay(1000);
     }
-    return(0);
+    return 0;
 }

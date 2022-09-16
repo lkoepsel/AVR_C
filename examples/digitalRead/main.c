@@ -22,5 +22,5 @@ int main (void)
         uint8_t val = digitalRead(inPin);   // read the input pin
         digitalWrite(ledPin, val);    // sets the LED to the inverse of button's value
     }
-    return(0);
+    return 0;
 }

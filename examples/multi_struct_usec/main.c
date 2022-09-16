@@ -87,5 +87,5 @@ int main(void)
             update(task_cntr);
         }
     }
-    return(0); 
+    return 0; 
 }

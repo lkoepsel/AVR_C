@@ -16,5 +16,5 @@ int main(void)
         digitalWrite(LED_BUILTIN, LOW);
         delay(200);
     }
-    return(0); 
+    return 0; 
 }

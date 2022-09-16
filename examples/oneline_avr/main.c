@@ -44,6 +44,6 @@ int main(void)
             (*tasklist[taskcount])();
         }
     }
-    return(0); 
+    return 0; 
 }
 

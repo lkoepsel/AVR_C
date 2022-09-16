@@ -18,5 +18,5 @@ int main(void)
         PORTB &= ~(_BV(PORTB5));
         _delay_ms(100);
     }
-    return(0); 
+    return 0; 
 }

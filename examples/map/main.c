@@ -31,7 +31,7 @@ int main(void) {
     uint16_t now;
     uint16_t elapsed;
 
-    int32_t ADC_value = 1020;
+    int32_t ADC_value = 512;
     int32_t ADC_max = 1023;
     int32_t ADC_min = 0;
     

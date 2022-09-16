@@ -114,6 +114,6 @@ int main(void)
             tasks[taskcount].TickFct();
         }
     }
-    return(0); 
+    return 0; 
 }
 
