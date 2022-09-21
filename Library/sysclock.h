@@ -18,16 +18,16 @@
 #include <avr/sleep.h>
 #include "tone.h"
 
-uint16_t micros();
-uint16_t millis();
-uint16_t ticks();
+uint16_t micros(void);
+uint16_t millis(void);
+uint16_t ticks(void);
 
 void init_sysclock_0 (void);
 void init_sysclock_1 (void);
 void init_sysclock_2 (void);
 void init_RESET(void);
 
-uint8_t is_RESET_pressed();
-uint8_t read_RESET();
+uint8_t is_RESET_pressed(void);
+uint8_t read_RESET(void);
 
 #endif

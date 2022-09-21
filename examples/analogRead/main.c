@@ -11,6 +11,7 @@ int main (void)
     init_serial();
 
     const uint8_t analog_pin = A0;
+    pinMode(analog_pin, INPUT);
 
     puts("Testing analogRead");
     while(1) {

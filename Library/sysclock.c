@@ -62,11 +62,11 @@ ISR (TIMER2_COMPA_vect)
 }
 #endif
 
-uint16_t micros() {
+uint16_t micros(void) {
     return(ticks() >> 4);
 }
 
-uint16_t ticks() {
+uint16_t ticks(void) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
         return(TCNT1);
@@ -74,7 +74,7 @@ uint16_t ticks() {
     return 0;
 }
 
-uint16_t millis() {
+uint16_t millis(void) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
         return(sys_ctr_2);
@@ -117,7 +117,7 @@ void init_sysclock_2 (void)
 }
 
 #if SOFT_RESET
-void init_RESET() {
+void init_RESET(void) {
     /* Use RESET_BUTTON as the pin for the reset button
     *  Change to actual value using define in unolib.h
     *  It is expected to be ACTIVE LOW and on PORT B
@@ -126,7 +126,7 @@ void init_RESET() {
     PORTB |= (_BV(RESET_BUTTON));
 }
 
-uint8_t is_RESET_pressed(){
+uint8_t is_RESET_pressed(void){
 
     static uint8_t reset_history = 0;
     uint8_t pressed = 0;    
@@ -141,7 +141,7 @@ uint8_t is_RESET_pressed(){
     return pressed;
 }
 
-uint8_t read_RESET() {
+uint8_t read_RESET(void) {
 
     return((PINB & (1 << RESET_BUTTON)) == 0);
 }
