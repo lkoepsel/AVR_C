@@ -16,35 +16,27 @@ int main (void)
     while(1) 
     {
         tone(musicPin, NOTE_C4, d4);
-        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_G3, d8);
-        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_G3, d8);
-        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_A3, d4);
-        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_G3, d4);
-        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, 0, d4);
-        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_B3, d4);
-        noTone(musicPin);
         delay(internote);
     
         tone(musicPin, NOTE_C4, d4);
-        noTone(musicPin);
         delay(internote);
     }
     return (0);

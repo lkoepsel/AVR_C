@@ -34,39 +34,31 @@ int main() {
     uint8_t musicPin = 11;
 
     // notes in the melody:
-    int melody[] = {
-
+    int melody[] = 
+    {
     NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
     };
 
     // note durations: 4 = quarter note, 8 = eighth note, etc.:
-    int noteDurations[] = {
-
+    int noteDurations[] = 
+    {
     d4, d8, d8, d4, d4, d4, d4, d4
     };
 
     // iterate over the notes of the melody:
-
     for (int thisNote = 0; thisNote < 8; thisNote++) {
 
       // note duration is pre-calculated and defined using a "d"
-
       //e.g. quarter note = d4, eighth note = d8, etc.
-
       tone(musicPin, melody[thisNote], noteDurations[thisNote]);
 
       // to distinguish the notes, set a minimum time between them.
-
-      // the note's duration + 30% seems to work well:
-      // a better way is to use 25% so it doesn't required multiplication
-      // 25% is divide by 4 or shift right twice
-
-      int pauseBetweenNotes = noteDurations[thisNote] + (noteDurations[thisNote] >> 2);
+      // in this case, divide the notes duration by 4
+      int pauseBetweenNotes = (noteDurations[thisNote] >> 2);
 
       delay(pauseBetweenNotes);
 
       // stop the tone playing:
-
       noTone(musicPin);
 
     }
