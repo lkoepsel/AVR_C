@@ -37,11 +37,24 @@ void noTone(uint8_t pin);
 
 /* note duration delay values, must be used after every note in (tone)
 */
+#define d1 1000
 #define d2 500
 #define d4 250
 #define d8 125
 #define d16 63
 #define internote 125
+
+#define whole d1
+#define half d2
+#define quarter d4
+#define eighth d8
+#define sixteenth d16
+
+#define d_whole d1+d1/2
+#define d_half d2+d2/2
+#define d_quarter d4+d4/2
+#define d_eighth d8+d8/2
+#define d_sixteenth d16+d16/2
 
 /*
 * offsets required for timer/counters 
