@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "uart.h"
+#include "sysclock.h"
 
 const char ParameterA[] PROGMEM = "Parameter A";
 const char ParameterB[] PROGMEM = "Parameter B";
@@ -66,14 +67,35 @@ int main (void)
 
     init_serial();
     
+    init_sysclock_1 ();    
+    uint16_t now;
+    uint16_t elapsed;
+    uint16_t now_ro;
+    uint16_t elapsed_ro;
+
+    printf("Ticks_RO: %u\n", ticks_ro());
+    now = ticks();
+    now_ro = ticks_ro();
     PrintParameterValue(ParameterA , 10);
+    elapsed = ticks();
+    elapsed_ro = ticks_ro();
     PrintParameterValue(ParameterB , 20);
+    printf("PrintParameterValue Execution time: %u %u %u\n",\
+        elapsed - now, elapsed_ro, now_ro);
 
+    now = ticks();
     printProgmem(0, 10);
+    elapsed = ticks();
     printProgmem(1, 20);
+    printf("printProgmem Execution time: %u %u %u\n",
+    elapsed - now, elapsed_ro, now_ro);
 
+    now = ticks();
     printbychar(ParameterA, 10);
+    elapsed = ticks();
     printbychar(ParameterB, 20);
+    printf("printbychar Execution time: %u %u %u\n",\
+    elapsed - now, elapsed_ro, now_ro);
 
     return 0;
 }

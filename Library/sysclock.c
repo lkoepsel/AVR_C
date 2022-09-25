@@ -4,6 +4,7 @@
 #include <util/atomic.h>
 #include <avr/interrupt.h>
 
+volatile uint16_t sys_ctr_1 = 0;
 volatile uint16_t sys_ctr_2 = 0;
 volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 
@@ -12,6 +13,11 @@ extern button buttons[MAX_BUTTONS];
 ISR (TIMER0_OVF_vect)      
 {
     *PINport |= _BV(PINbit);
+}
+
+ISR (TIMER1_OVF_vect)      
+{
+    sys_ctr_1++;
 }
 
 // Two versions for sysclock_2 ISR
@@ -74,6 +80,14 @@ uint16_t ticks(void) {
     return 0;
 }
 
+uint16_t ticks_ro(void) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        return(sys_ctr_1);
+    }
+    return 0;   
+}
+
 uint16_t millis(void) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
@@ -95,6 +109,8 @@ void init_sysclock_1 (void)
     */
     TCCR1A = 0;
     TCCR1B |= ( _BV(CS10));
+    TIMSK1 |= _BV(TOIE1);
+    sei();
 }
 
 void init_sysclock_2 (void)          

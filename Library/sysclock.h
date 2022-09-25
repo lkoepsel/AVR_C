@@ -21,6 +21,7 @@
 uint16_t micros(void);
 uint16_t millis(void);
 uint16_t ticks(void);
+uint16_t ticks_ro(void);
 
 void init_sysclock_0 (void);
 void init_sysclock_1 (void);

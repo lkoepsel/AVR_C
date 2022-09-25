@@ -14,8 +14,8 @@
 int main(void) {    
 
     init_serial();
-    init_sysclock_1 ();
-    
+
+    init_sysclock_1 ();    
     uint16_t now;
     uint16_t elapsed;
 
