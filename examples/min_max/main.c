@@ -9,33 +9,10 @@
 #include "analogRead.h"
 #include "sysclock.h"
 
-uint16_t min(uint16_t value, uint16_t min) {
-    if (value < min)
-    {
-        return value;
-    }
-    else
-    {
-        return min;
-    }
-}
-
-uint16_t max(uint16_t value, uint16_t max) {
-    if (value > max)
-    {
-        return value;
-    }
-    else
-    {
-        return max;
-    }
-}
-
 int main (void)
 {
     init_serial();
     init_sysclock_2();
-//    init_RESET();
 
     const uint8_t analog_pin = A0;
     uint16_t max_value = 0;

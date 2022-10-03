@@ -8,3 +8,8 @@ MCUSR = 0;
 wdt_disable();
 return;
 }
+
+uint16_t d_analogRead(uint8_t pin) 
+{
+   return (uint16_t) rand() % 1023; 
+}

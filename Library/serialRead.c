@@ -1,9 +1,9 @@
 #include "serialRead.h"
 
-uint16_t serialRead() 
+int16_t serialRead(void) 
 {
-    uint16_t value;
-    uint8_t values = scanf("%4d", &value);
+    int16_t value;
+    uint8_t values = scanf("%4i", &value);
 
     if (values == 0)
     {
@@ -17,13 +17,9 @@ uint16_t serialRead()
     }
     else 
     {
-        if (value > 1023)
-        {
-            value = 1023;
-        }
-        if (value < 0)
-        {
-            value = 0;
-        }
-    }    return value; 
+        value = min(value, 1023);
+        value = max(value, 0);
+
+    }    
+    return value; 
 }

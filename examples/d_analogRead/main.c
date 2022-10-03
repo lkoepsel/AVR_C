@@ -8,11 +8,6 @@
 #include "delay.h"
 #include "unolib.h"
 
-uint16_t d_analogRead(uint8_t pin) 
-{
-   return (uint16_t) rand() % 1023; 
-}
-
 void d_pinMode() { }  // add pin and INPUT, when Library pinMode() is used
 
 int main (void)
@@ -20,11 +15,18 @@ int main (void)
     init_serial();
 
     const uint8_t analog_pin = A0;
+    uint16_t max_value = 0;
+    uint16_t min_value = 1023;
+
     d_pinMode(); // add pin and INPUT, when Library pinMode() is used
 
     puts("Testing dummy analogRead");
-    while(1) {
+    while(TRUE) {
             uint16_t analog_value = d_analogRead(analog_pin);
+            min_value = min(analog_value, min_value);
+            max_value = max(analog_value, max_value);
+            printf("Pin: %u Value: %u Min: %u Max: %u\n",\
+                analog_pin, analog_value, min_value, max_value);
             float voltage = (analog_value * .00488);
             printf("Pin: %u Value: %u Voltage: %5.3f\n",\
             analog_pin, analog_value, voltage);
