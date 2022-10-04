@@ -20,7 +20,7 @@
 
 // struct flasher replaces class flasher in Adafruit example
 // struct contains the variables required to maintain pin, state and time
-typedef struct flasher 
+struct flasher 
 {
    volatile uint8_t pin;    // Uno pin 
    uint8_t state;           // Is pin HIGH or LOW
@@ -31,22 +31,21 @@ typedef struct flasher
 
 // now setup an array of structs to easily manage them, we can 
 // reference each struct by a subscript just like an array
-flasher flashers[Nflashers];
+struct flasher flashers[Nflashers];
 
 // init is similar to the Flasher Constructor in the example
 // and initializes the member variables and state, and sets LED pin to OUTPUT
-struct flasher init(uint8_t pin, uint8_t state, uint16_t on, uint16_t off,\
+void init(uint8_t index, uint8_t pin, uint8_t state, uint16_t on, uint16_t off,\
         uint16_t elapsed)
 {
-    struct flasher temp;
-    temp.pin = pin;
-    temp.state = state;
-    temp.on = on;
-    temp.off = off;
-    temp.elapsed = elapsed;
+    flashers[index].pin = pin;
+    flashers[index].state = state;
+    flashers[index].on = on;
+    flashers[index].off = off;
+    flashers[index].elapsed = elapsed;
 
     pinMode(pin, OUTPUT);
-    return temp;
+    return ;
 }
 
 // update is similar to Classy update in that it checks the time and changes
@@ -80,9 +79,9 @@ int main(void)
     // initialize each flasher (struct: {pin, state, on, off, elapsed})
     // in comparison to Classy example, each LED only requires 1 line of code :)
     // AND update Nflashers to number of flashers
-    flashers[0] = init(3, LOW, DEFAULT_ON, DEFAULT_OFF, 0);
-    flashers[1] = init(5, LOW, DEFAULT_ON << 1, DEFAULT_OFF << 1, 0);
-    flashers[2] = init(6, LOW, DEFAULT_ON << 2, DEFAULT_OFF << 2, 0);
+    init(0, 3, LOW, DEFAULT_ON, DEFAULT_OFF, 0);
+    init(1, 5, LOW, DEFAULT_ON << 1, DEFAULT_OFF << 1, 0);
+    init(2, 6, LOW, DEFAULT_ON << 2, DEFAULT_OFF << 2, 0);
 
     // same as the Adafruit example, update is very simple
     // in this case, we simply increment through our array of structs

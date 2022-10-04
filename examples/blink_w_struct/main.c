@@ -2,15 +2,16 @@
 #include "pinMode.h"
 #include "digitalWrite.h"
 #include "sysclock.h"
+
 #define N_LEDS 9
-typedef struct blinker
+struct blinker
 {
   uint8_t ledPin;           // the number of the LED pin
   uint8_t state;            // the state (HIGH/LOW) the LED pin
   uint16_t interval;        // interval at which to blink (milliseconds)
   uint16_t previousMillis;  // will store last time LED was updated
-} blinker;
-blinker LEDS[N_LEDS];
+} ;
+struct blinker LEDS[N_LEDS];
 
 void init(uint8_t index, uint8_t ledPin, uint8_t state, uint16_t interval,\
     uint16_t previousMillis)

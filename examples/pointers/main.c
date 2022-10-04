@@ -35,14 +35,14 @@ int main(void) {
     p_numbers = numbers;
 
     // Pointers and Structures
-    typedef struct LED
+    struct LED
     {
        volatile uint8_t pin;    // Uno pin 
        uint8_t state;           // Is pin HIGH or LOW
        uint16_t on;             // Time on
        uint16_t off;            // Time off
        uint16_t elapsed;        // Time elapsed sinced last in loop
-    } LED;
+    } ;
 
     struct LED *p_LED;
     struct LED LED0;
@@ -60,7 +60,10 @@ int main(void) {
     puts("Simple Pointers");
     printf("The address of x is %p and its value is %i\n", p_x, x);        
     printf("The address of y is %p and its value is %i\n", p_y, y);
-    printf("The address of z is %p and its NULL\n", p_z);
+    if (!p_z) 
+    {
+        printf("The address of z is %p and it is NULL\n", p_z);
+    }
     
     puts("\nPointers to pointers");
     printf("The address of the pointer to x is %p\n", p_p_x);
@@ -76,6 +79,8 @@ int main(void) {
             i, p_numbers, &numbers[i], *p_numbers, numbers[i]);
         p_numbers++;    
     }
+    p_numbers = numbers;
+    printf("The value of *(p_numbers + 3) is %u\n", *(p_numbers + 3));
     
     puts("\nPointers and Structures");
     printf("LED0 %p contains pin %u state %u on %u off %u and elapsed %u\n",\

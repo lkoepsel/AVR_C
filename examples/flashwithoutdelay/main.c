@@ -11,12 +11,12 @@
 // constants won't change. Used here to 
 // set pin number and time interval:
 const uint8_t ledPin =  3;        // the number of the LED pin
-const uint32_t OnTime = 250;      // interval On (milliseconds)
-const uint32_t OffTime = 750;     // interval Off (milliseconds)
+const uint16_t OnTime = 250;      // interval On (milliseconds)
+const uint16_t OffTime = 750;     // interval Off (milliseconds)
 
 // Variables will change:
 uint8_t ledState = LOW;           // LED State variable, tracks state of LED
-uint32_t previousMillis = 0;        // will store last time LED was updated
+uint16_t previousMillis = 0;        // will store last time LED was updated
 
 int main (void)
 {
@@ -29,7 +29,7 @@ int main (void)
     while(1)
     {
         // check to see if it's time to blink the LED
-        uint32_t currentMillis = millis();
+        uint16_t currentMillis = millis();
 
         if ((ledState == HIGH) && (currentMillis - previousMillis >= OnTime)) 
         {
