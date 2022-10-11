@@ -38,12 +38,8 @@ uint16_t d_analogRead(uint8_t pin) ;
 
 #define BOUNCE_DIVIDER 20 // divides millis by this number for checking reset button
 
-/* Arduino Definitions handy for AVR_C      */
-
-
-
 // https://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_softreset 
-// Function Pototype
+// Function Prototype
 void wdt_init(void) __attribute__((naked)) __attribute__((section(".init3")));
 
 #define soft_reset() \

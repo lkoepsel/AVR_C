@@ -13,11 +13,11 @@
 /* Defaults:
 *  NTASKS: Number of tasks to be defined
 *  DEFAULT_ON/DEFAULT_OFF: Times (msec) for task to be on/off
-*  With On/Off set to 1, three tasks run at 500Hz
+*  With On/Off set to 435, three tasks run at 18kHz (fastest freq)
 */
 #define NTASKS 3
-#define DEFAULT_ON 500
-#define DEFAULT_OFF 500
+#define DEFAULT_ON 435
+#define DEFAULT_OFF 435
 
 typedef struct task {
    volatile uint8_t pin;    // Uno pin 
@@ -31,6 +31,17 @@ task tasks[NTASKS];
 
 // Uno pin numbers
 enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
+
+void init(uint8_t index, uint8_t pin, uint8_t state, uint16_t on, uint16_t off,\
+    uint16_t elapsed)
+{
+    tasks[index].pin = pin;
+    tasks[index].state = state;
+    tasks[index].on = on;
+    tasks[index].off = off;
+    tasks[index].elapsed = elapsed;
+    pinMode(pin, OUTPUT);
+}
 
 void update (uint8_t taskID) {
     // Based on adafruit lesson on classes
@@ -55,31 +66,12 @@ void update (uint8_t taskID) {
 int main(void)
 {
     init_sysclock_1 ();
+    init(0, 3, 0, DEFAULT_ON, DEFAULT_OFF, 0);
+    init(1, 5, 0, DEFAULT_ON, DEFAULT_OFF, 0);
+    init(2, 6, 0, DEFAULT_ON, DEFAULT_OFF, 0);
 
-    // struct: {pin, *port, bit, state, on, off, elapsed}
-    uint8_t i = 0;
-    tasks[i].pin = LED3;
-    tasks[i].state = LOW;
-    tasks[i].on = DEFAULT_ON;
-    tasks[i].off = DEFAULT_OFF;
-    tasks[i].elapsed = 0;
-    i++;
-    tasks[i].pin = LED5;
-    tasks[i].state = LOW;
-    tasks[i].on = DEFAULT_ON;
-    tasks[i].off = DEFAULT_OFF;
-    tasks[i].elapsed = 0;
-    i++;
-    tasks[i].pin = LED6;
-    tasks[i].state = LOW;
-    tasks[i].on = DEFAULT_ON;
-    tasks[i].off = DEFAULT_OFF;
-    tasks[i].elapsed = 0;
+    // init structs: {index, pin, state, on, off, elapsed}
 
-    // Added port and bit to enable using a set_bit or clr_bit, due to overhead of dW()
-    for (uint8_t task_cntr=0; task_cntr < NTASKS; ++task_cntr) {
-        pinMode(tasks[task_cntr].pin, OUTPUT);
-    }
     while (1)
     {
     for (uint8_t task_cntr=0; task_cntr < NTASKS; ++task_cntr)

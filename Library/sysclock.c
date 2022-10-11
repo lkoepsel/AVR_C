@@ -10,7 +10,12 @@ volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 
 extern button buttons[MAX_BUTTONS];
 
-ISR (TIMER0_OVF_vect)      
+ISR (TIMER0_COMPA_vect)      
+{
+    *PINport |= _BV(PINbit);
+}
+
+ISR (TIMER0_COMPB_vect)      
 {
     *PINport |= _BV(PINbit);
 }

@@ -2,11 +2,9 @@
 // Adafruit tutorial:
 // https://learn.adafruit.com/multi-tasking-the-arduino-part-1?view=all
 
-#include "unolib.h"
 #include "pinMode.h"
 #include "digitalWrite.h"
 #include "sysclock.h"
-
 
 // constants won't change. Used here to 
 // set pin number and time interval:
