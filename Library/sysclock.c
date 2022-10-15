@@ -4,15 +4,16 @@
 #include <util/atomic.h>
 #include <avr/interrupt.h>
 
-volatile uint16_t sys_ctr_1 = 0;
+volatile uint16_t sys_ctr_0 = 0;
+volatile uint16_t ticks_ro_ctr = 0;
 volatile uint16_t sys_ctr_2 = 0;
 volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 
 extern button buttons[MAX_BUTTONS];
 
-ISR (TIMER0_COMPA_vect)      
+ISR (TIMER0_OVF_vect)      
 {
-    *PINport |= _BV(PINbit);
+    sys_ctr_0++;
 }
 
 ISR (TIMER0_COMPB_vect)      
@@ -22,7 +23,7 @@ ISR (TIMER0_COMPB_vect)
 
 ISR (TIMER1_OVF_vect)      
 {
-    sys_ctr_1++;
+    ticks_ro_ctr++;
 }
 
 // Two versions for sysclock_2 ISR
@@ -73,6 +74,14 @@ ISR (TIMER2_COMPA_vect)
 }
 #endif
 
+uint16_t servo_clock(void) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        return(sys_ctr_0);
+    }
+    return 0;   
+}
+
 uint16_t micros(void) {
     return(ticks() >> 4);
 }
@@ -88,7 +97,7 @@ uint16_t ticks(void) {
 uint16_t ticks_ro(void) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        return(sys_ctr_1);
+        return(ticks_ro_ctr);
     }
     return 0;   
 }
