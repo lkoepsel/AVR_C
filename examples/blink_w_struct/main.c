@@ -3,7 +3,7 @@
 #include "digitalWrite.h"
 #include "sysclock.h"
 
-#define N_LEDS 9
+#define N_LEDS 4
 struct blinker
 {
   uint8_t ledPin;           // the number of the LED pin
@@ -28,10 +28,10 @@ int main (void)
 {
     init_sysclock_2 ();
     // Parameters: index, pin, state, interval, previous
-    init(0, 3, LOW, 125, 0);
-    init(1, 5, LOW, 250, 0);
-    init(2, 6, LOW, 375, 0);
-    init(3, 8, LOW, 125, 0);
+    init(0, 2, LOW, 125, 0);
+    init(1, 3, LOW, 250, 0);
+    init(2, 4, LOW, 375, 0);
+    init(3, 5, LOW, 125, 0);
     init(4, 9, LOW, 250, 0);
     init(5, 10, LOW, 375, 0);
     init(6, 11, LOW, 125, 0);

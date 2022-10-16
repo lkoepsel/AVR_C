@@ -10,8 +10,8 @@
 
 // Uno pin numbers
 #define LED0 3
-#define LED1 5
-#define LED2 6
+#define LED1 4
+#define LED2 5
 
 void zero (void) {
     /* toggle led on and off */

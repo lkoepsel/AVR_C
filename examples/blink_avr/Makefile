@@ -44,7 +44,7 @@ CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -DSOFT_RESET=$(SOFT_RESET) -I.  -I$(L
 # CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.
 # use below to setup gdb and debugging
 # If GCC is < 12.x
-CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror
+CFLAGS = -Og -ggdb3 -std=gnu99 -Wall -Wundef -Werror
 # If GCC 12+ Add --param=min-pagesize=0 to solve subscript error on AVR uC
 # "array subscript 0 is outside array bounds"
 # https://gcc.gnu.org/bugzilla//show_bug.cgi?id=105523
