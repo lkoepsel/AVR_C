@@ -1,8 +1,8 @@
-/* One line kernal for multitasking
-*  https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
-*  Designed using Arduino-style code, provides a 67kHz 1/n duty cycle signal
-*  With three functions, 67kHz 33% duty cycle signal
-*/
+// One line kernal for multitasking
+// https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
+// Designed using pure Arduino-style code, as it tracks state and uses digitalWrite
+// Provides a 50% duty cycle signal
+// With three functions, 36kHz 50% duty cycle signal
 
 #include "pinMode.h"
 #include "digitalWrite.h"
@@ -11,24 +11,30 @@
 
 // Uno pin numbers
 #define LED0 3
-#define LED1 5
-#define LED2 6
+#define LED1 4
+#define LED2 5
+uint8_t state0 = LOW;
+uint8_t state1 = LOW;
+uint8_t state2 = LOW;
 
 void zero (void) {
     /* toggle led on and off */
-    digitalWrite(LED0, TOG);
+    state0 = !state0;
+    digitalWrite(LED0, state0);
     return;
 } 
 
 void one (void) {
     /* toggle led on and off */
-    digitalWrite(LED1, TOG);
+    state1 = !state1;
+    digitalWrite(LED1, state1);
     return;
 } 
 
 void two (void) {
     /* toggle led on and off */
-    digitalWrite(LED2, TOG);
+    state2 = !state2;
+    digitalWrite(LED2, state2);
     return;
 } 
 

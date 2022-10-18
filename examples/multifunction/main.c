@@ -1,23 +1,25 @@
-/* One line kernal for multitasking
-*  https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
-*  Uses direct pin manipulation using a set bit on Input Port
-*  Delivers 81kHz signal from 8 tasks
-*  Delivers 207kHz signal from 3 tasks
-*/
+// One line kernal for multitasking
+//  https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/
+//  Uses direct pin manipulation using a set bit on Input Port
+//  Delivers 81kHz signal from 8 tasks
+//  Delivers 207kHz signal from 3 tasks
+//
 
 #include <avr/io.h>
 #include "delay.h"
-#define NTASKS 3
+#define NTASKS 6
 
 // Uno pin numbers
-const uint8_t LED0 = 3; 
-const uint8_t LED1 = 5;
-const uint8_t LED2 = 6;
-const uint8_t LED3 = 5;
-const uint8_t LED4 = 6;
-const uint8_t LED5 = 7;
-const uint8_t LED6 = 0;
-const uint8_t LED7 = 1;
+enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7};
+
+#define LED0  0 
+#define LED1  1
+#define LED2  2
+#define LED3  3
+#define LED4  4
+#define LED5  5
+#define LED6  6
+#define LED7  7
 
 typedef struct task {
    void (*TickFct)();    // Function to call for task's tick
