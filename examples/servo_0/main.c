@@ -21,31 +21,27 @@
 // Pin 5/PD5/OCR0B has a 5.8% duty cycle or 15/255 => 1.025ms (measured)                    
 // Pin 6/PD6/OCR0A has a 11.6% duty cycle or 30/255 => 1.987ms (measured)
 #include <avr/io.h>
-#include <stdio.h>
-#include "uart.h"
 #include "pinMode.h"
 #include "delay.h"
-#include "serialRead.h"
 #include "analogRead.h"
 #include "sysclock.h"
+#include "map.h"
 
-const uint8_t MIN_PULSE = 6;
-const uint8_t MAX_PULSE = 36;
+const uint8_t PULSE_MIN = 6;
+const uint8_t PULSE_MAX = 36;
+const uint16_t SERVO_DELAY = 250;
 const uint8_t SERVO_CONTROL_0 = 6;
 const uint8_t SERVO_POS_PIN_0 = A0;
 const uint8_t SERVO_CONTROL_1 = 5;
-const uint8_t SERVO_POS_PIN = A1;
-const uint16_t SERVO_DELAY = 250;
+const uint8_t SERVO_POS_PIN_1 = A1;
+const uint8_t POT_PIN = A2;
+const uint16_t POT_MAX = 1023;
+const uint16_t POT_MIN = 0;
+volatile uint16_t pot_value = POT_MIN;
+volatile uint16_t servo_pos = 0;
 
-// struct servo {
-//    uint8_t ctrl_pin;  // Uno TC0 pin (6 or 5) to control the servo
-//    uint8_t pos_pin;            // Uno analog pin to read position
-//    uint16_t pulse;             // pulse value to move to position
-//    uint16_t position;          // position of servo
-//    uint8_t *OCR0n;             // Address of the timer register for the pulse
-// } servo;
 
-// struct servo servos[2]; // as servo pwm is limited to TC0, only 2 servos allowed
+uint8_t PULSE = PULSE_MIN;
 
 uint8_t constrain(uint8_t value, uint8_t min, uint8_t max) {
     if (value < min)
@@ -62,81 +58,46 @@ uint8_t constrain(uint8_t value, uint8_t min, uint8_t max) {
     }
 }
 
-// void init_servo(uint8_t index, uint8_t ctrl_pin, uint8_t pos_pin,
-//     uint16_t pulse, uint16_t position, uint8_t *OCR0n)
-// {
-//     servo[index].ctrl_pin = ctrl_pin;
-//     servo[index].pos_pin = pos_pin;
-//     servo[index].pulse = pulse;
-//     servo[index].position = position;
-//     servo[index].OCR0n = OCR0n;
-// }
-
-void init_pwm(void)
+void init_pwms(void)
 {
-    pinMode(5, OUTPUT);
-    pinMode(6, OUTPUT);
-    pinMode(SERVO_POS_PIN, INPUT);
+    pinMode(SERVO_CONTROL_0, OUTPUT);
+    pinMode(SERVO_CONTROL_1, OUTPUT);
+    pinMode(SERVO_POS_PIN_0, INPUT);
+    pinMode(SERVO_POS_PIN_1, INPUT);
+    pinMode(POT_PIN, INPUT);
 
     // reset both timer/counters
     TCCR0A = 0;
     TCCR0B = 0; 
 
+    // Generate a 60.96kHz pulse on 6 and 5 using Fast PWM
+    // OCR0A/B control width of pulse on 6 and 5
     // TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 0b10100011
     TCCR0A = _BV(COM0A1) | _BV(COM0B1) | _BV(WGM01) | _BV(WGM00);
     // TCCR0B [ FOC2A FOC2B 0 0 WGM02 CS02 CS01 CS00 ] = 0b00000101
     TCCR0B =  _BV(CS02) | _BV(CS00);
-    OCR0A = MIN_PULSE;
-    OCR0B = MIN_PULSE;
+    // OCR0A = PULSE_MIN;
+    OCR0B = PULSE_MAX;
 }
 
-uint16_t set_pwm(uint8_t angle_value)
+uint16_t set_pwm_0(uint8_t angle_value)
 {
-   uint8_t angle = constrain(angle_value, MIN_PULSE, MAX_PULSE);
+   uint8_t angle = constrain(angle_value, PULSE_MIN, PULSE_MAX);
    OCR0A = angle;
-   delay(2000);
-   return analogRead(SERVO_POS_PIN);
+   delay(SERVO_DELAY);
+   return analogRead(SERVO_POS_PIN_0);
 }
 
-void serial_angle(void)
-{
-    uint8_t angle_value = serialRead();
-    uint8_t pulse = (angle_value / 6) + 6;
-    uint16_t position = set_pwm(pulse);
-    printf("For requested angle %u, pulse assigned %u and servo position: %u\n",\
-        angle_value, pulse, position);
-}
-
-void ramp_angle(void)
-{
-    for (uint8_t pulse = MIN_PULSE; pulse <= MAX_PULSE; pulse++)
-    {
-        uint16_t position = set_pwm(pulse);
-        uint8_t angle = (pulse - 6) * 6;
-        printf("For pulse %u, angle is %u, servo position: %u\n",\
-            pulse, angle, position);
-
-    }
-}
 int main (void)
 {   
-    init_pwm();
-    init_serial();
+    init_pwms();
 
-    puts("Servo Calibration");
-    ramp_angle();
-    // puts("Enter Desired Angle (0-180)");
-    // while(TRUE)
-    // {
-    //     // serial_angle();
-    //     uint16_t position = set_pwm(MIN_PULSE);
-    //     printf("Pulse assigned %u and servo position: %u\n",
-    //         MIN_PULSE, position);
-    //     delay(1000);
-    //     position = set_pwm(MAX_PULSE);
-    //     printf("Pulse assigned %u and servo position: %u\n",
-    //         MAX_PULSE, position);
-    //     delay(1000);
-    // }
+    while(TRUE)
+    {
+        pot_value = analogRead(POT_PIN);
+        PULSE = map(pot_value, POT_MIN, POT_MAX, PULSE_MIN, PULSE_MAX);
+        servo_pos = set_pwm_0(PULSE);
+        delay(1);
+    }
     return 0;
 }
