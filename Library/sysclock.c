@@ -82,8 +82,13 @@ uint16_t servo_clock(void) {
     return 0;   
 }
 
-uint16_t micros(void) {
-    return(ticks() >> 4);
+uint32_t ticks_32(void) {
+    uint32_t count;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        count = (ticks_ro_ctr << 15) + ticks();
+    }
+    return(count);
 }
 
 uint16_t ticks(void) {
@@ -122,7 +127,24 @@ void init_sysclock_1 (void)
     * (16.020x10^3 ticks)x(62.5x10^-9 secs/tick) = 1.00125 x 10^-3 seconds
     */
     TCCR1A = 0;
-    TCCR1B |= ( _BV(CS10));
+    TCCR1B |= _BV(CS10);
+    TIMSK1 |= _BV(TOIE1);
+    sei();
+}
+
+void init_sysclock_servo (void)          
+{
+    /* Initialize timer 1 as a free running clock at 250kHz
+    * TCCR1A [ COM1A1 COM1A0 COM1B1 COM1B0 0 0 WGM11 WGM10 ] = 00000000
+    * WGM13 WGM12 WGM11 WGM10 => Normal, TOP = 0xFFFF
+    * TCCR2B [ ICNC1 ICES1 0 WGM13 CS12 CS12 CS11 CS10 ]
+    * CS10 => scalar of 1
+    * tick = 1/(250kHz) = 4us or 4 x 10^-6s
+    * Test using example/millis (delay(1)) = 250 ticks
+    * (16.020x10^3 ticks)x(62.5x10^-9 secs/tick) = 1.00125 x 10^-3 seconds
+    */
+    TCCR1A = 0;
+    TCCR1B |=  _BV(CS11) | _BV(CS10);
     TIMSK1 |= _BV(TOIE1);
     sei();
 }

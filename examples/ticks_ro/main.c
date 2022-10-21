@@ -19,7 +19,7 @@ int main (void)
     uint16_t delay_time = 1000;
 
     printf("Testing ticks_ro()\n");
-    float calc_ro = (float) delay_time / 4.096;
+    float calc_ro = (float) delay_time / (4.096);
     printf("For a delay of %u, calculated rollover ticks are %4.2f\n",\
         delay_time, calc_ro);
 
@@ -27,9 +27,10 @@ int main (void)
     {         
         uint16_t prior_ticks = ticks_ro();
         delay(delay_time);
-        uint16_t elapsed_ticks = ticks_ro() - prior_ticks;
+        volatile uint16_t elapsed_ticks = ticks_ro() - prior_ticks;
         printf("With delay of %u, roll over ticks are %u\n",\
             delay_time, elapsed_ticks);
+        delay(1);
     }
     /// return never executed ///
     return (0);

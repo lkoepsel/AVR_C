@@ -8,26 +8,23 @@
 #include <stdio.h>
 #include "uart.h"
 #include "sysclock.h"
+#include "delay.h"
 
 
 int main(void) {    
 
     init_serial();
     init_sysclock_1 ();
-    int i = 0;
-    int j = 1;
-    int k;
-    
+    uint16_t wait = 4096;
+
     while(1)
     {
         uint16_t now = ticks();
-        for (uint16_t i = 0; i < 500; i++) 
-        {
-            k = i + j;
-        }
+        delay(wait);
         uint16_t elapsed = ticks();
     
-        printf("%u + %u = %u in %u %u %u\n", i, j, k, elapsed, now, elapsed-now);        
+        printf("for wait = %u: elapsed: %u now: %u delta: %u\n",\
+         wait, elapsed, now, elapsed-now);        
     } 
     return 0;
 }

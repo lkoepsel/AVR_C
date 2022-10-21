@@ -33,7 +33,6 @@
 // Pin 5/PD5/OCR0B=15 has a 5.8% duty cycle or 15/255 => 1.025ms (measured)                    
 // Pin 6/PD6/OCR0A=30 has a 11.6% duty cycle or 30/255 => 1.987ms (measured)
 #include <avr/io.h>
-#include <avr/cpufunc.h> // required for _NOP macro
 #include "pinMode.h"
 #include "delay.h"
 #include "analogRead.h"
@@ -55,9 +54,9 @@ const uint16_t POT_MIN = 0;             // min value for control pot
 
 // In rare situations, variables have been optimized out (determined by gdb)
 // Made volatile to ensure they don't
-volatile uint16_t pot_value = POT_MIN;
+volatile uint16_t control_pos = POT_MIN;
 volatile uint16_t servo_pos = 0;
-volatile uint8_t PULSE = PULSE_MIN;
+volatile uint8_t servo_pulse = PULSE_MIN;
 
 // use to ensure servo min/max are not exceeded, breaking the servo
 uint8_t constrain(uint8_t value, uint8_t min, uint8_t max) {
@@ -113,13 +112,13 @@ int main (void)
 
     // get control pot value and convert to pulse width using map()
     // set servo position, function returns new position
-    // _NOP() exists as a debugger aid, ensures a line to BP to check values
+    // delay(1) exists as a debugger aid, ensures a line to BP to check values
     while(TRUE)
     {
-        pot_value = analogRead(POT_PIN);
-        PULSE = map(pot_value, POT_MIN, POT_MAX, PULSE_MIN, PULSE_MAX);
-        servo_pos = set_servo_pos_0(PULSE);
-        _NOP();
+        control_pos = analogRead(POT_PIN);
+        servo_pulse = map(control_pos, POT_MIN, POT_MAX, PULSE_MIN, PULSE_MAX);
+        servo_pos = set_servo_pos_0(servo_pulse );
+        delay(1);
     }
     return 0;
 }
