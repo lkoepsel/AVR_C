@@ -8,6 +8,11 @@ volatile uint16_t sys_ctr_0 = 0;
 volatile uint16_t ticks_ro_ctr = 0;
 volatile uint16_t sys_ctr_2 = 0;
 volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
+extern uint8_t pulse_HI_width;
+extern uint8_t pulseState;
+extern uint16_t clock_width;
+volatile uint16_t pulse_HI_count;
+volatile uint16_t clock_count;
 
 extern button buttons[MAX_BUTTONS];
 
@@ -16,9 +21,29 @@ ISR (TIMER0_OVF_vect)
     sys_ctr_0++;
 }
 
-ISR (TIMER0_COMPB_vect)      
+ISR (TIMER0_COMPA_vect)      
 {
-    *PINport |= _BV(PINbit);
+    if (pulseState == HIGH) 
+    {
+        pulse_HI_count--;
+        if (pulse_HI_count == 0)
+        {
+            pulseState = LOW;
+            clr_bit(PORTD, 4);
+            pulse_HI_count = pulse_HI_width;
+
+        }
+    }
+    else
+    {    
+        clock_count--;
+        if (clock_count == 0)
+        {
+            pulseState = HIGH;
+            set_bit(PORTD, 4);
+            clock_count = clock_width;
+        }
+    }
 }
 
 ISR (TIMER1_OVF_vect)      
@@ -165,6 +190,25 @@ void init_sysclock_2 (void)
     TCCR2B |= ( _BV(WGM22) | _BV(CS21) | _BV(CS20) ) ;
     OCR2A = 251;
     TIMSK2 |= _BV(OCIE2A);
+    sei ();
+}
+
+void init_pulse_0 (void)          
+{
+    /* Initialize timer  for a pulse clock
+    * TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
+    * WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
+    * TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001011
+    * CS02 CS00 => scalar of 32
+    * Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
+    * -1 to account for overhead = 254
+    * Counter performs another divide by 2 => 1000hz
+    * Test using example/millis (delay(1000) = 999 ticks)
+    */
+    TCCR0A |= _BV(COM0A1) | _BV(WGM00);
+    TCCR0B |= ( _BV(WGM02) | _BV(CS00) ) ;
+    OCR0A = 127;
+    TIMSK0 |= _BV(OCIE0A);
     sei ();
 }
 
