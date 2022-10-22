@@ -1,8 +1,7 @@
-/* button - each button must attach to a pin
-* buttons[i].uno are the Uno pins attached to buttons, 
-* like digitalRead, function will translate Uno pin to port/pin
-* buttons[i].pressed indicates if the button has been pressed (true or non-zero)
-*/
+// button - each button must attach to a pin
+// buttons[i].uno are the Uno pins attached to buttons, 
+// like digitalRead, function will translate Uno pin to port/pin
+// buttons[i].pressed indicates if the button has been pressed (true or non-zero)
 
 #ifndef BUTTON_H
 #define BUTTON_H
