@@ -5,12 +5,16 @@
 
 int main (void)
 {
-  // Set up a system tick of 1 millisec (1kHz)
-  init_servos ();
+    // index, bit, port, state, high_width)
+    init_servo(0,2, &PORTD, LOW, 35);
+    init_servo(1,3, &PORTD, LOW, 80);
+    init_servo(2,4, &PORTD, LOW, 35);
+    init_servo(3,5, &PORTD, LOW, 80);
+    init_servo(4,6, &PORTD, LOW, 35);
+    init_servo(5,7, &PORTD, LOW, 80);
 
-  // index, bit, port, state, high_width)
-  init_servo(0,4, &PORTD, LOW, 40);
-  init_servo(1,1, &PORTB, LOW, 500);
+    // Initialize servo clock to enable servos
+    init_servos ();
 
     while(1)
     {

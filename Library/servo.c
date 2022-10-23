@@ -1,9 +1,9 @@
 // servo code
 
 #include "servo.h"
-#include "pinMode.h"
 
-const uint16_t servo_pulse_width = 1000; 
+const uint16_t servo_pulse_width = 1000;
+servo servos[MAX_SERVOS];
 
 void init_servos (void)
 {
@@ -22,13 +22,8 @@ void init_servo(uint8_t index, uint8_t bit, volatile uint8_t *port, uint8_t stat
     servos[index].high_count = high_width;
     servos[index].low_count = servos[index].low_width;
 
-    // TODO: replace DDRD with DDRn and use either port B or port D
-    // use native command to set pin to output
-    // DDRn is 1 address below PORTn
-    // uint8_t DDRn = --*servos[index].port;
-    // set_bit(DDRn, servos[index].bit);
-    // set_bit(DDRD, servos[index].bit);
-    
+    // DDRn is 1 addr below PORTn, decrement and make a pointer to ref DDRn
+    set_bit(*--servos[index].port, servos[index].bit);
     return ;
 }
 

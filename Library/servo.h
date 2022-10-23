@@ -18,7 +18,7 @@ typedef struct servo {
    uint16_t low_count;        // used by ISR to track n low counts
 } servo;
 
-servo servos[MAX_SERVOS];
+extern servo servos[MAX_SERVOS];
 
 void init_servos (void);
 void init_servo(uint8_t index, uint8_t bit, volatile uint8_t *port, uint8_t state,\
