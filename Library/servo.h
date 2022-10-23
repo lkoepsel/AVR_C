@@ -6,7 +6,7 @@
 #include "sysclock.h"
 #include "delay.h"
 
-#define MAX_SERVOS 2
+#define MAX_SERVOS 6
 
 typedef struct servo {
    uint8_t bit;               // ATmega328P pin bit

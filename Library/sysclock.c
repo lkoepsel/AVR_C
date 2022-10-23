@@ -10,7 +10,7 @@ volatile uint16_t ticks_ro_ctr = 0;
 volatile uint16_t sys_ctr_2 = 0;
 volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 
-servo servos[MAX_SERVOS];
+extern servo servos[MAX_SERVOS];
 extern button buttons[MAX_BUTTONS];
 
 ISR (TIMER0_OVF_vect)      
