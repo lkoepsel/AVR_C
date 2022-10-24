@@ -20,7 +20,6 @@
 
 uint16_t millis(void);
 uint16_t micros(void);
-uint32_t ticks_32(void);
 uint16_t ticks(void);
 uint16_t ticks_ro(void);
 uint16_t servo_clock(void);

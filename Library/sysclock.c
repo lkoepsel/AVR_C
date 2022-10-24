@@ -107,15 +107,6 @@ uint16_t servo_clock(void) {
     return 0;   
 }
 
-uint32_t ticks_32(void) {
-    uint32_t count;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    {
-        count = (ticks_ro_ctr << 15) + ticks();
-    }
-    return(count);
-}
-
 uint16_t ticks(void) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
@@ -142,16 +133,12 @@ uint16_t millis(void) {
 
 void init_pulse_0 (void)          
 {
-    /* Initialize timer  for a pulse clock
-    * TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
-    * WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
-    * TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001011
-    * CS02 CS00 => scalar of 32
-    * Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
-    * -1 to account for overhead = 254
-    * Counter performs another divide by 2 => 1000hz
-    * Test using example/millis (delay(1000) = 999 ticks)
-    */
+    // Initialize timer  for a pulse clock for servos
+    // TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
+    // WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
+    // TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001011
+    // CS02 CS00 => scalar of 32
+    // Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
     TCCR0A |= _BV(COM0A1) | _BV(WGM00);
     TCCR0B |= ( _BV(WGM02) | _BV(CS00) ) ;
     OCR0A = 127;
