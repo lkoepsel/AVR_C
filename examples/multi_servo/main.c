@@ -5,8 +5,6 @@
 
 int main (void)
 {
-    // Initialize servo clock to enable servos
-    init_servos ();
 
     // index, bit, port, state, high_width)
     init_servo(0,2, &PORTD, LOW, 35);
@@ -15,6 +13,9 @@ int main (void)
     init_servo(3,0, &PORTB, LOW, 80);
     init_servo(4,1, &PORTB, LOW, 35);
     init_servo(5,2, &PORTB, LOW, 80);
+
+    // Initialize servo clock to enable servos
+    init_servos ();
 
     while(1)
     {

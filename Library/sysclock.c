@@ -28,8 +28,9 @@ ISR (TIMER0_COMPA_vect)
             if (servos[i].high_count == 0)
             {
                 servos[i].state = LOW;
-                clr_bit(*servos[i].port, servos[i].bit);
+                // clr_bit(*servos[i].port, servos[i].bit);
                 servos[i].high_count = servos[i].high_width;
+                set_bit(PIND, 2);
 
             }
         }
@@ -39,8 +40,9 @@ ISR (TIMER0_COMPA_vect)
             if (servos[i].low_count == 0)
             {
                 servos[i].state = HIGH;
-                set_bit(*servos[i].port, servos[i].bit);
+                // set_bit(*servos[i].port, servos[i].bit);
                 servos[i].low_count = servos[i].low_width;
+                set_bit(PIND, 2);
             }
         }
     }
