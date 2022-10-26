@@ -19,41 +19,66 @@ ISR (TIMER0_OVF_vect)
     *PINport |= _BV(PINbit);
 }
 
+// #if SERVO
 // Required for servo work, still in progress
 // ISR (TIMER0_OVF_vect)      
 // {
 //     sys_ctr_0++;
 // }
 
-ISR (TIMER0_COMPA_vect)      
-{
-    for (uint8_t i = 0; i < MAX_SERVOS; i++)
-    {
-        if (servos[i].state == HIGH) 
-        {
-            servos[i].high_count--;
-            if (servos[i].high_count == 0)
-            {
-                servos[i].state = LOW;
-                // clr_bit(*servos[i].port, servos[i].bit);
-                servos[i].high_count = servos[i].high_width;
-                set_bit(PIND, 2);
+// uint16_t servo_clock(void) {
+//     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+//     {
+//         return(sys_ctr_0);
+//     }
+//     return 0;   
+// }
 
-            }
-        }
-        else
-        {    
-            servos[i].low_count--;
-            if (servos[i].low_count == 0)
-            {
-                servos[i].state = HIGH;
-                // set_bit(*servos[i].port, servos[i].bit);
-                servos[i].low_count = servos[i].low_width;
-                set_bit(PIND, 2);
-            }
-        }
-    }
-}
+// void init_pulse_0 (void)          
+// {
+//     // Initialize timer  for a pulse clock for servos
+//     // TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
+//     // WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
+//     // TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001011
+//     // CS02 CS00 => scalar of 32
+//     // Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
+//     TCCR0A |= _BV(COM0A1) | _BV(WGM00);
+//     TCCR0B |= ( _BV(WGM02) | _BV(CS00) ) ;
+//     OCR0A = 127;
+//     TIMSK0 |= _BV(OCIE0A) | _BV(TOIE0);
+//     sei ();
+// }
+
+// ISR (TIMER0_COMPA_vect)      
+// {
+//     for (uint8_t i = 0; i < MAX_SERVOS; i++)
+//     {
+//         if (servos[i].state == HIGH) 
+//         {
+//             servos[i].high_count--;
+//             if (servos[i].high_count == 0)
+//             {
+//                 servos[i].state = LOW;
+//                 // clr_bit(*servos[i].port, servos[i].bit);
+//                 servos[i].high_count = servos[i].high_width;
+//                 set_bit(PIND, 2);
+
+//             }
+//         }
+//         else
+//         {    
+//             servos[i].low_count--;
+//             if (servos[i].low_count == 0)
+//             {
+//                 servos[i].state = HIGH;
+//                 // set_bit(*servos[i].port, servos[i].bit);
+//                 servos[i].low_count = servos[i].low_width;
+//                 set_bit(PIND, 2);
+//             }
+//         }
+//     }
+// }
+// #endif
 
 ISR (TIMER1_OVF_vect)      
 {
@@ -108,14 +133,6 @@ ISR (TIMER2_COMPA_vect)
 }
 #endif
 
-uint16_t servo_clock(void) {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    {
-        return(sys_ctr_0);
-    }
-    return 0;   
-}
-
 uint16_t ticks(void) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
@@ -140,20 +157,6 @@ uint16_t millis(void) {
     return 0;   
 }
 
-// void init_pulse_0 (void)          
-// {
-//     // Initialize timer  for a pulse clock for servos
-//     // TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
-//     // WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
-//     // TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001011
-//     // CS02 CS00 => scalar of 32
-//     // Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
-//     TCCR0A |= _BV(COM0A1) | _BV(WGM00);
-//     TCCR0B |= ( _BV(WGM02) | _BV(CS00) ) ;
-//     OCR0A = 127;
-//     TIMSK0 |= _BV(OCIE0A) | _BV(TOIE0);
-//     sei ();
-// }
 
 void init_sysclock_1 (void)          
 {

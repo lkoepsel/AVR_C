@@ -1,51 +1,34 @@
+// blink_w_1struct - blink 1 led without delay using a struct
 #include "pinMode.h"
 #include "digitalWrite.h"
 #include "sysclock.h"
-#define N_LEDS 3
+
 struct blinker
 {
   uint8_t ledPin;           // the number of the LED pin
   uint8_t state;          // the state (HIGH/LOW) the LED pin
   uint16_t interval;      // interval at which to blink (milliseconds)
   uint16_t previousMillis;   // will store last time LED was updated
-} blinker;
-
-struct blinker LEDS[N_LEDS];
+} ;
+struct blinker LED;
 
 int main (void)
 {
-  // Set up a system tick of 1 millisec (1kHz)
   init_sysclock_2 ();
-  LEDS[0].ledPin = 3;
-  LEDS[0].state = LOW;
-  LEDS[0].interval = 100;
-  LEDS[0].previousMillis = 0;
-
-  LEDS[1].ledPin = 5;
-  LEDS[1].state = LOW;
-  LEDS[1].interval = 500;
-  LEDS[1].previousMillis = 0;
-
-  LEDS[2].ledPin = 6;
-  LEDS[2].state = LOW;
-  LEDS[2].interval = 1000;
-  LEDS[2].previousMillis = 0;
-
-  pinMode(LEDS[0].ledPin, OUTPUT);      
-  pinMode(LEDS[1].ledPin, OUTPUT);      
-  pinMode(LEDS[2].ledPin, OUTPUT);      
+  LED.ledPin = 3;
+  LED.state = LOW;
+  LED.interval = 1000;
+  LED.previousMillis = 0;
+  pinMode(LED.ledPin, OUTPUT);      
 
     while(1)
     {
         uint16_t currentMillis = millis();
-        for (uint8_t i = 0; i < N_LEDS; i++)
+        if(currentMillis - LED.previousMillis > LED.interval) 
         {
-            if(currentMillis - LEDS[i].previousMillis > LEDS[i].interval) 
-            {
-                LEDS[i].previousMillis = currentMillis;   
-                LEDS[i].state = !LEDS[i].state;
-                digitalWrite(LEDS[i].ledPin, LEDS[i].state);
-            }
+            LED.previousMillis = currentMillis;   
+            LED.state = !LED.state;
+            digitalWrite(LED.ledPin, LED.state);
         }
     }
 }

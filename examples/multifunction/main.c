@@ -21,11 +21,11 @@ enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7};
 #define LED6  6
 #define LED7  7
 
-typedef struct task {
+struct task {
    void (*TickFct)();    // Function to call for task's tick
-} task;
+} ;
 
-task tasks[NTASKS];
+struct task tasks[NTASKS];
 
 void t0 (void) {
     /* toggle led on and off */

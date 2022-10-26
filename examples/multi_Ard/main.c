@@ -14,11 +14,11 @@
 // Uno pin numbers
 enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
 
-typedef struct task {
+struct task {
    void (*TickFct)();    // Function to call for task's tick
 } task;
 
-task tasks[NTASKS];
+struct task tasks[NTASKS];
 
 void zero (void) {
     /* toggle led on and off */

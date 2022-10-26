@@ -11,10 +11,10 @@
 #include "digitalWrite.h"
 
 // Defaults:
-//  Nflashers: Number of flashers to be defined
+//  MAX_FLASHERS: Number of flashers to be defined
 //  DEFAULT_ON/DEFAULT_OFF: Default times (msec) for flasher to be on/off
 //  With On/Off set to 1, three tasks run at 500Hz
-#define Nflashers 3
+#define MAX_FLASHERS 3
 #define DEFAULT_ON 100
 #define DEFAULT_OFF 100
 
@@ -27,11 +27,11 @@ struct flasher
    uint16_t on;             // Time on
    uint16_t off;            // Time off
    uint16_t elapsed;        // Time elapsed sinced last in loop
-} flasher;
+} ;
 
 // now setup an array of structs to easily manage them, we can 
 // reference each struct by a subscript just like an array
-struct flasher flashers[Nflashers];
+struct flasher flashers[MAX_FLASHERS];
 
 // init is similar to the Flasher Constructor in the example
 // and initializes the member variables and state, and sets LED pin to OUTPUT
@@ -78,7 +78,7 @@ int main(void)
 
     // initialize each flasher (struct: {pin, state, on, off, elapsed})
     // in comparison to Classy example, each LED only requires 1 line of code :)
-    // AND update Nflashers to number of flashers
+    // AND update MAX_FLASHERS to number of flashers
     init(0, 3, LOW, DEFAULT_ON, DEFAULT_OFF, 0);
     init(1, 5, LOW, DEFAULT_ON << 1, DEFAULT_OFF << 1, 0);
     init(2, 6, LOW, DEFAULT_ON << 2, DEFAULT_OFF << 2, 0);
@@ -87,7 +87,7 @@ int main(void)
     // in this case, we simply increment through our array of structs
     while (1)
     {
-    for (uint8_t flasher_cntr=0; flasher_cntr < Nflashers; ++flasher_cntr)
+    for (uint8_t flasher_cntr=0; flasher_cntr < MAX_FLASHERS; ++flasher_cntr)
         {
             update(flasher_cntr);
         }
