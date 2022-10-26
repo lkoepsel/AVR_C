@@ -32,7 +32,7 @@ extern volatile uint8_t *PORTport;
 extern volatile uint8_t PINbit;
 
 void tone (uint8_t pin, uint8_t note, uint16_t duration);       
-
+void tone_on (uint8_t pin, uint8_t note);
 void noTone(uint8_t pin);
 
 /* note duration delay values, must be used after every note in (tone)

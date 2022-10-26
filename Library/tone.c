@@ -536,6 +536,50 @@ void tone (uint8_t pin, uint8_t note, uint16_t duration)
     return;
 }
 
+void tone_on (uint8_t pin, uint8_t note)          
+{
+
+    if (note == 0) {
+        noTone(pin);
+    }
+    else {
+    
+        /* Timer 0 is 8-bit PWM, PIN 7
+        * COM0A1:0 =10 => Clear OC0A on Compare Match, set OC0A at BOTTOM
+        * WGM02:0 = 101 => Phase Correct, TOP = OCRA
+        * CS02:0 = clkI/O/value (Prescaler) found in notes
+        * Set OCR0A value via notes
+        */ 
+        TCCR0A |=  _BV(COM0A1) | _BV(WGM00);
+        TCCR0B = pgm_read_byte(&(notes_TCCR0B[note]));
+        OCR0A = pgm_read_word(&(notes_OCR0A[note]));
+    
+        // UNO PINS 0-7 PORT D        
+        if (pin <= 7) {
+            PINport = &PIND;
+            DDRport = &DDRD;
+            PORTport = &PORTD;
+            PINbit = pin;
+        }
+
+        // UNO PINS 8-13 PORT B        
+        else if (pin <= 13) {
+            PINport = &PINB;
+            DDRport = &DDRB;
+            PORTport = &PORTB;
+            PINbit = pin - 8;
+        }  
+
+        // set port pin to be OUTPUT
+        *DDRport |= _BV(PINbit);
+    
+        /* Enable timer 0 overflow interrupt and enable interrupts. */
+        TIMSK0 = _BV (TOIE0);
+        sei ();
+    }
+    return;
+}
+
 // for no tone on a pin, turn off interrupts and set pin LOW
 void noTone(uint8_t pin) {
     TIMSK0 &= ~(_BV (TOIE0));

@@ -13,10 +13,17 @@ volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 extern servo servos[MAX_SERVOS];
 extern button buttons[MAX_BUTTONS];
 
+// Required for tone
 ISR (TIMER0_OVF_vect)      
 {
-    sys_ctr_0++;
+    *PINport |= _BV(PINbit);
 }
+
+// Required for servo work, still in progress
+// ISR (TIMER0_OVF_vect)      
+// {
+//     sys_ctr_0++;
+// }
 
 ISR (TIMER0_COMPA_vect)      
 {
@@ -133,20 +140,20 @@ uint16_t millis(void) {
     return 0;   
 }
 
-void init_pulse_0 (void)          
-{
-    // Initialize timer  for a pulse clock for servos
-    // TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
-    // WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
-    // TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001011
-    // CS02 CS00 => scalar of 32
-    // Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
-    TCCR0A |= _BV(COM0A1) | _BV(WGM00);
-    TCCR0B |= ( _BV(WGM02) | _BV(CS00) ) ;
-    OCR0A = 127;
-    TIMSK0 |= _BV(OCIE0A) | _BV(TOIE0);
-    sei ();
-}
+// void init_pulse_0 (void)          
+// {
+//     // Initialize timer  for a pulse clock for servos
+//     // TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
+//     // WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
+//     // TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001011
+//     // CS02 CS00 => scalar of 32
+//     // Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
+//     TCCR0A |= _BV(COM0A1) | _BV(WGM00);
+//     TCCR0B |= ( _BV(WGM02) | _BV(CS00) ) ;
+//     OCR0A = 127;
+//     TIMSK0 |= _BV(OCIE0A) | _BV(TOIE0);
+//     sei ();
+// }
 
 void init_sysclock_1 (void)          
 {
