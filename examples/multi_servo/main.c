@@ -10,6 +10,9 @@ int main (void)
     init_servo(0,2, &PORTD, LOW, 40);
     init_servo(1,3, &PORTD, LOW, 60);
     init_servo(2,4, &PORTD, LOW, 100);
+    init_servo(3,1, &PORTB, LOW, 100);
+    init_servo(4,2, &PORTB, LOW, 100);
+    init_servo(5,3, &PORTB, LOW, 100);
 
     // Initialize servo clock to enable servos
     init_servos ();
