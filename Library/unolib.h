@@ -23,6 +23,8 @@ enum {A0, A1, A2, A3, A4, A5};
 enum {FALSE, TRUE};
 
 uint16_t d_analogRead(uint8_t pin) ;
+uint8_t constrain8_t(uint8_t value, uint8_t min, uint8_t max);
+uint16_t constrain16_t(uint16_t value, uint16_t min, uint16_t max);
 
 /* User Push Button on ATmega328PB XPLAINED Board is PB7
 *  It is ACTIVE LOW

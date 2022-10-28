@@ -38,6 +38,7 @@
 #include "analogRead.h"
 #include "sysclock.h"
 #include "map.h"
+#include "unolib.h"
 
 // Parameters for Adafruit 1449 Microservo with feedback
 // Two can be controlled, code only controls one at this time
@@ -57,22 +58,6 @@ const uint16_t POT_MIN = 0;             // min value for control pot
 volatile uint16_t control_pos = POT_MIN;
 volatile uint16_t servo_pos = 0;
 volatile uint8_t servo_pulse = PULSE_MIN;
-
-// use to ensure servo min/max are not exceeded, breaking the servo
-uint8_t constrain(uint8_t value, uint8_t min, uint8_t max) {
-    if (value < min)
-    {
-        return min;
-    }
-    else if (value > max)
-    {
-        return max;
-    }
-    else
-    {
-        return value;
-    }
-}
 
 void init_servo_clock(void)
 {
@@ -100,7 +85,7 @@ void init_servo_clock(void)
 // delay to ensure servo has completed move, before reading position
 uint16_t set_servo_pos_0(uint8_t angle_value)
 {
-   uint8_t angle = constrain(angle_value, PULSE_MIN, PULSE_MAX);
+   uint8_t angle = constrain8_t(angle_value, PULSE_MIN, PULSE_MAX);
    OCR0A = angle;
    delay(SERVO_DELAY);
    return analogRead(SERVO_POS_PIN_0);
