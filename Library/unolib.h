@@ -15,6 +15,11 @@
 #define min(a, b) ((a) < (b) ? (a) : (b)) 
 #define max(a, b) ((a) > (b) ? (a) : (b))
 
+
+// pin to Port functions, to make it easy to convert Uno pin to 328P port
+#define pintoBit(a) ((a) > 7 ? (a) : (a - 7))
+#define pintoPort(a) ((a) > 7 ? (&PORTD) : (&PORTB))
+
 #define LED_BUILTIN 13
 
 enum {INPUT, OUTPUT, INPUT_PULLUP};
