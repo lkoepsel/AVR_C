@@ -8,7 +8,6 @@
 #include <avr/io.h>
 #include "unolib.h"
 
-// volatile uint8_t *pintoPort(uint8_t apin);
 void digitalWrite(uint8_t apin, uint8_t level) ;
 
 #endif

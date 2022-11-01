@@ -29,3 +29,11 @@ void set_servo(uint8_t index, uint8_t bit, volatile uint8_t *port, uint8_t state
     return ;
 }
 
+void move_servo(uint8_t index, uint16_t high_width)
+{
+    servos[index].high_width = high_width;
+    servos[index].high_count = high_width;
+
+    return ;
+}
+

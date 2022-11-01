@@ -19,10 +19,10 @@
 // Parameters create a 52.1Hz frequency with pulse range .5ms to 2.3ms
 
 // Using 2 servos
-// #define MAX_SERVOS 2
-// #define SERVO_PULSE_WIDTH 600
-// #define HIGH_COUNT_MAX 72
-// #define HIGH_COUNT_MIN 16
+#define MAX_SERVOS 2
+#define SERVO_PULSE_WIDTH 600
+#define HIGH_COUNT_MAX 72
+#define HIGH_COUNT_MIN 15
 
 // Using 3 servos
 // #define MAX_SERVOS 3
@@ -43,10 +43,10 @@
 // #define HIGH_COUNT_MIN 6
 
 // Using 6 servos
-#define MAX_SERVOS 6
-#define SERVO_PULSE_WIDTH 200
-#define HIGH_COUNT_MAX 24
-#define HIGH_COUNT_MIN 5
+// #define MAX_SERVOS 6
+// #define SERVO_PULSE_WIDTH 200
+// #define HIGH_COUNT_MAX 24
+// #define HIGH_COUNT_MIN 5
 
 typedef struct servo {
    uint8_t bit;               // ATmega328P pin bit
@@ -63,5 +63,6 @@ extern servo servos[MAX_SERVOS];
 void init_servos (void);
 void set_servo(uint8_t index, uint8_t bit, volatile uint8_t *port, uint8_t state,\
     uint16_t high_width);
+void move_servo(uint8_t index, uint16_t high_width);
 
 #endif

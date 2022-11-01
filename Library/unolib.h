@@ -17,8 +17,8 @@
 
 
 // pin to Port functions, to make it easy to convert Uno pin to 328P port
-#define pintoBit(a) ((a) > 7 ? (a) : (a - 7))
-#define pintoPort(a) ((a) > 7 ? (&PORTD) : (&PORTB))
+#define pintoBit(a) ((a) < 8 ? (a) : (a - 8))
+#define pintoPort(a) ((a) < 8 ? (&PORTD) : (&PORTB))
 
 #define LED_BUILTIN 13
 
