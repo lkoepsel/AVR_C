@@ -6,20 +6,17 @@
 //
 
 #include <avr/io.h>
-#include "delay.h"
-#define NTASKS 6
 
-// Uno pin numbers
-enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7};
+#define NTASKS 8
 
-#define LED0  0 
-#define LED1  1
-#define LED2  2
-#define LED3  3
-#define LED4  4
-#define LED5  5
-#define LED6  6
-#define LED7  7
+#define LED0  2 
+#define LED1  3
+#define LED2  4
+#define LED3  5
+#define LED4  6
+#define LED5  7
+#define LED6  0
+#define LED7  5
 
 struct task {
    void (*TickFct)();    // Function to call for task's tick

@@ -5,14 +5,19 @@
 */
 
 #include <avr/io.h>
-#include "delay.h"
 #include "pinMode.h"
 #include "digitalWrite.h"
 
-#define NTASKS 3
+#define NTASKS 8
 
-// Uno pin numbers
-enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
+#define LED0  2 
+#define LED1  3
+#define LED2  4
+#define LED3  5
+#define LED4  6
+#define LED5  7
+#define LED6  8
+#define LED7  9
 
 struct task {
    void (*TickFct)();    // Function to call for task's tick
@@ -68,17 +73,17 @@ void seven (void) {
     return;
 } 
 
-void eight (void) {
-    /* toggle led on and off */
-    digitalWrite(LED8, TOG);
-    return;
-} 
+// void eight (void) {
+//     /* toggle led on and off */
+//     digitalWrite(LED8, TOG);
+//     return;
+// } 
 
-void nine (void) {
-    /* toggle led on and off */
-    digitalWrite(LED9, TOG);
-    return;
-} 
+// void nine (void) {
+//     /* toggle led on and off */
+//     digitalWrite(LED9, TOG);
+//     return;
+// } 
 
 int main(void)
 {
@@ -102,10 +107,10 @@ int main(void)
    tasks[i].TickFct = &six;
    ++i;
    tasks[i].TickFct = &seven;
-   ++i;
-   tasks[i].TickFct = &eight;
-   ++i;
-   tasks[i].TickFct = &nine;
+   // ++i;
+   // tasks[i].TickFct = &eight;
+   // ++i;
+   // tasks[i].TickFct = &nine;
 
     while (1)
     {
