@@ -122,9 +122,6 @@ all_clean:
 LIB_clean:
 	rm -f $(LIBDIR)/*.o
 
-end_ide:
-	pkill -2 Bloom && sleep 2
-
 ##########------------------------------------------------------##########
 ##########              Programmer-specific details             ##########
 ##########           Flashing code to AVR using avrdude         ##########
