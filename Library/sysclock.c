@@ -22,7 +22,7 @@ extern button buttons[MAX_BUTTONS];
 
 #if SERVO
 // Required for servo work, 
-// In Makefile, on CPPFLAG line: -DSERVO=SERVO 
+// In Makefile, on CPPFLAG line: -DSERVO=$(SERVO)
 // In env.make:  SERVO = 1 
 void init_pulse_0 (void)          
 {

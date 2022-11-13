@@ -12,37 +12,37 @@ enum {LED0, LED1, LED2, LED3, LED4, LED5, LED6, LED7, LED8, LED9, LED10, LED11};
 
 void zero (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED0);
+    PIND |= _BV(LED1);
     return;
 } 
 
 void one (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED1);
+    PIND |= _BV(LED2);
     return;
 } 
 
 void two (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED2);
+    PIND |= _BV(LED3);
     return;
 } 
 
 void three (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED3);
+    PIND |= _BV(LED4);
     return;
 } 
 
 void four (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED4);
+    PIND |= _BV(LED5);
     return;
 } 
 
 void five (void) {
     /* toggle led on and off */
-    PIND |= _BV(LED5);
+    PIND |= _BV(LED6);
     return;
 } 
 

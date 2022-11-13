@@ -29,15 +29,15 @@ int main (void)
     puts("Testing Button Presses");
     uint8_t count[MAX_BUTTONS] = {0};
 
-    buttons[0].uno = 2;
+    buttons[0].uno = 9;
     pinMode(buttons[0].uno, INPUT_PULLUP);
-    buttons[1].uno = 4;
+    buttons[1].uno = 10;
     pinMode(buttons[1].uno, INPUT_PULLUP);
 
     init_sysclock_2 ();
    // Use init_RESET() if you want to setup a soft reset using a user defined
    // button as on the ATmega328PB Xplained Mini
-   // init_RESET();
+   init_RESET();
 
     /* loop forever, the interrupts are doing the rest */
     for (;;)  

@@ -7,7 +7,7 @@
 // The values above provide approx .5ms to 2.3ms positive pulse widths at ~50Hz
 // N servos less than 2, use servo_0 example which uses TC PWM directly
 // N servos greater than 4 is not recommended
-// Note that SERVO must be defined in env.make and an CPP flag as -DSERVO=SERVO
+// Note that SERVO must be defined in env.make and an CPP flag as -DSERVO=$(SERVO)
 
 #ifndef SERVO_H
 #define SERVO_H

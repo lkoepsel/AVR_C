@@ -58,8 +58,8 @@ for(;;) \
 } \
 } while(0)
 
+#endif
+
 #define set_bit(port, bit) ((port) |= (1 << (bit)))
 #define clr_bit(port, bit) ((port) &= ~(1 << (bit)))
 #define tog_bit(port, bit) ((port) |= (1 << (bit)))
-
-#endif
