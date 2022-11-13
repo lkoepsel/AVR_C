@@ -15,6 +15,7 @@
 int main(void) {    
 
     init_serial();
+    init_sysclock_2 ();
     init_RESET();
     
     char input;
