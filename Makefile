@@ -39,16 +39,12 @@ HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious. 
 ## Use this CPPFLAGS with LIBDIR if a library directory is known 
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -DSERVO=$(SERVO) -DSOFT_RESET=$(SOFT_RESET) -I.  -I$(LIBDIR)
-## Else, use this one which simply uses the local directory
-# CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR)
+## These flags are required for programming variables
+## values are set using env.make
+CPPFLAGS += -DSERVO=$(SERVO) -DSOFT_RESET=$(SOFT_RESET) -DTONE=$(TONE)
 # use below to setup gdb and debugging
-# If GCC is < 12.x
 CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror
-# If GCC 12+ Add --param=min-pagesize=0 to solve subscript error on AVR uC
-# "array subscript 0 is outside array bounds"
-# https://gcc.gnu.org/bugzilla//show_bug.cgi?id=105523
-# CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef --param=min-pagesize=0 
 # Use below to optimize size
 # CFLAGS = -Os -g -std=gnu99 -Wall
 ## Use short (8-bit) data types 
@@ -138,34 +134,6 @@ flash_eeprom: $(TARGET).eeprom
 
 avrdude_terminal:
 	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -nt
-
-## If you've got multiple programmers that you use, 
-## you can define them here so that it's easy to switch.
-## To invoke, use something like `make flash_arduinoISP`
-flash_usbtiny: PROGRAMMER_TYPE = usbtiny
-flash_usbtiny: PROGRAMMER_ARGS =  # USBTiny works with no further arguments
-flash_usbtiny: flash
-
-flash_dragon: PROGRAMMER_TYPE = dragon
-flash_dragon: PROGRAMMER_ARGS =  -c dragon_isp -P usb 
-flash_dragon: flash
-
-flash_usbasp: PROGRAMMER_TYPE = usbasp
-flash_usbasp: PROGRAMMER_ARGS =  # USBasp works with no further arguments
-flash_usbasp: flash
-
-flash_atmelice: PROGRAMMER_TYPE = atmelice
-flash_atmelice: PROGRAMMER_ARGS = -P $(SERIAL) 
-## (for windows) flash_arduinoISP: PROGRAMMER_ARGS = -b 19200 -P com5
-flash_atmelice: flash
-
-flash_snap: PROGRAMMER_TYPE = snap_isp
-flash_snap: PROGRAMMER_ARGS = -P usb 
-flash_snap: flash
-
-flash_xplain: PROGRAMMER_TYPE = xplainedmini
-flash_xplain: PROGRAMMER_ARGS =  # USBTiny works with no further arguments
-flash_xplain: flash
 
 ##########------------------------------------------------------##########
 ##########       Fuse settings and suitable defaults            ##########

@@ -14,11 +14,13 @@ volatile uint8_t iservo = 0;
 extern servo servos[MAX_SERVOS];
 extern button buttons[MAX_BUTTONS];
 
+#if TONE
 // Required for tone
-// ISR (TIMER0_OVF_vect)      
-// {
-//     *PINport |= _BV(PINbit);
-// }
+ISR (TIMER0_OVF_vect)      
+{
+    *PINport |= _BV(PINbit);
+}
+#endif
 
 #if SERVO
 // Required for servo work, 
@@ -26,7 +28,7 @@ extern button buttons[MAX_BUTTONS];
 // In env.make:  SERVO = 1 
 void init_pulse_0 (void)          
 {
-    // Initialize timer  for a ISR for servos
+    // Initialize timer 0 for an PWM signal for servos
     // TCCR0A [ COM0A1 COM0A0 COM0B1 COM0B0 0 0 WGM01 WGM00 ] = 00000001
     // WGM02 WGM00 => PWM, Phase Correct, TOP = OCRA
     // TCCR0B [ FOC0A FOC0B 0 0 WGM02 CS02 CS01 CS00 ] = 00001001

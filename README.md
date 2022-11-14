@@ -131,47 +131,6 @@ Simple character I/O test using the UART. The USB cable is the only cable requir
 
 ### Note on ISR: ISR(TIMER0_OVF_vect)
 The Timer0 overflow interrupt is used by tone() and sysclock_0. Each one has the ISR commented out using a *#define 0*. Changing the #define value from 0 to 1 will allow the ISR to be compiled into the specific routine. Be sure to change it in only one of the three routines, otherwise there will be compilation/linker errors.
-## Makefile
-The examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
-
-[Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
-
-### ****Deprecated (use env.make)
-*(To be clear, the Makefile is still used, the method of adding local variables such as SERIAL, MCU etc has changed. The method described here is no longer used.)* I have added lines at the beginning of the Makefile for an environment variables. Once you've determined your setup, you may set the environmental varialble and it will be used in all of the makefiles. This makes it easy to switch environments, such as switching from Linux to macOS or from Arduino Uno to Microchip ATmega328PB XPLAINED. You will need to add:
-```bash
-export AVR_PORT=/dev/ttyACM0 # replace this port name with the one you are using
-export AVR_MCU=atmega328p # replace this mcu name with the one you are using
-```
-in your .bashrc or .zshrc file. The Makefile will pick this for serial communications with the Uno and for compiling/loading to the proper processor (be sure to *source* or restart after editing the rc file).
-
-Additional lines to be aware of:
-```bash
-15 LIBDIR = ../../Library
-# Assumes using the structure of the git folder, 
-# meaning the examples are two layers down from the Library. Adjust accordingly.
-25 PROGRAMMER_ARGS = -F -V -P /dev/ttyACM0 -b 115200	
-# Assumes the Uno is plugged into a specific USB port, 
-# the easiest way to determine the correct one is to use the Arduino IDE 
-# and check the Port (Tools -> Port)
-```
-****End of Deprecation (see env.make)
-
-### Make Commands for Examples
-```
-# simple command to check syntax, similar to Verify in the Arduino IDE
-make
-# command to compile/link/load, similar to Upload in the Arduino IDE
-make flash
-# command to show the size of the code
-make size
-# command to clear out all the cruft created in compiling/linking/loading
-make all_clean
-# command to clear out the Library object files *file.o*, sometimes required if changes to Library files aren't appearing to work, uses LIBDIR folder as the folder to clean
-make LIB_clean
-```
-
-To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
-
 ## Serial Solutions
 #### In use
 * [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/) Works well, integrated into avr-gcc to enable using printf, puts, and getchar. Uses polling which is slow and blocking.
@@ -195,7 +154,31 @@ make LIB_clean && make all_clean && make flash
 ```
 This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* will be sufficient.
 
-## env.make 
+## Makefile and make
+The examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
+
+[Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
+
+### Make Commands for Examples
+```
+# simple command to check syntax, similar to Verify in the Arduino IDE
+make
+# command to compile/link/load, similar to Upload in the Arduino IDE
+make flash
+# command to show the size of the code
+make size
+# command to clear out all the cruft created in compiling/linking/loading
+make all_clean
+# command to clear out the Library object files *file.o*, sometimes required if changes to Library files aren't appearing to work, uses LIBDIR folder as the folder to clean
+make LIB_clean
+```
+
+To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
+
+### Makefile Notes
+There is only one Makefile and it sits at the root level of the folder, along side env.make. There are symbolic (soft) links inside of each example to this Makefile. This makes it easy to propagate changes to all examples simultaneously. It also means there is only one Makefile.
+
+### env.make 
 As stated above, instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. 
 
 The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
