@@ -27,7 +27,6 @@ uint16_t servo_clock(void);
 void init_sysclock_0 (void);
 void init_pulse_0 (void);
 void init_sysclock_1 (void);
-void init_sysclock_servo (void);
 void init_sysclock_2 (void);
 void init_RESET(void);
 

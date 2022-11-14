@@ -13,10 +13,10 @@ int main (void)
     // index, bit, port, state, high_width)
     set_servo(0,2, &PORTD, LOW, HIGH_COUNT_MIN);
     set_servo(1,3, &PORTD, LOW, HIGH_COUNT_MAX);
-    // set_servo(2,4, &PORTD, LOW, HIGH_COUNT_MAX);
-    // set_servo(3,0, &PORTB, LOW, HIGH_COUNT_MIN);
-    // set_servo(4,1, &PORTB, LOW, HIGH_COUNT_MIN);
-    // set_servo(5,1, &PORTB, LOW, HIGH_COUNT_MAX);
+    set_servo(2,4, &PORTD, LOW, HIGH_COUNT_MAX);
+    set_servo(3,0, &PORTB, LOW, HIGH_COUNT_MIN);
+    set_servo(4,1, &PORTB, LOW, HIGH_COUNT_MIN);
+    set_servo(5,1, &PORTB, LOW, HIGH_COUNT_MAX);
 
     // Initialize servo clock to enable servos
     init_servos ();
