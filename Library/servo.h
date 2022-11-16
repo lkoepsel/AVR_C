@@ -1,4 +1,4 @@
-// servo - servo is based on an ISR pulsing one servo per interrupt
+// servo - servo is based on pulsing one servo per interrupt
 // the timing of the pulses need two aspects, ~50Hz frequency
 // width ranging from .5ms to 2.3ms
 // To do this well, there are three parameters which need to be adjusted
@@ -54,8 +54,8 @@ typedef struct servo {
    uint8_t state;             // is pulse HIGH or LOW
    uint16_t high_width;       // pulse time on
    uint16_t low_width;        // pulse            // pulse time off
-   uint16_t high_count;       // used by ISR to track n high counts
-   uint16_t low_count;        // used by ISR to track n low counts
+   uint16_t high_count;       // used by interrupt to track n high counts
+   uint16_t low_count;        // used by interrupt to track n low counts
 } servo;
 
 extern servo servos[MAX_SERVOS];

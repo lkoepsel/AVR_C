@@ -40,9 +40,6 @@ HEADERS=$(SOURCES:.c=.h)
 ## Compilation options, type man avr-gcc if you're curious. 
 ## Use this CPPFLAGS with LIBDIR if a library directory is known 
 CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR)
-## These flags are required for programming variables
-## values are set using env.make
-CPPFLAGS += -DSERVO=$(SERVO) -DSOFT_RESET=$(SOFT_RESET) -DTONE=$(TONE)
 # use below to setup gdb and debugging
 CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror
 # Use below to optimize size

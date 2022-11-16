@@ -79,12 +79,10 @@ Use these standard C I/O functions instead of the Arduino Serial class. See exam
 	* depending on the application, you might need to set *buttons[i].pressed* to zero, following a successful press, if you depend on a second press to change state. Otherwise, you'll have a race condition where one press is counted as two presses (its not a bounce, its a fast read in a state machine)
 
 * **user-defined button RESET** - as debugWIRE uses the \~RESET pin for communication, it is valuable to define another pin to use as a RESET pin. It is performed using this [method](http://avr-libc.nongnu.org/user-manual/FAQ.html#faq_softreset). 
-	There is a environmental variable *SOFT_RESET* in *env.make* which needs to be set (=1) to enable a user-defined button to reset the board. It was done this way because the ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of *sysclock.h* and an *init_sysclock_2()*. Three examples already have *reset* enabled, **button**, **millis, and **analogRead**. Additional variables to set are in *unolib.h*:
+	 The ATmega328PB XPLAINED MINI board has an on-board user defined push button on PB7. The reset routine will debounce the button. To use the reset, the routine requires an include of *sysclock.h* and an *init_sysclock_2()*. Three examples already have *reset* enabled, **button**, **millis, and **analogRead**. Additional variables to set are in *unolib.h*:
 	```C
-	#if SOFT_RESET
 	#define RESET_BUTTON PB7
 	#define RESET_MASK  0b11000111
-	#endif
 	```
 	I recommend not changing the mask, unless you are experiencing significant debounce issues. The button pin needs to be expressed as pin on port B and with a pin number as shown.
 
@@ -116,12 +114,12 @@ Minimal blink sketch. Intended as a minimal test program while working on code, 
 Uses loops to go through each digital pin (2-13) and print out level on pin. Uses INPUT_PULLUP, so pin needs to be grounded to show 0, otherwise it will be a 1. 
 
 ### durationTest:
-An inline test of playing a melody using tone(). This version is easier to test and debug than melody. **See note on ISR below.**
+An inline test of playing a melody using tone(). This version is easier to test and debug than melody. **See note on Interrupts below.**
 
 ### four states:
 A four state finite state machine which uses 2 pushbuttons, 2 red LEDs and 1 blue LED to move through states and indicate state status. One push button is *UP*, which moves through the states on being pressed, and the other push button is *ENTER*, which enters the state and in this case, lights a blue LED with varying intensity. The LEDs indicate the state in a binary fashion.
 ### melody: 
-Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework. **See note on ISR below.**
+Fundamentally, the same as the melody sketch on the Arduino website. The changes made are those required for standard C vs. the Arduino framework. **See note on Interrupts below.**
 ### micros:
 Shows an example of using micros() to demonstrate how to measure time. Micros are a form of the system time-keeping mechanism *ticks*. A tick is 62.5us, which means 16 ticks = 1us. Calling micros will provide a number in microseconds, however, it will rollover every 4milliseconds, so it can't be used for measuring an event longer than 4 milliseconds without accounting for the rollover.
 ### millis:
@@ -129,8 +127,6 @@ Shows an example of using millis() to demonstrate the effectiveness of the delay
 ### serialio:
 Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
 
-### Note on ISR: ISR(TIMER0_OVF_vect)
-The Timer0 overflow interrupt is used by tone() and sysclock_0. Each one has the ISR commented out using a *#define 0*. Changing the #define value from 0 to 1 will allow the ISR to be compiled into the specific routine. Be sure to change it in only one of the three routines, otherwise there will be compilation/linker errors.
 ## Serial Solutions
 #### In use
 * [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/) Works well, integrated into avr-gcc to enable using printf, puts, and getchar. Uses polling which is slow and blocking.
