@@ -1,1 +1,2 @@
-../../Makefile
+include ../../Makefile
+include ../../env.make
