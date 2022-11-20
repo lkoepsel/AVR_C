@@ -58,13 +58,20 @@ int main(void) {
 
     // Output
     puts("Simple Pointers");
-    printf("The address of x is %p and its value is %i\n", p_x, x);        
-    printf("The address of y is %p and its value is %i\n", p_y, y);
+    printf("The address of x (p_x) is %p and its value is %i (x)\n", p_x, x);        
+    printf("The address of y (p_y) is %p and its value is %i (y)\n", p_y, y);
     if (!p_z) 
     {
         printf("The address of z is %p and it is NULL\n", p_z);
     }
     
+    puts("\nUnderstanding * and &");
+    printf("The value of p_x is %p which is an address\n", p_x);
+    printf("The value of *p_x is %i which is the value stored at %p\n",\
+        *p_x, p_x);        
+    printf("The value of &p_x is %p which ", &p_x);    
+    printf("is the address which contains the address %p\n", p_x);    
+
     puts("\nPointers to pointers");
     printf("The address of the pointer to x is %p\n", p_p_x);
     printf("Addr: %p contains Addr: %p which contains: %i\n", p_p_x, p_x, x);        
@@ -84,7 +91,8 @@ int main(void) {
     
     puts("\nPointers and Structures");
     printf("LED0 %p contains pin %u state %u on %u off %u and elapsed %u\n",\
-            p_LED, (*p_LED).pin, (*p_LED).state, p_LED->on, p_LED->off, p_LED->elapsed);
+            p_LED, (*p_LED).pin, (*p_LED).state, p_LED->on, p_LED->off, \
+            p_LED->elapsed);
 
     puts("\nPointers and Functions");
     p_func = addition;
