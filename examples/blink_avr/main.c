@@ -10,15 +10,15 @@
 int main(void)
 {
     /* set pin to output*/
-    DDRD |= (_BV(PORTD2));
+    DDRB |= (_BV(PORTB5));
 
     while(1) 
     {
         /* turn led on and off */
-        PORTD |= (_BV(PORTD2));
-        // _delay_ms(1000);
+        PINB |= (_BV(PORTB5));
+        _delay_ms(1);
         PORTD &= ~(_BV(PORTD2));
-        // _delay_ms(1000);
+        _delay_ms(1);
     }
     return 0; 
 }
