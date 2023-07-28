@@ -103,6 +103,6 @@ int main(void) {
     results = (*p_func)(x, y);
     printf("p_func points to subtraction at address %p with %i - %i = %i\n",\
         p_func, x, y, results);
-
+    printf("End of Output\n");
     return 0;
 }
