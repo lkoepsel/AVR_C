@@ -6,16 +6,13 @@
 
 int main(void)
 {
-    // Identify which Uno pin to use 
-    uint8_t Uno_pin = 13;
-
     // Setup two variables which will track the port to be manipulated (B or D)
     volatile uint8_t *PORTn;
     volatile uint8_t *DDRn;
 
     // pintoBit/Port provide the translation of Uno pin to specific port
-    uint8_t bit = pintoBit(Uno_pin);
-    PORTn = pintoPort(Uno_pin);
+    uint8_t bit = pintoBit(LED_BUILTIN);
+    PORTn = pintoPort(LED_BUILTIN);
     DDRn = PORTn;
 
     // the DDRn address is right below PORTn address, set bit to make OUTPUT

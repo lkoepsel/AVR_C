@@ -3,17 +3,15 @@
 #include "pinMode.h"
 #include "digitalWrite.h"
 
-int LED = 13;
- 
 int main(void)
 {
     /* set pin to output*/
-    pinMode(LED, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
 
     while(1) 
     {
         /* toggle led on and off */
-        digitalWrite(LED, TOG);
+        digitalWrite(LED_BUILTIN, TOG);
         delay(1000);
     }
     return 0; 
