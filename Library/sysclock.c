@@ -73,9 +73,11 @@ ISR (TIMER2_COMPA_vect)
     //  X times divider for millis() otherwise buttons checked too often
     bounce_delay--;
     if (bounce_delay == 0) {
+        #if SOFT_RESET
         if (is_RESET_pressed()) {
             soft_reset();
         }
+        #endif
         for (uint8_t i=0; i < MAX_BUTTONS; i++) {
             buttons[i].pressed = is_button_pressed(i);
         }
@@ -167,7 +169,7 @@ uint16_t millis(void) {
 
 
 // Routines required for software defined reset
-
+#if SOFT_RESET
 void init_RESET(void) {
     /* Use RESET_BUTTON as the pin for the reset button
     *  Change to actual value using define in unolib.h
@@ -196,3 +198,4 @@ uint8_t read_RESET(void) {
 
     return((PINB & (1 << RESET_BUTTON)) == 0);
 }
+#endif
