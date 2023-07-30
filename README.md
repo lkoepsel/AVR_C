@@ -178,7 +178,7 @@ In order to account for multiple projects which use this library in different fo
 
 For example, in *AVR_C*, the depth is two, therefore `DEPTH = ../../`, while in another project where there is one more level of folders, it is `DEPTH = ../../../`.
 
-If you are getting make errors, stating it can't find the target, more than likely the *DEPT* variable is incorrect.
+If you are getting make errors, stating it can't find the target, more than likely the `DEPTH` variable is incorrect.
 
 ### env.make 
 As stated above, instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. 
@@ -195,7 +195,7 @@ LIBDIR = $(DEPTH)Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
-As shown, this one is for the 328PB Xplained Mini board and on a Mac. For Make to work, you need to perform the following:
+As shown, this one is for the Arduino Uno board and on a Mac. For Make to work, you need to perform the following:
 1. Copy the contents above and paste them into a file called *env.make*
 2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
 3. Change the parameters to suit your board, for example, the Uno would need to look like this: (*macOS SERIAL parameter)

@@ -7,13 +7,45 @@ int main(void) {
 
     init_serial();
     
-    char input1[8];
-    char input2[8];
+    char input1[16];
+    uint8_t input2[16];
 
     puts("Serial I/O Test: String");
     while(1) {
-        scanf("%s %s", input1, input2);
-        printf("You entered %s %s\n", input1, input2);        
+        printf("Enter up to 8 char\n");
+        fgets(input1, 8, stdin);
+        printf("You entered %s\n", input1);
+
+        printf("Enter any number of char\n");
+        uint8_t i = 0;
+        uint8_t end = 1;
+        while (end)
+        {
+            input2[i] = getchar() - '0';
+
+            if (ferror(stdin))
+            {
+                printf("Error in reading char");
+                clearerr(stdin);
+                end = 0;
+            }
+            else if (feof(stdin))
+            {
+                printf("End of file encountered");
+                clearerr(stdin);
+                end = 0;
+            }
+            else
+                i++;
+            if (i > 10)
+            {
+                end = 0;
+            }
+            for (uint8_t j=0;j<10;j++)
+            {
+                printf("%i", input2[j]);
+            }
+            printf("\n");
+        }
     }        
-    return 0;
 }
