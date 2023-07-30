@@ -4,8 +4,8 @@
 /* Put your global variables here */
 // state contains the current state of the FSM
 
-const uint8_t LED_bit0 = 7;
-const uint8_t LED_bit1 = 4;
+const uint8_t BIT_0 = 4;
+const uint8_t BIT_1 = 5;
 const uint8_t BLUE_LED = 6;
 
 uint8_t state = 0;
@@ -14,12 +14,12 @@ uint8_t state = 0;
 int main() {
 
    init_serial();
-   pinMode(LED_bit0, OUTPUT);
-   pinMode(LED_bit1, OUTPUT);
+   pinMode(BIT_0, OUTPUT);
+   pinMode(BIT_1, OUTPUT);
 
-   buttons[UP].uno = 10;
+   buttons[UP].uno = 2;
    pinMode(buttons[UP].uno, INPUT_PULLUP);
-   buttons[ENTER].uno = 9;
+   buttons[ENTER].uno = 3;
    pinMode(buttons[ENTER].uno, INPUT_PULLUP);
 
    init_sysclock_2 ();

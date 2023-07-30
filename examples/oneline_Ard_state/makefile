@@ -1,1 +1,3 @@
-include ../../Makefile
+DEPTH = ../../
+include $(DEPTH)Makefile
+

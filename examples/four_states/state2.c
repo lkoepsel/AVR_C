@@ -1,8 +1,8 @@
 #include "state2.h"
 
 void state2() {
-    digitalWrite(LED_bit0, LOW);
-    digitalWrite(LED_bit1, HIGH);
+    digitalWrite(BIT_0, LOW);
+    digitalWrite(BIT_1, HIGH);
     uint8_t unpressed = 1;
 
     while(unpressed) {

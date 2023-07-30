@@ -33,8 +33,8 @@ Final correct button press will blink all three LEDs
 // state contains the current state of the FSM
 extern uint8_t state;
 
-extern const uint8_t LED_bit0;
-extern const uint8_t LED_bit1;
+extern const uint8_t BIT_0;
+extern const uint8_t BIT_1;
 extern const uint8_t BLUE_LED;
 
 extern button buttons[MAX_BUTTONS];

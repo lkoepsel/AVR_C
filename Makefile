@@ -3,7 +3,7 @@
 ########## 	are contained in root-level file: env.make          ##########
 ########## 	edit to change local/board/project parameters       ##########
 ##########------------------------------------------------------##########
-include ../../env.make
+include $(DEPTH)env.make
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
 ##########     Won't need to change if they're in your PATH     ##########
