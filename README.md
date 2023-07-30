@@ -174,19 +174,26 @@ To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) require
 ### Makefile Notes
 There is only one Makefile and it sits at the root level of the folder, along side env.make. There are symbolic (soft) links inside of each example to this Makefile. This makes it easy to propagate changes to all examples simultaneously. It also means there is only one Makefile.
 
+In order to account for multiple projects which use this library in different folder hierarchies, each local makefile has a variable `DEPTH` which is defined as the required relative nesting to reach the root folder.
+
+For example, in *AVR_C*, the depth is two, therefore `DEPTH = ../../`, while in another project where there is one more level of folders, it is `DEPTH = ../../../`.
+
+If you are getting make errors, stating it can't find the target, more than likely the *DEPT* variable is incorrect.
+
 ### env.make 
 As stated above, instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. 
 
 The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
 ```make
-## Microchip 328PB Xplained Mini environmental variables
-MCU = atmega328pb
-SERIAL = /dev/cu.usbmodem3101
-F_CPU = 16000000UL  
-BAUD  = 9600UL
-LIBDIR = ../../Library
-PROGRAMMER_TYPE = xplainedmini
-PROGRAMMER_ARGS = 
+# Arduino UNO environmental variables
+MCU = atmega328p
+SERIAL = /dev/cu.usbmodem14101
+F_CPU = 16000000UL
+BAUD  = 250000UL
+SOFT_RESET = 0
+LIBDIR = $(DEPTH)Library
+PROGRAMMER_TYPE = Arduino
+PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
 As shown, this one is for the 328PB Xplained Mini board and on a Mac. For Make to work, you need to perform the following:
 1. Copy the contents above and paste them into a file called *env.make*
@@ -195,10 +202,11 @@ As shown, this one is for the 328PB Xplained Mini board and on a Mac. For Make t
 ```make
 # Arduino UNO environmental variables
 MCU = atmega328p
-SERIAL = /dev/cu.usbmodem3101
-F_CPU = 16000000UL  
-BAUD  = 9600UL
-LIBDIR = ../../Library
+SERIAL = /dev/cu.usbmodem14101
+F_CPU = 16000000UL
+BAUD  = 250000UL
+SOFT_RESET = 0
+LIBDIR = $(DEPTH)Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
@@ -208,40 +216,72 @@ I've found it best to include full sections per board, then comment/uncomment a 
 
 The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
 
-Here is an env.make with 3 sections, one for each board to be used. Notice that only one section is active at a time, the other two have been commented out.
+Here is an env.make with multiple sections, one for each board to be used. Notice that only one section is active at a time, the non-used sections have been commented out.
 
 **Full version of the env.make file I am using:**
 ```make
-# This file contains the environmental variables to compile/link/load AVR_C
-# Only one section may be used at a time, each section describes a specific board
-# Comment out the sections which won't be used
+# Environmental variables for specific boards
+# Uncomment entire block less top line of block
+# After switching boards, Library must be re-compiled
+# Use "make LIB_clean && make all_clean && make flash" for a complete re-compile
+# Baud rates to 250000 have been tested and work
 
-## Microchip 328PB Xplained Mini environmental variables
-# MCU = atmega328pb
-# SERIAL = /dev/cu.usbmodem3101
-# F_CPU = 16000000UL  
-# BAUD  = 9600UL
-# LIBDIR = ../../Library
-# PROGRAMMER_TYPE = xplainedmini
-# PROGRAMMER_ARGS = 
+# Possible Serial Ports on Mac
+# /dev/cu.usbserial-01D5BFFC
+# /dev/cu.usbmodem5101
+# /dev/cu.usbmodem3301
+# /dev/cu.usbserial-AB0JQEUX
+# /dev/cu.usbmodem14101
 
-## Microchip 168PB Xplained Mini environmental variables
-MCU = atmega168pb
-SERIAL = /dev/cu.usbmodem3101
-F_CPU = 16000000UL  
-BAUD  = 9600UL
-LIBDIR = ../../Library
-PROGRAMMER_TYPE = xplainedmini
-PROGRAMMER_ARGS = 
+# Arduino UNO et al using Optiboot (standard Arduino IDE approach)
+MCU = atmega328p
+SERIAL = /dev/cu.usbmodem14101
+F_CPU = 16000000UL
+BAUD  = 250000UL
+SOFT_RESET = 0
+LIBDIR = $(DEPTH)Library
+PROGRAMMER_TYPE = Arduino
+PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 
-# Arduino UNO environmental variables
+# Arduino UNO and compatible boards using Atmel-ICE Debugger in atmelice_isp mode
 # MCU = atmega328p
-# SERIAL = /dev/cu.usbmodem3101
-# F_CPU = 16000000UL  
-# BAUD  = 9600UL
-# LIBDIR = ../../Library
-# PROGRAMMER_TYPE = Arduino
-# PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+# SERIAL = /dev/cu.usbserial-01D5BFFC
+# F_CPU = 16000000UL
+# BAUD  = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# PROGRAMMER_TYPE = atmelice_isp
+# PROGRAMMER_ARGS = -F -V -P usb -b 115200
+
+# Arduino UNO and compatible boards using Atmel Dragon
+# MCU = atmega328p
+# SERIAL = /dev/cu.usbserial-01D5BFFC
+# F_CPU = 16000000UL
+# BAUD  = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# PROGRAMMER_TYPE = dragon
+# PROGRAMMER_ARGS =   -c dragon_isp -P usb
+
+# Arduino UNO and compatible boards using Atmel SNAP in ISP mode
+# MCU = atmega328p
+# SERIAL = /dev/cu.usbserial-01D5BFFC
+# F_CPU = 16000000UL
+# BAUD  = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# PROGRAMMER_TYPE = snap_isp
+# PROGRAMMER_ARGS = -P usb
+
+# Microchip 328PB Xplained Mini board
+# MCU = atmega328pb
+# SERIAL = /dev/cu.usbmodem5102
+# F_CPU = 16000000UL
+# BAUD  = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# PROGRAMMER_TYPE = xplainedmini
+# PROGRAMMER_ARGS =
 ```
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
