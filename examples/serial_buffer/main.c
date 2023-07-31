@@ -4,8 +4,9 @@
 
 #include <stdio.h>
 #include "uart.h"
+#include "readLine.h"
 
-#define BUFFER_SIZE  16
+#define BUFFER_SIZE  8
 
 enum BufferStatus {BUFFER_OK, BUFFER_EMPTY, BUFFER_FULL};
 
@@ -40,7 +41,7 @@ int main(void) {
 
     init_serial();
     
-    uint8_t input1[16];
+    char input1[16];
     uint8_t temp_char;
     // char input2[8];
 
@@ -48,7 +49,7 @@ int main(void) {
     printf("Enter up to %i characters\n", BUFFER_SIZE);
     while(1)
     {
-        scanf("%s", input1);
+        readLine(input1, BUFFER_SIZE);
         uint8_t in_char = 0;
         while(in_char < sizeof(input1) - 1)
         {
