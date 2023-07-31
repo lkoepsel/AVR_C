@@ -22,7 +22,7 @@ int main(void) {
         printf("You entered %s\n", input1);
 
         printf("fgets(): Enter %i char\n", MAX_CHAR - 1);
-        fgets(input1, MAX_CHAR, stdin);
-        printf("You entered %s\n", input1);
+        fgets(input2, MAX_CHAR, stdin);
+        printf("\nYou entered %s\n", input2);
     }
 }
