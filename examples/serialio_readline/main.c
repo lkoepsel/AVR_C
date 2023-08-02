@@ -1,30 +1,53 @@
-// serialio - demonstrate how to successfully read a line of text
+// serialio - demonstrate how to successfully read a line of text and
+// use STRTOK() to split the line into tokens (or words)
 
 #include <stdio.h>
+#include <string.h>
 #include "uart.h"
 #include "readLine.h"
 
-#define MAX_BUFFER 15
+#define MAX_BUFFER 16
+#define MAX_TOKENS (MAX_BUFFER/2 + 1)
+#define MAX_DELIMS 3
 
 int main(void) {    
 
     init_serial();
     char input[MAX_BUFFER + 1] = {};
+    char delims[MAX_DELIMS + 1] = {" ,\t"};
 
-    puts("Serial I/O Test: readLine");
-    while(1)
+    puts("Serial I/O Test: readLine with tokens");
+    printf("Enter text up to %i characters, and end w/ CR\n", MAX_BUFFER);
+    printf("Line will be parsed into tokens\n");
+    uint8_t num_char = readLine(input, MAX_BUFFER);
+
+    printf("You entered %i characters\n", num_char);
+
+    for (uint8_t out_char=0; out_char<MAX_BUFFER; out_char++)
     {
-        printf("Enter text up to %i characters, and end w/ CR\n", MAX_BUFFER);
-        uint8_t num_char = readLine(input, MAX_BUFFER);
+        printf("%c", input[out_char]);
+    }
+    printf("\n");
 
-        printf("You entered %i characters\n", num_char);
-        for (uint8_t out_char=0; out_char<MAX_BUFFER; out_char++)
-        {
-            printf("%c", input[out_char]);
+    // break input line into tokens
+    char *tokens[MAX_TOKENS];
+    uint8_t token = 0;
+    tokens[token] = strtok(input, delims);
+    while ((tokens[token] != NULL) && (token < MAX_TOKENS)) {
+        token++;
+        tokens[token] = strtok(NULL, delims);
+    }
+    uint8_t tokens_found = token;
 
-            // erases buffer for next use, might not be desired
-            input[out_char] = 0;
-        }
-        printf("\n");
+    printf("Found %i tokens, delimitors were (w/ ASCII code): ", tokens_found);
+    for (uint8_t delim=0; delim < MAX_DELIMS; delim++)
+    {
+        printf("'%c' 0x%x ", delims[delim], delims[delim]);
+    }
+    printf("\n");
+    for (token=0; token<tokens_found; token++)
+    {
+        printf("%i %s\n", token, tokens[token]);
+
     }
 }
