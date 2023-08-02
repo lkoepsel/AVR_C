@@ -18,5 +18,5 @@ int main(void) {
     for (uint8_t i = 0; i < 5; i += 2) {
         printf("%x", boot_signature_byte_get(i));
     }
-    return 0;
+    printf("\n");
 }

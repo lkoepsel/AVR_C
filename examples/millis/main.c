@@ -23,7 +23,6 @@ int main (void)
         uint16_t prior_ticks = millis();
         delay(delay_time);
         uint16_t delta_ticks = millis() - prior_ticks;
-
         printf("Delay time was %u and delta in millis() was %u\n", delay_time, delta_ticks);
     }
     return (0);

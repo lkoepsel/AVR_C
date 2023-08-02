@@ -1,29 +1,18 @@
-/*
- * Serial I/O test
- *
- * Adapted from K&R The C Programming Language V3 page 17
- *
- *
- * Requires serial monitor set to 9600, 8, 1, None with no line ending
- * Use Arduino Serial Monitor, minicom, PUTTY or your favorite serial monitor
- */
+// Serial I/O test - Echo's the typed letter back to monitor
+// Adapted from K&R The C Programming Language V3 page 17
+// Requires serial monitor set to 250000, 8, 1, None with no line ending
+// Use Arduino Serial Monitor, minicom, PUTTY or your favorite serial monitor
  
 #include <stdio.h>
 #include "uart.h"
-#include "sysclock.h"
 
 int main(void) {    
 
     init_serial();
-    init_sysclock_2 ();
-    init_RESET();
-    
     char input;
 
-    puts("Serial I/O Test");
+    puts("Echo Serial Test");
     while((input = getchar())!= EOF) {
-        printf("You entered %c\n", input);        
+        putchar(input);
     }
-        
-    return 0;
 }
