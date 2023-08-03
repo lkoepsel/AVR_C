@@ -24,9 +24,9 @@ struct flasher
 {
    volatile uint8_t pin;    // Uno pin 
    uint8_t state;           // Is pin HIGH or LOW
-   uint16_t on;             // Time on
-   uint16_t off;            // Time off
-   uint16_t elapsed;        // Time elapsed sinced last in loop
+   uint32_t on;             // Time on
+   uint32_t off;            // Time off
+   uint32_t elapsed;        // Time elapsed sinced last in loop
 } ;
 
 // now setup an array of structs to easily manage them, we can 
@@ -35,8 +35,8 @@ struct flasher flashers[MAX_FLASHERS];
 
 // init is similar to the Flasher Constructor in the example
 // and initializes the member variables and state, and sets LED pin to OUTPUT
-void init(uint8_t index, uint8_t pin, uint8_t state, uint16_t on, uint16_t off,\
-        uint16_t elapsed)
+void init(uint8_t index, uint8_t pin, uint8_t state, uint32_t on, uint32_t off,\
+        uint32_t elapsed)
 {
     flashers[index].pin = pin;
     flashers[index].state = state;
@@ -53,7 +53,7 @@ void init(uint8_t index, uint8_t pin, uint8_t state, uint16_t on, uint16_t off,\
 void update (uint8_t flasherID) 
 {
     // Based on adafruit lesson on classes
-    uint16_t now = millis();
+    uint32_t now = millis();
 
     if((flashers[flasherID].state == HIGH) &&\
         (now - flashers[flasherID].elapsed >= flashers[flasherID].on))
@@ -79,7 +79,7 @@ int main(void)
     // initialize each flasher (struct: {pin, state, on, off, elapsed})
     // in comparison to Classy example, each LED only requires 1 line of code :)
     // AND update MAX_FLASHERS to number of flashers
-    init(0, 3, LOW, DEFAULT_ON, DEFAULT_OFF, 0);
+    init(0, 4, LOW, DEFAULT_ON, DEFAULT_OFF, 0);
     init(1, 5, LOW, DEFAULT_ON << 1, DEFAULT_OFF << 1, 0);
     init(2, 6, LOW, DEFAULT_ON << 2, DEFAULT_OFF << 2, 0);
 

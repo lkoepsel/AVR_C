@@ -7,15 +7,15 @@ struct blinker
 {
   uint8_t ledPin;           // the number of the LED pin
   uint8_t state;          // the state (HIGH/LOW) the LED pin
-  uint16_t interval;      // interval at which to blink (milliseconds)
-  uint16_t previousMillis;   // will store last time LED was updated
+  uint32_t interval;      // interval at which to blink (milliseconds)
+  uint32_t previousMillis;   // will store last time LED was updated
 } ;
 struct blinker LED;
 
 int main (void)
 {
   init_sysclock_2 ();
-  LED.ledPin = 3;
+  LED.ledPin = 4;
   LED.state = LOW;
   LED.interval = 1000;
   LED.previousMillis = 0;
@@ -23,7 +23,7 @@ int main (void)
 
     while(1)
     {
-        uint16_t currentMillis = millis();
+        uint32_t currentMillis = millis();
         if(currentMillis - LED.previousMillis > LED.interval) 
         {
             LED.previousMillis = currentMillis;   

@@ -13,8 +13,8 @@ struct blinker
 {
   uint8_t Uno_pin;           // the number of the LED pin
   uint8_t state;            // the state (HIGH/LOW) the LED pin
-  uint16_t interval;        // interval at which to blink (milliseconds)
-  uint16_t previousMillis;  // will store last time LED was updated
+  uint32_t interval;        // interval at which to blink (milliseconds)
+  uint32_t previousMillis;  // will store last time LED was updated
 } ;
 struct blinker LEDS[N_LEDS];
 
@@ -25,8 +25,8 @@ struct device
 } ;
 struct device DEVICES[N_DEVICES];
 
-void init(uint8_t index, void *device, uint8_t Uno_pin, uint8_t state, uint16_t interval,\
-    uint16_t previousMillis)
+void init(uint8_t index, void *device, uint8_t Uno_pin, uint8_t state, uint32_t interval,\
+    uint32_t previousMillis)
 {
     DEVICES[index].device_func = device;
     LEDS[index].Uno_pin = Uno_pin;
@@ -55,7 +55,7 @@ int main (void)
 
     // Parameters: index, LED, pin, state, interval, previous
     // Parameters: index, function, pin, state, interval, previous
-    init(0, LED, 3, LOW, 250, 0);
+    init(0, LED, 4, LOW, 250, 0);
     init(1, LED, 5, LOW, 500, 0);
     init(2, LED, 6, LOW, 1000, 0);
 

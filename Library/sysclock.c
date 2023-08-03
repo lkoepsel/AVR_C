@@ -7,7 +7,7 @@
 
 volatile uint16_t sys_ctr_0 = 0;
 volatile uint16_t ticks_ro_ctr = 0;
-volatile uint16_t sys_ctr_2 = 0;
+volatile uint32_t sys_ctr_2 = 0;
 volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 volatile uint8_t iservo = 0;
 
@@ -131,10 +131,10 @@ void init_sysclock_2 (void)
     // Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
     // Counter performs another divide by 2 => 1000hz
     // Test using example/millis (delay(1000) = 999 ticks)
-    // OCR2A value of 252 results in alternating 1000 and 999
+    // OCR2A value of 255 results in 999
     TCCR2A |= (_BV(WGM20));
     TCCR2B |= ( _BV(WGM22) | _BV(CS21) | _BV(CS20) ) ;
-    OCR2A = 252;
+    OCR2A = 255;
     TIMSK2 |= _BV(OCIE2A);
     sei ();
 }
@@ -158,7 +158,7 @@ uint16_t ticks_ro(void) {
     return 0;   
 }
 
-uint16_t millis(void) {
+uint32_t millis(void) {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
         return(sys_ctr_2);

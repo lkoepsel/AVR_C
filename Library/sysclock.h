@@ -18,7 +18,7 @@
 #include <avr/sleep.h>
 #include "tone.h"
 
-uint16_t millis(void);
+uint32_t millis(void);
 uint16_t micros(void);
 uint16_t ticks(void);
 uint16_t ticks_ro(void);
