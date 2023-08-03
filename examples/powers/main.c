@@ -20,9 +20,10 @@ int main (void)
     float flt, pow_flt;
     uint8_t i, j;
 
-    puts("Testing math and variable types (powers of 2 by  data type)");
-    printf(" i uint8_t  int8_t  uint16_t   int16_t        uint32_t\
-        int32_t         float   pow(flt,i)\n");
+    puts("Maximum Value by data type");
+    puts("Demonstrates float precision issue");
+    printf(" i uint8_t  int8_t  uint16_t   int16_t      uint32_t\
+       int32_t          float     pow(flt,i)\n");
 
     for (i=1; i < 33; i++) 
     {
@@ -43,41 +44,41 @@ int main (void)
 
         for (j=1; j<=i; j++) 
         {
-            if (j == 8)
-            {
-                pow_8_u = (pow_8_u * int_8_u) - 1;
-            }
-            else if (j > 8)
-            {
-                pow_8_u = 0;
-            }
-            else
+            if (j < 8)
             {
                 pow_8_u = pow_8_u * int_8_u;
             }
-            if (j == 16)
+            else if (j ==  8)
             {
-                pow_16_u = (pow_16_u * int_16_u) - 1;
-            }
-            else if (j > 16)
-            {
-                pow_16_u = 0;
+                pow_8_u = (pow_8_u * int_8_u) - 1 ;
             }
             else
+            {
+                pow_8_u = 0;
+            }
+            if (j < 16)
             {
                 pow_16_u = pow_16_u * int_16_u;
             }
-            if (j == 32)
+            else if (j == 16)
             {
-                pow_32_u = (pow_32_u * int_32_u) - 1;
-            }
-            else if (j > 32)
-            {
-                pow_32_u = 0;
+                pow_16_u = (pow_16_u * int_16_u) - 1;
             }
             else
             {
+                pow_16_u = 0;
+            }
+            if (j < 32)
+            {
                 pow_32_u = pow_32_u * int_32_u;
+            }
+            else if (j == 32)
+            {
+                pow_32_u = (pow_32_u * int_32_u) - 1;
+            }
+            else
+            {
+                pow_32_u = 0;
             }
             pow_8_s = pow_8_s * int_8_s;
             pow_16_s = pow_16_s * int_16_s;
@@ -85,7 +86,7 @@ int main (void)
             pow_flt = pow_flt * flt;
             }
         flt = pow(flt, i);
-        printf("%3u %6u  %6d  %8u  %8d  %14lu  %14ld %12.1f %12.1f\n",
+        printf("%3u %6u  %6d  %8u  %8d  %12lu  %12ld %14.1f %14.1f\n",
         i, pow_8_u, pow_8_s, pow_16_u, pow_16_s, pow_32_u, pow_32_s, pow_flt, flt);
     }
 
