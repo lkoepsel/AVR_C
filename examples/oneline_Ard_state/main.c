@@ -10,9 +10,9 @@
 #define NTASKS 3
 
 // Uno pin numbers
-#define LED0 3
-#define LED1 4
-#define LED2 5
+#define LED0 4
+#define LED1 5
+#define LED2 6
 uint8_t state0 = LOW;
 uint8_t state1 = LOW;
 uint8_t state2 = LOW;
