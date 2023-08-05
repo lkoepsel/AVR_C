@@ -17,26 +17,29 @@
 // uses CR as end of line, might need to be changed to LF
 #define CR 13
 
-int __real_printf(const char *fmt, ...);
+uint16_t __real_printf(const char *fmt, ...);
 
-void __wrap_printf(const char *fmt, ...)
+uint16_t __wrap_printf(const char *fmt, ...) 
 {
-    va_list args;
-    __real_printf("%lums ", millis());
-    va_start(args, fmt);
-    vprintf(fmt, args);
-    va_end(args);
+  va_list args;
+  uint16_t count0, count1;
+  count0 = __real_printf("%d: ", millis());
+  va_start(args, fmt);
+  count1 = vprintf(fmt, args);
+  va_end(args);
+  return count0+count1;
 }
 
-int main(void) {    
-
+int main(void) 
+{    
     init_serial();
     init_sysclock_2 ();
 
     char input;
 
     __real_printf("printf wrapper  Test\n");
-    while((input = getchar())!= CR) {
+    while((input = getchar())!= CR) 
+    {
         printf("Testing %c\n", input);
     }
     __real_printf("Program Exit\n");
