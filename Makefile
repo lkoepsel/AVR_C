@@ -51,8 +51,9 @@ CFLAGS += -ffunction-sections -fdata-sections
 LDFLAGS = -Wl,-Map,$(TARGET).map 
 ## Optional, but often ends up with smaller code
 LDFLAGS += -Wl,--gc-sections 
-# Uncomment line below to add timestamp wrapper to printf()
-LDFLAGS += -Wl,--wrap=printf
+# Uncomment line below to add timestamp wrapper to printf() OR
+# Comment line below, if  undefined reference to `__wrap_printf'
+# LDFLAGS += -Wl,--wrap=printf
 ## Relax shrinks code even more, but makes disassembly messy
 ## LDFLAGS += -Wl,--relax
 LDFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
