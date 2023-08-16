@@ -23,7 +23,7 @@ uint16_t __wrap_printf(const char *fmt, ...)
 {
   va_list args;
   uint16_t count0, count1;
-  count0 = __real_printf("%d: ", millis());
+  count0 = __real_printf("%ld", millis());
   va_start(args, fmt);
   count1 = vprintf(fmt, args);
   va_end(args);
@@ -37,10 +37,12 @@ int main(void)
 
     char input;
 
-    __real_printf("printf wrapper  Test\n");
+    __real_printf("printf wrapper Example\n");
+    __real_printf("Press any key to show elapsed time(ms)\n");
+    __real_printf("Press Return to exit program\n");
     while((input = getchar())!= CR) 
     {
-        printf("Testing %c\n", input);
+        printf(" ms since reset, %c key pressed\n", input);
     }
     __real_printf("Program Exit\n");
 }

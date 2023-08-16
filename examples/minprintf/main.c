@@ -17,10 +17,11 @@ void minprintf(char *fmt, ...)
     char *p;        // will point to each char in fmt
     char *sval;     // will contain the string value if passed
     int ival;       // will contain the integer value if passed
-    double dval;    // will contain the doublt value if passed
+    double dval;    // will contain the double value if passed
 
     // use the final named argument to get va_ initialized
-    // for other functions, this argument will be the count of arguments
+    // typically, this argument is the count of arguments (explicit)
+    // this example, executes til end of arguments available (implicit)
     va_start(ap, fmt);
 
     // note this loop depends on the last char being a 0, due to the *p

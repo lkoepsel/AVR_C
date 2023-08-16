@@ -2,7 +2,7 @@
 // Sets up a system tick of 1 millisec (1kHz)
 // To test, uses the system delay (blocking, doesn't use clock)
 // to determine delta between a delay
-// There can be a lag of 1-10 milliseconds at times
+// There can be a lag of 1-2 milliseconds at times
 // Requires init_sysclock_2()
 #include <avr/io.h>
 #include <stdio.h>
@@ -23,7 +23,7 @@ int main (void)
         uint32_t prior_ticks = millis();
         delay(delay_time);
         uint32_t delta_ticks = millis() - prior_ticks;
-        printf("Delay time was %u and delta in millis() was %lu\n", delay_time, delta_ticks);
+        printf("Delay time was %u ms and delta in millis() was %lu ms\n",\
+            delay_time, delta_ticks);
     }
-    return (0);
 }
