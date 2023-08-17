@@ -4,15 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "uart.h"
-#include "delay.h"
 #include "sysclock.h"
 #include "unolib.h"
-#include "pinMode.h"
 #include "tinymt32.h"
 
 #define gen_x 20
 #define gen_y 8
-#define print_values 0 // change to 1 to have values printed
+#define print_values 1 // change to 1 to have values printed
 uint32_t tinymts[gen_x][gen_y];
 uint32_t randos[gen_x][gen_y];
 
@@ -64,7 +62,7 @@ int main (void)
     printf("TinyMT Values\n");
     for (int i = 0; i < gen_x; i++) {
         for (int j = 0; j < gen_y; j++) {
-            printf("%10lu\t", tinymts[i][j]);
+            printf("%12lu", tinymts[i][j]);
         }
         printf("\n");
     }
@@ -72,7 +70,7 @@ int main (void)
     printf("rand() Values\n");
     for (int i = 0; i < gen_x; i++) {
         for (int j = 0; j < gen_y; j++) {
-            printf("%10lu\t", randos[i][j]);
+            printf("%12lu", randos[i][j]);
         }
         printf("\n");
     }
