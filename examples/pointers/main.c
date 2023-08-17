@@ -22,7 +22,7 @@ int main(void) {
 
     p_x = &x;
     p_y = &y;
-    p_z = NULL;
+    p_z = 0;
 
     // Pointers to pointers
     int16_t **p_p_x;
@@ -62,7 +62,7 @@ int main(void) {
     printf("The address of y (p_y) is %p and its value is %i (y)\n", p_y, y);
     if (!p_z) 
     {
-        printf("The address of z is %p and it is NULL\n", p_z);
+        printf("The address of z is %p and it is 0\n", p_z);
     }
     
     puts("\nUnderstanding * and &");

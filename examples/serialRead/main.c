@@ -17,12 +17,11 @@ int main (void)
     puts("Testing serialRead, exits on non-numeric input");
     while(1) 
     {
-        int16_t analog_value;
+        uint16_t analog_value;
         analog_value = serialRead();
         float voltage = (analog_value * .00488);
         printf("Pin: %u Value: %u Voltage: %5.3f\n",\
         analog_pin, analog_value, voltage);
         delay(1000);
     }
-    return 0;
 }

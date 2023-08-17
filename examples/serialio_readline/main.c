@@ -7,7 +7,7 @@
 #include "readLine.h"
 
 #define MAX_BUFFER 16
-#define MAX_TOKENS (MAX_BUFFER/2 + 1)
+#define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 3
 
 int main(void) {    
@@ -33,7 +33,7 @@ int main(void) {
     char *tokens[MAX_TOKENS];
     uint8_t token = 0;
     tokens[token] = strtok(input, delims);
-    while ((tokens[token] != NULL) && (token < MAX_TOKENS)) {
+    while ((token < MAX_TOKENS - 1) || (tokens[token] != NULL) ) {
         token++;
         tokens[token] = strtok(NULL, delims);
     }

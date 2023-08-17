@@ -8,6 +8,6 @@
 #include "uart.h"
 #include "unolib.h"
 
-int16_t serialRead(void) ;
+uint16_t serialRead(void) ;
 
 #endif

@@ -1,0 +1,8 @@
+missingIncludeSystem
+missingInclude
+knownConditionTrueFalse:examples/pointers/main.c
+invalidscanf:examples/serialio_string/main.c
+unusedFunction:Library/sysclock.c
+unusedFunction:Library/tinymt32.c
+unusedFunction:Library/unolib.c
+unusedFunction:examples/serialio_wrapprint/main.c

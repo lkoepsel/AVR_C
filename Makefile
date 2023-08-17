@@ -86,7 +86,7 @@ complete: all flash all_clean
 all: $(TARGET).hex 
 
 static: 
-	cppcheck --std=c99 --platform=avr8 --enable=all ../../. 2> cppcheck.txt
+	cppcheck --std=c99 --platform=avr8 --enable=all --suppressions-list=$(DEPTH)suppressions.txt . 2> cppcheck.txt
 
 debug:
 	@echo

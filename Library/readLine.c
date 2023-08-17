@@ -2,12 +2,11 @@
 
 uint8_t readLine(char *buffer, uint8_t SIZE)
 {
-    char temp;
     uint8_t in_char = 0;
     uint8_t EOL = 0;
     do
     {
-        temp = getchar();
+        char temp = getchar();
         if (temp == CR)
         {
             EOL = 1;

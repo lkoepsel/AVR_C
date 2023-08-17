@@ -20,14 +20,13 @@ PGM_P const array[2] PROGMEM =
 void printbychar(const char* ParameterName, uint16_t value)
     {
         // uint8_t max = 11;
-        uint8_t c;
         printf("The value of ");
         for (uint8_t i=0; i < strlen_P(ParameterName); i++)
         {
-            c = pgm_read_byte(&(ParameterName[i]));
+            uint8_t c = pgm_read_byte(&(ParameterName[i]));
             putchar(c);
         }
-        printf(" is %d\n", value);
+        printf(" is %u\n", value);
     }
 
 // Function based on: How do I put an array of strings completely in ROM?
@@ -47,7 +46,7 @@ int printProgmem (uint8_t msg, uint16_t value)
     // The strcpy_P() function is similar to strcpy(),
     // except that src is a pointer to a string in program space.
     strcpy_P(print_buffer, ptr);
-    printf("The value of %s is %d\n", print_buffer, value);
+    printf("The value of %s is %u\n", print_buffer, value);
 
     return 0;
 }

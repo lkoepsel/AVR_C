@@ -1,7 +1,4 @@
 # Programming the Arduino Uno in Standard C
-**Note as of March 16, 2022**
-
-The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Please see *env.make* note at the bottom of this README.
 
 ## Introduction
 This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivilents using **Standard C** in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
@@ -180,8 +177,8 @@ For example, in *AVR_C*, the depth is two, therefore `DEPTH = ../../`, while in 
 
 If you are getting make errors, stating it can't find the target, more than likely the `DEPTH` variable is incorrect.
 
-### env.make 
-As stated above, instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. 
+### env.make
+The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. It is **ignored** by git, so it must be created and updated, outside of the git process.
 
 The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
 ```make
@@ -212,7 +209,7 @@ PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 ```
 I've found it best to include full sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is below.
 
-**Note: This repository has the new version of Makefiles which uses this file, so no other changes are needed.**
+**Note: This repository has the new version of Makefiles which uses this file, so no other changes other than creating the proper *env.make* file are needed.**
 
 The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
 
@@ -283,6 +280,30 @@ PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 # PROGRAMMER_TYPE = xplainedmini
 # PROGRAMMER_ARGS =
 ```
+
+## Static Testing
+I used [*cppcheck*](http://cppcheck.net) to perform a static analysis of the code. It was extremely helpful in pointing out a few buffer issues, I had. That said, there were a few false positives or some issues, which I knew existed and didn't wish to fix. Here is the suppressions-list I used:
+```
+// info issues which don't need to get resolved
+missingIncludeSystem
+missingInclude
+
+// example purposely uses a false known condition to execute
+knownConditionTrueFalse:examples/pointers/main.c
+
+// example purposely uses an unbounded scanf() to demo problem
+invalidscanf:examples/serialio_string/main.c
+
+// functions which are included if a specific board is used
+unusedFunction:Library/sysclock.c
+unusedFunction:Library/unolib.c
+unusedFunction:examples/serialio_wrapprint/main.c
+
+// haven't determined if a problem, however not a concern
+unusedFunction:Library/tinymt32.c
+```
+
+To perform static testing, run `make static` at the root level and the output from cppcheck will appear in cppcheck.txt. If you want to see all issues, none suppressed, then remove '--suppressions-list=$(DEPTH)suppressions.txt' from the `make static` line in the Makefile (line 89)
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
 

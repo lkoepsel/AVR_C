@@ -1,6 +1,6 @@
 #include "serialRead.h"
 
-int16_t serialRead(void) 
+uint16_t serialRead(void)
 {
     int16_t value;
     uint8_t values = scanf("%4i", &value);
