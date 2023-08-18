@@ -5,7 +5,7 @@ This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu
 
 In order to use this framework, one must install the *avr-gcc* tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so are [here](https://wellys.com/posts/avr_c_setup/).
 
-For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Using gdb and Bloom to Debug](https://wellys.com/posts/avr_c_gdbbloom/).
+For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Setup Bloom and gdb for Hardware Debug](https://wellys.com/posts/avr_c_gdb_bloomsetup/).
 
 ## Steps to Use
 1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/)
@@ -309,8 +309,9 @@ I also write about C, MicroPython and Forth programming on microcontrollers at [
 
 Other sources of information which were helpful:
 * [AVR Libc](https://www.nongnu.org/avr-libc/)
+* [AVR Freaks Community](https://www.avrfreaks.net/)
 * [Arduino in C | Freedom Embedded](https://balau82.wordpress.com/arduino-in-c/)
 * [Programming Arduino in "Pure C"](http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html)
 * [EMBEDDS: AVR Tutorials](https://embedds.com/avr-tutorials/)
 * [CCRMA: AVR](https://ccrma.stanford.edu/wiki/AVR#AVR_Microcontrollers)
-* [Efundies: AVR](https://efundies.com/category/avr/)
+* [Efundies Electronics and Programming Guides: AVR](https://efundies.com/avr/)
