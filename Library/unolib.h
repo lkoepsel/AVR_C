@@ -38,7 +38,7 @@ uint16_t constrain16_t(uint16_t value, uint16_t min, uint16_t max);
 *  for a explanation of the routine
 */
 
-#define RESET_BUTTON PB0
+#define RESET_BUTTON PB7
 #define RESET_MASK  0b11000111
 
 #define BOUNCE_DIVIDER 1 // divides millis by this number for checking reset button

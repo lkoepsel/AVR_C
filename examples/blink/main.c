@@ -12,9 +12,9 @@ int main(void)
     {
         // toggle led on and off
         digitalWrite(LED_BUILTIN, TOG);
-        // delay(1);
-        // digitalWrite(LED_BUILTIN, LOW);
-        // delay(1);
+        delay(1000);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(1000);
     }
     return 0; 
 }
