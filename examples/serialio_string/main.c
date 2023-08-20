@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "uart.h"
 
-int main(void) {    
+int main(void) {
 
     init_serial();
     #define MAX_CHAR 8
