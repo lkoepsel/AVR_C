@@ -33,7 +33,7 @@ int main(void) {
     char *tokens[MAX_TOKENS];
     uint8_t token = 0;
     tokens[token] = strtok(input, delims);
-    while ((token < MAX_TOKENS - 1) || (tokens[token] != NULL) ) {
+    while ( (tokens[token] != NULL) && (token < MAX_TOKENS - 1) ) {
         token++;
         tokens[token] = strtok(NULL, delims);
     }
