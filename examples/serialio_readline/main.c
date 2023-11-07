@@ -14,16 +14,22 @@ int main(void) {
 
     init_serial();
     char input[MAX_BUFFER + 1] = {};
-    char delims[MAX_DELIMS + 1] = {" ,\t"};
+    char delims[MAX_DELIMS + 1] = {" ,."};
 
     puts("Serial I/O Test: readLine with tokens");
-    printf("Enter text up to %i characters, and end w/ CR\n", MAX_BUFFER);
+    printf("Enter text up to %i characters, or end w/ CR\n", MAX_BUFFER);
     printf("Line will be parsed into tokens\n");
+    printf("Possible delimitors are (w/ ASCII code): ");
+    for (uint8_t delim=0; delim < MAX_DELIMS; delim++)
+    {
+        printf("'%c' 0x%x ", delims[delim], delims[delim]);
+    }
+    printf("\n");
     uint8_t num_char = readLine(input, MAX_BUFFER);
 
     printf("You entered %i characters\n", num_char);
 
-    for (uint8_t out_char=0; out_char<MAX_BUFFER; out_char++)
+    for (uint8_t out_char=0; out_char<num_char; out_char++)
     {
         printf("%c", input[out_char]);
     }
@@ -39,12 +45,7 @@ int main(void) {
     }
     uint8_t tokens_found = token;
 
-    printf("Found %i tokens, delimitors were (w/ ASCII code): ", tokens_found);
-    for (uint8_t delim=0; delim < MAX_DELIMS; delim++)
-    {
-        printf("'%c' 0x%x ", delims[delim], delims[delim]);
-    }
-    printf("\n");
+    printf("With tokens identified as:\n");
     for (token=0; token<tokens_found; token++)
     {
         printf("%i %s\n", token, tokens[token]);
