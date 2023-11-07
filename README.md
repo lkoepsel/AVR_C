@@ -124,11 +124,12 @@ Shows an example of using millis() to demonstrate the effectiveness of the delay
 ### serialio:
 Simple character I/O test using the UART. The USB cable is the only cable required. See note in main.c, as program won't work with specific combinations of a board and serial monitor. Adafruit Metro 328 and minicom for example.
 
-## Serial Solutions
-#### In use
-* [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/) Works well, integrated into avr-gcc to enable using printf, puts, and getchar. Uses polling which is slow and blocking.
-#### In review to determine how to use due to its interrupts
-* [Peter Fleury AVR Software](http://www.peterfleury.epizy.com/avr-software.html) Works, not integrated into avr-gcc library, so not native. It uses interrupts and buffering so it is fast and non-blocking.
+## Serial Interface
+[Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/) Works well, integrated into avr-gcc to enable using printf, puts, and getchar. Uses polling, which will blocking, works well to 250000 baud. 
+
+The Makefile uses 250000 baud, it is fast and error-free. My recommended serial monitor is [CoolTerm](https://freeware.the-meiers.org/). Read [here](https://wellys.com/posts/serial_applications/) for more information.
+
+The example `serialio_readline` provides a *readline* example to understand how to read a line from the serial console and break the line into tokens or words.
 
 ## Multitasking
 There are four multitasking examples in the *examples* folder. Only one of them will be incorporated into the Library. The goal of each example is to explore the possible approaches for multitasking. 

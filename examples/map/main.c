@@ -1,7 +1,7 @@
 /*
  * Mapping tests
  *
- * Requires serial monitor set to 9600, 8, 1, None with no line ending
+ * Requires serial monitor set to 250000, 8, 1, None with no line ending
  * Use Arduino Serial Monitor, minicom, PUTTY or your favorite serial monitor
  */
  
