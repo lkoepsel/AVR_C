@@ -45,7 +45,7 @@ int main(void) {
     }
     uint8_t tokens_found = token;
 
-    printf("With tokens identified as:\n");
+    printf("With tokens identified as:(index token)\n");
     for (token=0; token<tokens_found; token++)
     {
         printf("%i %s\n", token, tokens[token]);

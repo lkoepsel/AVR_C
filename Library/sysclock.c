@@ -14,6 +14,9 @@ volatile uint8_t iservo = 0;
 extern servo servos[MAX_SERVOS];
 extern button buttons[MAX_BUTTONS];
 
+// Array to hold the task control blocks
+// extern Task tasks[10];
+
 // ****Defined Interrupt Service Routines****
 
 // Required for tone, musical notes on a pin
@@ -61,7 +64,14 @@ ISR (TIMER0_COMPA_vect)
 // Enabled by init_sysclock_1() in sysclock.c
 ISR (TIMER1_OVF_vect)      
 {
-        ticks_ro_ctr++;
+    ticks_ro_ctr++;
+    // for (int i = 0; i < 10; i++) 
+    // {
+    //     if (tasks[i].function != NULL && tasks[i].delay_ticks > 0) 
+    //     {
+    //         tasks[i].delay_ticks--;
+    //     }
+    // }
 }
 
 // Software defined reset, for boards w/o hardware reset, i.e, xplainedmini

@@ -33,4 +33,21 @@ void init_RESET(void);
 uint8_t is_RESET_pressed(void);
 uint8_t read_RESET(void);
 
+// Define task priorities
+#define TASK_PRIORITY_HIGH   0
+#define TASK_PRIORITY_MEDIUM 1
+#define TASK_PRIORITY_LOW    2
+
+// Function pointer type for tasks
+typedef void (*TaskFunction)();
+
+// Structure to represent a task
+typedef struct {
+    TaskFunction function;
+    uint16_t delay_ticks;
+    uint16_t period_ticks;
+    uint8_t priority;
+} Task;
+
+
 #endif
