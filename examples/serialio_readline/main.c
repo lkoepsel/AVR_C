@@ -6,7 +6,7 @@
 #include "uart.h"
 #include "readLine.h"
 
-#define MAX_BUFFER 16
+#define MAX_BUFFER 24
 #define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 3
 
