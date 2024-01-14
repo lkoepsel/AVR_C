@@ -170,7 +170,30 @@ make LIB_clean
 To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
 
 ### Makefile Notes
-The makefile on **line 13** has a variable `TOOLCHAIN = `, which allows you to either use a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. In order to use the latter, set `TOOLCHAIN = arduino` and the toolchain will use the Arduino components.
+The makefile has a variable `TOOLCHAIN = `, which allows you to either use a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. 
+
+In order to use the latter, perform the following steps:
+1. Add *arduino* to the variable as in `TOOLCHAIN = arduino`
+2. Uncomment the appropriate `BIN = ...` and `AVRDUDECONF = ...` lines to **match** your operating system
+3. Comment the remaining `BIN = ...` and `AVRDUDECONF = ...`, which are **not** your operating system
+
+```bash
+# Change TOOLCHAIN = arduino, if you want to use the Arduino IDE tools
+# Uncomment the appropriate block of code based on your OS and recomment the other 
+TOOLCHAIN = 
+ifeq ($(TOOLCHAIN), arduino)
+	# macOS
+	BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
+	AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+	# Windows
+	# BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
+	# AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'	
+else
+	BIN =
+	AVRDUDECONF = 
+endif
+```
+If you are adding the locations to the *Makefile* be sure the indentation is a `tab` and not a series of spaces.
 
 There is only one Makefile and it sits at the root level of the folder, along side env.make. There are symbolic (soft) links inside of each example to this Makefile. This makes it easy to propagate changes to all examples simultaneously. It also means there is only one Makefile.
 

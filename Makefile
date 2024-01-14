@@ -9,11 +9,16 @@ include $(DEPTH)env.make
 ##########     Won't need to change if they're in your PATH     ##########
 ##########------------------------------------------------------##########
 
-
+# Change TOOLCHAIN = arduino, if you want to use the Arduino IDE tools
+# Uncomment the appropriate block of code based on your OS and recomment the other
 TOOLCHAIN = 
 ifeq ($(TOOLCHAIN), arduino)
+	# macOS
 	BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
 	AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+	# Windows
+	# BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
+	# AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'	
 else
 	BIN =
 	AVRDUDECONF = 
