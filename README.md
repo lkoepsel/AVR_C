@@ -177,13 +177,14 @@ In order to use the latter, perform the following steps:
 2. Uncomment, by removing the leading `# ` *(this is pound sign **AND** the following space)* from the lines `BIN = ...` and `AVRDUDECONF = ...` lines appropriate to your operating system
 
 ```bash
-# Change TOOLCHAIN = arduino, if you want to use the Arduino IDE tools
-# Uncomment the appropriate block of code based on your OS and recomment the other 
+# Change the line below to TOOLCHAIN = arduino, if you want to use the Arduino IDE tools
+# And uncomment the appropriate block of code based on your OS
 TOOLCHAIN = 
 ifeq ($(TOOLCHAIN), arduino)
 	# macOS lines, remove both the # and the following space
 	# BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
 	# AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+
 	# Windows lines, remove both the # and the following space
 	# BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
 	# AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'	
