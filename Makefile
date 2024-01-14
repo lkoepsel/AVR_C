@@ -14,8 +14,8 @@ include $(DEPTH)env.make
 TOOLCHAIN = 
 ifeq ($(TOOLCHAIN), arduino)
 	# macOS
-	BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
-	AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+	# BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
+	# AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
 	# Windows
 	# BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
 	# AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'	
