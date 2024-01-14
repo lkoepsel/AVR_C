@@ -170,6 +170,8 @@ make LIB_clean
 To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
 
 ### Makefile Notes
+The makefile on **line 13** has a variable `TOOLCHAIN = `, which allows you to either use a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. In order to use the latter, set `TOOLCHAIN = arduino` and the toolchain will use the Arduino components.
+
 There is only one Makefile and it sits at the root level of the folder, along side env.make. There are symbolic (soft) links inside of each example to this Makefile. This makes it easy to propagate changes to all examples simultaneously. It also means there is only one Makefile.
 
 In order to account for multiple projects which use this library in different folder hierarchies, each local makefile has a variable `DEPTH` which is defined as the required relative nesting to reach the root folder.

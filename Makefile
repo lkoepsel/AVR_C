@@ -9,11 +9,21 @@ include $(DEPTH)env.make
 ##########     Won't need to change if they're in your PATH     ##########
 ##########------------------------------------------------------##########
 
-CC = avr-gcc
-OBJCOPY = avr-objcopy
-OBJDUMP = avr-objdump
-AVRSIZE = avr-size
-AVRDUDE = avrdude
+
+TOOLCHAIN = 
+ifeq ($(TOOLCHAIN), arduino)
+	BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
+	AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+else
+	BIN =
+	AVRDUDECONF = 
+endif
+
+CC = $(BIN)avr-gcc
+OBJCOPY = $(BIN)avr-objcopy
+OBJDUMP = $(BIN)avr-objdump
+AVRSIZE = $(BIN)avr-size
+AVRDUDE = $(BIN)avrdude
 
 ##########------------------------------------------------------##########
 ##########                   Makefile Magic!                    ##########
@@ -124,13 +134,13 @@ LIB_clean:
 ##########------------------------------------------------------##########
 
 flash: $(TARGET).hex 
-	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+	$(AVRDUDE) $(AVRDUDECONF) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
 
 ## An alias
 program: flash
 
-flash_eeprom: $(TARGET).eeprom
-	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U eeprom:w:$<
+flash_eeprom: $(TARGET).eeprom 
+	$(AVRDUDE) $(AVRDUDECONF) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U eeprom:w:$<
 
 avrdude_terminal:
 	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -nt
