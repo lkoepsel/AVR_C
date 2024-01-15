@@ -170,30 +170,31 @@ make LIB_clean
 To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
 
 ### Makefile Notes
-The *Makefile* has a variable `TOOLCHAIN = `, which allows you to use either, a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. 
+The *Makefile* uses two variables from the env.make file, `TOOLCHAIN = ` and `OS =`, which allows you to use either, a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. 
 
-In order to use the latter, perform the following steps:
+In order to use the latter, perform the following steps in the env.make file:
 1. Add *arduino* to the `TOOLCHAIN` variable as in `TOOLCHAIN = arduino`
-2. Uncomment, by removing the leading `# ` *(this is pound sign **AND** the following space)* from the lines `BIN = ...` and `AVRDUDECONF = ...` lines appropriate to your operating system
+2. Add either *mac* or *windows* to the `OS =` line to indicate the OS your PC is running
+
+If either is missing, *make* will assume you are using the GNU tool chain.
 
 ```bash
-# Change the line below to TOOLCHAIN = arduino, if you want to use the Arduino IDE tools
-# And uncomment the appropriate block of code based on your OS
-TOOLCHAIN = 
-ifeq ($(TOOLCHAIN), arduino)
-	# macOS lines, remove both the # and the following space
-	# BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
-	# AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+ifeq ($(TOOLCHAIN),arduino)
+    ifeq ($(OS),mac)
+        BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
+        AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+    endif
+    ifeq ($(OS),windows)
+        BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
+        AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'
+    endif
 
-	# Windows lines, remove both the # and the following space
-	# BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
-	# AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'	
 else
 	BIN =
 	AVRDUDECONF = 
 endif
 ```
-**The `BIN = ...` and `AVRDUDECONF = ...` lines must be indented only with a `tab` at the beginning of the line for make to accept the lines.**
+**The `BIN = ...` and `AVRDUDECONF = ...` lines must be indented with two `tab`s at the beginning of the line for make to accept the lines.**
 
 There is only one Makefile and it sits at the root level of the folder, along side env.make. There are symbolic (soft) links inside of each example to this Makefile. This makes it easy to propagate changes to all examples simultaneously. It also means there is only one Makefile.
 
@@ -249,22 +250,30 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 # Use "make LIB_clean && make all_clean && make flash" for a complete re-compile
 # Baud rates to 250000 have been tested and work
 
-# Possible Serial Ports on Mac
+# Example Serial Ports on Mac and Linux
 # /dev/cu.usbserial-01D5BFFC
 # /dev/cu.usbmodem5101
 # /dev/cu.usbmodem3301
 # /dev/cu.usbserial-AB0JQEUX
 # /dev/cu.usbmodem14101
 
+# Example Serial Ports on Windows
+# COM3
+# COM4
+# COM9
+
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
 MCU = atmega328p
-SERIAL = /dev/cu.usbmodem14101
+SERIAL = /dev/cu.usbmodem2101
 F_CPU = 16000000UL
 BAUD  = 250000UL
 SOFT_RESET = 0
 LIBDIR = $(DEPTH)Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+TOOLCHAIN = 
+OS = mac
+
 
 # Arduino UNO and compatible boards using Atmel-ICE Debugger in atmelice_isp mode
 # MCU = atmega328p
@@ -275,6 +284,8 @@ PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 # LIBDIR = $(DEPTH)Library
 # PROGRAMMER_TYPE = atmelice_isp
 # PROGRAMMER_ARGS = -F -V -P usb -b 115200
+# TOOLCHAIN = 
+# OS = mac
 
 # Arduino UNO and compatible boards using Atmel Dragon
 # MCU = atmega328p
@@ -285,6 +296,8 @@ PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 # LIBDIR = $(DEPTH)Library
 # PROGRAMMER_TYPE = dragon
 # PROGRAMMER_ARGS =   -c dragon_isp -P usb
+# TOOLCHAIN = 
+# OS = mac
 
 # Arduino UNO and compatible boards using Atmel SNAP in ISP mode
 # MCU = atmega328p
@@ -295,6 +308,8 @@ PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 # LIBDIR = $(DEPTH)Library
 # PROGRAMMER_TYPE = snap_isp
 # PROGRAMMER_ARGS = -P usb
+# TOOLCHAIN = 
+# OS = mac
 
 # Microchip 328PB Xplained Mini board
 # MCU = atmega328pb
@@ -305,6 +320,9 @@ PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 # LIBDIR = $(DEPTH)Library
 # PROGRAMMER_TYPE = xplainedmini
 # PROGRAMMER_ARGS =
+# TOOLCHAIN = 
+# OS = mac
+
 ```
 
 ## Static Testing
