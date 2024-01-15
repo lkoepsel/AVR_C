@@ -218,11 +218,16 @@ SOFT_RESET = 0
 LIBDIR = $(DEPTH)Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+TOOLCHAIN = arduino
+OS = mac
 ```
 As shown, this one is for the Arduino Uno board and on a Mac. For Make to work, you need to perform the following:
 1. Copy the contents above and paste them into a file called *env.make*
-2. The file needs to sit at the top level, the same level as this *README*, *bloom.json* and the programming folders *Library* and *examples*.
-3. Change the parameters to suit your board, for example, the Uno would need to look like this: (*macOS SERIAL parameter)
+2. The file needs to sit at the top level, the same level as this *README* and the programming folders *Library* and *examples*.
+You will need to set the following:
+* **SERIAL =** to the serial port you found using the Arduino IDE
+* **TOOLCHAIN = arduino** delete the word 'arduino if you wish to use the locally installed GNU C tool chain'
+* **OS = mac** replace 'mac' with 'windows' if on a Windows PC
 ```make
 # Arduino UNO environmental variables
 MCU = atmega328p
@@ -233,6 +238,8 @@ SOFT_RESET = 0
 LIBDIR = $(DEPTH)Library
 PROGRAMMER_TYPE = Arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+TOOLCHAIN = arduino
+OS = mac
 ```
 I've found it best to include full sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is below.
 
