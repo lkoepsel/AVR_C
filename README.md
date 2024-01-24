@@ -1,16 +1,19 @@
 # Programming the Arduino Uno in Standard C
 
 ## Introduction
-This repository provides a framework in  [Standard AVR C](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivilents using **Standard C** in a relatively familar (Arduino) context. The value of programming the ATmega328P in C is that it is easier to understand the C concepts using an 8-bit processor as compared to programming in C on a PC. It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
+This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using a standardized **C** in a relatively familar (Arduino) context. This serves the following:
+* The *C language* used in this framework follows the [*C99*](https://iso-9899.info/wiki/The_Standard) standard and doesn't introduce anything which would not be considered *standard C*. This is in contrast to the Arduino software framework, which introduces classes such as *serial* to process serial input.
+* The value of programming the *ATmega328P* in *C* is that it is easier to understand the *C* concepts using an 8-bit processor as compared to programming in *C* on a personal computer.
+* It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
 
-In order to use this framework, one must install the *avr-gcc* tool chain appropriate for their platform (Linux, macOS, or Windows). The directions to do so are [here](https://wellys.com/posts/avr_c_setup/).
+In order to use this framework, you can either install the *GNU avr* tool chain appropriate for your computer (Linux, macOS, or Windows). Or you can use the tool chain installed by Arduino, the instructions are in the same location. The directions to do so are here: [Developing in C on the AVR ATmega328P](https://wellys.com/posts/courses_avr_c/).
 
-For a robust debugging approach on Linux (Linux or WSL), you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Setup Bloom and gdb for Hardware Debug](https://wellys.com/posts/avr_c_gdb_bloomsetup/).
+For a robust debugging approach on Linux, you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Setup Bloom and gdb for Hardware Debug](https://wellys.com/posts/avr_c_gdb_bloomsetup/).
 
 ## Steps to Use
 1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/)
 2. Obtain this repository, either via download using zip file or preferably, [use git and clone to your system](https://www.wellys.com/posts/avr_c_step5/).
-3. Open the *AVR_C* folder and add an env.make file (*see below*) based on your board and system.
+3. Open the *AVR_C* folder and add an *env.make* file (*see below*) based on your board and system. **Be sure to set *toolchain* and *OS*, appropriate to the tool chain your are using and your operating system.**
 4. Navigate to *examples/blink* in your CLI and run:
 	* *make* to compile, link and create an executable file
 	* *make flash* to upload executable file to your board.
