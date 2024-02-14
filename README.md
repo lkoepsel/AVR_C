@@ -191,6 +191,10 @@ ifeq ($(TOOLCHAIN),arduino)
         BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
         AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'
     endif
+    ifeq ($(OS),raspberry)
+        BIN = /usr/local/arduino/hardware/tools/avr/bin/
+        AVRDUDECONF = -C /usr/local/arduino/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
+    endif
 
 else
 	BIN =
@@ -254,18 +258,15 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 
 **Full version of the env.make file I am using:**
 ```make
-# Environmental variables for specific boards
-# Uncomment entire block less top line of block
-# After switching boards, Library must be re-compiled
-# Use "make LIB_clean && make all_clean && make flash" for a complete re-compile
-# Baud rates to 250000 have been tested and work
-
-# Example Serial Ports on Mac and Linux
+# Example Serial Ports on Mac
 # /dev/cu.usbserial-01D5BFFC
 # /dev/cu.usbmodem5101
 # /dev/cu.usbmodem3301
 # /dev/cu.usbserial-AB0JQEUX
 # /dev/cu.usbmodem14101
+
+# Example Serial Ports on Linux
+# /dev/ttyACM0
 
 # Example Serial Ports on Windows
 # COM3
