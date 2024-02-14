@@ -19,8 +19,8 @@ ifeq ($(TOOLCHAIN),arduino)
         AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'
     endif
     ifeq ($(OS),raspberry)
-        BIN = '/usr/local/arduino/hardware/tools/avr/bin'
-        AVRDUDECONF = '-C /usr/local/arduino/hardware/arduino/avr/bootloaders/gemma/avrdude.conf'
+        BIN = /usr/local/arduino/hardware/tools/avr/bin/
+        AVRDUDECONF = -C /usr/local/arduino/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
     endif
 
 else
