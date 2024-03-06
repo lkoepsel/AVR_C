@@ -6,7 +6,7 @@
 include $(DEPTH)env.make
 ##########------------------------------------------------------##########
 ##########                  Program Locations                   ##########
-##########     Won't need to change if they're in your PATH     ##########
+##########     Be sure to set TOOLCHAIN and OS in env.make      ##########
 ##########------------------------------------------------------##########
 
 ifeq ($(TOOLCHAIN),arduino)
@@ -108,9 +108,17 @@ static:
 	cppcheck --std=c99 --platform=avr8 --enable=all --suppressions-list=$(DEPTH)suppressions.txt . 2> cppcheck.txt
 
 debug:
+	$(info    TOOLCHAIN is '$(TOOLCHAIN)')
+	$(info    OS is '$(OS)')
+	$(info    BIN is '$(BIN)')
+	@echo "MCU:"  $(MCU)
+	@echo "F_CPU:" $(F_CPU)
+	@echo "BAUD:"  $(BAUD)
+	@echo "SERIAL:"  $(SERIAL)
+	@echo "SOFT_RESET:"  $(SOFT_RESET)
+	@echo "LIB_DIR:"  $(LIBDIR)
 	@echo
 	@echo "Source files:"   $(SOURCES)
-	@echo "MCU, F_CPU, BAUD:"  $(MCU), $(F_CPU), $(BAUD)
 	@echo	
 
 # Optionally create listing file from .elf
