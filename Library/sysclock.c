@@ -11,6 +11,10 @@ volatile uint32_t sys_ctr_2 = 0;
 volatile uint8_t bounce_delay = BOUNCE_DIVIDER;
 volatile uint8_t iservo = 0;
 
+#if TC3_RESET
+volatile uint32_t sys_ctr_3 = 0;
+#endif
+
 extern servo servos[MAX_SERVOS];
 extern button buttons[MAX_BUTTONS];
 
@@ -95,6 +99,27 @@ ISR (TIMER2_COMPA_vect)
     }
 }
 
+// TC3 defined reset, for boards w TC3 AND w/o hardware reset, i.e, xplainedmini
+// Provides millis() counter and debouncing of RESET and buttons
+//  Number of buttons to check will slightly increase execution time of millis()
+#if TC3_RESET
+ISR (TIMER3_COMPA_vect)      
+{
+    sys_ctr_3++;
+    //  X times divider for millis() otherwise buttons checked too often
+    bounce_delay--;
+    if (bounce_delay == 0) {
+        if (is_RESET_pressed()) {
+            soft_reset();
+        }
+        for (uint8_t i=0; i < MAX_BUTTONS; i++) {
+            buttons[i].pressed = is_button_pressed(i);
+        }
+        bounce_delay = BOUNCE_DIVIDER;
+    }
+}
+#endif
+
 // ****End of Defined Interrupt Service Routines****
 
 // ****Defined Timer Setup Functions****
@@ -140,14 +165,34 @@ void init_sysclock_2 (void)
     // CS22 CS20 => scalar of 32
     // Frequency = 16 x 10^6 / 32 / 255 = 2000Hz
     // Counter performs another divide by 2 => 1000hz
-    // Test using example/millis (delay(1000) = 999 ticks)
-    // OCR2A value of 255 results in 999
+    // Test using example/millis (delay(1000) = 1000 ticks)
+    // OCR2A value of 252 results in 1000
     TCCR2A |= (_BV(WGM20));
     TCCR2B |= ( _BV(WGM22) | _BV(CS21) | _BV(CS20) ) ;
-    OCR2A = 255;
+    OCR2A = 252;
     TIMSK2 |= _BV(OCIE2A);
     sei ();
 }
+
+// Only available on ATmega328PB
+#if TC3_RESET
+void init_sysclock_3 (void)          
+{
+    // Initialize timer 3 for debouncing buttons and soft-defined reset
+    // TCCR3A [ COM3A1 COM3A0 COM3B1 COM3B0 0 0 WGM31 WGM30 ] = 00000001
+    // WGM33 WGM30 => PWM, Phase and Frequency Correct, TOP = OCR3A
+    // TCCR2B [ INCNC3 ICES3 0 WGM33 CS33 CS31 CS30 ] = 00010001
+    // CS30 => no prescaling
+    // Frequency = 16 x 10^6 / 1 / 8063 = 2000Hz
+    // Counter performs another divide by 2 => 1000hz
+    // Test using example/millis (delay(1000) = 1000 ticks)
+    TCCR3A = (_BV(WGM30));
+    TCCR3B |= ( _BV(WGM33)  | _BV(CS30) );
+    OCR3A = 8063;
+    TIMSK3 |= _BV(OCIE3A);
+    sei();
+}
+#endif
 
 // ****End of Defined Timer Setup Functions****
 
@@ -176,9 +221,50 @@ uint32_t millis(void) {
     return 0;   
 }
 
+#if TC3_RESET
+uint32_t millis_TC3(void) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        return(sys_ctr_3);
+    }
+    return 0;   
+}
+#endif
 
 // Routines required for software defined reset
 #if SOFT_RESET
+void init_RESET(void) {
+    /* Use RESET_BUTTON as the pin for the reset button
+    *  Change to actual value using define in unolib.h
+    *  It is expected to be ACTIVE LOW and on PORT B
+    */
+    DDRB |= (_BV(RESET_BUTTON));
+    PORTB |= (_BV(RESET_BUTTON));
+}
+
+uint8_t is_RESET_pressed(void){
+
+    static uint8_t reset_history = 0;
+    uint8_t pressed = 0;    
+ 
+    reset_history = reset_history << 1;
+    reset_history |= read_RESET();
+
+    if ((reset_history & RESET_MASK) == 0b00000111){ 
+        pressed = 1;
+        reset_history = 0b11111111;
+    }
+    return pressed;
+}
+
+uint8_t read_RESET(void) {
+
+    return((PINB & (1 << RESET_BUTTON)) == 0);
+}
+#endif
+
+// Routines required for software defined reset
+#if TC3_RESET
 void init_RESET(void) {
     /* Use RESET_BUTTON as the pin for the reset button
     *  Change to actual value using define in unolib.h

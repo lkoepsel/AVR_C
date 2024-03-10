@@ -41,7 +41,7 @@ uint16_t constrain16_t(uint16_t value, uint16_t min, uint16_t max);
 #define RESET_BUTTON PB7
 #define RESET_MASK  0b11000111
 
-#define BOUNCE_DIVIDER 1 // divides millis by this number for checking reset button
+#define BOUNCE_DIVIDER 32 // divides millis by this number for checking reset button
 
 // https://www.nongnu.org/avr-libc/user-manual/FAQ.html#faq_softreset 
 // Function Prototype
@@ -65,6 +65,11 @@ DDRB |= (_BV(PORTB5));\
 PORTB |= (_BV(PORTB5));\
 _delay_ms(100);\
 PORTB &= ~(_BV(PORTB5));
+
+// inline tog, used to test if ISR is firing, toggles pin 13
+#define tog() \
+DDRB |= (_BV(PORTB5));\
+PINB |= (_BV(PORTB5));
 
 #define set_bit(port, bit) ((port) |= (1 << (bit)))
 #define clr_bit(port, bit) ((port) &= ~(1 << (bit)))

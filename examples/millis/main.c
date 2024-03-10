@@ -3,7 +3,9 @@
 // To test, uses the system delay (blocking, doesn't use clock)
 // to determine delta between a delay
 // There can be a lag of 1-2 milliseconds at times
-// Requires init_sysclock_2()
+// Requires init_sysclock_2() or
+// If using a ATmega328PB, use init_sysclock_3 and millis_TC3
+// and set TC3_RESET = 1
 #include <avr/io.h>
 #include <stdio.h>
 #include "uart.h"
