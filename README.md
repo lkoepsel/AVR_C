@@ -258,6 +258,12 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 
 **Full version of the env.make file I am using:**
 ```make
+# Environmental variables for specific boards
+# Uncomment entire block less top line of block
+# After switching boards, Library must be re-compiled
+# Use "make LIB_clean && make all_clean && make flash" for a complete re-compile
+# Baud rates to 250000 have been tested and work
+
 # Example Serial Ports on Mac
 # /dev/cu.usbserial-01D5BFFC
 # /dev/cu.usbmodem5101
@@ -273,17 +279,24 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 # COM4
 # COM9
 
+# Using Arduino tools vs. GCC native
+# For Arduino tool chain
+# TOOLCHAIN [ arduino ]
+# OS: [mac | windows | raspberry ]
+# For GCC native, both TOOLCHAIN and OS need to be blank
+
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
 MCU = atmega328p
-SERIAL = /dev/cu.usbmodem2101
+SERIAL = /dev/cu.usbserial-AR0JYGOB
 F_CPU = 16000000UL
 BAUD  = 250000UL
 SOFT_RESET = 0
 LIBDIR = $(DEPTH)Library
-PROGRAMMER_TYPE = Arduino
+PROGRAMMER_TYPE = arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
-TOOLCHAIN = 
-OS = mac
+TOOLCHAIN =
+OS =
+TC3_RESET = 0
 
 
 # Arduino UNO and compatible boards using Atmel-ICE Debugger in atmelice_isp mode
@@ -324,16 +337,30 @@ OS = mac
 
 # Microchip 328PB Xplained Mini board
 # MCU = atmega328pb
-# SERIAL = /dev/cu.usbmodem5102
+# SERIAL = /dev/cu.usbmodem3102
 # F_CPU = 16000000UL
 # BAUD  = 250000UL
-# SOFT_RESET = 0
+# SOFT_RESET = 1
 # LIBDIR = $(DEPTH)Library
 # PROGRAMMER_TYPE = xplainedmini
 # PROGRAMMER_ARGS =
 # TOOLCHAIN = 
 # OS = mac
+# TC3_RESET = 0
 
+# Microchip Curiousity Nano AVR64DD32
+# avrdude -p avr64dd32 -c pkobn_updi -P usb -t
+# MCU = avr64dd32
+# SERIAL = /dev/cu.usbmodem3102
+# F_CPU = 16000000UL
+# BAUD  = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# PROGRAMMER_TYPE = pkobn_updi
+# PROGRAMMER_ARGS =
+# TOOLCHAIN = 
+# OS = mac
+# TC3_RESET = 0
 ```
 
 ## Static Testing
