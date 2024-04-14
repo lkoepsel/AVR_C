@@ -51,15 +51,30 @@ TARGET = main
 # Object files: will find all .c/.h files in current directory
 #  and in LIBDIR.  If you have any other (sub-)directories with code,
 #  you can add them in to SOURCES below in the wildcard statement.
-# See Note re: CPPFLAGS if using/not using LIBDIR
-SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
+
+# See Note re: CPPFLAGS if using/not using LIBDIR, pick only one LIB or NO_LIB
+# LIB - Uncomment if the AVR_C Library is required (default), also 
+# uncomment LIB below in CPPFLAGS (and comment NO_LIB)
+# SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
+
+# NO_LIB - Uncomment if you wish the smallest code size and DON'T
+# require AVR_C Library (and comment LIB)
+SOURCES=$(wildcard *.c )
+
 OBJECTS=$(SOURCES:.c=.o)
 HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious. 
-## Use this CPPFLAGS with LIBDIR if a library directory is known 
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR) \
+
+## LIB: Use this CPPFLAGS with LIB above if the AVR_C library is desired
+# CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR) \
+# -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
+
+## NO_LIB Use this CPPFLAGS with NO_LIB above if a library directory is 
+## not required and you wish to reduce the size of the code 
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD)  \
 -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
+
 # use below to setup gdb and debugging
 CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror
 # Use below to optimize size

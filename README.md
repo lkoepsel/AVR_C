@@ -172,7 +172,7 @@ make LIB_clean
 
 To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
 
-### Makefile Notes
+### Makefile and Tool Chain 
 The *Makefile* uses two variables from the env.make file, `TOOLCHAIN = ` and `OS =`, which allows you to use either, a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. 
 
 In order to use the latter, perform the following steps in the env.make file:
@@ -210,8 +210,14 @@ In order to account for multiple projects which use this library in different fo
 For example, in *AVR_C*, the depth is two, therefore `DEPTH = ../../`, while in another project where there is one more level of folders, it is `DEPTH = ../../../`.
 
 If you are getting make errors, stating it can't find the target, more than likely the `DEPTH` variable is incorrect.
+### Makefile and LIB/NO_LIB
+In some situations, its advantageous to not use the AVR_C library (*/Library*), to reduce code size. You can change this using the Makefile. There are two locations, the first where *SOURCES* is defined and the second where *CPPFLAGS* are defined. Both are marked with commands for *LIB* and *NO_LIB*.
 
-### env.make
+* To continue to use the AVR_C libary, leave *LIB* **uncommented** and be sure to **comment** *NO_LIB*. This is the default and is required for the majority of all examples.
+
+* To compile to a small code size, **comment** *LIB* and **uncomment** *NO_LIB*. This will force the compiler to only use the code in the main.c file and the standard *avr-libc* code. Examples of doing this are in the example, *blink_avr*, where the code is reduced to roughly 188 bytes from over 1300 bytes.  
+
+### ### Makefile and env.make
 The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. It is **ignored** by git, so it must be created and updated, outside of the git process.
 
 The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
