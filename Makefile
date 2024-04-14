@@ -76,7 +76,7 @@ LDFLAGS += -Wl,--gc-sections
 # LDFLAGS += -Wl,--wrap=printf
 ## Relax shrinks code even more, but makes disassembly messy
 ## LDFLAGS += -Wl,--relax
-LDFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
+## LDFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
 ## LDFLAGS += -Wl,-u,vfprintf -lprintf_min      ## for smaller printf
 TARGET_ARCH = -mmcu=$(MCU)
 
@@ -151,7 +151,7 @@ LIB_clean:
 ##########           Flashing code to AVR using avrdude         ##########
 ##########------------------------------------------------------##########
 
-flash: $(TARGET).hex 
+flash: $(TARGET).hex $(TARGET).lst
 	$(AVRDUDE) $(AVRDUDECONF) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
 
 ## An alias
