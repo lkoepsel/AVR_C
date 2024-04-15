@@ -1,14 +1,14 @@
 # Programming the Arduino Uno in Standard C
 
 ## Introduction
-This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which mirrors that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using a standardized **C** in a relatively familar (Arduino) context. This serves the following:
-* The *C language* used in this framework follows the [*C99*](https://iso-9899.info/wiki/The_Standard) standard and doesn't introduce anything which would not be considered *standard C*. This is in contrast to the Arduino software framework, which introduces classes such as *serial* to process serial input.
+This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familar (Arduino) context. This serves the following:
+* The *C language* used in this framework follows the [*C99*](https://iso-9899.info/wiki/The_Standard) standard and doesn't introduce anything which would not be considered *standard C*. This is in contrast to the Arduino software framework, which introduces classes such as *Serial* to process serial input, as well as *C++*.
 * The value of programming the *ATmega328P* in *C* is that it is easier to understand the *C* concepts using an 8-bit processor as compared to programming in *C* on a personal computer.
 * It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
 
 In order to use this framework, you can either install the *GNU avr* tool chain appropriate for your computer (Linux, macOS, or Windows). Or you can use the tool chain installed by Arduino, the instructions are in the same location. The directions to do so are here: [Developing in C on the AVR ATmega328P](https://wellys.com/posts/courses_avr_c/).
 
-For a robust debugging approach on Linux, you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Setup Bloom and gdb for Hardware Debug](https://wellys.com/posts/avr_c_gdb_bloomsetup/).
+For a robust debugging approach on *Linux*, you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Setup Bloom and gdb for Hardware Debug](https://wellys.com/posts/avr_c_gdb_bloomsetup/).
 
 ## Steps to Use
 1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/)
@@ -26,7 +26,7 @@ This code has been tested extensively with the Arduino Uno and the [Microchip AT
 
 If you have an existing Uno, it will work very well. If you wish to add hardware debugging, you will want to purchase a debugWIRE compatible device such as the [Microchip MPLAB Snap](https://www.microchip.com/en-us/development-tool/PG164100) or the [Atmel ICE](https://www.microchip.com/en-us/development-tool/ATATMEL-ICE).
 
-Other Microchip AVR-compatible microcontrollers will more than likely work, I haven't the time to test them. If the processor is not a ATmega328P, it will be important to set the MCU and processor frequency (F_CPU) variables in the Makefile. For specific information as to how to setup your environment specific to your board and microcontroller, see the content for **Makefile** below.
+Other Microchip AVR-compatible microcontrollers will more than likely work, I haven't the time to test them. If the processor is not the ATmega328P, it will be important to set the MCU and processor frequency (F_CPU) variables in the Makefile. For specific information as to how to setup your environment specific to your board and microcontroller, see the content for **Makefile** below.
 ## Arduino Framework  and standard C Replacement Routines
 Much of the Standard C Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
 ### Arduino Framework Functions
@@ -132,7 +132,7 @@ Simple character I/O test using the UART. The USB cable is the only cable requir
 
 The Makefile uses 250000 baud, it is fast and error-free. My recommended serial monitor is [CoolTerm](https://freeware.the-meiers.org/). Read [here](https://wellys.com/posts/serial_applications/) for more information.
 
-The example `serialio_readline` provides a *readline* example to understand how to read a line from the serial console and break the line into tokens or words.
+The example *serialio_readline* provides a *readline* example to understand how to read a line from the serial console and break the line into tokens or words.
 
 ## Multitasking
 There are four multitasking examples in the *examples* folder. Only one of them will be incorporated into the Library. The goal of each example is to explore the possible approaches for multitasking. 
@@ -152,9 +152,7 @@ make LIB_clean && make all_clean && make flash
 This deletes all object files from both the Library and the current working folder then recompiles them with the last command. This approach is a bit overkill, however, it takes only a few additional seconds. The extra seconds are returned with knowing you aren't using out-dated code. Once you are finished with working on the Library code, *make flash* will be sufficient.
 
 ## Makefile and make
-The examples make use of a great Makefile courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
-
-[Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile)
+The examples start with the use of a great [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile) courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
 
 ### Make Commands for Examples
 ```
@@ -170,96 +168,78 @@ make all_clean
 make LIB_clean
 ```
 
-To [install the proper toolchain](https://wellys.com/posts/avr_c_setup/) required to compile the code.
+### DEPTH in local makefiles
+There is only one Makefile and it sits at the root level of *AVR_C*, along side *env.make*. There are symbolic (soft) links inside of each example to this Makefile. This makes it easy to propagate changes to all examples simultaneously.
 
-### Makefile and Tool Chain 
+In order to account for multiple projects which use this library with different folder hierarchies, each **local makefile** has a variable `DEPTH` which is defined as the required relative nesting to reach the root folder.
+
+For example, in *AVR_C*, the depth is two, therefore `DEPTH = ../../`, while in another project where there is one more level of folders, it is `DEPTH = ../../../`.
+
+If you are getting make errors, stating it can't find the target, more than likely the `DEPTH` variable is incorrect. This variable can be found in each example's *makefile*.
+
+## Makefile and env.make parameters
+### env.make
+I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. It is **ignored by git, so it must be created and updated, outside of the git process**. This allows each person to customize their work based on their requirements and not having changed with each new version of *AVR_C*.
+
+The file, *env.make* is **not tracked by git** and it looks like this:
+
+### Latest parameters for Arduino Uno R3
+```make
+# Arduino UNO or exact equivalents using Optiboot (standard Arduino IDE approach)
+MCU = atmega328p
+SERIAL = /dev/cu.usbserial-0001
+F_CPU = 16000000UL
+BAUD  = 250000UL
+SOFT_RESET = 0
+LIBDIR = $(DEPTH)Library
+LIBRARY = 
+PROGRAMMER_TYPE = arduino
+PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+TOOLCHAIN =
+OS =
+TC3_RESET = 0
+```
+
+### Instructions
+As shown above, this one is for the Arduino Uno board and a Mac. For *Make* to work, you need to perform the following:
+1. Copy the contents above and paste them into a file called *env.make*
+2. The file needs to sit at the top level, the same level as this *README* and the programming folders *Library* and *examples*, as in *AVR_C/env.make*.
+3. Every installation will have to set the following:
+
+* **SERIAL =** to the serial port to which your board is connected
+
+The remaining parameters default values will work. If you have a board different than an *Arduino Uno R3 or equivalent*, you might need to adjust the parameters below:
+
+### Board (MCU, F_CPU, BAUD)
+* **MCU** is the processor used, typically *atmega328p* or it could be the *atmega328pb* for the *Microchip Xplained Mini* board.
+* **F_CPU** is the clock speed of the processor.
+* **BAUD** is the desired serial baud rate of the board. I set it as high as possible.
+
+### Tool Chain (TOOLCHAIN and OS)
 The *Makefile* uses two variables from the env.make file, `TOOLCHAIN = ` and `OS =`, which allows you to use either, a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. 
 
 In order to use the latter, perform the following steps in the env.make file:
 1. Add *arduino* to the `TOOLCHAIN` variable as in `TOOLCHAIN = arduino`
-2. Add either *mac* or *windows* to the `OS =` line to indicate the OS your PC is running
+2. Add  *mac*, *raspberry* or *windows* to the `OS =` line to indicate the OS your PC is running
 
 If either is missing, *make* will assume you are using the GNU tool chain.
 
-```bash
-ifeq ($(TOOLCHAIN),arduino)
-    ifeq ($(OS),mac)
-        BIN = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/
-        AVRDUDECONF = -C /Applications/Arduino.app/Contents/Java/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
-    endif
-    ifeq ($(OS),windows)
-        BIN = 'C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\'
-        AVRDUDECONF = '-CC:\Program Files (x86)\Arduino\hardware\arduino\avr\bootloaders\gemma\avrdude.conf'
-    endif
-    ifeq ($(OS),raspberry)
-        BIN = /usr/local/arduino/hardware/tools/avr/bin/
-        AVRDUDECONF = -C /usr/local/arduino/hardware/arduino/avr/bootloaders/gemma/avrdude.conf
-    endif
+### Code Size (LIBRARY)
+In some situations, its advantageous **to not use** the AVR_C library (*/Library*), to reduce code size. You can change this using the Makefile. 
 
-else
-	BIN =
-	AVRDUDECONF = 
-endif
-```
-**The `BIN = ...` and `AVRDUDECONF = ...` lines must be indented with two `tab`s at the beginning of the line for make to accept the lines.**
+* The default is to use the AVR_C libary, which is *LIBRARY =*. This is required for the majority of all examples.
 
-There is only one Makefile and it sits at the root level of the folder, along side env.make. There are symbolic (soft) links inside of each example to this Makefile. This makes it easy to propagate changes to all examples simultaneously. It also means there is only one Makefile.
+* To compile to a small code size, use *LIBRARY = no_lib*. This will force the compiler to only use the code in the main.c, other files in the folder and the standard *avr-libc* code. Examples of doing this are in the example, *blink_avr*, where the code is reduced to roughly 188 bytes from over 1300 bytes.  
 
-In order to account for multiple projects which use this library in different folder hierarchies, each local makefile has a variable `DEPTH` which is defined as the required relative nesting to reach the root folder.
+### Board Changes (SOFT_RESET and TC3_RESET)
+The *Microchip ATmega328PB Xplained Mini* has greater capabilities and is not configured like the *Uno*. With the *ATmega328PB* microcontroller it has 3 additional timer/counters, *TC3, TC4, TC5*.
+* **TC3_RESET** Set this to 1 to use the Timer/Counter 3 as a 1ms clock and debounce clock
+* **SOFT_RESET** sets the button on pin 7 to be a RESET button
 
-For example, in *AVR_C*, the depth is two, therefore `DEPTH = ../../`, while in another project where there is one more level of folders, it is `DEPTH = ../../../`.
+### PROGRAMMING (PROGRAMMER_TYPE and PROGRAMMER_ARGS)
+Set this as appropriate for your programming methodology. See examples for methods.
 
-If you are getting make errors, stating it can't find the target, more than likely the `DEPTH` variable is incorrect.
-### Makefile and LIB/NO_LIB
-In some situations, its advantageous to not use the AVR_C library (*/Library*), to reduce code size. You can change this using the Makefile. There are two locations, the first where *SOURCES* is defined and the second where *CPPFLAGS* are defined. Both are marked with commands for *LIB* and *NO_LIB*.
-
-* To continue to use the AVR_C libary, leave *LIB* **uncommented** and be sure to **comment** *NO_LIB*. This is the default and is required for the majority of all examples.
-
-* To compile to a small code size, **comment** *LIB* and **uncomment** *NO_LIB*. This will force the compiler to only use the code in the main.c file and the standard *avr-libc* code. Examples of doing this are in the example, *blink_avr*, where the code is reduced to roughly 188 bytes from over 1300 bytes.  
-
-### ### Makefile and env.make
-The method of changing parameters from local environmental variables such as *AVR_PORT* and *AVR_MCU* has changed. Instead of local enviromental variables, I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. It is **ignored** by git, so it must be created and updated, outside of the git process.
-
-The file, *env.make* is **not tracked by git** and it looks like this: (*macOS SERIAL parameter)
-```make
-# Arduino UNO environmental variables
-MCU = atmega328p
-SERIAL = /dev/cu.usbmodem14101
-F_CPU = 16000000UL
-BAUD  = 250000UL
-SOFT_RESET = 0
-LIBDIR = $(DEPTH)Library
-PROGRAMMER_TYPE = Arduino
-PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
-TOOLCHAIN = arduino
-OS = mac
-```
-As shown, this one is for the Arduino Uno board and on a Mac. For Make to work, you need to perform the following:
-1. Copy the contents above and paste them into a file called *env.make*
-2. The file needs to sit at the top level, the same level as this *README* and the programming folders *Library* and *examples*.
-You will need to set the following:
-* **SERIAL =** to the serial port you found using the Arduino IDE
-* **TOOLCHAIN = arduino** delete the word 'arduino if you wish to use the locally installed GNU C tool chain'
-* **OS = mac** replace 'mac' with 'windows' if on a Windows PC
-```make
-# Arduino UNO environmental variables
-MCU = atmega328p
-SERIAL = /dev/cu.usbmodem14101
-F_CPU = 16000000UL
-BAUD  = 250000UL
-SOFT_RESET = 0
-LIBDIR = $(DEPTH)Library
-PROGRAMMER_TYPE = Arduino
-PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
-TOOLCHAIN = arduino
-OS = mac
-```
-I've found it best to include full sections per board, then comment/uncomment a section based on the board I'm using. A full version of the *env.make* file I'm using is below.
-
-**Note: This repository has the new version of Makefiles which uses this file, so no other changes other than creating the proper *env.make* file are needed.**
-
-The nice part about this change, is once the variables have been updated for your system, you no longer have to do special programmer types such as *make flash_snap* or *make flash_xplain*, as *make flash* will be automatically updated for your specific programmer. (**Provided you give it the right parameters.**)
-
+## env.make for multiple boards
 Here is an env.make with multiple sections, one for each board to be used. Notice that only one section is active at a time, the non-used sections have been commented out.
 
 **Full version of the env.make file I am using:**
@@ -291,13 +271,19 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 # OS: [mac | windows | raspberry ]
 # For GCC native, both TOOLCHAIN and OS need to be blank
 
+# To not use AVR_C library, to reduce code size dramatically
+# set LIBRARY = no_lib, see examples/blink_avr
+# All functions must be in avr-libc, main.c or files in folder
+# otherwise, leave blank
+
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
 MCU = atmega328p
-SERIAL = /dev/cu.usbserial-AR0JYGOB
+SERIAL = /dev/cu.usbserial-0001
 F_CPU = 16000000UL
 BAUD  = 250000UL
 SOFT_RESET = 0
 LIBDIR = $(DEPTH)Library
+LIBRARY = 
 PROGRAMMER_TYPE = arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 TOOLCHAIN =
@@ -312,6 +298,7 @@ TC3_RESET = 0
 # BAUD  = 250000UL
 # SOFT_RESET = 0
 # LIBDIR = $(DEPTH)Library
+# LIBRARY =
 # PROGRAMMER_TYPE = atmelice_isp
 # PROGRAMMER_ARGS = -F -V -P usb -b 115200
 # TOOLCHAIN = 
@@ -324,6 +311,7 @@ TC3_RESET = 0
 # BAUD  = 250000UL
 # SOFT_RESET = 0
 # LIBDIR = $(DEPTH)Library
+# LIBRARY =
 # PROGRAMMER_TYPE = dragon
 # PROGRAMMER_ARGS =   -c dragon_isp -P usb
 # TOOLCHAIN = 
@@ -336,6 +324,7 @@ TC3_RESET = 0
 # BAUD  = 250000UL
 # SOFT_RESET = 0
 # LIBDIR = $(DEPTH)Library
+# LIBRARY =
 # PROGRAMMER_TYPE = snap_isp
 # PROGRAMMER_ARGS = -P usb
 # TOOLCHAIN = 
@@ -348,6 +337,7 @@ TC3_RESET = 0
 # BAUD  = 250000UL
 # SOFT_RESET = 1
 # LIBDIR = $(DEPTH)Library
+# LIBRARY =
 # PROGRAMMER_TYPE = xplainedmini
 # PROGRAMMER_ARGS =
 # TOOLCHAIN = 
@@ -362,6 +352,7 @@ TC3_RESET = 0
 # BAUD  = 250000UL
 # SOFT_RESET = 0
 # LIBDIR = $(DEPTH)Library
+# LIBRARY =
 # PROGRAMMER_TYPE = pkobn_updi
 # PROGRAMMER_ARGS =
 # TOOLCHAIN = 
