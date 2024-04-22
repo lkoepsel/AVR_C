@@ -37,18 +37,19 @@ int main(void) {
 
     // break input line into tokens
     char *tokens[MAX_TOKENS];
-    uint8_t token = 0;
-    tokens[token] = strtok(input, delims);
-    while ( (tokens[token] != NULL) && (token < MAX_TOKENS - 1) ) {
-        token++;
-        tokens[token] = strtok(NULL, delims);
+    uint8_t index = 0;
+    tokens[index] = strtok(input, delims);
+    while ( (tokens[index] != NULL) && (index < MAX_TOKENS - 1) ) {
+        index++;
+        tokens[index] = strtok(NULL, delims);
     }
-    uint8_t tokens_found = token;
+    uint8_t tokens_found = index;
 
-    printf("With tokens identified as:(index token)\n");
-    for (token=0; token<tokens_found; token++)
+    printf("The %i tokens parsed are:\n", tokens_found);
+    printf("index token\n");
+    for (index=0; index<tokens_found; index++)
     {
-        printf("%i %s\n", token, tokens[token]);
+        printf("%5i %s\n", index, tokens[index]);
 
     }
 }
