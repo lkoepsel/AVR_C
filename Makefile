@@ -84,7 +84,9 @@ CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror
 ## Use short (8-bit) data types 
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 ## Splits up object files per function
-CFLAGS += -ffunction-sections -fdata-sections 
+CFLAGS += -ffunction-sections -fdata-sections
+# if attempting to use %S format specification (strings in progmem), uncomment next line
+CFLAGS += -Wno-format
 LDFLAGS = -Wl,-Map,$(TARGET).map 
 ## Optional, but often ends up with smaller code
 LDFLAGS += -Wl,--gc-sections 
@@ -149,7 +151,7 @@ help:
 	@echo "make verbose - make flash with more programming information"
 	@echo "make clean - delete all non-source files"
 	@echo "make LIB_clean - delete all Library .o files"
-	@echo "make env - print env.make variables"
+	@echo "make env - print active env.make variables"
 
 # Optionally create listing file from .elf
 # This creates approximate assembly-language equivalent of your code.

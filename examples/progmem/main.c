@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "uart.h"
 #include "sysclock.h"
+#include "unolib.h"
 
 const char ParameterA[] PROGMEM = "Parameter A";
 const char ParameterB[] PROGMEM = "Parameter B";
@@ -29,8 +30,8 @@ void printbychar(const char* ParameterName, uint16_t value)
         printf(" is %u\n", value);
     }
 
-// Function based on: How do I put an array of strings completely in ROM?
-// https://avr-libc.nongnu.org/user-manual/FAQ.html#faq_rom_array
+// // Function based on: How do I put an array of strings completely in ROM?
+// // https://avr-libc.nongnu.org/user-manual/FAQ.html#faq_rom_array
 int printProgmem (uint8_t msg, uint16_t value)
 {
     // RAM buffer used for print message
@@ -55,7 +56,7 @@ int printProgmem (uint8_t msg, uint16_t value)
 // Function based on: "AVR-GCC and the PROGMEM Attribute" White Paper 
 // http://www.fourwalledcubicle.com/AVRArticles.php
 // This approach uses a non-standard %S format for reading string from Flash memory
-// Add -Wno-format to the CPP line in the Makefile (see line 47) 
+// Uncomment -Wno-format line 88 in the Makefile
 void PrintParameterValue(const char* ParameterName , uint8_t ParameterValue)
 {
     printf("The value of %S is %d\n", ParameterName, ParameterValue); 
@@ -72,29 +73,28 @@ int main (void)
     uint16_t now_ro;
     uint16_t elapsed_ro;
 
-    printf("Ticks_RO: %u\n", ticks_ro());
     now = ticks();
     now_ro = ticks_ro();
     PrintParameterValue(ParameterA , 10);
     elapsed = ticks();
     elapsed_ro = ticks_ro();
     PrintParameterValue(ParameterB , 20);
-    printf("PrintParameterValue Execution time: %u %u %u\n",\
-        elapsed - now, elapsed_ro, now_ro);
+    printf("PrintParameterValue Execution time: %u%u\n",\
+        elapsed_ro -now_ro, elapsed - now);
 
     now = ticks();
     printProgmem(0, 10);
     elapsed = ticks();
     printProgmem(1, 20);
-    printf("printProgmem Execution time: %u %u %u\n",
-    elapsed - now, elapsed_ro, now_ro);
+    printf("printProgmem Execution time: %u%u\n",
+    elapsed_ro -now_ro, elapsed - now);
 
     now = ticks();
     printbychar(ParameterA, 10);
     elapsed = ticks();
     printbychar(ParameterB, 20);
-    printf("printbychar Execution time: %u %u %u\n",\
-    elapsed - now, elapsed_ro, now_ro);
+    printf("printbychar Execution time: %u%u\n",\
+    elapsed_ro -now_ro, elapsed - now);
 
     return 0;
 }
