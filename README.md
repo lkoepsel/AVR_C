@@ -155,17 +155,14 @@ This deletes all object files from both the Library and the current working fold
 The examples start with the use of a great [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/ad2512ee6799e75e25e70043e8dcc8122cb4f5ab/setupProject/Makefile) courtesy of Elliot William's in his book [Make: AVR Programming](https://www.oreilly.com/library/view/make-avr-programming/9781449356484/). I highly recommend the book and used it extensively to understand how to program the ATmega328P (Arduino UNO) from scratch.
 
 ### Make Commands for Examples
-```
-# simple command to check syntax, similar to Verify in the Arduino IDE
-make
-# command to compile/link/load, similar to Upload in the Arduino IDE
-make flash
-# command to show the size of the code
-make size
-# command to clear out all the cruft created in compiling/linking/loading
-make all_clean
-# command to clear out the Library object files *file.o*, sometimes required if changes to Library files aren't appearing to work, uses LIBDIR folder as the folder to clean
-make LIB_clean
+```bash
+make help
+make - compile only, Arduino verify
+make flash - show size and flash to board, Arduino upload
+make verbose - make flash with more programming information
+make clean - delete all non-source files
+make LIB_clean - delete all Library .o files
+make env - print env.make variables
 ```
 
 ### DEPTH in local makefiles
@@ -246,9 +243,12 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 ```make
 # Environmental variables for specific boards
 # Uncomment entire block less top line of block
-# After switching boards, Library must be re-compiled
+# After switching boards, Library MUST BE RE-COMPILED
 # Use "make LIB_clean && make all_clean && make flash" for a complete re-compile
-# Baud rates to 250000 have been tested and work
+
+# Baud rates to 250000 have been tested and work on Uno R3
+# Baud rates above 230000 might not work on some ports or serial software
+# TC3_RESET is only applicable to ATmega328PB, set to 0 for ATmega328P
 
 # Example Serial Ports on Mac
 # /dev/cu.usbserial-01D5BFFC
@@ -271,24 +271,24 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 # OS: [mac | windows | raspberry ]
 # For GCC native, both TOOLCHAIN and OS need to be blank
 
-# To not use AVR_C library, to reduce code size dramatically
+# To reduce code size dramatically by not using AVR_C library, 
 # set LIBRARY = no_lib, see examples/blink_avr
-# All functions must be in avr-libc, main.c or files in folder
+# All functions must be in avr-libc (standard library), main.c or files in folder
 # otherwise, leave blank
 
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
-MCU = atmega328p
-SERIAL = /dev/cu.usbserial-0001
-F_CPU = 16000000UL
-BAUD  = 250000UL
-SOFT_RESET = 0
-LIBDIR = $(DEPTH)Library
-LIBRARY = 
-PROGRAMMER_TYPE = arduino
-PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
-TOOLCHAIN =
-OS =
-TC3_RESET = 0
+# MCU = atmega328p
+# SERIAL = /dev/cu.usbserial-0001
+# F_CPU = 16000000UL
+# BAUD  = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# LIBRARY = 
+# PROGRAMMER_TYPE = arduino
+# PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+# TOOLCHAIN =
+# OS =
+# TC3_RESET = 0
 
 
 # Arduino UNO and compatible boards using Atmel-ICE Debugger in atmelice_isp mode
@@ -303,6 +303,7 @@ TC3_RESET = 0
 # PROGRAMMER_ARGS = -F -V -P usb -b 115200
 # TOOLCHAIN = 
 # OS = mac
+# TC3_RESET = 0
 
 # Arduino UNO and compatible boards using Atmel Dragon
 # MCU = atmega328p
@@ -316,23 +317,25 @@ TC3_RESET = 0
 # PROGRAMMER_ARGS =   -c dragon_isp -P usb
 # TOOLCHAIN = 
 # OS = mac
+# TC3_RESET = 0
 
 # Arduino UNO and compatible boards using Atmel SNAP in ISP mode
-# MCU = atmega328p
-# SERIAL = /dev/cu.usbserial-01D5BFFC
-# F_CPU = 16000000UL
-# BAUD  = 250000UL
-# SOFT_RESET = 0
-# LIBDIR = $(DEPTH)Library
-# LIBRARY =
-# PROGRAMMER_TYPE = snap_isp
-# PROGRAMMER_ARGS = -P usb
-# TOOLCHAIN = 
-# OS = mac
+MCU = atmega328p
+SERIAL = /dev/tty.usbmodem4101
+F_CPU = 16000000UL
+BAUD  = 250000UL
+SOFT_RESET = 0
+LIBDIR = $(DEPTH)Library
+LIBRARY =
+PROGRAMMER_TYPE = snap_isp
+PROGRAMMER_ARGS = -P usb
+TOOLCHAIN = 
+OS = mac
+TC3_RESET = 0
 
 # Microchip 328PB Xplained Mini board
 # MCU = atmega328pb
-# SERIAL = /dev/cu.usbmodem3102
+# SERIAL = /dev/tty.usbmodem4101
 # F_CPU = 16000000UL
 # BAUD  = 250000UL
 # SOFT_RESET = 1

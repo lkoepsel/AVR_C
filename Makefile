@@ -77,15 +77,6 @@ HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious. 
 
-## LIB: Use this CPPFLAGS with LIB above if the AVR_C library is desired
-# CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR) \
-# -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
-
-## NO_LIB Use this CPPFLAGS with NO_LIB above if a library directory is 
-## not required and you wish to reduce the size of the code 
-# CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD)  \
-# -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
-
 # use below to setup gdb and debugging
 CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror
 # Use below to optimize size
@@ -134,19 +125,31 @@ all: $(TARGET).hex
 static: 
 	cppcheck --std=c99 --platform=avr8 --enable=all --suppressions-list=$(DEPTH)suppressions.txt . 2> cppcheck.txt
 
-debug:
-	$(info    TOOLCHAIN is '$(TOOLCHAIN)')
-	$(info    OS is '$(OS)')
-	$(info    BIN is '$(BIN)')
+env:
 	@echo "MCU:"  $(MCU)
+	@echo "SERIAL:"  $(SERIAL)
 	@echo "F_CPU:" $(F_CPU)
 	@echo "BAUD:"  $(BAUD)
-	@echo "SERIAL:"  $(SERIAL)
 	@echo "SOFT_RESET:"  $(SOFT_RESET)
 	@echo "LIB_DIR:"  $(LIBDIR)
+	@echo "LIBRARY:"  $(LIBRARY)
+	@echo "PROGRAMMER_TYPE:"  $(PROGRAMMER_TYPE)
+	@echo "PROGRAMMER_ARGS:"  $(PROGRAMMER_ARGS)
+	@echo "TOOLCHAIN:"  $(TOOLCHAIN)
+	@echo "OS:"  $(OS)
+	@echo "BIN:"  $(BIN)
+	@echo "TC3_RESET:"  $(TC3_RESET)
 	@echo
 	@echo "Source files:"   $(SOURCES)
 	@echo	
+
+help:
+	@echo "make - compile only, Arduino verify"
+	@echo "make flash - show size and flash to board, Arduino upload"
+	@echo "make verbose - make flash with more programming information"
+	@echo "make clean - delete all non-source files"
+	@echo "make LIB_clean - delete all Library .o files"
+	@echo "make env - print env.make variables"
 
 # Optionally create listing file from .elf
 # This creates approximate assembly-language equivalent of your code.
@@ -177,8 +180,12 @@ LIB_clean:
 ##########           Flashing code to AVR using avrdude         ##########
 ##########------------------------------------------------------##########
 
-flash: $(TARGET).hex $(TARGET).lst
-	$(AVRDUDE) $(AVRDUDECONF) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+flash: $(TARGET).hex $(TARGET).lst size
+	@echo "use make verbose to see complete programming information"
+	$(AVRDUDE) -q -q $(AVRDUDECONF) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+
+verbose: $(TARGET).hex $(TARGET).lst size
+	$(AVRDUDE) -v -v $(AVRDUDECONF) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
 
 ## An alias
 program: flash
