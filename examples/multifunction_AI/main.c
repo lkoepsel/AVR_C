@@ -7,7 +7,7 @@
 
 // The ISR and Interrupt setup were changed to match the existing sysclock.
 #include "sysclock.h"
-#include "pinmode.h"
+#include "pinMode.h"
 
 void task1();
 void task2();
