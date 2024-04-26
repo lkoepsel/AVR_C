@@ -1,23 +1,32 @@
 // Multi-function AI - asked CHATGPT for a multi-tasking program
 // Writing a multi-tasking framework for an ATmega328P microcontroller using 
 // avr-gcc involves implementing a cooperative multitasking system. 
-// Here's a simplified example with a priority scheme for up to 10 tasks. 
+// Here's a simplified example with a priority scheme for up to MAX_TASKS tasks. 
 // Note that this is a basic framework and might require further customization 
 // to suit your specific application.
 
 // The ISR and Interrupt setup were changed to match the existing sysclock.
 #include "sysclock.h"
+#include "pinmode.h"
 
 void task1();
 void task2();
 void task3();
 
+uint8_t LED1 = LED_BUILTIN;
+uint8_t LED2 = 4;
+uint8_t LED3 = 5;
+uint8_t LEDM = 6;
+
+#define MAX_TASKS 3
+
 // Array to hold the task control blocks
-Task tasks[10];
+Task tasks[MAX_TASKS];
 
 // Add a task to the multitasking framework
-void multitask_add_task(TaskFunction function, uint16_t period_ticks, uint8_t priority) {
-    for (int i = 0; i < 10; i++) {
+void multitask_add_task(TaskFunction function, uint16_t period_ticks, uint8_t priority) 
+{
+    for (int i = 0; i < MAX_TASKS; i++) {
         if (tasks[i].function == NULL) {
             tasks[i].function = function;
             tasks[i].delay_ticks = period_ticks;
@@ -39,6 +48,11 @@ int compare_tasks(const void* a, const void* b) {
 int main() {
     init_sysclock_1();
 
+    pinMode(LED1, OUTPUT);
+    pinMode(LED2, OUTPUT);
+    pinMode(LED3, OUTPUT);
+    pinMode(LEDM, OUTPUT);
+
     // Add your tasks here
     multitask_add_task(task1, 100, TASK_PRIORITY_HIGH);
     multitask_add_task(task2, 200, TASK_PRIORITY_MEDIUM);
@@ -46,10 +60,10 @@ int main() {
 
     while (1) {
         // Sort tasks by priority
-        qsort(tasks, 10, sizeof(Task), compare_tasks);
+        qsort(tasks, MAX_TASKS, sizeof(Task), compare_tasks);
 
         // Task scheduling and execution
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < MAX_TASKS; i++) {
             if (tasks[i].function != NULL && tasks[i].delay_ticks == 0) {
                 tasks[i].function();
                 tasks[i].delay_ticks = tasks[i].period_ticks;
@@ -62,13 +76,13 @@ int main() {
 
 // Example tasks
 void task1() {
-    // Task 1 code here
+    digitalWrite(LED1, TOG);
 }
 
 void task2() {
-    // Task 2 code here
+    digitalWrite(LED2, TOG);
 }
 
 void task3() {
-    // Task 3 code here
+    digitalWrite(LED3, TOG);
 }
