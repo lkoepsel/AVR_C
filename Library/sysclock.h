@@ -45,7 +45,7 @@ typedef void (*TaskFunction)();
 // Structure to represent a task
 typedef struct {
     TaskFunction function;
-    uint16_t delay_ticks;
+    uint16_t previous_ticks;
     uint16_t period_ticks;
     uint8_t priority;
 } Task;

@@ -71,9 +71,9 @@ ISR (TIMER1_OVF_vect)
     ticks_ro_ctr++;
     // for (int i = 0; i < 10; i++) 
     // {
-    //     if (tasks[i].function != NULL && tasks[i].delay_ticks > 0) 
+    //     if (tasks[i].function != NULL && tasks[i].previous_ticks > 0) 
     //     {
-    //         tasks[i].delay_ticks--;
+    //         tasks[i].previous_ticks--;
     //     }
     // }
 }

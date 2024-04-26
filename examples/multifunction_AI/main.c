@@ -29,7 +29,7 @@ void multitask_add_task(TaskFunction function, uint16_t period_ticks, uint8_t pr
     for (int i = 0; i < MAX_TASKS; i++) {
         if (tasks[i].function == NULL) {
             tasks[i].function = function;
-            tasks[i].delay_ticks = period_ticks;
+            tasks[i].previous_ticks = period_ticks;
             tasks[i].period_ticks = period_ticks;
             tasks[i].priority = priority;
             return;
@@ -58,16 +58,18 @@ int main() {
     multitask_add_task(task2, 200, TASK_PRIORITY_MEDIUM);
     multitask_add_task(task3, 300, TASK_PRIORITY_LOW);
 
+
     while (1) {
         // Sort tasks by priority
         qsort(tasks, MAX_TASKS, sizeof(Task), compare_tasks);
 
         // Task scheduling and execution
         for (int i = 0; i < MAX_TASKS; i++) {
-            if (tasks[i].function != NULL && tasks[i].delay_ticks == 0) {
+            if (ticks() - tasks[i].previous_ticks > tasks[i].period_ticks) 
+            {
                 tasks[i].function();
-                tasks[i].delay_ticks = tasks[i].period_ticks;
             }
+            tasks[i].previous_ticks = ticks();
         }
     }
 
