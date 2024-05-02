@@ -386,6 +386,65 @@ unusedFunction:Library/tinymt32.c
 ```
 
 To perform static testing, run `make static` at the root level and the output from cppcheck will appear in cppcheck.txt. If you want to see all issues, none suppressed, then remove '--suppressions-list=$(DEPTH)suppressions.txt' from the `make static` line in the Makefile (line 89)
+## VS Code json Files to Support
+### c_cpp_properties.json
+```json
+{
+    "configurations": [
+        {
+            "name": "AVR",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/homebrew/Cellar/avr-gcc@9/9.4.0_1/avr/include/**"
+            ],
+            "defines": [  ],
+            "compilerPath": "/opt/homebrew/bin/avr-gcc", 
+            "compilerArgs": [ ],
+            "cStandard": "c99",
+            "cppStandard": "c++98",
+            "intelliSenseMode": "gcc-avr"
+        }
+    ],
+    "version": 4
+}
+```
+
+### tasks.json
+```json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "make",
+            "detail": "Run make",
+            "type": "shell",
+            "command": "/usr/bin/make ${input:makeTarget}",
+            "problemMatcher": ["$gcc"],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": {
+                "kind": "build"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "makeTarget",
+            "description": "Select a make target",
+            "options": [
+                "flash",
+                "clean",
+                "verbose",
+                "LIB_clean"
+            ],
+            "default": " flash"
+        }
+    ]
+}
+```
+
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
 
