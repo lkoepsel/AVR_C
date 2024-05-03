@@ -242,6 +242,7 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 **Full version of the env.make file I am using:**
 ```make
 # Environmental variables for specific boards
+# See https://wellys.com/posts/avr_c_make_part2/ for more information
 # Uncomment entire block less top line of block
 # After switching boards, Library MUST BE RE-COMPILED
 # Use "make LIB_clean && make all_clean && make flash" for a complete re-compile
@@ -277,18 +278,18 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 # otherwise, leave blank
 
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
-# MCU = atmega328p
-# SERIAL = /dev/cu.usbserial-0001
-# F_CPU = 16000000UL
-# BAUD  = 250000UL
-# SOFT_RESET = 0
-# LIBDIR = $(DEPTH)Library
-# LIBRARY = 
-# PROGRAMMER_TYPE = arduino
-# PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
-# TOOLCHAIN =
-# OS =
-# TC3_RESET = 0
+MCU = atmega328p
+SERIAL = /dev/cu.usbserial-0001
+F_CPU = 16000000UL
+BAUD  = 250000UL
+SOFT_RESET = 0
+LIBDIR = $(DEPTH)Library
+LIBRARY = 
+PROGRAMMER_TYPE = arduino
+PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+TOOLCHAIN =
+OS =
+TC3_RESET = 0
 
 
 # Arduino UNO and compatible boards using Atmel-ICE Debugger in atmelice_isp mode
@@ -320,18 +321,18 @@ Here is an env.make with multiple sections, one for each board to be used. Notic
 # TC3_RESET = 0
 
 # Arduino UNO and compatible boards using Atmel SNAP in ISP mode
-MCU = atmega328p
-SERIAL = /dev/tty.usbmodem4101
-F_CPU = 16000000UL
-BAUD  = 250000UL
-SOFT_RESET = 0
-LIBDIR = $(DEPTH)Library
-LIBRARY =
-PROGRAMMER_TYPE = snap_isp
-PROGRAMMER_ARGS = -P usb
-TOOLCHAIN = 
-OS = mac
-TC3_RESET = 0
+# MCU = atmega328p
+# SERIAL = /dev/tty.usbmodem4101
+# F_CPU = 16000000UL
+# BAUD  = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# LIBRARY =
+# PROGRAMMER_TYPE = snap_isp
+# PROGRAMMER_ARGS = -P usb
+# TOOLCHAIN = 
+# OS = mac
+# TC3_RESET = 0
 
 # Microchip 328PB Xplained Mini board
 # MCU = atmega328pb
@@ -395,14 +396,14 @@ To perform static testing, run `make static` at the root level and the output fr
             "name": "AVR",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/homebrew/Cellar/avr-gcc@9/9.4.0_1/avr/include/**"
+                "/usr/lib/avr/include/**"
             ],
             "defines": [  ],
-            "compilerPath": "/opt/homebrew/bin/avr-gcc", 
+            "compilerPath": "/usr/bin/avr-gcc", 
             "compilerArgs": [ ],
             "cStandard": "c99",
             "cppStandard": "c++98",
-            "intelliSenseMode": "gcc-avr"
+            "intelliSenseMode": "${default}"
         }
     ],
     "version": 4
