@@ -8,7 +8,7 @@
 
 // constants won't change. Used here to 
 // set pin number and time interval:
-const uint8_t ledPin =  4;        // the number of the LED pin
+const uint8_t ledPin =  13;        // the number of the LED pin
 const uint32_t OnTime = 250;      // interval On (milliseconds)
 const uint32_t OffTime = 750;     // interval Off (milliseconds)
 
