@@ -395,8 +395,9 @@ To perform static testing, run `make static` at the root level and the output fr
         {
             "name": "AVR",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/usr/lib/avr/include/**"
+                "/usr/lib/avr/include/avr/",
+                "/usr/lib/avr/include/**",
+                "${workspaceFolder}/**"
             ],
             "defines": [  ],
             "compilerPath": "/usr/bin/avr-gcc", 
@@ -420,10 +421,13 @@ To perform static testing, run `make static` at the root level and the output fr
             "detail": "Run make",
             "type": "shell",
             "command": "/usr/bin/make ${input:makeTarget}",
-            "problemMatcher": ["$gcc"],
             "options": {
                 "cwd": "${fileDirname}"
             },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+              },        
             "group": {
                 "kind": "build"
             }
@@ -435,10 +439,27 @@ To perform static testing, run `make static` at the root level and the output fr
             "id": "makeTarget",
             "description": "Select a make target",
             "options": [
-                "flash",
-                "clean",
-                "verbose",
-                "LIB_clean"
+                {   
+                    "value": "compile",
+                },
+                {   
+                    "value": "flash",
+                },
+                {   
+                    "value": "clean",
+                },
+                {   
+                    "value": "complete",
+                },
+                {   
+                    "value": "verbose",
+                },
+                {   
+                    "value": "env",
+                },
+                {   
+                    "value": "help",
+                }
             ],
             "default": " flash"
         }

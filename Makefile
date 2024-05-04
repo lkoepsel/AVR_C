@@ -120,9 +120,9 @@ $(TARGET).elf: $(OBJECTS)
 .PHONY: all disassemble disasm eeprom size clean squeaky_clean flash fuses
 
 
-complete: all flash all_clean
+complete: all_clean flash
 
-all: $(TARGET).hex 
+compile: $(TARGET).hex 
 
 static: 
 	cppcheck --std=c99 --platform=avr8 --enable=all --suppressions-list=$(DEPTH)suppressions.txt . 2> cppcheck.txt
@@ -146,12 +146,13 @@ env:
 	@echo	
 
 help:
-	@echo "make - compile only, Arduino verify"
+	@echo "make compile - compile only, Arduino verify"
 	@echo "make flash - show size and flash to board, Arduino upload"
-	@echo "make verbose - make flash with more programming information"
-	@echo "make clean - delete all non-source files"
-	@echo "make LIB_clean - delete all Library .o files"
+	@echo "make clean - delete all non-source files in folder"
+	@echo "make complete - delete all .o files in folder & Library, for complete rebuild and flash"
+	@echo "make verbose - make flash with more programming information for debugging upload"
 	@echo "make env - print active env.make variables"
+	@echo "make help - print this message"
 
 # Optionally create listing file from .elf
 # This creates approximate assembly-language equivalent of your code.
@@ -172,10 +173,7 @@ clean:
 	$(TARGET).eeprom cppcheck.txt
 
 all_clean:
-	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~ *.eeprom core
-
-LIB_clean:
-	rm -f $(LIBDIR)/*.o
+	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~ *.eeprom core $(LIBDIR)/*.o
 
 ##########------------------------------------------------------##########
 ##########              Programmer-specific details             ##########
