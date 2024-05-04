@@ -23,3 +23,5 @@ build
 bloom.yaml
 .gdbinit
 *.stc
+!.vscode/c_cpp_properties.json
+!.vscode/tasks.json
