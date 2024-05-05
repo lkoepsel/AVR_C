@@ -16,7 +16,7 @@ int main (void)
     printf(" i uint8_t  int8_t  uint16_t   int16_t      uint32_t\
        int32_t          float     pow(flt,i)\n");
 
-    for (i=1; i < 33; i++) 
+    for (uint8_t i=1; i < 33; i++) 
     {
         uint8_t int_8_u = 2;
         uint16_t int_16_u = 2;
@@ -33,7 +33,7 @@ int main (void)
         int32_t pow_32_s = 1;
         float pow_flt = 1;
 
-        for (j=1; j<=i; j++) 
+        for (uint8_t j=1; j<=i; j++) 
         {
             if (j < 8)
             {
