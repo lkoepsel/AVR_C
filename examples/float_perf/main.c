@@ -1,8 +1,8 @@
 /*
  * Simple Integer and Floating Point test
  *
- * Demonstrates float will report correct results, with a 10x performance hit
- * Use Arduino Serial Monitor, minicom, or your favorite serial monitor
+ * Demonstrates float will report correct results, with a 3x performance hit
+ * Use tio, Arduino Serial Monitor, minicom, or your favorite serial monitor
  */
  
 #include <stdio.h>
@@ -20,16 +20,16 @@ int main(void) {
     uint16_t elapsed;
 
     puts("Integer and Floating Point Test");
-    for (uint16_t i = 266; i < 330; i += 53)
+    for (uint32_t i = 266; i < 330; i += 53)
     {
-        for (uint16_t j = 313; j < 520; j += 78)
+        for (uint32_t j = 313; j < 520; j += 78)
         {
             now = ticks();
             uint32_t k = i * j;
             elapsed = ticks();
 
 
-            printf("Int: %u * %u = %lu in %u ticks\n",\
+            printf("Int: %lu * %lu = %lu in %u ticks\n",\
                 i, j, k, elapsed-now);        
 
         }
