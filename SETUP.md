@@ -40,7 +40,7 @@
 
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
 MCU = atmega328p
-SERIAL = /dev/cu.usbserial-0001
+SERIAL = /dev/ttyACM0
 F_CPU = 16000000UL
 BAUD  = 250000UL
 SOFT_RESET = 0
