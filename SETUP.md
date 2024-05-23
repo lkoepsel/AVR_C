@@ -125,7 +125,7 @@ TC3_RESET = 0
 # TC3_RESET = 0
 ```
 
-### [c_cpp_properties.json](./SETUP.md)
+### c_cpp_properties.json
 ```json
 {
     "configurations": [
