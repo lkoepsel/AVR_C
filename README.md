@@ -281,3 +281,7 @@ Other sources of information which were helpful:
 * [EMBEDDS: AVR Tutorials](https://embedds.com/avr-tutorials/)
 * [CCRMA: AVR](https://ccrma.stanford.edu/wiki/AVR#AVR_Microcontrollers)
 * [Efundies Electronics and Programming Guides: AVR](https://efundies.com/avr/)
+* [avr-size issue](https://mightyohm.com/blog/2010/08/fix-for-broken-avr-size-in-ubuntu-10-04-lucid/)
+* [avr-size patch](https://gist.github.com/larsimmisch/4190960/#file-avr-binutils-size-patch)
+* [avr-size replacement](https://www.avrfreaks.net/s/topic/a5C3l000000UbQ6EAK/t157634)
+**NOTE:** The option `avr-size -C` was deprecated and replaced by `avr-objdump -Pmem-usage main.elf`
