@@ -164,7 +164,7 @@ disasm: disassemble
 
 # Optionally show how big the resulting program is 
 size:  $(TARGET).elf
-	$(AVRSIZE) -C --mcu=$(MCU) $(TARGET).elf
+	$(AVRSIZE) -G --mcu=$(MCU) $(TARGET).elf
 
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
