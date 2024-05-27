@@ -132,12 +132,12 @@ TC3_RESET = 0
         {
             "name": "AVR",
             "includePath": [
-                "/usr/lib/avr/include/avr/",
-                "/usr/lib/avr/include/**",
+                "/usr/local/avr/avr/",
+                "/usr/local/avr/include/**",
                 "${workspaceFolder}/**"
             ],
             "defines": [  ],
-            "compilerPath": "/usr/bin/avr-gcc", 
+            "compilerPath": "/usr/local/avr/bin/avr-gcc", 
             "compilerArgs": [ ],
             "cStandard": "c99",
             "cppStandard": "c++98",
@@ -145,8 +145,7 @@ TC3_RESET = 0
         }
     ],
     "version": 4
-}
-```
+}```
 
 ### tasks.json
 ```json
