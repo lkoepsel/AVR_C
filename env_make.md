@@ -1,4 +1,6 @@
-# Setup files required for *VS Code* and *make*
+# env.make required for *make*
+
+Copy and paste in to the root of AVR_C
 
 ## env.make
 ```make
@@ -125,88 +127,3 @@ TC3_RESET = 0
 # TC3_RESET = 0
 ```
 
-### c_cpp_properties.json
-```json
-{
-    "configurations": [
-        {
-            "name": "AVR",
-            "includePath": [
-                "/usr/local/avr/avr/",
-                "/usr/local/avr/include/**",
-                "${workspaceFolder}/**"
-            ],
-            "defines": [  ],
-            "compilerPath": "/usr/local/avr/bin/avr-gcc", 
-            "compilerArgs": [ ],
-            "cStandard": "c99",
-            "cppStandard": "c++98",
-            "intelliSenseMode": "${default}"
-        }
-    ],
-    "version": 4
-}```
-
-### tasks.json
-```json
-{
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "make",
-            "detail": "Run make",
-            "type": "shell",
-            "command": "/usr/bin/make ${input:makeTarget}",
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-              },        
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ],
-    "inputs": [
-        {
-            "type": "pickString",
-            "id": "makeTarget",
-            "description": "Select a make target",
-            "options": [
-                {   
-                    "value": "flash",
-                    "label": "compile and upload code (upload)"
-                },
-                {   
-                    "value": "compile",
-                    "label": "only compile code (verify)"
-                },
-                {   
-                    "value": "clean",
-                    "label": "remove non-source files"
-                },
-                {   
-                    "value": "complete",
-                    "label": "complete re-compile with verbose upload"
-                },
-                {   
-                    "value": "verbose",
-                    "label": "verbose upload to debug serial connection"
-                },
-                {   
-                    "value": "env",
-                    "label": "print env variables being used"
-                },
-                {   
-                    "value": "help",
-                    "label": "print make commands"
-                }
-            ],
-            "default": " flash"
-        }
-    ]
-}
-```

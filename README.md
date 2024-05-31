@@ -242,7 +242,7 @@ Set this as appropriate for your programming methodology. See examples for metho
 ## env.make for multiple boards
 Here is an env.make with multiple sections, one for each board to be used. Notice that only one section is active at a time, the non-used sections have been commented out.
 
-**[Full version of the env.make file I am using](./SETUP.md):**
+**[Full version of the env.make file I am using](./env_make.md):**
 
 ## Static Testing
 I used [*cppcheck*](http://cppcheck.net) to perform a static analysis of the code. It was extremely helpful in pointing out a few buffer issues, I had. That said, there were a few false positives or some issues, which I knew existed and didn't wish to fix. Here is the suppressions-list I used:
@@ -268,7 +268,7 @@ unusedFunction:Library/tinymt32.c
 
 To perform static testing, run `make static` at the root level and the output from cppcheck will appear in cppcheck.txt. If you want to see all issues, none suppressed, then remove '--suppressions-list=$(DEPTH)suppressions.txt' from the `make static` line in the Makefile (line 89)
 ## VS Code files
-[VS Code json Files to Support](./SETUP.md)
+[VS Code json Files to Support](./vs_code.md)
 
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
