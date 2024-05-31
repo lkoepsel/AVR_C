@@ -1,7 +1,7 @@
 # Programming the Arduino Uno in Standard C
 
 ## Looking for setup files?
-[Setup files for make and VS Code](./SETUP.md)
+[Setup files for [env.make](./env_make.md) and [VS Code](./vs_code.md)
 
 ## Introduction
 This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familar (Arduino) context. This serves the following:
