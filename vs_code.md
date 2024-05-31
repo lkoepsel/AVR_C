@@ -1,12 +1,13 @@
 # VS Code Configuration Files
 
-*If you are on Windows, use Ctrl, instead of CMD.*
+## C/C++ Configuration Installation
+**If you are on Windows, use Ctrl, instead of CMD.**
 
 1. *CMD-Shift-P -> "C/C++" -> C/C++: Edit Configurations (JSON))*
-2. Copy the content below then CMD-A to select all of the existing c_cpp_properties.json file
-3. CMD-v to paste and CMD-s to save. 
+2. Copy the content below then in *VS Code CMD-a* to select all of the existing *c_cpp_properties.json* file
+3. *CMD-v* to paste and *CMD-s* to save. 
 
-### c_cpp_properties.json
+## c_cpp_properties.json
 ```json
 {
     "configurations": [
@@ -28,13 +29,15 @@
     "version": 4
 }
 ```
-*If you are on Windows, use Ctrl, instead of CMD.*
+
+## Default Task Installation
+**If you are on Windows, use Ctrl, instead of CMD.**
 
 1. *CMD-Shift-P -> "task" -> Tasks: Configure Default Build Task _> Create...from template -> Others Example...* 
-2. Copy the content below then CMD-A to select all of the existing tasks.json file, then CMD-V
-3. CMD-v to paste and CMD-s to save. 
+2. Copy the content below then in *VS Code CMD-A* to select all of the existing *tasks.json* file
+3. *CMD-v* to paste and *CMD-s* to save. 
 
-### tasks.json
+## tasks.json
 ```json
 {
     "version": "2.0.0",

@@ -1,6 +1,11 @@
 # env.make required for *make*
 
-Copy and paste in to the root of AVR_C
+```bash
+cd AVR_C
+nano env.make
+```
+
+Copy and paste in to the root level of AVR_C
 
 ## env.make
 ```make
@@ -126,4 +131,4 @@ TC3_RESET = 0
 # OS = mac
 # TC3_RESET = 0
 ```
-
+*CTRL-s (save) then CTRL-x (exit)*
