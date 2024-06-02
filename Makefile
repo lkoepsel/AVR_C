@@ -165,7 +165,7 @@ disasm: disassemble
 # Optionally show how big the resulting program is 
 size:  $(TARGET).elf
 # 	$(AVRSIZE) -G --mcu=$(MCU) $(TARGET).elf
-	avr-objdump -Pmem-usage $(TARGET).elf
+	$(OBJDUMP) -Pmem-usage $(TARGET).elf
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
 	$(TARGET).o $(TARGET).d $(TARGET).eep $(TARGET).lst \

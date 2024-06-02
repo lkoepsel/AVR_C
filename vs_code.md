@@ -1,5 +1,7 @@
 # VS Code Configuration Files
 
+Perform these steps in VS Code:
+
 ## C/C++ Configuration Installation
 **If you are on Windows, use Ctrl, instead of CMD.**
 
