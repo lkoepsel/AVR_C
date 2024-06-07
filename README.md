@@ -3,6 +3,9 @@
 ## Looking for setup files?
 **Setup files for [env.make](./docs/env_make.md) and [VS Code](./docs/vs_code.md)**
 
+## Looking for Raspberry Pi build instructions?
+**Documentation for building a [C development platform](./docs/RPi_build.md)**
+
 ## Introduction
 This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familar (Arduino) context. This serves the following:
 * The *C language* used in this framework follows the [*C99*](https://iso-9899.info/wiki/The_Standard) standard and doesn't introduce anything which would not be considered *standard C*. This is in contrast to the Arduino software framework, which introduces classes such as *Serial* to process serial input, as well as *C++*.
@@ -14,7 +17,7 @@ In order to use this framework, you can either install the *GNU avr* tool chain 
 For a robust debugging approach on *Linux*, you may add [Bloom](https://bloom.oscillate.io/) and *avr-gdb*. Bloom provides a GUI display of the microcontroller's registers and memory as well as the connection required from the chip to avr-gdb. [gdb](https://www.sourceware.org/gdb/) is a simple yet extremely powerful debugging tool. I find it easier to use than most IDE's such as Visual Studio, MPLAB IDE etc. More guidance at [Developing in C for the ATmega328: Setup Bloom and gdb for Hardware Debug](https://wellys.com/posts/avr_c_gdb_bloomsetup/).
 
 ## Steps to Use
-1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/)
+1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/). The best method is to use a [Raspberry Pi as your development platform.](./docs/RPi_build.md)
 2. Obtain this repository, either via download using zip file or preferably, [use git and clone to your system](https://www.wellys.com/posts/avr_c_step5/).
 3. Open the *AVR_C* folder and add an *env.make* file (*see below*) based on your board and system. **Be sure to set *toolchain* and *OS*, appropriate to the tool chain your are using and your operating system.**
 4. Navigate to *examples/blink* in your CLI and run:
@@ -181,7 +184,7 @@ If you are getting make errors, stating it can't find the target, more than like
 ### env.make
 I have found it easier to maintain a top-level file called *env.make*, which contains all of the local customizable options. This file is added to the *make* process by an *include* at the top of file. It is **ignored by git, so it must be created and updated, outside of the git process**. This allows each person to customize their work based on their requirements and not having changed with each new version of *AVR_C*.
 
-The file, *env.make* is **not tracked by git** and it looks like this:
+The file, [*env.make*](./docs/env_make.md) is **not tracked by git** and the *Uno* section  looks like this:
 
 ### Latest parameters for Arduino Uno R3
 ```make
