@@ -19,7 +19,7 @@ For a robust debugging approach on *Linux*, you may add [Bloom](https://bloom.os
 ## Steps to Use
 1. Install toolchain. [Details here](https://www.wellys.com/posts/avr_c_setup/). The best method is to use a [Raspberry Pi as your development platform.](./docs/RPi_build.md)
 2. Obtain this repository, either via download using zip file or preferably, [use git and clone to your system](https://www.wellys.com/posts/avr_c_step5/).
-3. Open the *AVR_C* folder and add an *env.make* file (*see below*) based on your board and system. **Be sure to set *toolchain* and *OS*, appropriate to the tool chain your are using and your operating system.**
+3. Open the *AVR_C* folder and add an *env.make* file (*see below*) based on your board and system.
 4. Navigate to *examples/blink* in your CLI and run:
 	* *make* to compile, link and create an executable file
 	* *make flash* to upload executable file to your board.
@@ -136,10 +136,11 @@ Simple character I/O test using the UART. The USB cable is the only cable requir
 ## Serial Interface
 [Simple Serial Communications with AVR libc](https://appelsiini.net/2011/simple-usart-with-avr-libc/) Works well, integrated into avr-gcc to enable using printf, puts, and getchar. Uses polling, which will blocking, works well to 250000 baud. 
 
-The Makefile uses 250000 baud, it is fast and error-free. My recommended serial monitor is [CoolTerm](https://freeware.the-meiers.org/). Read [here](https://wellys.com/posts/serial_applications/) for more information.
+The Makefile uses 250000 baud, it is fast and error-free. My recommended GUI serial monitor is [CoolTerm](https://freeware.the-meiers.org/). Read [here](https://wellys.com/posts/serial_applications/) for more information.
 
 The example *serialio_readline* provides a *readline* example to understand how to read a line from the serial console and break the line into tokens or words.
 
+If you are in a command line environment *(CLI)*, I recommend using [*tio*](https://github.com/tio/tio). 
 ## Multitasking
 There are four multitasking examples in the *examples* folder. Only one of them will be incorporated into the Library. The goal of each example is to explore the possible approaches for multitasking. 
 * **multi_struct** Based on *oneline*, this version uses a struct to contain the details as to the tasks to be performed. This version will be ultimately integrated into the AVR_C Library. I will continue to evolve *multi_struct* as I have several specific projects which require a particular version of multitasking.
@@ -205,27 +206,33 @@ TC3_RESET = 0
 
 ### Instructions
 As shown above, this one is for the Arduino Uno board and a Mac. For *Make* to work, you need to perform the following:
-1. Copy the contents above and paste them into a file called *env.make*
+1. Copy the contents [from here](./docs/env_make.md) and paste them into a file called *env.make*
 2. The file needs to sit at the top level, the same level as this *README* and the programming folders *Library* and *examples*, as in *AVR_C/env.make*.
-3. Every installation will have to set the following:
+3. **Every installation** will have to set the following:
 
 * **SERIAL =** to the serial port to which your board is connected
+
+#### Multiple Ways to Determine Your Serial Port
+1. Open the *Arduino IDE* and go to *Tools -> Port* and write down the port which has *(Arduino Uno)* after it. If you aren't using an *Uno*, it might not identify itself. Which means you might have to guess, or unplug your board and see which one goes away.
+2. In your *CLI*, enter `ls /dev/tty*` and it will respond with a list of serial interfaces. For the *Uno*, its typically *ttyACM0* or *ttyUSB0*.
+3. In your *CLI*, enter `tio -l` and it will respond with a list of devices.
+4. Open *CoolTerm*, it will provide a drop-down of devices which make sense.
 
 The remaining parameters default values will work. If you have a board different than an *Arduino Uno R3 or equivalent*, you might need to adjust the parameters below:
 
 ### Board (MCU, F_CPU, BAUD)
 * **MCU** is the processor used, typically *atmega328p* or it could be the *atmega328pb* for the *Microchip Xplained Mini* board.
 * **F_CPU** is the clock speed of the processor.
-* **BAUD** is the desired serial baud rate of the board. I set it as high as possible.
+* **BAUD** is the desired serial baud rate of the board. I set it to 250000, as this is the fastest, most reliable setting.
 
 ### Tool Chain (TOOLCHAIN and OS)
 The *Makefile* uses two variables from the env.make file, `TOOLCHAIN = ` and `OS =`, which allows you to use either, a system-installed toolchain (default) or the toolchain installed by the legacy *Arduino (1.8.x) IDE*. 
 
-In order to use the latter, perform the following steps in the env.make file:
+You *may* use the latter by performing the following steps in the env.make file:
 1. Add *arduino* to the `TOOLCHAIN` variable as in `TOOLCHAIN = arduino`
 2. Add  *mac*, *raspberry* or *windows* to the `OS =` line to indicate the OS your PC is running
 
-If either is missing, *make* will assume you are using the GNU tool chain.
+If either is missing, *make* will assume you are using the GNU tool chain, **which is the preferable solution**.
 
 ### Code Size (LIBRARY)
 In some situations, its advantageous **to not use** the AVR_C library (*/Library*), to reduce code size. You can change this using the Makefile. 
