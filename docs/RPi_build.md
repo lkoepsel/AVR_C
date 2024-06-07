@@ -340,7 +340,7 @@ Ensure you do not have any files open in VS Code for the next two steps.
 ```
 ## ******** pibuildv3.img includes above steps ********
 
-**Note: Step 6 requires Python and the Python flask library to be installed on your PC. If you don't require an automatic notification by the *RPi* when it starts up, you may skip the step. Its typically required in large networks (colleges and universities), where its more difficult to ascertain the IP address or to use *Bonjour*.**
+**Note: The *hello service* step below requires Python and the Python flask library to be installed on your PC. If you don't require an automatic notification by the *RPi* when it starts up, you may skip the step. Its typically required in large networks (colleges and universities), where its more difficult to ascertain the IP address or to use *Bonjour*.**
 
 ## 8. Add hello service
 You may clone [hello](https://github.com/lkoepsel/hello) on your PC (host system) or simply download *hello_server.py* in the repository for this capability. This Python *flask* application will report its IP address then wait for a connection by the *RPi*. Use IP address for step 8.2 below. To run the server program locally:

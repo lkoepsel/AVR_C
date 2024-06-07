@@ -7,14 +7,15 @@ int main(void)
 {
     // use built-in led and set to output
     pinMode(LED_BUILTIN, OUTPUT);
+    int delay_ms = 50;
 
     while(1) 
     {
         // toggle led on and off
         digitalWrite(LED_BUILTIN, HIGH);
-        delay(1000);
+        delay(delay_ms);
         digitalWrite(LED_BUILTIN, LOW);
-        delay(1000);
+        delay(delay_ms);
     }
     return 0; 
 }

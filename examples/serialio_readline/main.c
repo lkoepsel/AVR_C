@@ -27,7 +27,7 @@ int main(void) {
     printf("\n");
     uint8_t num_char = readLine(input, MAX_BUFFER);
 
-    printf("You entered %i characters\n", num_char);
+    printf("\nYou entered %i characters\n", num_char);
 
     for (uint8_t out_char=0; out_char<num_char; out_char++)
     {
