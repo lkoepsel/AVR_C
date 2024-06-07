@@ -28,14 +28,14 @@ It requires connecting to the *RPi* via the command line (*Windows/Terminal*, *m
 **Note: I used a Pi 4 with 8GB of memory. The time in parentheses is the typical time for completion of the specific step. If the step is relatively fast, the times won't be shown. With less memory it might take longer. Clearly with a Pi 5, the times will be much shorter and I wouldn't attempt with a Pi 3.**
 
 ## Downloading the Image instead of building the image:
-In some situations, you might be in a classroom where the instructor has already built the appropriate image. In that case, follow the steps below **up to* step 0.**
+In some situations, you might be in a classroom where the instructor has already built the appropriate image. In that case, follow the steps below **up to step 0.**
 
 Your instructor will provide the IP address of the image server, replace the number *192.168.1.112:8000* below with the one, they provide.
 
 ### Download the image:
 ```bash
 # on host system
-# to see files listed (in html format)
+# to see files listed (in html format) or use your browser to see the page
 curl http://192.168.1.112:8000
 
 # to download file
@@ -52,7 +52,11 @@ And for *step 2. CHOOSE OS...*, go to the bottom of the list, *Use custom* and n
 1. CHOOSE OS -> Raspberry Pi OS (other) -> Raspberry Pi OS Lite (64-bit)
 1. CHOOSE STORAGE -> **ENSURE THIS IS YOUR SD CARD!**
 #### Edit Custom Settings
-1. **General** tab - set per your location, make sure the wi-fi is the same SSD as your PC, for this example *Set hostname:* will be *avr-c*
+1. **General** tab: (set per your location)
+    * *Set hostname*: to be unique to you if you are in an environment with multiple installations
+    * *Set username...*: its best to have it be the same username on your PC and **remember the password you assign**
+    * make sure the wi-fi is the same SSD as your PC
+    * set locale to your time zone and keyboard layout as desired (in US, set to "*us*")
 1. **SERVICES** Select "Allow public-key...", click *RUN SSH-KEYGEN* if required
 1. **OPTIONS** Select all
 
@@ -63,12 +67,12 @@ Click *SAVE* then *Yes*, *Yes*.
 Once Pi Imager has completed, remove the card and place in your RPi. Plug-in power and wait... :)
 
 ## Connect
-The *RPi* will take at least 3 minutes for inital boot, then you may attempt to login. Connect using **one of the two commands** below:
+The *RPi* will take at least 3 minutes for inital boot, then you may attempt to login. Replace *hostname* with the name you assigned in the step above. Connect using **one of the two commands** below:
 ```bash
 # if your username on your PC is exactly the same as the username you used in Pi Imager
-ssh avr-c.local
+ssh hostname.local
 # if the usernames are different, use the username you used in Pi Imager, below
-ssh username@avr-c.local
+ssh username@hostname.local
 ```
 
 ## 0. Update to latest software and add dependencies (7m 4s)
