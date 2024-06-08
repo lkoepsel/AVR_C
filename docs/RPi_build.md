@@ -44,7 +44,7 @@ wget http://192.168.1.112:8000/pibuildv4_gm.img.gz
 
 ```
 
-And for *step 2. CHOOSE OS...*, go to the bottom of the list, *Use custom* and navigate to the file you downloaded above.
+**And for *step 2. CHOOSE OS...*, go to the bottom of the list, *Use custom* and navigate to the file you downloaded above.** Then continue with the instructions, below.
 
 ## Use Raspberry Pi Imager to start:
 **On your PC** use *Pi Imager* to install a Raspberry Pi OS image on to an SD Card. The selections are:
