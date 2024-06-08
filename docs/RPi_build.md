@@ -230,6 +230,13 @@ color = 14
 
 ## 7. Setup VS Code
 
+**If not already installed, you will want to install the following extensions on the Raspberry Pi:**
+* Name: **C/C++** Description: C/C++ IntelliSense, debugging, and code browsing.
+* Name: **C/C++ Themes** Description: UI Themes for C/C++ extension.
+* Name: **Remote - SSH** Description: Open any folder on a remote machine using SSH and take advantage of VS Code's full feature set.
+* Name: **Remote - SSH: Editing Configuration Files** Description: Edit SSH configuration files
+* Name: **Remote Explorer** Description: View remote machines for SSH and Tunnels.
+
 Perform these steps in VS Code on your host system:
 
 ### 7.1 Connect via Remote SSH

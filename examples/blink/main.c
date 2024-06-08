@@ -7,7 +7,7 @@ int main(void)
 {
     // use built-in led and set to output
     pinMode(LED_BUILTIN, OUTPUT);
-    int delay_ms = 50;
+    int delay_ms = 1000;
 
     while(1) 
     {
