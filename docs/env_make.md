@@ -1,13 +1,16 @@
 # env.make required for *make*
 
+## 1. In your CLI
+Enter the two commands below to open the nano editor, in the *AVR_C* folder
 ```bash
 cd AVR_C
 nano env.make
 ```
 
-Copy and paste in to the root level of AVR_C
+## 2. In the nano editor
+Copy and paste the text below. Be sure to go to step 3!
 
-## env.make
+### env.make
 ```make
 # Environmental variables for specific boards
 # See https://wellys.com/posts/avr_c_make_part2/ for more information
@@ -131,4 +134,7 @@ TC3_RESET = 0
 # OS = mac
 # TC3_RESET = 0
 ```
+
+## 3. Save and close *nano*
+
 *CTRL-s (save) then CTRL-x (exit)*
