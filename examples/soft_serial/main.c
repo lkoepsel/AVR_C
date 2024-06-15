@@ -1,16 +1,17 @@
-// Software Serial as defined by Kagi Code AI
+// soft serial - adds a software defined serial port
+// transmit works, receive hangs
 
 #include <avr/io.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
 #include <stdio.h>
+#include <util/delay.h>
+#include "unolib.h"
 #include "uart.h"
 
 #define BAUD_RATE 9600
 #define BIT_DURATION (1000000 / BAUD_RATE) // Bit duration in microseconds
 
-#define SOFT_RX_PIN PD2 // Define the RX pin
-#define SOFT_TX_PIN PD3 // Define the TX pin
+#define SOFT_RX_PIN PIND2 // Define the RX pin
+#define SOFT_TX_PIN PIND3 // Define the TX pin
 
 void soft_serial_init() {
     // Set TX pin as output
@@ -78,7 +79,6 @@ int main(void) {
         for (uint8_t i=0; i < (sizeof(letters)/sizeof(letters[0])) ; i++)
         {
             soft_serial_write(letters[i]);
-            // _delay_ms(100);
         }
         // Receive data
         uint8_t received = soft_serial_read();

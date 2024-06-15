@@ -12,7 +12,11 @@
 
 int main(void) {    
 
+    // init_serial() is always required to use serial port, as well as #include "uart.h"
     init_serial();
+
+    // input is the buffer for the serial port
+    // delims are the token delimitors
     char input[MAX_BUFFER + 1] = {};
     char delims[MAX_DELIMS + 1] = {" ,."};
 
@@ -36,6 +40,10 @@ int main(void) {
     printf("\n");
 
     // break input line into tokens
+    // when this section has executed, the characters in input
+    // which are separated by a delim
+    // will now be in an array called tokens
+    // with each location in token, a multiple character token
     char *tokens[MAX_TOKENS];
     uint8_t index = 0;
     tokens[index] = strtok(input, delims);
