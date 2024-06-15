@@ -65,9 +65,18 @@ uint8_t soft_serial_read() {
     return data;
 }
 
+uint8_t soft_string_write(char * buffer, uint8_t len)
+{
+        // Transmit data
+        for (uint8_t i=0; i < len ; i++)
+        {
+            soft_serial_write(buffer[i]);
+        }
+    return 0;
+}
+
 int main(void) {
-    // Initialize hardware serial (if needed)
-    // Initialize software serial
+    // Initialize software serial and hardware serial (UART)
     soft_serial_init();
     init_serial();
 
@@ -75,11 +84,7 @@ int main(void) {
 
     // Example: Send and receive data
     while (1) {
-        // Transmit data
-        for (uint8_t i=0; i < (sizeof(letters)/sizeof(letters[0])) ; i++)
-        {
-            soft_serial_write(letters[i]);
-        }
+        soft_string_write(letters, (sizeof(letters)/sizeof(letters[0])));
         // Receive data
         uint8_t received = soft_serial_read();
         putchar(received);
