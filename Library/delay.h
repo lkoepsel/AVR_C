@@ -11,5 +11,6 @@
 #include <util/delay.h>
 #include <stdint.h>
 
-void delay(uint16_t ticks) ;
+void delay(uint16_t ms) ;
+void delay_us(uint16_t us) ;
 #endif
