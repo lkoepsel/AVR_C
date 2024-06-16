@@ -62,3 +62,28 @@ uint8_t soft_string_write(char * buffer, uint8_t len)
         }
     return 0;
 }
+
+uint8_t soft_readLine(char *buffer, uint8_t SIZE)
+{
+    uint8_t n_chars = 0;
+    uint8_t EOL = 0;
+    do
+    {
+        char temp = soft_char_read();
+        if (temp == CR)
+        {
+            EOL = 1;
+        }
+        else
+        {
+            buffer[n_chars] = temp;
+            n_chars++;
+            if (n_chars >= SIZE)
+            {
+                EOL = 1;
+            }
+        }
+    }
+    while (!EOL);
+    return n_chars;
+}

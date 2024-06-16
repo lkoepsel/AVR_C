@@ -6,25 +6,25 @@ char xArm_out[xArm_MAX_BUFFER + 1] = {};
 
 void xArm_send(int cmd, int len)
 {
-    putchar(SIGNATURE);
-    putchar(SIGNATURE);
-    putchar(len + 2);
-    putchar(cmd);
+    soft_char_write(SIGNATURE);
+    soft_char_write(SIGNATURE);
+    soft_char_write(len + 2);
+    soft_char_write(cmd);
     if (len > 0) 
     {
         for (uint8_t i = 0; i <= len; i++)
         {
-            putchar(xArm_out[i]);
+            soft_char_write(xArm_out[i]);
         }
     }
 }
 
 int xArm_recv(int cmd)
 {
-  if (-1 != readLine(xArm_in, 4)) {
+  if (-1 != soft_readLine(xArm_in, 4)) {
     if (xArm_in[0] == SIGNATURE && xArm_in[1] == SIGNATURE && xArm_in[3] == cmd) {
       int len = xArm_in[2] - 2;
-      return readLine(xArm_in, len);
+      return soft_readLine(xArm_in, len);
     }
   }
   return -1;

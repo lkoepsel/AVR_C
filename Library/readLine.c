@@ -2,7 +2,7 @@
 
 uint8_t readLine(char *buffer, uint8_t SIZE)
 {
-    uint8_t in_char = 0;
+    uint8_t n_chars = 0;
     uint8_t EOL = 0;
     do
     {
@@ -13,14 +13,14 @@ uint8_t readLine(char *buffer, uint8_t SIZE)
         }
         else
         {
-            buffer[in_char] = temp;
-            in_char++;
-            if (in_char >= SIZE)
+            buffer[n_chars] = temp;
+            n_chars++;
+            if (n_chars >= SIZE)
             {
                 EOL = 1;
             }
         }
     }
     while (!EOL);
-    return in_char;
+    return n_chars;
 }

@@ -9,6 +9,8 @@
 int main(void) {    
 
     init_serial();
+    init_soft_serial();
+
     int voltage = xArm_getBatteryVoltage();
     printf("voltage %i", voltage);
 
