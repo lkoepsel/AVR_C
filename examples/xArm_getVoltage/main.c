@@ -21,10 +21,10 @@ int main(void)
     init_soft_serial();
 
     soft_string_write(title, title_len);
-    soft_char_CRLF();
+    soft_char_NL();
     int voltage = xArm_getBatteryVoltage();
     itoa(voltage, volt_string, 10);
     soft_string_write(sub, sub_len);
     soft_string_write(volt_string, volt_len);
-    soft_char_CRLF();
+    soft_char_NL();
 }
