@@ -9,5 +9,6 @@
 #define CR 13
 
 uint8_t readLine(char *buffer, uint8_t SIZE);
+void printLine(char *buffer, uint8_t len);
 
 #endif

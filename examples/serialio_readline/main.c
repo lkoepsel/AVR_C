@@ -33,10 +33,7 @@ int main(void) {
 
     printf("\nYou entered %i characters\n", num_char);
 
-    for (uint8_t out_char=0; out_char<num_char; out_char++)
-    {
-        printf("%c", input[out_char]);
-    }
+    printLine(input, num_char);
     printf("\n");
 
     // break input line into tokens

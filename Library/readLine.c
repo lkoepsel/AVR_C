@@ -24,3 +24,12 @@ uint8_t readLine(char *buffer, uint8_t SIZE)
     while (!EOL);
     return n_chars;
 }
+
+void printLine(char *buffer, uint8_t len)
+{
+    for (uint8_t out_char=0; out_char<len; out_char++)
+    {
+        printf("%c", buffer[out_char]);
+    }
+
+}

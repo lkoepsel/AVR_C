@@ -14,8 +14,8 @@ int main(void) {
     while (1) {
         soft_string_write(letters, (sizeof(letters)/sizeof(letters[0])));
         // Receive data
-        uint8_t received = soft_char_read();
-        putchar(received);
+        uint8_t received = soft_readLine(letters, 4);
+        printf("n char: %i", received);
     }
 
     return 0;

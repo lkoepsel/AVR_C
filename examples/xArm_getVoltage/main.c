@@ -5,12 +5,15 @@
  
 #include <stdio.h>
 #include "xArm.h"
+#include "uart.h"
 
-int main(void) {    
+int main(void) 
+{    
 
     init_serial();
     init_soft_serial();
 
+    puts("xArm Test: Use soft_readLine to get voltage");
     int voltage = xArm_getBatteryVoltage();
     printf("voltage %i", voltage);
 

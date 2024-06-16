@@ -38,7 +38,6 @@ uint8_t soft_char_read()
 
     // Wait for the middle of the start bit
     _delay_us(BIT_DURATION / 2);
-
     // Read each bit
     for (uint8_t i = 0; i < 8; i++) {
         _delay_us(BIT_DURATION);
