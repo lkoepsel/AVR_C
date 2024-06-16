@@ -10,13 +10,13 @@
 #include "unolib.h"
 #include "uart.h"
 
-// BAUD defined in env.make
-#define BIT_DURATION (1000000 / BAUD) // Bit duration in microseconds
+#define SOFT_BAUD 9600
+#define BIT_DURATION (1000000 / SOFT_BAUD) // Bit duration in microseconds
 
 #define SOFT_RX_PIN PIND2 // Define the RX pin
 #define SOFT_TX_PIN PIND3 // Define the TX pin
 
-void soft_serial_init() ;
+void init_soft_serial() ;
 
 void soft_char_write(uint8_t data) ;
 

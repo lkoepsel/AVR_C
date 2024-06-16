@@ -1,6 +1,6 @@
 #include "soft_serial.h"
 
-void soft_serial_init() 
+void init_soft_serial() 
 {
     // Set TX pin as output, set RX pin as input, RX as input pullup
     DDRD |= _BV(SOFT_TX_PIN);

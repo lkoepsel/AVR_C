@@ -5,7 +5,7 @@
 
 int main(void) {
     // Initialize software serial and hardware serial (UART)
-    soft_serial_init();
+    init_soft_serial();
     init_serial();
 
     char letters[12] = {"Soft Serial"};
