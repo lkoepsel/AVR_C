@@ -12,7 +12,7 @@ int main(void) {
 
     // Example: Send and receive data
     while (1) {
-        soft_string_write(letters, (sizeof(letters)/sizeof(letters[0])));
+        soft_string_write(letters, (sizeof(letters)/init_soft_serial(letters[0])));
         // Receive data
         uint8_t received = soft_readLine(letters, 4);
         printf("n char: %i", received);

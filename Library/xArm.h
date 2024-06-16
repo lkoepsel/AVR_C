@@ -10,7 +10,6 @@
 #include "uart.h"
 #include <string.h>
 #include "readLine.h"
-#include "soft_serial.h"
 
 
 #define SIGNATURE               0x55

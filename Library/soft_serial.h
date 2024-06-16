@@ -27,4 +27,6 @@ uint8_t soft_string_write(char * buffer, uint8_t len) ;
 
 uint8_t soft_readLine(char *buffer, uint8_t SIZE);
 
+void soft_char_CRLF(void);
+
 #endif

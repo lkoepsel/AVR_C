@@ -86,3 +86,11 @@ uint8_t soft_readLine(char *buffer, uint8_t SIZE)
     while (!EOL);
     return n_chars;
 }
+
+void soft_char_CRLF(void)
+{
+    uint8_t lf = 10;
+    uint8_t cr = 13;
+    soft_char_write(cr);
+    soft_char_write(lf);
+}

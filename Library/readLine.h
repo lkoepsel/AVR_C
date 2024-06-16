@@ -1,4 +1,6 @@
-// readLine - reads a line of text until EOL = CR
+// readLine - reads a line of text until EOL = CR or SIZE reached
+// printLine - will echo a line of text, read by readLine
+
 #ifndef READLINE_H
 #define READLINE_H
 
