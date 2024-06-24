@@ -10,6 +10,8 @@
 #define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 3
 
+#define max_cmd_len 4 # this is the maximun number of characters for a command
+
 int main(void) {    
 
     // init_serial() is always required to use serial port, as well as #include "uart.h"
@@ -19,7 +21,8 @@ int main(void) {
     // delims are the token delimitors
     char input[MAX_BUFFER + 1] = {};
     char delims[MAX_DELIMS + 1] = {" ,."};
-    char cmd[8] = {};
+    
+    char cmd[max_cmd_len] = {}; # defines the variable which will hold the command
 
     puts("Serial I/O Test: readLine with tokens");
     printf("Enter text up to %i characters, or end w/ CR\n", MAX_BUFFER);
@@ -53,7 +56,7 @@ int main(void) {
 
     printf("The %i tokens parsed are:\n", tokens_found);
     printf("index token\n");
-    strncpy(cmd, tokens[0], strlen(tokens[0]));
+    strncpy(cmd, tokens[0], max_cmd_len); # assigns the first token found to be a command
     for (index=0; index<tokens_found; index++)
     {
         printf("%5i %s\n", index, tokens[index]);
