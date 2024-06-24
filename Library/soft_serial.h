@@ -1,5 +1,9 @@
 // soft serial - adds a software defined serial port
 // Slow serial port, use for non-intensive serial interaction
+// Change serial pins below: SOFT_RX_PIN/SOFT_TX_PIN
+// Set baud rate below: SOFT_BAUD
+// Highest baud rate is 28800
+
 
 #ifndef SOFT_SERIAL_H
 #define SOFT_SERIAL_H

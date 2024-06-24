@@ -1,5 +1,7 @@
 // soft serial - adds a software defined serial port
 // Slow serial port, use for non-intensive serial interaction
+// Change serial pins in soft_serial.h: SOFT_RX_PIN/SOFT_TX_PIN
+// Set baud rate in soft_serial.h: SOFT_BAUD
 
 #include "soft_serial.h"
 #include "delay.h"
