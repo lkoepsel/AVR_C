@@ -1,11 +1,11 @@
-// xArm Commands
+// xArm Commander
 // Change baud rate in env.make to 9600 to match xArm
-// UNO 0/1 - connect to xARM
-// UNO 2/3 - connect to FTDI/USB converter to RPi
+// UNO 0/1 - connect to xARM, RX/TX
+// UNO 2/3 - connect to FTDI/USB converter to RPi, RX/TX
 // Uno sends commands to xARM via 0/1
 // UNO accepts commands/prints responses from xArm via 2/3
 // use tio -l to determine which /dev is connected to FTDI
-// use tio /dev/{name} to connect
+// use tio /dev/{name} to connect i.e; /dev/ttyUSB0
  
 #include <stdio.h>
 #include "xArm.h"
