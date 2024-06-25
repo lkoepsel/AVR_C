@@ -19,6 +19,15 @@ uint8_t sub_len = sizeof(sub_volt)/sizeof(sub_volt[0]);
 char volt_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
 
+voltage printVoltage()
+{
+    int voltage = xArm_getBatteryVoltage();
+    itoa(voltage, volt_string, 10);
+    soft_string_write(sub_volt, sub_len);
+    soft_string_write(volt_string, volt_len);
+    soft_char_NL();
+}
+
 int main(void) 
 {    
     init_serial();
@@ -26,9 +35,5 @@ int main(void)
 
     soft_string_write(title, title_len);
     soft_char_NL();
-    int voltage = xArm_getBatteryVoltage();
-    itoa(voltage, volt_string, 10);
-    soft_string_write(sub_volt, sub_len);
-    soft_string_write(volt_string, volt_len);
-    soft_char_NL();
+    printVoltage();
 }
