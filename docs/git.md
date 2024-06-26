@@ -1,6 +1,8 @@
 # Notes on Working with git in the Terminal
  
-Here are some common tasks to use when working with git and GitHub. Be sure you are executing these commands on your Raspberry Pi in the Terminal (CLI). And you are using the SSH forms of github, **NOT https://**.
+Here are some common tasks to use when working with git and GitHub. Be sure you are executing these commands on your Raspberry Pi in the Terminal (CLI). And you are using the SSH forms of github, **NOT https://** as in:
+ssh form: `git@github.com:lkoepsel/AVR_C.git`
+https: form: `https://github.com/lkoepsel/AVR_C.git`
 
 ## Turn this repository into your own (non-forking addition)
 ```bash
@@ -39,7 +41,7 @@ git push -u origin main
 ```
 
 ## Add your public key to GitHub (on Raspberry PI)
-Use this command to create a key on your Raspberry Pi then save it via your browser to your Settings -> SSH and GPG keys -> New SSH key. Just save the last line printed below which will start with "ssh-...." and end with your email address.
+Use this command to create a key on your Raspberry Pi then save it via your browser to your *Settings -> SSH and GPG keys -> New SSH key*. Just save the last line printed below which will start with "ssh-...." and end with your email address.
 
 ```bash
 ssh-keygen -t ed25519 -C "youremail@yourdomain.com" && eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_ed25519 && cat ~/.ssh/id_ed25519.pub
@@ -49,12 +51,26 @@ ssh-keygen -t ed25519 -C "youremail@yourdomain.com" && eval "$(ssh-agent -s)" &&
 ## Three Commands to Add Changes
 Use these three commands periodically to save your changes and push them to your remote repository. 
 ```bash
-# stage your changes
+# 1. stage your changes
 git add -A
 
-# commit your staged changes
+# 2. commit your staged changes
 git commit -m "message is appropriate to changes"
 
-# push to repository
+# 3. push to remote repository
 git push
+```
+
+## Fix a HTTPS form back to SSH form
+```bash
+# confirm the form of the url for your remote, if it has *https* in the name, it is in the wrong form
+git remote -v
+
+# change it to be the desired SSH
+git remote set-url origin git@github.com:lkoepsel/AVR_C.git
+
+# confirm the form is now the correct *ssh* URL
+git remote -v
+
+# now you may push to your heart's content
 ```
