@@ -1,8 +1,9 @@
 # Notes on Working with git in the Terminal
  
 Here are some common tasks to use when working with git and GitHub. Be sure you are executing these commands on your Raspberry Pi in the Terminal (CLI). And you are using the SSH forms of github, **NOT https://** as in:
-ssh form: `git@github.com:lkoepsel/AVR_C.git`
-https: form: `https://github.com/lkoepsel/AVR_C.git`
+
+* ssh form: `git@github.com:lkoepsel/AVR_C.git`
+* https: form: `https://github.com/lkoepsel/AVR_C.git`
 
 ## Turn this repository into your own (non-forking addition)
 ```bash
@@ -62,8 +63,9 @@ git push
 ```
 
 ## Fix a HTTPS form back to SSH form
+Confirm the form of the url for your remote, if it has *https* in the name, it is in the wrong form, to use with *SSH authentication*.
 ```bash
-# confirm the form of the url for your remote, if it has *https* in the name, it is in the wrong form
+# confirm the form of the url for your remote
 git remote -v
 
 # change it to be the desired SSH
