@@ -1,5 +1,7 @@
 # Notes on Working with git
 
+Here are some common tasks to use when working with git and GitHub.
+
 ## Turn this repository into your own (non-forking addition)
 ```bash
 git clone git@github.com:lkoepsel/AVR_C.git
@@ -32,5 +34,4 @@ git commit -m "message is appropriate to changes"
 
 # push to repository
 git push
-
 ```
