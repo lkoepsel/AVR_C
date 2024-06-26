@@ -62,8 +62,8 @@ git commit -m "message is appropriate to changes"
 git push
 ```
 
-## Fix a HTTPS form back to SSH form
-Confirm the form of the url for your remote, if it has *https* in the name, it is in the wrong form, to use with *SSH authentication*.
+## Fix a HTTPS URL back to SSH URL
+Confirm the form of the url for your remote, if it has *https* in the name, it is in the wrong form. You need a URL with *git@github...* to use with *SSH authentication*.
 ```bash
 # confirm the form of the url for your remote
 git remote -v
@@ -75,4 +75,46 @@ git remote set-url origin git@github.com:lkoepsel/AVR_C.git
 git remote -v
 
 # now you may push to your heart's content
+```
+
+## Removing a file
+You have found a file which you didn't want to track via *git*, you added it to your *.gitignore* file, however, it is still in your repo. 
+```bash
+git rm -r --cached <file>
+```
+
+## Show commits where a particular file was changed
+There are cases when we want to see all of the changes to a particular file and this can be done using git log with — follow flag.
+```bash
+git log --follow -- <filename>
+```
+
+## Save Current Changes, Merge, then get them back
+Save and comment aren’t required, however, it makes it a lot easier to remember what you were doing and what needs to be done.
+WIP isn’t a standard, however, it is commonly used to indicate work-in-progress
+
+```bash
+git stash save "WIP:comment"
+# with work saved...do what you need to do...such as Update from a Remote
+# now updated, pop the stash to go back to where you were, as in...
+git fetch
+git merge
+git stash pop
+```
+## And finally, the best way to work with git
+```bash
+# ensure up to date
+git status
+# create a new branch for dev code
+git checkout -b new_branch
+# make changes in code
+# test changes and confirm changes work
+# stage changes
+git add --All
+# commit the changes with a message
+git commit -m 'message about changes'
+# switch back to master
+git checkout master
+# merge changes to branch
+git merge new_branch
 ```
