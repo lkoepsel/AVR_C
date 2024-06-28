@@ -8,26 +8,63 @@
 // use tio /dev/{name} to connect i.e; /dev/ttyUSB0
  
 #include <stdio.h>
+#include <string.h>
 #include "xArm.h"
 #include "uart.h"
 #include "soft_serial.h"
 
-char title[50] = {"xArm Commander: Enter commands to interact w xARM"};
-uint8_t title_len = sizeof(title)/sizeof(title[0]);
-char hdr_volt[10] = {"voltage "};
-uint8_t sub_len = sizeof(hdr_volt)/sizeof(hdr_volt[0]);
+const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM";
+const char hdr_volt[] PROGMEM = "voltage ";
+const char hdr_input[] PROGMEM = "Input entered: ";
+const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
+const char hdr_cmd_exc[] PROGMEM = "Command executed: ";
+const char hdr_cmd_notfnd[] PROGMEM = "Command NOT found: ";
+
 char volt_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
+char cmd_string[2] = {};
 
-#define NUM_COMMANDS 4
-#define MAX_CMD_LENGTH 6 // 5 characters + null terminator
+#define MAX_BUFFER 24
+#define MAX_TOKENS (MAX_BUFFER/2)
+#define MAX_DELIMS 1
+
+#define NUM_COMMANDS 10
+#define MAX_CMD_LENGTH 9 // 8 characters + null terminator
+
+char *tokens[MAX_TOKENS];
+enum {cmd, joint, dir, distance};
+
 const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
 {
-    "move",
-    "reset",
-    "pos",
-    "volt"
+    "setP",
+    "getP",
+    "servoOff",
+    "actRun",
+    "actSpeed",
+    "actStop",
+    "actRun",
+    "serEvent",
+    "volt",
+    "beep"
 };
+
+char* tokenLine(char *input)
+{
+    // break input line into tokens
+    // when this section has executed, the characters in input
+    // which are separated by a delim
+    // will now be in an array called tokens
+    // with each location in token, a multiple character token
+    char delim[MAX_DELIMS + 1] = {" "};
+
+    uint8_t index = 0;
+    tokens[index] = strtok(input, delim);
+    while ( (tokens[index] != NULL) && (index < MAX_TOKENS - 1) ) {
+        index++;
+        tokens[index] = strtok(NULL, delim);
+    }
+    return *tokens;
+}
 
 int command_to_int(const char *command) 
 {
@@ -43,7 +80,7 @@ void printVoltage()
 {
     int voltage = xArm_getBatteryVoltage();
     itoa(voltage, volt_string, 10);
-    soft_string_write(hdr_volt, sub_len);
+    soft_pgmtext_write(hdr_volt);
     soft_string_write(volt_string, volt_len);
     soft_char_NL();
 }
@@ -53,27 +90,69 @@ int main(void)
     init_serial();
     init_soft_serial();
 
-    soft_string_write(title, title_len);
+    // input is the buffer for the serial port
+    char input[MAX_BUFFER + 1] = {};
+
+    // write command request to soft serial
+    soft_pgmtext_write(title);
     soft_char_NL();
 
-    int command_id = command_to_int("volt");
+    // DEBUG: get input and echo back to soft serial
+    // uncomment this line and comment comparable soft_readLine() below
+    // uint8_t num_char = soft_readLine(input, MAX_BUFFER);
+    // soft_pgmtext_write(hdr_input);
+    // soft_string_write(input, num_char);
+    // soft_char_NL();
+
+    // get input, use first token as command
+    soft_readLine(input, MAX_BUFFER);
+    tokenLine(input);
+    int command_id = command_to_int(tokens[cmd]);
+    char str_command = command_id + 48;
 
     switch (command_id) 
     {
         case 1:
-            printf("move executed.\n");
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_string_write(tokens[cmd], strlen(tokens[cmd]));
             break;
         case 2:
-            printf("reset executed.\n");
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_char_write(str_command);
             break;
         case 3:
-            printf("pos executed.\n");
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_char_write(str_command);
             break;
         case 4:
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_char_write(str_command);
+            break;
+        case 5:
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_char_write(str_command);
+            break;
+        case 6:
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_char_write(str_command);
+            break;
+        case 7:
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_char_write(str_command);
+            break;
+        case 8:
+            soft_pgmtext_write(hdr_cmd_exc);
+            soft_char_write(str_command);
+            break;
+        case 9:
             printVoltage();
             break;
+        case 10:
+            xArm_beep();
+            break;
         default:
-            printf("Invalid command.\n");
+            soft_char_write(str_command);
+            soft_pgmtext_write(hdr_cmd_notfnd);
             break;
     }
     return 0;

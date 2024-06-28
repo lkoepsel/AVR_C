@@ -62,7 +62,7 @@ extern char xArm_out[xArm_MAX_BUFFER + 1];
 uint16_t xArm_getBatteryVoltage();
 void xArm_beep();
 
-bool actionRunning;
+// bool actionRunning;
 
 uint16_t clamp(uint16_t v);
 void xArm_send(uint8_t cmd, uint8_t len);

@@ -1,5 +1,9 @@
 // serialio - demonstrate how to successfully read a line of text and
-// use STRTOK() to split the line into tokens (or words)
+// use strtok() to split the line into tokens (or words)
+// It is very important to understand that strtok() returns a pointer
+// this means the tokens[] below is:
+// an array of pointers which point to each specific token
+// it is NOT an array of characters, which make up the token
 
 #include <stdio.h>
 #include <string.h>
@@ -8,7 +12,7 @@
 
 #define MAX_BUFFER 24
 #define MAX_TOKENS (MAX_BUFFER/2)
-#define MAX_DELIMS 3
+#define MAX_DELIMS 1
 
 int main(void) {    
 
@@ -18,7 +22,7 @@ int main(void) {
     // input is the buffer for the serial port
     // delims are the token delimitors
     char input[MAX_BUFFER + 1] = {};
-    char delims[MAX_DELIMS + 1] = {" ,."};
+    char delims[MAX_DELIMS + 1] = {" "};
 
     puts("Serial I/O Test: readLine with tokens");
     printf("Enter text up to %i characters, or end w/ CR\n", MAX_BUFFER);

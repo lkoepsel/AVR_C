@@ -9,10 +9,11 @@
 #define SOFT_SERIAL_H
 
 #include <avr/io.h>
+#include <avr/pgmspace.h>
 #include <stdio.h>
 #include <util/delay.h>
-#include "unolib.h"
 #include "uart.h"
+#include "unolib.h"
 
 #define SOFT_BAUD 9600
 #define BIT_DURATION (1000000 / SOFT_BAUD) // Bit duration in microseconds
@@ -32,5 +33,9 @@ uint8_t soft_string_write(char * buffer, uint8_t len) ;
 uint8_t soft_readLine(char *buffer, uint8_t SIZE);
 
 void soft_char_NL(void);
+void soft_char_space(void);
+
+// Write a program memory-based text to soft serial port
+void soft_pgmtext_write(const char* pgm_text);
 
 #endif

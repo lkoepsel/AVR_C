@@ -55,9 +55,12 @@ uint8_t soft_char_read()
 uint8_t soft_string_write(char * buffer, uint8_t len)
 {
         // Transmit data
-        for (uint8_t i=0; i < len ; i++)
+        uint8_t count = 0;
+        while ((*buffer != '\0') && (count <= len))
         {
-            soft_char_write(buffer[i]);
+            soft_char_write(*buffer);
+            buffer++;
+            count++;
         }
     return 0;
 }
@@ -94,3 +97,18 @@ void soft_char_NL(void)
     soft_char_write(cr);
     soft_char_write(lf);
 }
+
+void soft_char_space(void)
+{
+    uint8_t space = 20;
+    soft_char_write(space);
+}
+
+void soft_pgmtext_write(const char* pgm_text)
+    {
+        for (uint8_t i=0; i < strlen_P(pgm_text); i++)
+        {
+            uint8_t c = pgm_read_byte(&(pgm_text[i]));
+            soft_char_write(c);
+        }
+    }
