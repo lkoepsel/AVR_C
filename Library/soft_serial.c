@@ -100,7 +100,7 @@ void soft_char_NL(void)
 
 void soft_char_space(void)
 {
-    uint8_t space = 20;
+    uint8_t space = 0x20;
     soft_char_write(space);
 }
 

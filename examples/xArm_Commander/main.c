@@ -19,6 +19,8 @@ const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
 const char hdr_cmd_exc[] PROGMEM = "Command executed: ";
 const char hdr_cmd_notfnd[] PROGMEM = "Command NOT found: ";
+const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
+
 
 char volt_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
@@ -32,7 +34,7 @@ char cmd_string[2] = {};
 #define MAX_CMD_LENGTH 9 // 8 characters + null terminator
 
 char *tokens[MAX_TOKENS];
-enum {cmd, joint, dir, distance};
+enum {cmd, joint, dir, dis};
 
 const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
 {
@@ -104,56 +106,111 @@ int main(void)
     // soft_string_write(input, num_char);
     // soft_char_NL();
 
-    // get input, use first token as command
-    soft_readLine(input, MAX_BUFFER);
-    tokenLine(input);
-    int command_id = command_to_int(tokens[cmd]);
-    char str_command = command_id + 48;
-
-    switch (command_id) 
+    while (1) 
     {
-        case 1:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_string_write(tokens[cmd], strlen(tokens[cmd]));
-            break;
-        case 2:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_char_write(str_command);
-            break;
-        case 3:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_char_write(str_command);
-            break;
-        case 4:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_char_write(str_command);
-            break;
-        case 5:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_char_write(str_command);
-            break;
-        case 6:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_char_write(str_command);
-            break;
-        case 7:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_char_write(str_command);
-            break;
-        case 8:
-            soft_pgmtext_write(hdr_cmd_exc);
-            soft_char_write(str_command);
-            break;
-        case 9:
-            printVoltage();
-            break;
-        case 10:
-            xArm_beep();
-            break;
-        default:
-            soft_char_write(str_command);
-            soft_pgmtext_write(hdr_cmd_notfnd);
-            break;
+        // get input, use first token as command
+        soft_readLine(input, MAX_BUFFER);
+        tokenLine(input);
+        int command_id = command_to_int(tokens[cmd]);
+        char str_command = command_id + 48;
+
+        switch (command_id) 
+        {
+            case 1:
+                soft_pgmtext_write(hdr_cmd_exc);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_space();
+                soft_string_write(tokens[dir], strlen(tokens[dir]));
+                soft_char_space();
+                soft_string_write(tokens[dis], strlen(tokens[dis]));
+                soft_char_NL();
+                break;
+            case 2:
+                soft_pgmtext_write(hdr_cmd_exc);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_NL();
+                break;
+            case 3:
+                soft_pgmtext_write(hdr_cmd_exc);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_NL();
+                break;
+            case 4:
+                soft_pgmtext_write(hdr_cmd_notimpl);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_space();
+                soft_string_write(tokens[dir], strlen(tokens[dir]));
+                soft_char_space();
+                soft_string_write(tokens[dis], strlen(tokens[dis]));
+                soft_char_NL();
+                break;
+            case 5:
+                soft_pgmtext_write(hdr_cmd_notimpl);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_space();
+                soft_string_write(tokens[dir], strlen(tokens[dir]));
+                soft_char_space();
+                soft_string_write(tokens[dis], strlen(tokens[dis]));
+                soft_char_NL();
+                break;
+            case 6:
+                soft_pgmtext_write(hdr_cmd_notimpl);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_space();
+                soft_string_write(tokens[dir], strlen(tokens[dir]));
+                soft_char_space();
+                soft_string_write(tokens[dis], strlen(tokens[dis]));
+                soft_char_NL();
+                break;
+            case 7:
+                soft_pgmtext_write(hdr_cmd_notimpl);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_space();
+                soft_string_write(tokens[dir], strlen(tokens[dir]));
+                soft_char_space();
+                soft_string_write(tokens[dis], strlen(tokens[dis]));
+                soft_char_NL();
+                break;
+            case 8:
+                soft_pgmtext_write(hdr_cmd_exc);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_space();
+                soft_string_write(tokens[dir], strlen(tokens[dir]));
+                soft_char_space();
+                soft_string_write(tokens[dis], strlen(tokens[dis]));
+                soft_char_NL();
+                break;
+            case 9:
+                printVoltage();
+                break;
+            case 10:
+                xArm_beep();
+                break;
+            default:
+                soft_char_write(str_command);
+                soft_pgmtext_write(hdr_cmd_notfnd);
+                break;
+        }
+        for (uint8_t i=0; i<MAX_BUFFER; i++)
+        {
+            input[i] = ' ';
+        }
     }
     return 0;
 }
