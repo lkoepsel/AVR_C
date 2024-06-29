@@ -3,6 +3,14 @@
 char xArm_in[xArm_MAX_BUFFER + 1] = {};
 char xArm_out[xArm_MAX_BUFFER + 1] = {};
 
+uint8_t lowByte(uint16_t value) {
+    return (uint8_t)(value & 0xFF);
+}
+
+uint8_t highByte(uint16_t value) {
+    return (uint8_t)((value >> 8) & 0xFF);
+}
+
 void xArm_send(uint8_t cmd, uint8_t len)
 {
     putchar(SIGNATURE);
@@ -36,20 +44,22 @@ uint16_t xArm_clamp(uint16_t v) {
     return (v < xArm_lo) ? xArm_lo : (xArm_hi < v) ? xArm_hi : v;
 }
 
-// void xArmServoController::setPosition(uint8_t servo_id, uint16_t position, uint16_t duration = 1000, bool wait = false)
-// {
-//   position = xArm_clamp(position);
-//   _buffer[0] = 1;
-//   _buffer[1] = lowByte(duration);
-//   _buffer[2] = highByte(duration);
-//   _buffer[3] = servo_id;
-//   _buffer[4] = lowByte(position);
-//   _buffer[5] = highByte(position);
-//   send(CMD_SERVO_MOVE, 6);
-//   if (wait) {
-//     delay(duration);
-//   }
-// }
+void xArm_setPosition(uint8_t servo_id, uint16_t position)
+{
+  uint16_t duration = 1000;
+  bool wait = false;
+  position = xArm_clamp(position);
+  xArm_out[0] = 1;
+  xArm_out[1] = lowByte(duration);
+  xArm_out[2] = highByte(duration);
+  xArm_out[3] = servo_id;
+  xArm_out[4] = lowByte(position);
+  xArm_out[5] = highByte(position);
+  xArm_send(CMD_SERVO_MOVE, 6);
+  if (wait) {
+    delay(duration);
+  }
+}
 
 // void xArmServoController::setPosition(xArmServo servo, unsigned duration = 1000, bool wait = false)
 // {
@@ -159,52 +169,6 @@ uint16_t xArm_clamp(uint16_t v) {
 //   _buffer[6] = 6;
 //   send(CMD_SERVO_STOP, 7);
 // }
-
-// /*** Action Group ***/
-
-//   void xArmServoController::actionRun(int group, unsigned times = 1) {
-//     _buffer[0] = group;
-//     _buffer[1] = lowByte(times);
-//     _buffer[2] = highByte(times);
-//     send(CMD_ACTION_GROUP_RUN, 3);
-//     actionRunning = true;
-//   }
-
-//   void xArmServoController::actionStop() {
-//     send(CMD_ACTION_GROUP_STOP, 0);
-//   }
-
-//   void xArmServoController::actionSpeed(int group, unsigned percent) {
-//     _buffer[0] = group;
-//     _buffer[1] = lowByte(percent);
-//     _buffer[2] = highByte(percent);
-//     bool _actionRunning = actionRunning;
-//     send(CMD_ACTION_GROUP_SPEED, 3);
-//     actionRunning = _actionRunning;
-//   }
-
-//   bool xArmServoController::actionIsRunning() {
-//     return actionRunning;
-//   }
-
-//   bool xArmServoController::serialEvent() {
-//     if (actionRunning) {
-//       if (-1 != serial_port.readBytes(_buffer, 4)) {
-//         if (_buffer[0] == SIGNATURE && _buffer[1] == SIGNATURE) {
-//           switch (_buffer[3])
-//           {
-//           case CMD_ACTION_GROUP_STOP:
-//           case CMD_ACTION_GROUP_END:
-//             actionRunning = false;
-//             return true;
-//           default:
-//             break;
-//           }
-//         }
-//       }
-//     }
-//     return false;
-//   }
 
 uint16_t xArm_getBatteryVoltage()
 {

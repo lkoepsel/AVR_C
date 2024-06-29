@@ -14,6 +14,7 @@
 #include <string.h>
 #include "readLine.h"
 #include "uart.h"
+#include "delay.h"
 
 #define SIGNATURE               0x55
 #define CMD_BEEP                0x00
@@ -59,12 +60,15 @@ extern char xArm_out[xArm_MAX_BUFFER + 1];
 // bool actionIsRunning();
 // bool serialEvent();
 
+uint8_t lowByte(uint16_t value);
+uint8_t highByte(uint16_t value);
 uint16_t xArm_getBatteryVoltage();
 void xArm_beep();
 
 // bool actionRunning;
 
 uint16_t clamp(uint16_t v);
+void xArm_setPosition(uint8_t servo_id, uint16_t position);
 void xArm_send(uint8_t cmd, uint8_t len);
 uint8_t xArm_recv(uint8_t cmd);
 
