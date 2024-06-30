@@ -226,6 +226,7 @@ int main(void)
             default:
                 soft_char_write(str_command);
                 soft_pgmtext_write(hdr_cmd_notfnd);
+                result = -1;
                 break;
         }
         if (result != 0)

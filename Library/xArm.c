@@ -29,7 +29,6 @@ void xArm_send(uint8_t cmd, uint8_t len)
 uint8_t xArm_recv(uint8_t cmd)
 {
   uint8_t num_char = readLine(xArm_in, 4);
-  printf("num_char: %i", num_char);
   if (num_char > 0) 
   {
     if (xArm_in[0] == SIGNATURE && xArm_in[1] == SIGNATURE && xArm_in[3] == cmd) {
