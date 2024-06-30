@@ -40,32 +40,10 @@ struct xArmServo {
 extern char xArm_in[xArm_MAX_BUFFER + 1];
 extern char xArm_out[xArm_MAX_BUFFER + 1];
 
-// void setPosition(uint8_t servo_id, uint16_t position, uint16_t duration = 1000, bool wait = false);
-// void setPosition(xArmServo servo, uint16_t duration = 1000, bool wait = false);
-// void setPosition(xArmServo servos[], uint8_t count, uint16_t duration = 1000, bool wait = false);
-
-// uint16_t getPosition(uint8_t servo_id);
-// uint16_t getPosition(xArmServo &servo);
-// bool getPosition(xArmServo servos[], uint8_t count);
-
-// void servoOff(uint8_t servo_id);
-// void servoOff(int num, uint8_t servo_id, ...);
-// void servoOff(xArmServo servo);
-// void servoOff(xArmServo servos[], uint8_t count);
-// void servoOff();
-
-// void actionRun(uint8_t group, uint8_t times = 1);
-// void actionStop();
-// void actionSpeed(uint8_t group, uint8_t percent);
-// bool actionIsRunning();
-// bool serialEvent();
-
 uint8_t lowByte(uint16_t value);
 uint8_t highByte(uint16_t value);
 uint16_t xArm_getBatteryVoltage();
 void xArm_beep();
-
-// bool actionRunning;
 
 uint16_t clamp(uint16_t v);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);

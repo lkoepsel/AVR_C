@@ -1,8 +1,19 @@
 // soft serial - adds a software defined serial port
 // Slow serial port, use for non-intensive serial interaction
-// Change serial pins below: SOFT_RX_PIN/SOFT_TX_PIN
+// Set serial pins below: SOFT_RX_PIN/SOFT_TX_PIN
 // Set baud rate below: SOFT_BAUD
 // Highest baud rate is 28800
+
+// API:
+// init_soft_serial(); initialize the ports, REQUIRED
+// void soft_char_write(uint8_t) - writes a binary byte, if ASCII needed, convert w itoa()
+// void soft_string_write(char *, uint8) - writes a string via pointer, upto len
+// uint8_t soft_char_read() - returns a binary byte
+// uint8_t soft_readline(char *, uint8) - returns bytes read up to SIZE
+// void soft_char_NL(void) - write a new line
+// void soft_char_space(void) - write a space
+// void soft_pgmtext_write(const char* pgm_text) - write PROGMEM string
+
 
 
 #ifndef SOFT_SERIAL_H
@@ -35,7 +46,6 @@ uint8_t soft_readLine(char *buffer, uint8_t SIZE);
 void soft_char_NL(void);
 void soft_char_space(void);
 
-// Write a program memory-based text to soft serial port
 void soft_pgmtext_write(const char* pgm_text);
 
 #endif

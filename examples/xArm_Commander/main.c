@@ -1,11 +1,11 @@
 // xArm Commander
 // Change baud rate in env.make to 9600 to match xArm
-// UNO 0/1 - connect to xARM, RX/TX
-// UNO 2/3 - connect to FTDI/USB converter to RPi, RX/TX
+// UNO 0/1 (uart) - connect to xARM, RX/TX
+// UNO 2/3 (soft_serial) - connect to FTDI/USB converter to RPi, RX/TX
 // Uno sends commands to xARM via 0/1
 // UNO accepts commands/prints responses from xArm via 2/3
 // use tio -l to determine which /dev is connected to FTDI
-// use tio /dev/{name} to connect i.e; /dev/ttyUSB0
+// use tio /dev/{name} to connect to FTDI i.e; /dev/ttyUSB0
  
 #include <stdio.h>
 #include <string.h>
@@ -22,29 +22,28 @@ const char hdr_cmd_exc[] PROGMEM = "Command executed: ";
 const char hdr_cmd_notfnd[] PROGMEM = "Command NOT found: ";
 const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
 const char hdr_cmd_beep[] PROGMEM = "beep";
-const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 0-5";
-const char hdr_cmd_baddistance[] PROGMEM = "Bad distance, must be 1-999";
+const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-6";
+const char hdr_cmd_badposition[] PROGMEM = "Bad position, must be 1-999";
 const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_error[] PROGMEM = "Error";
 
-
 char volt_string[4] = {};
-char pos_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
+char pos_string[4] = {};
 uint8_t pos_len = sizeof(pos_string)/sizeof(pos_string[0]);
 char cmd_string[2] = {};
 
 #define MAX_BUFFER 24
 #define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 1
+char *tokens[MAX_TOKENS];
 
 #define NUM_COMMANDS 6
 #define MAX_CMD_LENGTH 6 // # of characters + null terminator
 
-char *tokens[MAX_TOKENS];
-enum {cmd, joint, dis};
+enum {cmd, joint, pos};
 uint8_t joint_no;
-uint16_t distance;
+uint16_t position;
 
 const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
 {
@@ -93,26 +92,26 @@ uint8_t move(char *j, char *d)
         soft_char_NL();
         return -1;
     }
-    distance = atoi(d);
-    if ((distance < 1) || (distance > 999))
+    position = atoi(d);
+    if ((position < 1) || (position > 999))
     {
-        soft_pgmtext_write(hdr_cmd_baddistance);
+        soft_pgmtext_write(hdr_cmd_badposition);
         soft_char_NL();
         return -1;
     }
-    xArm_setPosition(joint_no, distance);
+    xArm_setPosition(joint_no, position);
     return 0;
 }
 
-uint8_t getPosition(uint8_t s)
+uint8_t getPosition(uint8_t j)
 {
-    uint16_t position = xArm_getPosition(s);
+    uint16_t position = xArm_getPosition(j);
     if (position == -1)
     {
         return position;
     }
-    char str_s = s + 48;
-    soft_char_write(str_s);
+    char str_j = j + 48;
+    soft_char_write(str_j);
     soft_char_space();
     itoa(position, pos_string, 10);
     soft_pgmtext_write(hdr_pos);
@@ -165,19 +164,19 @@ int main(void)
 
         switch (command_id) 
         {
-            // move
+            // move joint position
             case 1:
                 soft_pgmtext_write(hdr_cmd_exc);
                 soft_string_write(tokens[cmd], strlen(tokens[cmd]));
                 soft_char_space();
                 soft_string_write(tokens[joint], strlen(tokens[joint]));
                 soft_char_space();
-                soft_string_write(tokens[dis], strlen(tokens[dis]));
+                soft_string_write(tokens[pos], strlen(tokens[pos]));
                 soft_char_NL();
-                result = move(tokens[joint], tokens[dis]);
+                result = move(tokens[joint], tokens[pos]);
                 break;
             
-            // pos
+            // pos joint
             case 2:
                 soft_pgmtext_write(hdr_cmd_exc);
                 soft_string_write(tokens[cmd], strlen(tokens[cmd]));
@@ -239,6 +238,7 @@ int main(void)
         }
         soft_char_NL();
 
+        // clear input buffer for next command
         for (uint8_t i=0; i<MAX_BUFFER; i++)
         {
             input[i] = ' ';
