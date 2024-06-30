@@ -69,6 +69,7 @@ void xArm_beep();
 
 uint16_t clamp(uint16_t v);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
+uint16_t xArm_getPosition(uint8_t servo_id);
 void xArm_send(uint8_t cmd, uint8_t len);
 uint8_t xArm_recv(uint8_t cmd);
 

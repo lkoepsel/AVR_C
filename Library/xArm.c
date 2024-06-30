@@ -19,7 +19,7 @@ void xArm_send(uint8_t cmd, uint8_t len)
     putchar(cmd);
     if (len > 0) 
     {
-        for (uint8_t i = 0; i <= len; i++)
+        for (uint8_t i = 0; i < len; i++)
         {
             putchar(xArm_out[i]);
         }
@@ -61,40 +61,20 @@ void xArm_setPosition(uint8_t servo_id, uint16_t position)
   }
 }
 
-// void xArmServoController::setPosition(xArmServo servo, unsigned duration = 1000, bool wait = false)
-// {
-//   setPosition(servo.servo_id, servo.position, duration, wait);
-// }
-
-// void xArmServoController::setPosition(xArmServo servos[], int count, unsigned duration = 1000, bool wait = false)
-// {
-//   int len = count * 3 + 3;
-//   _buffer[0] = count;
-//   _buffer[1] = lowByte(duration);
-//   _buffer[2] = highByte(duration);
-//   for (int i = 3, j = 0; j < count; i += 3, j++) {
-//     _buffer[i] = servos[j].servo_id;
-//     _buffer[i + 1] = lowByte(servos[j].position);
-//     _buffer[i + 2] = highByte(servos[j].position);
-//   }
-//   send(CMD_SERVO_MOVE, len);
-//   if (wait) {
-//     delay(duration);
-//   }
-// }
-
 // /*** GetPosition ***/
 
-// int xArmServoController::getPosition(int servo_id)
-// {
-//   _buffer[0] = 1;
-//   _buffer[1] = servo_id;
-//   send(CMD_GET_SERVO_POSITION, 2);
-//   if (-1 != recv(CMD_GET_SERVO_POSITION)) {
-//     return _buffer[3] * 256 + _buffer[2];
-//   }
-//   return -1;
-// }
+uint16_t xArm_getPosition(uint8_t servo_id)
+{
+  xArm_out[0] = 1;
+  xArm_out[1] = servo_id;
+  xArm_send(CMD_GET_SERVO_POSITION, 2);
+  int8_t results = xArm_recv(CMD_GET_SERVO_POSITION);
+  if (results != -1) 
+  {
+    return (xArm_in[3] << 8) + xArm_in[2];
+  }
+  return results;
+}
 
 // int xArmServoController::getPosition(xArmServo &servo)
 // {

@@ -14,7 +14,8 @@
 #include "soft_serial.h"
 
 const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM";
-const char hdr_volt[] PROGMEM = "voltage ";
+const char hdr_volt[] PROGMEM = "voltage: ";
+const char hdr_pos[] PROGMEM = "Servo position: ";
 const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
 const char hdr_cmd_exc[] PROGMEM = "Command executed: ";
@@ -28,7 +29,9 @@ const char hdr_cmd_error[] PROGMEM = "Error";
 
 
 char volt_string[4] = {};
+char pos_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
+uint8_t pos_len = sizeof(pos_string)/sizeof(pos_string[0]);
 char cmd_string[2] = {};
 
 #define MAX_BUFFER 24
@@ -84,7 +87,7 @@ int command_to_int(const char *command)
 uint8_t move(char *j, char *d)
 {
     joint_no = atoi(j);
-    if ((joint_no < 0) || (joint_no > 5))
+    if ((joint_no < 1) || (joint_no > 6))
     {
         soft_pgmtext_write(hdr_cmd_badjoint);
         soft_char_NL();
@@ -101,13 +104,35 @@ uint8_t move(char *j, char *d)
     return 0;
 }
 
-void printVoltage()
+uint8_t getPosition(uint8_t s)
+{
+    uint16_t position = xArm_getPosition(s);
+    if (position == -1)
+    {
+        return position;
+    }
+    char str_s = s + 48;
+    soft_char_write(str_s);
+    soft_char_space();
+    itoa(position, pos_string, 10);
+    soft_pgmtext_write(hdr_pos);
+    soft_string_write(pos_string, pos_len);
+    soft_char_NL();
+    return 0;
+}
+
+uint8_t printVoltage()
 {
     int voltage = xArm_getBatteryVoltage();
+    if (voltage == -1)
+    {
+        return voltage;
+    }
     itoa(voltage, volt_string, 10);
     soft_pgmtext_write(hdr_volt);
     soft_string_write(volt_string, volt_len);
     soft_char_NL();
+    return 0;
 }
 
 int main(void) 
@@ -136,6 +161,7 @@ int main(void)
         tokenLine(input);
         int command_id = command_to_int(tokens[cmd]);
         char str_command = command_id + 48;
+        uint8_t result = 0;
 
         switch (command_id) 
         {
@@ -148,16 +174,7 @@ int main(void)
                 soft_char_space();
                 soft_string_write(tokens[dis], strlen(tokens[dis]));
                 soft_char_NL();
-                uint8_t result = move(tokens[joint], tokens[dis]);
-                if (result != 0)
-                {
-                    soft_pgmtext_write(hdr_cmd_error);
-                }
-                else
-                {
-                    soft_pgmtext_write(hdr_cmd_success);
-                }
-                soft_char_NL();
+                result = move(tokens[joint], tokens[dis]);
                 break;
             
             // pos
@@ -167,6 +184,9 @@ int main(void)
                 soft_char_space();
                 soft_string_write(tokens[joint], strlen(tokens[joint]));
                 soft_char_NL();
+
+                uint8_t j = (uint8_t) *tokens[joint] - 48;
+                result = getPosition(j);
                 break;
             
             // off
@@ -176,6 +196,7 @@ int main(void)
                 soft_char_space();
                 soft_string_write(tokens[joint], strlen(tokens[joint]));
                 soft_char_NL();
+                result = 0;
                 break;
             
             // reset
@@ -185,11 +206,12 @@ int main(void)
                 soft_char_space();
                 soft_string_write(tokens[joint], strlen(tokens[joint]));
                 soft_char_NL();
+                result = 0;
                 break;
             
             // volt - get the battery voltage
             case 5:
-                printVoltage();
+                result = printVoltage();
                 break;
             
             // beep - make arm beep
@@ -197,7 +219,7 @@ int main(void)
                 xArm_beep();
                 soft_pgmtext_write(hdr_cmd_beep);
                 soft_char_NL();
-
+                result = 0;
                 break;
             
             // command not found
@@ -206,6 +228,15 @@ int main(void)
                 soft_pgmtext_write(hdr_cmd_notfnd);
                 break;
         }
+        if (result != 0)
+        {
+            soft_pgmtext_write(hdr_cmd_error);
+        }
+        else
+        {
+            soft_pgmtext_write(hdr_cmd_success);
+        }
+        soft_char_NL();
 
         for (uint8_t i=0; i<MAX_BUFFER; i++)
         {
