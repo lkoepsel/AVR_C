@@ -16,6 +16,7 @@
 const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM";
 const char hdr_volt[] PROGMEM = "voltage: ";
 const char hdr_pos[] PROGMEM = "Servo position: ";
+const char hdr_temp[] PROGMEM = "Servo Temperature: ";
 const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
 const char hdr_cmd_exc[] PROGMEM = "Command executed: ";
@@ -31,6 +32,8 @@ char volt_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
 char pos_string[4] = {};
 uint8_t pos_len = sizeof(pos_string)/sizeof(pos_string[0]);
+char temp_string[4] = {};
+uint8_t temp_len = sizeof(temp_string)/sizeof(temp_string[0]);
 char cmd_string[2] = {};
 
 #define MAX_BUFFER 24
@@ -38,7 +41,7 @@ char cmd_string[2] = {};
 #define MAX_DELIMS 1
 char *tokens[MAX_TOKENS];
 
-#define NUM_COMMANDS 6
+#define NUM_COMMANDS 7
 #define MAX_CMD_LENGTH 6 // # of characters + null terminator
 
 enum {cmd, joint, pos};
@@ -51,6 +54,7 @@ const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] =
     "pos",
     "off",
     "reset",
+    "temp",
     "volt",
     "beep"
 };
@@ -83,39 +87,81 @@ int command_to_int(const char *command)
     return -1; // Invalid command
 }
 
-uint8_t move(char *j, char *d)
+uint8_t valid_joint(char *joint)
 {
-    joint_no = atoi(j);
-    if ((joint_no < 1) || (joint_no > 6))
+    uint8_t jnt = atoi(joint);
+    if ((jnt < 1) || (jnt > 6))
     {
         soft_pgmtext_write(hdr_cmd_badjoint);
         soft_char_NL();
         return -1;
     }
-    position = atoi(d);
-    if ((position < 1) || (position > 999))
+    return jnt;
+}
+
+uint8_t valid_position(char *pos)
+{
+    uint8_t p = atoi(pos);
+    if ((p < 1) || (p > 6))
     {
-        soft_pgmtext_write(hdr_cmd_badposition);
+        soft_pgmtext_write(hdr_cmd_badjoint);
         soft_char_NL();
         return -1;
+    }
+    return p;
+}
+
+uint8_t move(char *j, char *d)
+{
+    joint_no = valid_joint(j);
+    if (joint_no == -1 )
+    {
+        return joint_no;
+    }
+    position = valid_position((d));
+    if (position == -1 )
+    {
+        return position;
     }
     xArm_setPosition(joint_no, position);
     return 0;
 }
 
-uint8_t getPosition(uint8_t j)
+uint8_t getPosition(char *j)
 {
-    uint16_t position = xArm_getPosition(j);
+    joint_no = valid_joint(j);
+    if (joint_no == -1 )
+    {
+        return joint_no;
+    }
+    uint16_t position = xArm_getPosition(joint_no);
     if (position == -1)
     {
         return position;
     }
-    char str_j = j + 48;
+    char str_j = joint_no + 48;
     soft_char_write(str_j);
     soft_char_space();
     itoa(position, pos_string, 10);
     soft_pgmtext_write(hdr_pos);
     soft_string_write(pos_string, pos_len);
+    soft_char_NL();
+    return 0;
+}
+
+uint8_t getTemperature(uint8_t j)
+{
+    uint16_t temperature = xArm_getTemperature(j);
+    if (temperature == -1)
+    {
+        return temperature;
+    }
+    char str_j = j + 48;
+    soft_char_write(str_j);
+    soft_char_space();
+    itoa(position, temp_string, 10);
+    soft_pgmtext_write(hdr_temp);
+    soft_string_write(temp_string, temp_len);
     soft_char_NL();
     return 0;
 }
@@ -184,8 +230,8 @@ int main(void)
                 soft_string_write(tokens[joint], strlen(tokens[joint]));
                 soft_char_NL();
 
-                uint8_t j = (uint8_t) *tokens[joint] - 48;
-                result = getPosition(j);
+                // uint8_t pj = (uint8_t) *tokens[joint] - 48;
+                result = getPosition(tokens[pos]);
                 break;
             
             // off
@@ -208,13 +254,25 @@ int main(void)
                 result = 0;
                 break;
             
-            // volt - get the battery voltage
+            // temp joint
             case 5:
+                soft_pgmtext_write(hdr_cmd_exc);
+                soft_string_write(tokens[cmd], strlen(tokens[cmd]));
+                soft_char_space();
+                soft_string_write(tokens[joint], strlen(tokens[joint]));
+                soft_char_NL();
+
+                uint8_t tj = (uint8_t) *tokens[joint] - 48;
+                result = getTemperature(tj);
+                break;
+            
+            // volt - get the battery voltage
+            case 6:
                 result = printVoltage();
                 break;
             
             // beep - make arm beep
-            case 6:
+            case 7:
                 xArm_beep();
                 soft_pgmtext_write(hdr_cmd_beep);
                 soft_char_NL();

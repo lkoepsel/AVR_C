@@ -11,6 +11,8 @@ uint8_t highByte(uint16_t value) {
     return (uint8_t)((value >> 8) & 0xFF);
 }
 
+// The number of parameters "len" plus a command plus a byte length occupied
+// by the data length itself, i.e, Length= len + 2
 void xArm_send(uint8_t cmd, uint8_t len)
 {
     putchar(SIGNATURE);
@@ -60,8 +62,6 @@ void xArm_setPosition(uint8_t servo_id, uint16_t position)
   }
 }
 
-// /*** GetPosition ***/
-
 uint16_t xArm_getPosition(uint8_t servo_id)
 {
   xArm_out[0] = 1;
@@ -88,4 +88,16 @@ uint16_t xArm_getBatteryVoltage()
 
 void xArm_beep() {
   xArm_send(CMD_BEEP, 1);
+}
+
+uint16_t xArm_getTemperature(uint8_t servo_id)
+{
+  xArm_out[0] = 1;
+  xArm_out[1] = servo_id;
+  xArm_send(CMD_GET_SERVO_TEMP, 2);
+  int8_t results = xArm_recv(CMD_GET_SERVO_TEMP);
+  if (results != -1) {
+    return (xArm_in[1] << 8) + xArm_in[0];
+  }
+  return results;
 }

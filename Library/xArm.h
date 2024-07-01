@@ -26,6 +26,10 @@
 #define CMD_GET_BATTERY_VOLTAGE 0x0f
 #define CMD_SERVO_STOP          0x14
 #define CMD_GET_SERVO_POSITION  0x15
+#define CMD_GET_SERVO_LOADS     0x16
+#define CMD_GET_SERVO_TEMP      0x1b
+#define CMD_GET_SERVO_VOLTAGE   0x1a
+
 
 // replace modal clamp limits, as this is only for xArm
 #define xArm_lo 0 
@@ -43,6 +47,7 @@ extern char xArm_out[xArm_MAX_BUFFER + 1];
 uint8_t lowByte(uint16_t value);
 uint8_t highByte(uint16_t value);
 uint16_t xArm_getBatteryVoltage();
+uint16_t xArm_getTemperature(uint8_t servo_id);
 void xArm_beep();
 
 uint16_t clamp(uint16_t v);
