@@ -8,7 +8,7 @@ void init_soft_serial()
     PORTD |= _BV(SOFT_RX_PIN);
 }
 
-void soft_char_write(uint8_t data) 
+void soft_byte_write(uint8_t data) 
 {
     // Start bit
     PORTD &= ~(1 << SOFT_TX_PIN);
@@ -58,7 +58,7 @@ uint8_t soft_string_write(char * buffer, uint8_t len)
         uint8_t count = 0;
         while ((*buffer != '\0') && (count <= len))
         {
-            soft_char_write(*buffer);
+            soft_byte_write(*buffer);
             buffer++;
             count++;
         }
@@ -94,14 +94,14 @@ void soft_char_NL(void)
 {
     uint8_t lf = 10;
     uint8_t cr = 13;
-    soft_char_write(cr);
-    soft_char_write(lf);
+    soft_byte_write(cr);
+    soft_byte_write(lf);
 }
 
 void soft_char_space(void)
 {
     uint8_t space = 0x20;
-    soft_char_write(space);
+    soft_byte_write(space);
 }
 
 void soft_pgmtext_write(const char* pgm_text)
@@ -109,6 +109,6 @@ void soft_pgmtext_write(const char* pgm_text)
         for (uint8_t i=0; i < strlen_P(pgm_text); i++)
         {
             uint8_t c = pgm_read_byte(&(pgm_text[i]));
-            soft_char_write(c);
+            soft_byte_write(c);
         }
     }

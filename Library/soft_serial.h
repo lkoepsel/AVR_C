@@ -6,7 +6,7 @@
 
 // API:
 // init_soft_serial(); initialize the ports, REQUIRED
-// void soft_char_write(uint8_t) - writes a binary byte, if ASCII needed, convert w itoa()
+// void soft_byte_write(uint8_t) - writes a binary byte, if ASCII needed, convert w itoa()
 // void soft_string_write(char *, uint8) - writes a string via pointer, upto len
 // uint8_t soft_char_read() - returns a binary byte
 // uint8_t soft_readline(char *, uint8) - returns bytes read up to SIZE
@@ -35,7 +35,7 @@
 
 void init_soft_serial() ;
 
-void soft_char_write(uint8_t data) ;
+void soft_byte_write(uint8_t data) ;
 
 uint8_t soft_char_read() ;
 

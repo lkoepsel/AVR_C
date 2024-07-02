@@ -58,11 +58,6 @@ int command_to_int(const char *command)
     return -1; // Invalid command
 }
 
-uint8_t move(char *j, char *d)
-{
-    return valid_move(j, d);
-}
-
 // uint8_t getTemperature(uint8_t j)
 // {
 //     uint16_t temperature = xArm_getTemperature(j);
@@ -71,7 +66,7 @@ uint8_t move(char *j, char *d)
 //         return temperature;
 //     }
 //     char str_j = j + 48;
-//     soft_char_write(str_j);
+//     soft_byte_write(str_j);
 //     soft_char_space();
 //     itoa(position, temp_string, 10);
 //     soft_pgmtext_write(hdr_temp);
@@ -103,13 +98,13 @@ int main(void)
             // move joint position
             case 1:
                 echo_command(pos);
-                result = move(tokens[joint], tokens[pos]);
+                result = valid_move(tokens[joint], tokens[pos]);
                 break;
             
             // pos joint
             case 2:
                 echo_command(joint);
-                result = printPosition(tokens[pos]);
+                result = print_position(tokens[joint]);
                 break;
             
             // off

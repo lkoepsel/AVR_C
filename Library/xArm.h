@@ -56,7 +56,7 @@ uint8_t highByte(uint16_t value);
 uint16_t clamp(uint16_t v);
 
 uint8_t valid_joint(char *joint);
-uint8_t valid_position(char *pos);
+uint16_t valid_position(char *pos);
 
 void xArm_send(uint8_t cmd, uint8_t len);
 uint8_t xArm_recv(uint8_t cmd);
@@ -66,7 +66,7 @@ uint8_t valid_move(char *j, char *p);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
 uint8_t printVoltage();
 uint16_t xArm_getBatteryVoltage();
-uint8_t printPosition(char *j);
+uint8_t print_position(char *j);
 uint16_t xArm_getPosition(uint8_t servo_id);
 // uint16_t xArm_getTemperature(uint8_t servo_id);
 

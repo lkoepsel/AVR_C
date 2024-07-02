@@ -9,13 +9,17 @@ const char hdr_pos[] PROGMEM = "Servo position: ";
 // const char hdr_temp[] PROGMEM = "Servo Temperature: ";
 const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
-const char hdr_cmd_exc[] PROGMEM = "Command executed: ";
+const char hdr_cmd_rcd[] PROGMEM = "Command received: ";
 const char hdr_cmd_notfnd[] PROGMEM = "Command NOT found: ";
 const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
 const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-6";
 const char hdr_cmd_badposition[] PROGMEM = "Bad position, must be 1-999";
 const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_error[] PROGMEM = "Error";
+const char debug1[] PROGMEM = "debug:1";
+const char debug2[] PROGMEM = "debug:2";
+const char debug3[] PROGMEM = "debug:3";
+#define debug(n) soft_pgmtext_write(debug##n)
 
 char volt_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
@@ -54,6 +58,8 @@ uint8_t valid_joint(char *joint)
     uint8_t jnt = atoi(joint);
     if ((jnt < 1) || (jnt > 6))
     {
+        soft_byte_write(*joint);
+        soft_char_space();
         soft_pgmtext_write(hdr_cmd_badjoint);
         soft_char_NL();
         return -1;
@@ -61,10 +67,10 @@ uint8_t valid_joint(char *joint)
     return jnt;
 }
 
-uint8_t valid_position(char *pos)
+uint16_t valid_position(char *pos)
 {
-    uint8_t p = atoi(pos);
-    if ((p < 1) || (p > 6))
+    uint16_t p = atoi(pos);
+    if ((p < 1) || (p > 999))
     {
         soft_pgmtext_write(hdr_cmd_badposition);
         soft_char_NL();
@@ -75,9 +81,9 @@ uint8_t valid_position(char *pos)
 
 void echo_command(uint8_t n)
 {
+    soft_pgmtext_write(hdr_cmd_rcd);
     for (uint8_t i = 0; i <= n; i++)
     {
-        soft_pgmtext_write(hdr_cmd_exc);
         soft_string_write(tokens[i], strlen(tokens[i]));
         soft_char_space();
     }
@@ -86,7 +92,7 @@ void echo_command(uint8_t n)
 
 void print_error(uint8_t e)
 {
-  switch (2) 
+  switch (e) 
   {
       case 0:
         soft_pgmtext_write(hdr_cmd_success);
@@ -197,7 +203,7 @@ uint16_t xArm_getBatteryVoltage()
   return results;
 }
 
-uint8_t printPosition(char *j)
+uint8_t print_position(char *j)
 {
     joint_no = valid_joint(j);
     if (joint_no == -1 )
@@ -207,10 +213,9 @@ uint8_t printPosition(char *j)
     uint16_t position = xArm_getPosition(joint_no);
     if (position == -1)
     {
-        return position;
+      return position;
     }
-    char str_j = joint_no + 48;
-    soft_char_write(str_j);
+    soft_byte_write(*j);
     soft_char_space();
     itoa(position, pos_string, 10);
     soft_pgmtext_write(hdr_pos);
