@@ -13,29 +13,12 @@
 #include "uart.h"
 #include "soft_serial.h"
 
-
-#define NUM_COMMANDS 6
-#define MAX_CMD_LENGTH 6 // # of characters + null terminator
-
-enum {cmd, joint, pos};
-
-const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
-{
-    "move",
-    "pos",
-    "off",
-    "reset",
-    "volt",
-    "beep"
-};
-
+// tokenLine - break arg:input into tokens
+// on entry arg:input has tokens each separated by a delim, defined below
+// on return: tokens contains pointers to a legal string for each token
+// ex: token[0] is a pointer to the first string
 char* tokenLine(char *input)
 {
-    // break input line into tokens
-    // when this section has executed, the characters in input
-    // which were separated by a delim
-    // will now be a pointer called tokens
-    // with each index, a multiple character token
     char delim[MAX_DELIMS + 1] = {" "};
 
     uint8_t index = 0;
@@ -48,6 +31,20 @@ char* tokenLine(char *input)
     return *tokens;
 }
 
+// define the available commands for controlling the xArm
+// command is converted into an int then used in execute_cmd()
+#define NUM_COMMANDS 6
+#define MAX_CMD_LENGTH 6 // # of characters + null terminator
+const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
+{
+    "move",
+    "pos",
+    "off",
+    "reset",
+    "volt",
+    "beep"
+};
+
 int command_to_int(const char *command) 
 {
     for (uint8_t i = 0; i < NUM_COMMANDS; ++i) {
@@ -58,31 +55,66 @@ int command_to_int(const char *command)
     return -1; // Invalid command
 }
 
-// uint8_t getTemperature(uint8_t j)
-// {
-//     uint16_t temperature = xArm_getTemperature(j);
-//     if (temperature == -1)
-//     {
-//         return temperature;
-//     }
-//     char str_j = j + 48;
-//     soft_byte_write(str_j);
-//     soft_char_space();
-//     itoa(position, temp_string, 10);
-//     soft_pgmtext_write(hdr_temp);
-//     soft_string_write(temp_string, temp_len);
-//     soft_char_NL();
-//     return 0;
-// }
-
+uint8_t execute_cmd(uint8_t c_id)
+{
+    uint8_t r = 0;
+    switch (c_id) 
+    {
+        // move joint position
+        case 1:
+            echo_command(pos);
+            r = valid_move(tokens[joint], tokens[pos]);
+            break;
+        
+        // pos joint
+        case 2:
+            echo_command(joint);
+            r = print_position(tokens[joint]);
+            break;
+        
+        // off
+        case 3:
+            echo_command(joint);
+            r = 0;
+            break;
+        
+        // reset
+        case 4:
+            echo_command(joint);
+            r = 0;
+            break;
+        
+        // volt - get the battery voltage
+        case 5:
+            echo_command(cmd);
+            r = print_Voltage();
+            break;
+        
+        // beep - make arm beep
+        case 6:
+            echo_command(cmd);
+            xArm_beep();
+            r = 0;
+            break;
+        
+        // command not found
+        default:
+            echo_command(pos);
+            r = -1;
+            break;
+    }
+    return r;
+}
 
 int main(void) 
 {    
+    // UART is used to communicate with xArm
+    // soft_serial is used to communicate with user
     init_serial();
     init_soft_serial();
     init_xArm();
 
-    // input is the buffer for the serial port
+    // input is the buffer for the soft_serial port
     char input[MAX_BUFFER + 1] = {};
 
     while (1) 
@@ -90,69 +122,16 @@ int main(void)
         // get input, use first token as command
         soft_readLine(input, MAX_BUFFER);
         tokenLine(input);
-        int command_id = command_to_int(tokens[cmd]);
-        uint8_t result = 0;
+        uint8_t command_id = command_to_int(tokens[cmd]);
 
-        switch (command_id) 
-        {
-            // move joint position
-            case 1:
-                echo_command(pos);
-                result = valid_move(tokens[joint], tokens[pos]);
-                break;
-            
-            // pos joint
-            case 2:
-                echo_command(joint);
-                result = print_position(tokens[joint]);
-                break;
-            
-            // off
-            case 3:
-                echo_command(joint);
-                result = 0;
-                break;
-            
-            // reset
-            case 4:
-                echo_command(joint);
-                result = 0;
-                break;
-            
-            // temp joint
-            // case 5:
-            //     echo_command(joint);
-
-            //     uint8_t tj = (uint8_t) *tokens[joint] - 48;
-            //     result = getTemperature(tj);
-            //     break;
-            
-            // volt - get the battery voltage
-            case 6:
-                echo_command(cmd);
-                result = printVoltage();
-                break;
-            
-            // beep - make arm beep
-            case 7:
-                echo_command(cmd);
-                xArm_beep();
-                result = 0;
-                break;
-            
-            // command not found
-            default:
-                echo_command(pos);
-                result = -1;
-                break;
-        }
+        uint8_t result = execute_cmd(command_id);
         if (result != 0)
         {
-            print_error(2);
+            print_result(error);
         }
         else
         {
-            print_error(0);
+            print_result(success);
         }
         soft_char_NL();
 

@@ -90,23 +90,28 @@ void echo_command(uint8_t n)
     soft_char_NL();
 }
 
-void print_error(uint8_t e)
+void print_result(uint8_t e)
 {
   switch (e) 
   {
+      // successful command
       case 0:
         soft_pgmtext_write(hdr_cmd_success);
         break;
+      
+      // command not found
       case 1:
         soft_pgmtext_write(hdr_cmd_notfnd);
         break;
+
+      // command error - bad parameters etc 
       case 2:
         soft_pgmtext_write(hdr_cmd_error);
           break;
       
       // command not found
       default:
-          echo_command(2);
+          echo_command(pos);
           result = -1;
           break;
   }
@@ -179,7 +184,7 @@ void xArm_setPosition(uint8_t servo_id, uint16_t position)
   }
 }
 
-uint8_t printVoltage()
+uint8_t print_Voltage()
 {
     int voltage = xArm_getBatteryVoltage();
     if (voltage == -1)
@@ -236,16 +241,3 @@ uint16_t xArm_getPosition(uint8_t servo_id)
   }
   return results;
 }
-
-
-// uint16_t xArm_getTemperature(uint8_t servo_id)
-// {
-//   xArm_out[0] = 1;
-//   xArm_out[1] = servo_id;
-//   xArm_send(CMD_GET_SERVO_TEMP, 2);
-//   int8_t results = xArm_recv(CMD_GET_SERVO_TEMP);
-//   if (results != -1) {
-//     return (xArm_in[1] << 8) + xArm_in[0];
-//   }
-//   return results;
-// }

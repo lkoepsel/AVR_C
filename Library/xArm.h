@@ -1,5 +1,5 @@
 // xArm ServoController C99 version
-// Copied from https://github.com/ccourson/xArmServoController
+// Some aspects copied from https://github.com/ccourson/xArmServoController
 // 
 //   xArmServoController.h - Library for controlling xArm servos.
 //   Version 1.0.0
@@ -37,6 +37,13 @@
 #define MAX_DELIMS 1
 extern char *tokens[MAX_TOKENS];
 
+// use the labels below to results for printing
+// 0 is success, 1 is command not found...
+enum {success, notfound, error};
+
+// use the labels below to reference the string parameters in tokens
+// tokens[cmd] is the command, tokens[joint] is the joint
+enum {cmd, joint, pos};
 
 // replace modal clamp limits, as this is only for xArm
 #define xArm_lo 0 
@@ -48,7 +55,7 @@ extern char xArm_out[xArm_MAX_BUFFER + 1];
 
 void init_xArm();
 void echo_command(uint8_t n);
-void print_error(uint8_t e);
+void print_result(uint8_t e);
 
 
 uint8_t lowByte(uint16_t value);
@@ -64,11 +71,9 @@ uint8_t xArm_recv(uint8_t cmd);
 void xArm_beep();
 uint8_t valid_move(char *j, char *p);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
-uint8_t printVoltage();
+uint8_t print_Voltage();
 uint16_t xArm_getBatteryVoltage();
 uint8_t print_position(char *j);
 uint16_t xArm_getPosition(uint8_t servo_id);
-// uint16_t xArm_getTemperature(uint8_t servo_id);
-
 
 #endif
