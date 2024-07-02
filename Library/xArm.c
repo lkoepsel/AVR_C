@@ -6,7 +6,6 @@ char xArm_out[xArm_MAX_BUFFER + 1] = {};
 const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM";
 const char hdr_volt[] PROGMEM = "voltage: ";
 const char hdr_pos[] PROGMEM = "Servo position: ";
-// const char hdr_temp[] PROGMEM = "Servo Temperature: ";
 const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
 const char hdr_cmd_rcd[] PROGMEM = "Command received: ";
@@ -15,7 +14,9 @@ const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
 const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-6";
 const char hdr_cmd_badposition[] PROGMEM = "Bad position, must be 1-999";
 const char hdr_cmd_success[] PROGMEM = "Success";
-const char hdr_cmd_error[] PROGMEM = "Error";
+const char hdr_cmd_error[] PROGMEM = "Command Error";
+const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
+const char hdr_cmd_error_error[] PROGMEM = "Error Error";
 const char debug1[] PROGMEM = "debug:1";
 const char debug2[] PROGMEM = "debug:2";
 const char debug3[] PROGMEM = "debug:3";
@@ -31,7 +32,7 @@ char cmd_string[2] = {};
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
-uint8_t joint_no;
+int8_t joint_no;
 uint16_t position;
 
 
@@ -53,25 +54,27 @@ uint16_t xArm_clamp(uint16_t v) {
     return (v < xArm_lo) ? xArm_lo : (xArm_hi < v) ? xArm_hi : v;
 }
 
-uint8_t valid_joint(char *joint)
+int8_t valid_joint(char *jnt)
 {
-    uint8_t jnt = atoi(joint);
-    if ((jnt < 1) || (jnt > 6))
+    uint8_t j = atoi(jnt);
+    if ((j < 1) || (j > 6))
     {
-        soft_byte_write(*joint);
+        soft_byte_write(atoi(tokens[joint]));
         soft_char_space();
         soft_pgmtext_write(hdr_cmd_badjoint);
         soft_char_NL();
         return -1;
     }
-    return jnt;
+    return j;
 }
 
-uint16_t valid_position(char *pos)
+int16_t valid_position(char *position)
 {
-    uint16_t p = atoi(pos);
+    int16_t p = atoi(position);
     if ((p < 1) || (p > 999))
     {
+        soft_string_write(tokens[pos], strlen(tokens[pos]));
+        soft_char_space();
         soft_pgmtext_write(hdr_cmd_badposition);
         soft_char_NL();
         return -1;
@@ -92,28 +95,33 @@ void echo_command(uint8_t n)
 
 void print_result(uint8_t e)
 {
+  soft_byte_write(e);
   switch (e) 
   {
-      // successful command
-      case 0:
+      // command successful
+      case success:
         soft_pgmtext_write(hdr_cmd_success);
         break;
       
       // command not found
-      case 1:
+      case notfound:
         soft_pgmtext_write(hdr_cmd_notfnd);
         break;
 
-      // command error - bad parameters etc 
-      case 2:
-        soft_pgmtext_write(hdr_cmd_error);
-          break;
+      // command error
+      case badparms:
+        soft_pgmtext_write(hdr_cmd_error_parms);
+        break;
       
-      // command not found
+      // command not implemented
+      case notimplemented:
+        soft_pgmtext_write(hdr_cmd_notimpl);
+        break;
+      
+      // default: error not found
       default:
-          echo_command(pos);
-          result = -1;
-          break;
+        soft_pgmtext_write(hdr_cmd_error_error);
+        break;
   }
 
 }
@@ -213,12 +221,12 @@ uint8_t print_position(char *j)
     joint_no = valid_joint(j);
     if (joint_no == -1 )
     {
-        return joint_no;
+        return error;
     }
     uint16_t position = xArm_getPosition(joint_no);
     if (position == -1)
     {
-      return position;
+      return error;
     }
     soft_byte_write(*j);
     soft_char_space();

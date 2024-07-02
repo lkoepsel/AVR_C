@@ -39,7 +39,7 @@ extern char *tokens[MAX_TOKENS];
 
 // use the labels below to results for printing
 // 0 is success, 1 is command not found...
-enum {success, notfound, error};
+enum {success, notfound, badparms, notimplemented, error};
 
 // use the labels below to reference the string parameters in tokens
 // tokens[cmd] is the command, tokens[joint] is the joint
@@ -62,8 +62,8 @@ uint8_t lowByte(uint16_t value);
 uint8_t highByte(uint16_t value);
 uint16_t clamp(uint16_t v);
 
-uint8_t valid_joint(char *joint);
-uint16_t valid_position(char *pos);
+int8_t valid_joint(char *joint);
+int16_t valid_position(char *pos);
 
 void xArm_send(uint8_t cmd, uint8_t len);
 uint8_t xArm_recv(uint8_t cmd);

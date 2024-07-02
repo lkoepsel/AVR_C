@@ -57,7 +57,7 @@ int command_to_int(const char *command)
 
 uint8_t execute_cmd(uint8_t c_id)
 {
-    uint8_t r = 0;
+    int8_t r = 0;
     switch (c_id) 
     {
         // move joint position
@@ -75,13 +75,13 @@ uint8_t execute_cmd(uint8_t c_id)
         // off
         case 3:
             echo_command(joint);
-            r = 0;
+            r = notimplemented;
             break;
         
         // reset
         case 4:
             echo_command(joint);
-            r = 0;
+            r = notimplemented;
             break;
         
         // volt - get the battery voltage
@@ -100,8 +100,13 @@ uint8_t execute_cmd(uint8_t c_id)
         // command not found
         default:
             echo_command(pos);
-            r = -1;
+            r = 1;
             break;
+    }
+
+    if (r == -1)
+    {
+        r = badparms;
     }
     return r;
 }
@@ -125,14 +130,7 @@ int main(void)
         uint8_t command_id = command_to_int(tokens[cmd]);
 
         uint8_t result = execute_cmd(command_id);
-        if (result != 0)
-        {
-            print_result(error);
-        }
-        else
-        {
-            print_result(success);
-        }
+        print_result(result);
         soft_char_NL();
 
         // clear input buffer for next command
