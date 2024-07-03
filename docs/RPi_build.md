@@ -631,7 +631,48 @@ avr-gdb --tui
 ```
 ## ******** pibuildv4.img includes above steps ********
 
-## Notes: 
+## Notes:
+### CLI Utilities
+* `nmtui` - Text User Interface for controlling NetworkManager
+
+### Enable Both Password and Publickey SSH Authentication 
+```bash
+sudo nano /etc/ssh/sshd_config
+# ensure both of these lines are not commented
+PasswordAuthentication yes
+PubkeyAuthentication yes
+# exit nano
+sudo reboot now
+```
+
+### Update Firmware
+[Update Raspberry Pi Bootloader](https://bret.dk/update-raspberry-pi-bootloader/)
+
+```bash
+# check current version
+rpi-eeprom-update
+
+# Make sure system is up to date
+sudo apt update
+sudo apt full-upgrade
+
+# Update the Firmware
+sudo rpi-eeprom-update -a
+
+# reboot per instructions
+sudo reboot now
+
+# check version again
+rpi-eeprom-update
+```
+### Toggle the power led
+```bash
+# turn off 
+echo 0 | sudo tee /sys/class/leds/PWR/brightness
+# turn on
+sudo echo 1 | tee /sys/class/leds/PWR/brightness
+```
+
 ### Saving, shrinking and sending an image
 ```bash
 # remove SD Card or USB drive containing RPi image and place in Linux PC
