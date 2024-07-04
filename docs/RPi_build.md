@@ -188,12 +188,12 @@ make flash
 ```
 
 ## 6. Update tio to latest
-The CLI serial monitor program *tio* is quite handy and has been upgraded significantly in the last year. The new version is at least 3.3 and will be installed.
+The CLI serial monitor program *tio* is quite handy and has been upgraded significantly in the last year. The new version is at least 3.5 and will be installed.
 ```bash
 cd ~/avr-build
-wget https://github.com/tio/tio/releases/download/v3.3/tio-3.3.tar.xz
-tar -xvf tio-3.3.tar.xz
-cd tio-3.3/
+wget https://github.com/tio/tio/releases/download/v3.5/tio-3.5.tar.xz
+tar -xvf tio-3.5.tar.xz
+cd tio-3.5/
 sudo apt install -y libglib2.0-dev liblua5.2-dev
 meson setup build
 meson compile -C build
@@ -747,3 +747,31 @@ SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2180", GROUP="plu
 
 # save the file then reboot your system
 ```
+### Update OS
+```bash
+sudo apt update && sudo apt full-upgrade-y
+```
+
+### In case of no change, and you know its not true
+Sometimes, you attempt to update and it implies nothing to update. 
+```bash
+sudo rm -r /var/lib/apt/lists/*
+sudo apt clean
+sudo apt update && sudo apt full-upgrade-y
+```
+
+### Raspberry Pi Connect Lite 
+*from installation via raspi-config*
+
+For Raspberry Pi OS Lite, enable user lingering for your user:
+```bash
+loginctl enable-linger
+```
+This allows users who are not logged in to run long-running services.
+
+Raspberry Pi Connect will automatically start when you next log in or you can start it now by running:
+
+```bash
+systemctl --user start rpi-connect
+```
+[More information](https://rptl.io/rpi-connect)
