@@ -82,7 +82,7 @@ sudo apt update && sudo apt full-upgrade -y
 
 # install build dependencies for both avr-gcc and avrdude
 sudo apt install -y make bison flex gawk texinfo libtool autoconf automake libusb-dev gcc g++ gperf git magic-wormhole meson tree
-sudo apt install -y build-essential cmake pkg-config libelf-dev libhidapi-dev libftdi1-dev libreadline-dev libserialport-dev
+sudo apt install -y build-essential cmake pkg-config libelf-dev libhidapi-dev libftdi1-dev libreadline-dev libserialport-dev hdparm
 ```
 ## ******** pibuildv1.img includes above steps ********
 ## 1. avr-binutils 
