@@ -35,11 +35,14 @@
 #define MAX_BUFFER 24
 #define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 1
+
+#define N_adds 10
+
 extern char *tokens[MAX_TOKENS];
 
 // use the labels below to results for printing
 // 0 is success, 1 is command not found...
-enum {success, notfound, badparms, notimplemented, error};
+enum {success, notfound, badparms, notimplemented, error, excess_adds};
 
 // use the labels below to reference the string parameters in tokens
 // tokens[cmd] is the command, tokens[joint] is the joint
@@ -70,6 +73,11 @@ uint8_t xArm_recv(uint8_t cmd);
 
 void xArm_beep();
 uint8_t valid_move(char *j, char *p);
+uint8_t valid_add(uint8_t i, char *j, char *p);
+uint8_t show_adds(uint8_t ctr);
+uint8_t exec_adds(uint8_t ctr);
+uint8_t reset_adds(uint8_t ctr);
+void save_Position(uint8_t i, uint8_t j, uint16_t p);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
 uint8_t print_Voltage();
 uint16_t xArm_getBatteryVoltage();
