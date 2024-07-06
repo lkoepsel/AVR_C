@@ -1,10 +1,13 @@
 # Programming the Arduino Uno in Standard C
 
-## Looking for setup files?
+## Setup Files:
 **Setup files for [env.make](./docs/env_make.md) and [VS Code](./docs/vs_code.md)**
 
-## Looking for Raspberry Pi build instructions?
+## Raspberry Pi Build Instructions:
 **Documentation for building a [C development platform](./docs/RPi_build.md)**
+
+## xArm Command Interface:
+**Documentation for using AVR_C to command [xArm Robotics Arm](./docs/xArm.md)**
 
 ## Introduction
 This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familar (Arduino) context. This serves the following:
