@@ -16,7 +16,9 @@ const char hdr_cmd_badposition[] PROGMEM = "Bad position, must be 1-999";
 const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_error[] PROGMEM = "Command Error";
 const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
+const char hdr_cmd_error_adds[] PROGMEM = "Moves recorded exceeds limit";
 const char hdr_cmd_error_error[] PROGMEM = "Error Error";
+const char hdr_cmd_move[] PROGMEM = "move ";
 const char debug1[] PROGMEM = "debug:1";
 const char debug2[] PROGMEM = "debug:2";
 const char debug3[] PROGMEM = "debug:3";
@@ -29,6 +31,16 @@ uint8_t pos_len = sizeof(pos_string)/sizeof(pos_string[0]);
 char temp_string[4] = {};
 uint8_t temp_len = sizeof(temp_string)/sizeof(temp_string[0]);
 char cmd_string[2] = {};
+
+struct add
+{
+  uint8_t joint;       // joint to move (1-6)
+  uint16_t pos;        // position to move to (1-999)
+  uint16_t dur;        // duration of move (0-3000)
+  bool wait;           // whether or not to wait until move complete
+} ;
+struct add adds[N_adds];
+
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
@@ -118,6 +130,11 @@ void print_result(uint8_t e)
         soft_pgmtext_write(hdr_cmd_notimpl);
         break;
       
+      // excess_adds - too many moves to record
+      case excess_adds:
+        soft_pgmtext_write(hdr_cmd_error_adds);
+        break;
+
       // default: error not found
       default:
         soft_pgmtext_write(hdr_cmd_error_error);
@@ -125,8 +142,8 @@ void print_result(uint8_t e)
   }
 
 }
-// The number of parameters "len" plus a command plus a byte length occupied
-// by the data length itself, i.e, Length= len + 2
+// The number of parameters "len" plus command byte plus byte length byte
+//  i.e, Length= len + 2
 void xArm_send(uint8_t cmd, uint8_t len)
 {
     putchar(SIGNATURE);
@@ -175,10 +192,84 @@ uint8_t valid_move(char *j, char *p)
     return 0;
 }
 
+uint8_t valid_add(uint8_t i, char *j, char *p)
+{
+    joint_no = valid_joint(j);
+    if (joint_no == -1 )
+    {
+        return joint_no;
+    }
+    position = valid_position((p));
+    if (position == -1 )
+    {
+        return position;
+    }
+    save_Position(i, joint_no, position);
+    return 0;
+}
+
+uint8_t show_adds(uint8_t ctr)
+{
+  for (uint8_t i = 0; i < ctr; i++)
+  {
+    soft_byte_write(i + 48);
+    soft_char_space();
+    soft_pgmtext_write(hdr_cmd_move);
+    soft_byte_write(adds[i].joint + 48);
+    soft_char_space();
+    itoa(adds[i].pos, pos_string, 10);
+    soft_string_write(pos_string, pos_len);
+    soft_char_NL();
+  }
+  return 0;
+}
+
+uint8_t exec_adds(uint8_t ctr)
+{
+  for (uint8_t i = 0; i < ctr; i++)
+  {
+    xArm_setPosition(adds[i].joint, adds[i].pos);
+    soft_byte_write(i + 48);
+    soft_char_space();
+    soft_pgmtext_write(hdr_cmd_move);
+    soft_byte_write(adds[i].joint + 48);
+    soft_char_space();
+    itoa(adds[i].pos, pos_string, 10);
+    soft_string_write(pos_string, pos_len);
+    soft_char_NL();
+
+  }
+  return 0;
+}
+
+uint8_t reset_adds(uint8_t ctr)
+{
+  for (uint8_t i = 0; i < ctr; i++)
+  {
+    adds[i].joint = 0;
+    adds[i].pos = 0;
+    adds[i].dur = 1000;
+    adds[i].wait = true;
+  }
+  return 0;
+}
+
+void save_Position(uint8_t i, uint8_t j, uint16_t p)
+{
+  uint16_t duration = 1000;
+  bool wait = true;
+
+  adds[i].joint = j;
+  adds[i].pos = p;
+  adds[i].dur = duration;
+  adds[i].wait = wait;
+  return;
+}
+
 void xArm_setPosition(uint8_t servo_id, uint16_t position)
 {
   uint16_t duration = 1000;
-  bool wait = false;
+  bool wait = true;
   position = xArm_clamp(position);
   xArm_out[0] = 1;
   xArm_out[1] = lowByte(duration);
