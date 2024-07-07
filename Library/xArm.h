@@ -36,7 +36,8 @@
 #define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 1
 
-#define N_adds 10
+#define N_adds 6
+#define N_vectors 4
 
 extern char *tokens[MAX_TOKENS];
 

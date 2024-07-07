@@ -17,6 +17,7 @@ const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_error[] PROGMEM = "Command Error";
 const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
 const char hdr_cmd_error_adds[] PROGMEM = "Moves recorded exceeds limit";
+const char hdr_cmd_error_vectors[] PROGMEM = "Vector n specified exceeds limit";
 const char hdr_cmd_error_error[] PROGMEM = "Error Error";
 const char hdr_cmd_move[] PROGMEM = "move ";
 const char debug1[] PROGMEM = "debug:1";
@@ -39,7 +40,7 @@ struct add
   uint16_t dur;        // duration of move (0-3000)
   bool wait;           // whether or not to wait until move complete
 } ;
-struct add adds[N_adds];
+struct add adds[N_adds][N_vectors];
 
 
 char *tokens[MAX_TOKENS];

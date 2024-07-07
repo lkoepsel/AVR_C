@@ -14,12 +14,13 @@ The *AVR_C xArm Commander* program utilizes three files to create an interface, 
 ## Commands
 * *move joint position* - move *joint* (1-6) to *position* (1 - 999)
 * *pos joint* - return the position of joint
-* *add joint position* - the same as the move command, except it is added to a list of moves which will be executed sequentially by *exec*
-* *show* - show the list of commands to be executed by *exec*
-* *exec* - execute the list of commands
-* *reset* - reset the list of commands to be empty
+* *add joint position* - the same as the move command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each joint, and is expected to express a point in space by the xArm.
+* *show n* - show vector n of commands to be executed by *exec*
+* *exec n* - execute n vector of commands
+* *reset n* - reset n vector of commands to be empty
 * *volt* - return the voltage of the battery
 * *beep* - cause the arm to beep
+* *vector n* - set the current vector number to be used by add
 
 
 ## Communications
