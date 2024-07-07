@@ -40,9 +40,9 @@ int main (void)
 {
     init_sysclock_2 ();
     // Parameters: index, pin, state, interval, previous
-    init(0, 4, LOW, 250, 0);
-    init(1, 5, LOW, 500, 0);
-    init(2, 6, LOW, 1000, 0);
+    init(0, 13, LOW, 250, 0);
+    init(1, 2, LOW, 500, 0);
+    init(2, 3, LOW, 1000, 0);
 
     while(1)
     {
