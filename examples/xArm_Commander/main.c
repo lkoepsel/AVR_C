@@ -82,7 +82,7 @@ uint8_t execute_cmd(uint8_t c_id)
             echo_command(pos);
             r = valid_add(add_ctr, tokens[joint], tokens[pos]);
             add_ctr++;
-            if (add_ctr >= N_adds)
+            if (add_ctr >= N_joints)
             {
                 return excess_adds;
             }

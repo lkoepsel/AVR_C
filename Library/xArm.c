@@ -32,14 +32,14 @@ char temp_string[4] = {};
 uint8_t temp_len = sizeof(temp_string)/sizeof(temp_string[0]);
 char cmd_string[2] = {};
 
-struct add
+struct vector
 {
   uint8_t joint;       // joint to move (1-6)
   uint16_t pos;        // position to move to (1-999)
   uint16_t dur;        // duration of move (0-3000)
   bool wait;           // whether or not to wait until move complete
 } ;
-struct add adds[N_adds];
+struct vector vectors[N_joints];
 
 
 char *tokens[MAX_TOKENS];
@@ -215,9 +215,9 @@ uint8_t show_adds(uint8_t ctr)
     soft_byte_write(i + 48);
     soft_char_space();
     soft_pgmtext_write(hdr_cmd_move);
-    soft_byte_write(adds[i].joint + 48);
+    soft_byte_write(vectors[i].joint + 48);
     soft_char_space();
-    itoa(adds[i].pos, pos_string, 10);
+    itoa(vectors[i].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
@@ -228,13 +228,13 @@ uint8_t exec_adds(uint8_t ctr)
 {
   for (uint8_t i = 0; i < ctr; i++)
   {
-    xArm_setPosition(adds[i].joint, adds[i].pos);
+    xArm_setPosition(vectors[i].joint, vectors[i].pos);
     soft_byte_write(i + 48);
     soft_char_space();
     soft_pgmtext_write(hdr_cmd_move);
-    soft_byte_write(adds[i].joint + 48);
+    soft_byte_write(vectors[i].joint + 48);
     soft_char_space();
-    itoa(adds[i].pos, pos_string, 10);
+    itoa(vectors[i].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
 
@@ -246,10 +246,10 @@ uint8_t reset_adds(uint8_t ctr)
 {
   for (uint8_t i = 0; i < ctr; i++)
   {
-    adds[i].joint = 0;
-    adds[i].pos = 0;
-    adds[i].dur = 1000;
-    adds[i].wait = true;
+    vectors[i].joint = 0;
+    vectors[i].pos = 0;
+    vectors[i].dur = 1000;
+    vectors[i].wait = true;
   }
   return 0;
 }
@@ -259,10 +259,10 @@ void save_Position(uint8_t i, uint8_t j, uint16_t p)
   uint16_t duration = 1000;
   bool wait = true;
 
-  adds[i].joint = j;
-  adds[i].pos = p;
-  adds[i].dur = duration;
-  adds[i].wait = wait;
+  vectors[i].joint = j;
+  vectors[i].pos = p;
+  vectors[i].dur = duration;
+  vectors[i].wait = wait;
   return;
 }
 
