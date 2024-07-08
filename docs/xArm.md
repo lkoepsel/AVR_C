@@ -41,6 +41,8 @@ make flash
 tio -b 9600 /dev/ttyUSB0
 ```
 
+You can also perform a *git log* to confirm the log message at the top of the log trail is the same as the message on the github repository.
+
 ## Communications
 This application has been designed to have two communication or serial ports, one uses the UART of the *ATmega328P* and the other is a software serial port which can be on any two of the digital pins. For simplicity, I use pins 2 and 3, right next to the pins 0 and 1, which comprise the Uno (ATmega328) serial port. 
 ### Adafruit Blue USB Type A to 4 Wire Red/Black/Green/White
