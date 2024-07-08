@@ -14,6 +14,7 @@ const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
 const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-6";
 const char hdr_cmd_badposition[] PROGMEM = "Bad position, must be 1-999";
 const char hdr_cmd_success[] PROGMEM = "Success";
+const char hdr_cmd_skipped[] PROGMEM = "skpd ";
 const char hdr_cmd_error[] PROGMEM = "Command Error";
 const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
 const char hdr_cmd_error_adds[] PROGMEM = "Moves recorded exceeds limit";
@@ -32,20 +33,20 @@ char temp_string[4] = {};
 uint8_t temp_len = sizeof(temp_string)/sizeof(temp_string[0]);
 char cmd_string[2] = {};
 
-struct vector
+struct joint
 {
-  uint8_t joint;       // joint to move (1-6)
+  // uint8_t joint;    // index will serve as joint to move (1-6)
   uint16_t pos;        // position to move to (1-999)
   uint16_t dur;        // duration of move (0-3000)
   bool wait;           // whether or not to wait until move complete
 } ;
-struct vector vectors[N_joints];
-
+struct joint joints[N_joints];
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
 int8_t joint_no;
 uint16_t position;
+int8_t joint_index = 1;
 
 
 void init_xArm()
@@ -71,7 +72,7 @@ int8_t valid_joint(char *jnt)
     uint8_t j = atoi(jnt);
     if ((j < 1) || (j > 6))
     {
-        soft_byte_write(atoi(tokens[joint]));
+        soft_byte_write(atoi(tokens[t_joint]));
         soft_char_space();
         soft_pgmtext_write(hdr_cmd_badjoint);
         soft_char_NL();
@@ -85,7 +86,7 @@ int16_t valid_position(char *position)
     int16_t p = atoi(position);
     if ((p < 1) || (p > 999))
     {
-        soft_string_write(tokens[pos], strlen(tokens[pos]));
+        soft_string_write(tokens[t_pos], strlen(tokens[t_pos]));
         soft_char_space();
         soft_pgmtext_write(hdr_cmd_badposition);
         soft_char_NL();
@@ -192,7 +193,7 @@ uint8_t valid_move(char *j, char *p)
     return 0;
 }
 
-uint8_t valid_add(uint8_t i, char *j, char *p)
+uint8_t valid_add(char *j, char *p)
 {
     joint_no = valid_joint(j);
     if (joint_no == -1 )
@@ -204,65 +205,68 @@ uint8_t valid_add(uint8_t i, char *j, char *p)
     {
         return position;
     }
-    save_Position(i, joint_no, position);
+    save_Position(joint_no, position);
     return 0;
 }
 
-uint8_t show_adds(uint8_t ctr)
+uint8_t show_adds()
 {
-  for (uint8_t i = 0; i < ctr; i++)
+  for (uint8_t i = 0; i < N_joints; i++)
   {
-    soft_byte_write(i + 48);
-    soft_char_space();
+    joint_index = i + 1;
     soft_pgmtext_write(hdr_cmd_move);
-    soft_byte_write(vectors[i].joint + 48);
+    soft_byte_write(joint_index + 48);
     soft_char_space();
-    itoa(vectors[i].pos, pos_string, 10);
+    itoa(joints[i].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
   return 0;
 }
 
-uint8_t exec_adds(uint8_t ctr)
+uint8_t exec_adds()
 {
-  for (uint8_t i = 0; i < ctr; i++)
+  for (uint8_t i = 0; i < N_joints; i++)
   {
-    xArm_setPosition(vectors[i].joint, vectors[i].pos);
-    soft_byte_write(i + 48);
-    soft_char_space();
+    joint_index = i + 1;
+    if (joints[i].pos == 0)
+    {
+          soft_pgmtext_write(hdr_cmd_skipped);
+    }
+    else
+    {
+    xArm_setPosition(joint_index, joints[i].pos);
     soft_pgmtext_write(hdr_cmd_move);
-    soft_byte_write(vectors[i].joint + 48);
+    }
+    soft_byte_write(joint_index + 48);
     soft_char_space();
-    itoa(vectors[i].pos, pos_string, 10);
+    itoa(joints[i].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
-
   }
   return 0;
 }
 
-uint8_t reset_adds(uint8_t ctr)
+uint8_t reset_adds()
 {
-  for (uint8_t i = 0; i < ctr; i++)
+  for (uint8_t i = 0; i < N_joints; i++)
   {
-    vectors[i].joint = 0;
-    vectors[i].pos = 0;
-    vectors[i].dur = 1000;
-    vectors[i].wait = true;
+    joints[i].pos = 0;
+    joints[i].dur = 1000;
+    joints[i].wait = true;
   }
   return 0;
 }
 
-void save_Position(uint8_t i, uint8_t j, uint16_t p)
+void save_Position(uint8_t j, uint16_t p)
 {
   uint16_t duration = 1000;
   bool wait = true;
 
-  vectors[i].joint = j;
-  vectors[i].pos = p;
-  vectors[i].dur = duration;
-  vectors[i].wait = wait;
+  int8_t i = j - 1;     // convert joint to joints index
+  joints[i].pos = p;
+  joints[i].dur = duration;
+  joints[i].wait = wait;
   return;
 }
 
@@ -327,6 +331,17 @@ uint8_t print_position(char *j)
     soft_char_NL();
     return 0;
 }
+
+uint8_t show_pos()
+{
+  for (uint8_t i = 0; i < N_joints; i++)
+  {
+    char j_c = i + 1 + 48;
+    print_position(&j_c);
+  }
+  return 0;
+}
+
 
 uint16_t xArm_getPosition(uint8_t servo_id)
 {

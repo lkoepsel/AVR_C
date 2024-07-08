@@ -33,7 +33,7 @@ char* tokenLine(char *input)
 
 // define the available commands for controlling the xArm
 // command is converted into an int then used in execute_cmd()
-#define NUM_COMMANDS 8
+#define NUM_COMMANDS 9
 #define MAX_CMD_LENGTH 6 // # of characters + null terminator
 const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
 {
@@ -43,12 +43,11 @@ const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] =
     "show",
     "exec",
     "reset",
+    "all",
     "volt",
     "beep"
 };
-enum cmd_values {move, posn, record, show, exec, reset, volt, beep};
-
-uint8_t add_ctr = 0;
+enum cmd_values {move, posn, record, show, exec, reset, all, volt, beep};
 
 int command_to_int(const char *command) 
 {
@@ -67,62 +66,62 @@ uint8_t execute_cmd(uint8_t c_id)
     {
         // move joint position
         case move:
-            echo_command(pos);
-            r = valid_move(tokens[joint], tokens[pos]);
+            echo_command(t_pos);
+            r = valid_move(tokens[t_joint], tokens[t_pos]);
             break;
         
         // pos joint
         case posn:
-            echo_command(joint);
-            r = print_position(tokens[joint]);
+            echo_command(t_joint);
+            r = print_position(tokens[t_joint]);
             break;
         
         // record a joint position for playback
         case record:
-            echo_command(pos);
-            r = valid_add(add_ctr, tokens[joint], tokens[pos]);
-            add_ctr++;
-            if (add_ctr >= N_joints)
-            {
-                return excess_adds;
-            }
+            echo_command(t_pos);
+            r = valid_add(tokens[t_joint], tokens[t_pos]);
             break;
         
         // show moves which have been added
         case show:
-            echo_command(joint);
-            r = show_adds(add_ctr);
+            echo_command(t_joint);
+            r = show_adds();
             break;
         
         // show moves which have been added
         case exec:
-            echo_command(joint);
-            r = exec_adds(add_ctr);
+            echo_command(t_joint);
+            r = exec_adds();
             break;
         
         // reset
         case reset:
-            echo_command(joint);
-            r = reset_adds(add_ctr);
-            add_ctr = 0;
+            echo_command(t_joint);
+            r = reset_adds();
+            break;
+        
+        // all
+        case all:
+            echo_command(t_joint);
+            r = show_pos();
             break;
         
         // volt - get the battery voltage
         case volt:
-            echo_command(cmd);
+            echo_command(t_cmd);
             r = print_Voltage();
             break;
         
         // beep - make arm beep
         case beep:
-            echo_command(cmd);
+            echo_command(t_cmd);
             xArm_beep();
             r = 0;
             break;
         
         // command not found
         default:
-            echo_command(pos);
+            echo_command(t_pos);
             r = 1;
             break;
     }
@@ -150,7 +149,7 @@ int main(void)
         // get input, use first token as command
         soft_readLine(input, MAX_BUFFER);
         tokenLine(input);
-        uint8_t command_id = command_to_int(tokens[cmd]);
+        uint8_t command_id = command_to_int(tokens[t_cmd]);
 
         uint8_t result = execute_cmd(command_id);
         print_result(result);

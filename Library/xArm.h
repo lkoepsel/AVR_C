@@ -44,8 +44,8 @@ extern char *tokens[MAX_TOKENS];
 enum {success, notfound, badparms, notimplemented, error, excess_adds};
 
 // use the labels below to reference the string parameters in tokens
-// tokens[cmd] is the command, tokens[joint] is the joint
-enum {cmd, joint, pos};
+// tokens[t_cmd] is the command, tokens[t_joint] is the joint...
+enum {t_cmd, t_joint, t_pos};
 
 // replace modal clamp limits, as this is only for xArm
 #define xArm_lo 0 
@@ -72,15 +72,16 @@ uint8_t xArm_recv(uint8_t cmd);
 
 void xArm_beep();
 uint8_t valid_move(char *j, char *p);
-uint8_t valid_add(uint8_t i, char *j, char *p);
-uint8_t show_adds(uint8_t ctr);
-uint8_t exec_adds(uint8_t ctr);
-uint8_t reset_adds(uint8_t ctr);
-void save_Position(uint8_t i, uint8_t j, uint16_t p);
+uint8_t valid_add(char *j, char *p);
+uint8_t show_adds();
+uint8_t exec_adds();
+uint8_t reset_adds();
+void save_Position(uint8_t j, uint16_t p);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
 uint8_t print_Voltage();
 uint16_t xArm_getBatteryVoltage();
 uint8_t print_position(char *j);
+uint8_t show_pos();
 uint16_t xArm_getPosition(uint8_t servo_id);
 
 #endif
