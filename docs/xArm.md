@@ -15,14 +15,15 @@ The *AVR_C xArm Commander* program utilizes three files to create an interface, 
 * *xArm.c* - xArm primitives file, contains similar (if not the same) routines as those in the *Coursen xArm Arduino src* file.
 
 ## Commands
-* *move joint position* - move *joint* (1-6) to *position* (1 - 999)
-* *pos joint* - return the position of joint
-* *add joint position* - the **same as the move** command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each joint, and is expected to express a point in space by the xArm. At this time, there is only one vector.
-* *show* - show list of commands to be executed by *exec*
-* *exec* - execute list of commands
-* *reset* - reset list of commands to be empty
-* *volt* - return the voltage of the battery
-* *beep* - cause the arm to beep
+* **move joint position** - move *joint* (1-6) to *position* (1 - 999)
+* **pos joint** - return the position of *joint*
+* **add joint position** - the **same as the move** command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each *joint*, and is expected to express a point in space by the xArm. At this time, there is only one vector.
+* **show** - show vector to be executed by *exec*
+* **exec** - execute vector
+* **reset** - reset vector to be empty
+* **all** - show all positions of servos
+* **volt** - return the voltage of the battery
+* **beep** - cause the arm to beep
 
 ## Important Considerations
 In the effort to not damage the xArms, please follow the rules:
