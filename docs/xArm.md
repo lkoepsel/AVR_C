@@ -24,12 +24,19 @@ The *AVR_C xArm Commander* program utilizes three files to create an interface, 
 
 ## Communications
 This application has been designed to have two communication or serial ports, one uses the UART of the *ATmega328P* and the other is a software serial port which can be on any two of the digital pins. For simplicity, I use pins 2 and 3, right next to the pins 0 and 1, which comprise the Uno (ATmega328) serial port. 
+### Adafruit Blue USB Type A to 4 Wire Red/Black/Green/White
+* red **power**
+* black **ground**
+* white **RX** into USB port
+* green **TX** out of the USB port.
 
 ### Connections
-* Pin 0 - *UART RX* to 2nd pin from the left on the xArm serial port (*TX*)
-* Pin 1 - *UART TX* to 3rd pin from the left on the xArm serial port (*RX*)
-* Pin 2 - *User designated RX* to a USB to serial cable (*TX*)
-* Pin 0 - *User designated TX* to a USB to serial cable (*RX*)
+* **Uno Pin 0** - *UART RX* to 2nd pin from the left on the xArm serial port (*TX*)
+* **Uno Pin 1** - *UART TX* to 3rd pin from the left on the xArm serial port (*RX*)
+* **Uno Pin 2** - *User designated RX* to a USB to serial cable (*TX*)
+* **Uno Pin 3** - *User designated TX* to a USB to serial cable (*RX*)
+* **Uno Pin GND** - Connect to GND on UART cable (black wire)
+* **Uno Pin GND** - Connect to GND on serial cable (black wire)
 
 ### USB to Serial Cables
 I've tested both the [Adafruit Blue USB Type A to 4 Wire Red/Black/Green/White](https://www.adafruit.com/product/954) and the [Adafruit FTDI Friend USB Mini](https://www.adafruit.com/product/284) and they both work well.
