@@ -41,7 +41,7 @@ struct joint
   uint16_t dur;        // duration of move (0-3000)
   bool wait;           // whether or not to wait until move complete
 } ;
-struct joint joints[N_joints][N_vectors];
+struct joint vectors[N_joints][N_vectors];
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
@@ -239,13 +239,13 @@ uint8_t valid_add(char *j, char *p)
 
 uint8_t show_adds()
 {
-  for (uint8_t i = 0; i < N_joints; i++)
+  for (uint8_t i = 0; i < N_vectors; i++)
   {
     joint_index = i + 1;
     soft_pgmtext_write(hdr_cmd_move);
     soft_byte_write(joint_index + 48);
     soft_char_space();
-    itoa(joints[i][vect_num].pos, pos_string, 10);
+    itoa(vectors[i][vect_num].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
@@ -257,18 +257,18 @@ uint8_t exec_adds()
   for (uint8_t i = 0; i < N_joints; i++)
   {
     joint_index = i + 1;
-    if (joints[i][vect_num].pos == 0)
+    if (vectors[i][vect_num].pos == 0)
     {
           soft_pgmtext_write(hdr_cmd_skipped);
     }
     else
     {
-    xArm_setPosition(joint_index, joints[i][vect_num].pos);
+    xArm_setPosition(joint_index, vectors[i][vect_num].pos);
     soft_pgmtext_write(hdr_cmd_move);
     }
     soft_byte_write(joint_index + 48);
     soft_char_space();
-    itoa(joints[i][vect_num].pos, pos_string, 10);
+    itoa(vectors[i][vect_num].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
@@ -279,9 +279,9 @@ uint8_t reset_adds()
 {
   for (uint8_t i = 0; i < N_joints; i++)
   {
-    joints[i][vect_num].pos = 0;
-    joints[i][vect_num].dur = 1000;
-    joints[i][vect_num].wait = true;
+    vectors[i][vect_num].pos = 0;
+    vectors[i][vect_num].dur = 1000;
+    vectors[i][vect_num].wait = true;
   }
   return 0;
 }
@@ -292,9 +292,9 @@ void save_Position(uint8_t j, uint16_t p)
   bool wait = true;
 
   int8_t i = j - 1;     // convert joint to joints index
-  joints[i][vect_num].pos = p;
-  joints[i][vect_num].dur = duration;
-  joints[i][vect_num].wait = wait;
+  vectors[i][vect_num].pos = p;
+  vectors[i][vect_num].dur = duration;
+  vectors[i][vect_num].wait = wait;
   return;
 }
 
@@ -368,9 +368,9 @@ uint8_t get_vect_num(char *v)
         vect_num = 0;
         return error;
     }
-    soft_byte_write(*v);
-    soft_char_space();
-    soft_char_NL();
+    // soft_byte_write(*v);
+    // soft_char_space();
+    // soft_char_NL();
     return 0;
 }
 
