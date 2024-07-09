@@ -12,6 +12,7 @@ const char hdr_cmd_rcd[] PROGMEM = "Command received: ";
 const char hdr_cmd_notfnd[] PROGMEM = "Command NOT found: ";
 const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
 const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-6";
+const char hdr_cmd_badvect[] PROGMEM = "Bad vector, must be 0-4";
 const char hdr_cmd_badposition[] PROGMEM = "Bad position, must be 1-999";
 const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_skipped[] PROGMEM = "skpd ";
@@ -40,13 +41,15 @@ struct joint
   uint16_t dur;        // duration of move (0-3000)
   bool wait;           // whether or not to wait until move complete
 } ;
-struct joint joints[N_joints];
+struct joint joints[N_joints][N_vectors];
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
 int8_t joint_no;
 uint16_t position;
 int8_t joint_index = 1;
+int8_t vect_num = 0;
+
 
 
 void init_xArm()
@@ -93,6 +96,31 @@ int16_t valid_position(char *position)
         return -1;
     }
     return p;
+}
+
+int8_t valid_vector(char *vect)
+{
+    uint8_t v;
+    if ((*vect < 0x30) || (*vect > 0x34))
+    {
+        v = 0;
+        soft_byte_write(atoi(tokens[t_joint]));
+        soft_char_space();
+        soft_pgmtext_write(hdr_cmd_badvect);
+        soft_char_NL();
+        return -1;
+    }
+    v = atoi(vect);
+    return v;
+}
+
+void vector_prompt()
+{
+    int8_t vector_char = vect_num + 0x30;
+    soft_byte_write(0x76);
+    soft_byte_write(vector_char);
+    soft_byte_write(0x3a);
+    soft_char_space();
 }
 
 void echo_command(uint8_t n)
@@ -217,7 +245,7 @@ uint8_t show_adds()
     soft_pgmtext_write(hdr_cmd_move);
     soft_byte_write(joint_index + 48);
     soft_char_space();
-    itoa(joints[i].pos, pos_string, 10);
+    itoa(joints[i][vect_num].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
@@ -229,18 +257,18 @@ uint8_t exec_adds()
   for (uint8_t i = 0; i < N_joints; i++)
   {
     joint_index = i + 1;
-    if (joints[i].pos == 0)
+    if (joints[i][vect_num].pos == 0)
     {
           soft_pgmtext_write(hdr_cmd_skipped);
     }
     else
     {
-    xArm_setPosition(joint_index, joints[i].pos);
+    xArm_setPosition(joint_index, joints[i][vect_num].pos);
     soft_pgmtext_write(hdr_cmd_move);
     }
     soft_byte_write(joint_index + 48);
     soft_char_space();
-    itoa(joints[i].pos, pos_string, 10);
+    itoa(joints[i][vect_num].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
@@ -251,9 +279,9 @@ uint8_t reset_adds()
 {
   for (uint8_t i = 0; i < N_joints; i++)
   {
-    joints[i].pos = 0;
-    joints[i].dur = 1000;
-    joints[i].wait = true;
+    joints[i][vect_num].pos = 0;
+    joints[i][vect_num].dur = 1000;
+    joints[i][vect_num].wait = true;
   }
   return 0;
 }
@@ -264,9 +292,9 @@ void save_Position(uint8_t j, uint16_t p)
   bool wait = true;
 
   int8_t i = j - 1;     // convert joint to joints index
-  joints[i].pos = p;
-  joints[i].dur = duration;
-  joints[i].wait = wait;
+  joints[i][vect_num].pos = p;
+  joints[i][vect_num].dur = duration;
+  joints[i][vect_num].wait = wait;
   return;
 }
 
@@ -328,6 +356,20 @@ uint8_t print_position(char *j)
     itoa(position, pos_string, 10);
     soft_pgmtext_write(hdr_pos);
     soft_string_write(pos_string, pos_len);
+    soft_char_NL();
+    return 0;
+}
+
+uint8_t get_vect_num(char *v)
+{
+    vect_num = valid_vector(v);
+    if (vect_num == -1 )
+    {
+        vect_num = 0;
+        return error;
+    }
+    soft_byte_write(*v);
+    soft_char_space();
     soft_char_NL();
     return 0;
 }

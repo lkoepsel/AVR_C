@@ -33,7 +33,7 @@ char* tokenLine(char *input)
 
 // define the available commands for controlling the xArm
 // command is converted into an int then used in execute_cmd()
-#define NUM_COMMANDS 9
+#define NUM_COMMANDS 10
 #define MAX_CMD_LENGTH 6 // # of characters + null terminator
 const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
 {
@@ -44,10 +44,11 @@ const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] =
     "exec",
     "reset",
     "all",
+    "vect",
     "volt",
     "beep"
 };
-enum cmd_values {move, posn, record, show, exec, reset, all, volt, beep};
+enum cmd_values {move, posn, record, show, exec, reset, all, vect, volt, beep};
 
 int command_to_int(const char *command) 
 {
@@ -106,6 +107,12 @@ uint8_t execute_cmd(uint8_t c_id)
             r = show_pos();
             break;
         
+        // vect - get the current vector number
+        case vect:
+            echo_command(t_joint);
+            r = get_vect_num(tokens[t_joint]);
+            break;
+        
         // volt - get the battery voltage
         case volt:
             echo_command(t_cmd);
@@ -154,6 +161,7 @@ int main(void)
         uint8_t result = execute_cmd(command_id);
         print_result(result);
         soft_char_NL();
+        vector_prompt();
 
         // clear input buffer for next command
         for (uint8_t i=0; i<MAX_BUFFER; i++)

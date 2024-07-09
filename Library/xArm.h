@@ -36,6 +36,7 @@
 #define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 1
 #define N_joints 6
+#define N_vectors 5
 
 extern char *tokens[MAX_TOKENS];
 
@@ -48,7 +49,7 @@ enum {success, notfound, badparms, notimplemented, error, excess_adds};
 enum {t_cmd, t_joint, t_pos};
 
 // replace modal clamp limits, as this is only for xArm
-#define xArm_lo 0 
+#define xArm_lo 1 
 #define xArm_hi 1000
 
 #define xArm_MAX_BUFFER 32
@@ -57,6 +58,7 @@ extern char xArm_out[xArm_MAX_BUFFER + 1];
 
 void init_xArm();
 void echo_command(uint8_t n);
+void vector_prompt();
 void print_result(uint8_t e);
 
 
@@ -66,6 +68,7 @@ uint16_t clamp(uint16_t v);
 
 int8_t valid_joint(char *joint);
 int16_t valid_position(char *pos);
+int8_t valid_vector(char *vect);
 
 void xArm_send(uint8_t cmd, uint8_t len);
 uint8_t xArm_recv(uint8_t cmd);
@@ -81,6 +84,7 @@ void xArm_setPosition(uint8_t servo_id, uint16_t position);
 uint8_t print_Voltage();
 uint16_t xArm_getBatteryVoltage();
 uint8_t print_position(char *j);
+uint8_t get_vect_num(char *v);
 uint8_t show_pos();
 uint16_t xArm_getPosition(uint8_t servo_id);
 
