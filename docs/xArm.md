@@ -31,8 +31,9 @@ The vector approach is to make the assumption that an array of six joint (or ser
 * **move** *joint position - move *joint* (1-6) to *position* (1 - 999)
 * **pos** *joint* - return the position of *joint* (1-6)
 * **vect** *n* - set the active vector, (0-4)
-* **add** *joint position* - the **same as the move** command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each *joint*, and is expected to express a point in space by the xArm. At this time, there five vectors.
+* **add** *joint position* - the **same as the move** command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each *joint*, and is expected to express a point in space by the xArm. At this time, there five vectors, *v0* - *v4*.
 * **show** - show active vector joint move list to be executed by *exec*
+* **vecs** - show complete matrix of moves, each joint is a line and each column is a vector
 * **exec** - execute active vector joint moves
 * **reset** - reset active vector joint moves to be empty
 * **all** - show all positions of servos
@@ -43,8 +44,8 @@ Command entry doesn't allow for backspace or any editing commands. It is recomme
 
 # Important Considerations
 In the effort to not damage the xArms, please follow the rules:
-1. Always perform a *pos* command on a joint, prior to first moving it
-1. Move in small increments, test direction before attempting a substantive move
+1. Always perform a *pos* command on a joint, prior to moving it
+1. Move in small increments, test the direction, before attempting a substantive move
 
 ## Test Protocol
 1. Place xArm in Vector 0 (*V0*), configuration using *move* commands
@@ -52,7 +53,7 @@ In the effort to not damage the xArms, please follow the rules:
 1. Use *show* to confirm the vector is correct
 1. Cycle the xArm power
 1. Use the *exec* command to execute the vector
-1. Perform a *pos* commmand on all joints to ensure they are in the correct spot
+1. Perform a *all* commmand to show all joints are in the correct spot
 
 ## Program Structure
 The *AVR_C xArm Commander* program utilizes three files to create an interface, it is similar to many of the files in the *examples* folder.:

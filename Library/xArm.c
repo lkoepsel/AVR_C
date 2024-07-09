@@ -21,6 +21,7 @@ const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
 const char hdr_cmd_error_adds[] PROGMEM = "Moves recorded exceeds limit";
 const char hdr_cmd_error_error[] PROGMEM = "Error Error";
 const char hdr_cmd_move[] PROGMEM = "move ";
+const char hdr_cmd_v_col[] PROGMEM = "    v";
 const char debug1[] PROGMEM = "debug:1";
 const char debug2[] PROGMEM = "debug:2";
 const char debug3[] PROGMEM = "debug:3";
@@ -247,6 +248,36 @@ uint8_t show_adds()
     soft_char_space();
     itoa(vectors[i][vect_num].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
+    soft_char_NL();
+  }
+  return 0;
+}
+
+uint8_t show_vecs()
+{
+  for (int8_t i = 0; i < N_vectors; i++)
+  { 
+    soft_pgmtext_write(hdr_cmd_v_col);
+    soft_byte_write(i + 0x30);
+    soft_char_space();
+    soft_char_space();
+    soft_char_space();
+    soft_char_space();
+  }
+  soft_char_NL();
+  for (int8_t i = 0; i < N_joints; i++)
+  { 
+    for (int8_t j = 0; j < N_vectors; j++)
+    {
+    joint_index = i + 1;
+    soft_pgmtext_write(hdr_cmd_move);
+    soft_byte_write(joint_index + 48);
+    soft_char_space();
+    itoa(vectors[i][j].pos, pos_string, 10);
+    soft_string_write(pos_string, pos_len);
+    soft_char_space();
+    soft_char_space();
+    }
     soft_char_NL();
   }
   return 0;

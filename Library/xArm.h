@@ -77,6 +77,7 @@ void xArm_beep();
 uint8_t valid_move(char *j, char *p);
 uint8_t valid_add(char *j, char *p);
 uint8_t show_adds();
+uint8_t show_vecs();
 uint8_t exec_adds();
 uint8_t reset_adds();
 void save_Position(uint8_t j, uint16_t p);
