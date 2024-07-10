@@ -36,13 +36,13 @@
 #define MAX_TOKENS (MAX_BUFFER/2)
 #define MAX_DELIMS 1
 #define N_joints 6
-#define N_vectors 5
+#define N_vectors 10
 
 extern char *tokens[MAX_TOKENS];
 
 // use the labels below to results for printing
 // 0 is success, 1 is command not found...
-enum {success, notfound, badparms, notimplemented, error, excess_adds};
+enum {success, notfound, badparms, notimplemented, excess_adds, error};
 
 // use the labels below to reference the string parameters in tokens
 // tokens[t_cmd] is the command, tokens[t_joint] is the joint...
@@ -74,8 +74,8 @@ void xArm_send(uint8_t cmd, uint8_t len);
 uint8_t xArm_recv(uint8_t cmd);
 
 void xArm_beep();
-uint8_t valid_move(char *j, char *p);
-uint8_t valid_add(char *j, char *p);
+int8_t valid_move(char *j, char *p);
+int8_t valid_add(char *j, char *p);
 uint8_t show_adds();
 uint8_t show_vecs();
 uint8_t exec_adds();
@@ -84,8 +84,8 @@ void save_Position(uint8_t j, uint16_t p);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
 uint8_t print_Voltage();
 uint16_t xArm_getBatteryVoltage();
-uint8_t print_position(char *j);
-uint8_t get_vect_num(char *v);
+int8_t print_position(char *j);
+int8_t get_vect_num(char *v);
 uint8_t show_pos();
 uint16_t xArm_getPosition(uint8_t servo_id);
 

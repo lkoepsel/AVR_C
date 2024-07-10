@@ -78,7 +78,7 @@ HEADERS=$(SOURCES:.c=.h)
 ## Compilation options, type man avr-gcc if you're curious. 
 
 # use below to setup gdb and debugging
-CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror
+CFLAGS = -Og -ggdb -std=gnu99 -Wall -Wundef -Werror -Wno-aggressive-loop-optimizations
 # Use below to optimize size
 # CFLAGS = -Os -g -std=gnu99 -Wall
 ## Use short (8-bit) data types 

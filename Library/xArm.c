@@ -11,15 +11,16 @@ const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
 const char hdr_cmd_rcd[] PROGMEM = "Command received: ";
 const char hdr_cmd_notfnd[] PROGMEM = "Command NOT found: ";
 const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
-const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-6";
-const char hdr_cmd_badvect[] PROGMEM = "Bad vector, must be 0-4";
+const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-";
+const char hdr_cmd_badvect[] PROGMEM = "Bad vector, must be 0-";
+const char hdr_cmd_vect_0[] PROGMEM = ", vector set to 0";
 const char hdr_cmd_badposition[] PROGMEM = "Bad position, must be 1-999";
 const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_skipped[] PROGMEM = "skpd ";
 const char hdr_cmd_error[] PROGMEM = "Command Error";
 const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
 const char hdr_cmd_error_adds[] PROGMEM = "Moves recorded exceeds limit";
-const char hdr_cmd_error_error[] PROGMEM = "Error Error";
+const char hdr_cmd_default_error[] PROGMEM = "Default Error";
 const char hdr_cmd_move[] PROGMEM = "move ";
 const char hdr_cmd_v_col[] PROGMEM = "    v";
 const char debug1[] PROGMEM = "debug:1";
@@ -76,9 +77,10 @@ int8_t valid_joint(char *jnt)
     uint8_t j = atoi(jnt);
     if ((j < 1) || (j > 6))
     {
-        soft_byte_write(atoi(tokens[t_joint]));
+        soft_byte_write(j + 0x30); 
         soft_char_space();
         soft_pgmtext_write(hdr_cmd_badjoint);
+        soft_byte_write(N_joints + 0x30);
         soft_char_NL();
         return -1;
     }
@@ -101,17 +103,17 @@ int16_t valid_position(char *position)
 
 int8_t valid_vector(char *vect)
 {
-    uint8_t v;
-    if ((*vect < 0x30) || (*vect > 0x34))
+    uint8_t v = (int)strtol(vect, (char **)NULL, 10); 
+    if ((v < 0) || (v >= N_vectors ))
     {
         v = 0;
-        soft_byte_write(atoi(tokens[t_joint]));
-        soft_char_space();
         soft_pgmtext_write(hdr_cmd_badvect);
+        soft_byte_write(N_vectors + 0x30 - 1);
+        soft_pgmtext_write(hdr_cmd_vect_0);
         soft_char_NL();
         return -1;
     }
-    v = atoi(vect);
+    // v = atoi(vect);
     return v;
 }
 
@@ -137,10 +139,9 @@ void echo_command(uint8_t n)
 
 void print_result(uint8_t e)
 {
-  soft_byte_write(e);
   switch (e) 
   {
-      // command successful
+      // command successful 
       case success:
         soft_pgmtext_write(hdr_cmd_success);
         break;
@@ -150,7 +151,7 @@ void print_result(uint8_t e)
         soft_pgmtext_write(hdr_cmd_notfnd);
         break;
 
-      // command error
+      // command bad parameters
       case badparms:
         soft_pgmtext_write(hdr_cmd_error_parms);
         break;
@@ -167,7 +168,8 @@ void print_result(uint8_t e)
 
       // default: error not found
       default:
-        soft_pgmtext_write(hdr_cmd_error_error);
+        soft_byte_write(e + 0x30);
+        soft_pgmtext_write(hdr_cmd_default_error);
         break;
   }
 
@@ -206,7 +208,7 @@ void xArm_beep() {
   xArm_send(CMD_BEEP, 1);
 }
 
-uint8_t valid_move(char *j, char *p)
+int8_t valid_move(char *j, char *p)
 {
     joint_no = valid_joint(j);
     if (joint_no == -1 )
@@ -222,7 +224,7 @@ uint8_t valid_move(char *j, char *p)
     return 0;
 }
 
-uint8_t valid_add(char *j, char *p)
+int8_t valid_add(char *j, char *p)
 {
     joint_no = valid_joint(j);
     if (joint_no == -1 )
@@ -240,7 +242,7 @@ uint8_t valid_add(char *j, char *p)
 
 uint8_t show_adds()
 {
-  for (uint8_t i = 0; i < N_vectors; i++)
+  for (int8_t i = 0; i < N_vectors; i++)
   {
     joint_index = i + 1;
     soft_pgmtext_write(hdr_cmd_move);
@@ -370,17 +372,17 @@ uint16_t xArm_getBatteryVoltage()
   return results;
 }
 
-uint8_t print_position(char *j)
+int8_t print_position(char *j)
 {
     joint_no = valid_joint(j);
     if (joint_no == -1 )
     {
-        return error;
+        return badparms;
     }
     uint16_t position = xArm_getPosition(joint_no);
     if (position == -1)
     {
-      return error;
+      return badparms;
     }
     soft_byte_write(*j);
     soft_char_space();
@@ -391,13 +393,13 @@ uint8_t print_position(char *j)
     return 0;
 }
 
-uint8_t get_vect_num(char *v)
+int8_t get_vect_num(char *v)
 {
     vect_num = valid_vector(v);
     if (vect_num == -1 )
     {
         vect_num = 0;
-        return error;
+        return badparms;
     }
     // soft_byte_write(*v);
     // soft_char_space();
