@@ -37,11 +37,10 @@ uint8_t temp_len = sizeof(temp_string)/sizeof(temp_string[0]);
 char cmd_string[2] = {};
 
 struct joint
-{
-  // uint8_t joint;    // index will serve as joint to move (1-6)
-  uint16_t pos;        // position to move to (1-999)
-  uint16_t dur;        // duration of move (0-3000)
-  bool wait;           // whether or not to wait until move complete
+{                     // index serves as joint to move (1-6)
+  int16_t pos;        // position to move to (1-999)
+  int16_t dur;        // duration of move (0-3000)
+  bool wait;          // whether or not to wait until move complete
 } ;
 struct joint vectors[N_joints][N_vectors];
 
