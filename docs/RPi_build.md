@@ -775,3 +775,9 @@ Raspberry Pi Connect will automatically start when you next log in or you can st
 systemctl --user start rpi-connect
 ```
 [More information](https://rptl.io/rpi-connect)
+
+### fio disk testing
+Performing a Random Write Test
+Let’s start by running the following command. This command will write a total 4GB file [4 jobs x 512 MB = 2GB] running 2 processes at a time:
+
+sudo fio --name=randwrite --ioengine=libaio --iodepth=1 --rw=randwrite --bs=4k --direct=0 --size=512M --numjobs=2 --runtime=240 --group_reporting
