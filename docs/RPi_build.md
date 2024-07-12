@@ -776,8 +776,24 @@ systemctl --user start rpi-connect
 ```
 [More information](https://rptl.io/rpi-connect)
 
-### fio disk testing
-Performing a Random Write Test
-Let’s start by running the following command. This command will write a total 4GB file [4 jobs x 512 MB = 2GB] running 2 processes at a time:
+### Disk testing
 
+### hdparm
+```bash
+sudo hdparm -t /dev/nvme0n1
+
+/dev/nvme0n1:
+ Timing buffered disk reads: 2502 MB in  3.00 seconds = 833.95 MB/sec
+```
+
+#### fio tests
+[Linux fio disk testing](https://dotlayer.com/how-to-use-fio-to-measure-disk-performance-in-linux/)
+
+Let’s start by running the following command. This command will write a total 4GB file [4 jobs x 512 MB = 2GB] running 2 processes at a time:
+```bash
+# write testing 2 jobs
 sudo fio --name=randwrite --ioengine=libaio --iodepth=1 --rw=randwrite --bs=4k --direct=0 --size=512M --numjobs=2 --runtime=240 --group_reporting
+
+# read testing 4 jobs
+sudo fio --name=randread --ioengine=libaio --iodepth=16 --rw=randread --bs=4k --direct=0 --size=512M --numjobs=4 --runtime=240 --group_reporting
+```
