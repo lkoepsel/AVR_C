@@ -5,6 +5,7 @@
 // Performs N times
 // _crc16_update - seemed to be susceptible to dupes
 // _crc_xmodem_update - seemed to be susceptible to dupes
+// _crc_ccitt_update - slightly less susceptible
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -14,18 +15,20 @@
 #include "unolib.h"
 #include <util/crc16.h>
 
-#define N_rands 300           // number of random numbers
-uint16_t randos[N_rands];
-#define N_tests 300         // number of tests to run
-uint16_t CRCs[N_tests];
+#define N_rands 300         // number of random numbers
+#define N_tests 100         // number of tests to run
+#define N_functions 3       // number of CRC functions to test
+uint16_t randos[N_rands] = {0};   // random number array for data
+uint16_t CRCs[N_tests] = {0};     // array for CRC test results
+static uint16_t (*p_func)(uint16_t a, uint8_t b);
 
 int
 checkcrc (void)
 {
     uint16_t crc = 0xffff, i;
  
-    for (i = 0; i < sizeof(randos) / sizeof (randos[0]); i++)
-        crc = _crc_ccitt_update(crc, randos[i]);
+    for (i = 0; i < N_rands; i++)
+        crc = _crc16_update(crc, randos[i]);
  
     return crc; 
 }
@@ -35,6 +38,8 @@ int main (void)
     init_sysclock_1();
     init_serial();
     char input;
+
+    p_func = _crc_ccitt_update;
 
     // Prints title then waits for enter
     // The amount of time in ticks, provides the random seed
@@ -52,20 +57,25 @@ int main (void)
         CRCs[j]  = checkcrc();
     }    
 
-    printf("CRC Values\n");
+    int loop = 0;
     int ctr = 0;
-    for (int i = 0; i < N_tests; i++) 
+    while ((ctr != 0) || (loop <= 100))
     {
-        for (int j = 0; j < N_tests; j++)
+        for (int i = 0; i < N_tests; i++) 
         {
-            if ((CRCs[i] == CRCs[j]) && (i != j))
+            for (int j = 0; j < N_tests; j++)
             {
-                ctr++;
-                printf("%i %i %12u\n", i, j, CRCs[i]);
+                if ((CRCs[i] == CRCs[j]) && (i != j))
+                {
+                    ctr++;
+                    // printf("%i %i %12u\n", i, j, CRCs[i]);
+                }
             }
         }
+        loop++;
+        printf("%i", loop);
     }
-    printf("Indentical CRCs: %i\n", ctr);
+    printf("Loops and Identical CRCs: %i %i\n", loop, ctr);
     printf("Complete\n");
     /* return never executed */
     return (0);
