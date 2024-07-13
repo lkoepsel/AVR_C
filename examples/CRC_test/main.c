@@ -5,7 +5,7 @@
 // Performs N times
 // _crc16_update - seemed to be susceptible to dupes
 // _crc_xmodem_update - seemed to be susceptible to dupes
-// _crc_ccitt_update - slightly less susceptible
+// _crc_ccitt_update - slightly less susceptible to duplicates
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -15,21 +15,21 @@
 #include "unolib.h"
 #include <util/crc16.h>
 
-#define N_rands 300         // number of random numbers
-#define N_tests 100         // number of tests to run
+#define N_rands 150         // number of random numbers
+#define N_tests 300         // number of tests to run
 #define N_functions 3       // number of CRC functions to test
 uint16_t randos[N_rands] = {0};   // random number array for data
 uint16_t CRCs[N_tests] = {0};     // array for CRC test results
-static uint16_t (*p_func)(uint16_t a, uint8_t b);
 
-int
-checkcrc (void)
+uint16_t checkCRC (uint16_t *ptr, int16_t size)
 {
-    uint16_t crc = 0xffff, i;
- 
-    for (i = 0; i < N_rands; i++)
-        crc = _crc16_update(crc, randos[i]);
- 
+    uint16_t crc = 0xffff;
+    while (size > 0)
+    {
+        crc = _crc16_update(crc, *ptr);
+        ptr++;
+        size--;
+    }
     return crc; 
 }
 
@@ -39,27 +39,29 @@ int main (void)
     init_serial();
     char input;
 
-    p_func = _crc_ccitt_update;
-
     // Prints title then waits for enter
     // The amount of time in ticks, provides the random seed
     printf("Testing CRC Check\n");
     puts("Press enter to start");
     while((input = getchar())!= 0x0d) {}
 
+    uint16_t ticks_rand = ticks();
+    printf("ticks %u\n", ticks_rand);
+    srand(ticks_rand);
+
+    // Performs N_tests CRC calculations on an array of N_rands 
     for (int j = 0; j < N_tests; j++)
     {
-        srand(ticks());
         for (int i = 0; i < N_rands; i++) 
         {
             randos[i] = rand();
         }
-        CRCs[j]  = checkcrc();
+        CRCs[j]  = checkCRC(randos, N_rands);
     }    
 
-    int loop = 0;
-    int ctr = 0;
-    while ((ctr != 0) || (loop <= 100))
+    uint16_t ctr = 0;
+    uint8_t complete = 0;
+    while ((ctr == 0) && (complete == 0) )
     {
         for (int i = 0; i < N_tests; i++) 
         {
@@ -68,15 +70,17 @@ int main (void)
                 if ((CRCs[i] == CRCs[j]) && (i != j))
                 {
                     ctr++;
-                    // printf("%i %i %12u\n", i, j, CRCs[i]);
                 }
             }
         }
-        loop++;
-        printf("%i", loop);
+        complete = 1;
     }
-    printf("Loops and Identical CRCs: %i %i\n", loop, ctr);
+    if (ctr != 0)
+    {
+        printf("\n %u Identical CRCs\n", ctr);
+    }
     printf("Complete\n");
-    /* return never executed */
+
+    // return never executed
     return (0);
 }
