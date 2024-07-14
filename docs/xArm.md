@@ -37,6 +37,9 @@ The vector approach is to make the assumption that an array of six joint (or ser
 * **exec** - execute active vector joint moves
 * **reset** - reset active vector joint moves to be empty
 * **all** - show all positions of servos
+* **save** - save to EEPROM all 10 vectors, verified on save
+* **load** - load from EEPROM all 10 vectors, verified on load
+* **skip** - set the position of a joint to 0, in essence, skipping it on moves
 * **volt** - return the voltage of the battery
 * **beep** - cause the arm to beep
 
