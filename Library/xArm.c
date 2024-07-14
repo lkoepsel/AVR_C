@@ -6,7 +6,7 @@ char xArm_out[xArm_MAX_BUFFER + 1] = {};
 const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM";
 const char hdr_volt[] PROGMEM = "voltage: ";
 const char hdr_save[] PROGMEM = "Vectors saved";
-const char hdr_load[] PROGMEM = "Vectors loaded";
+const char hdr_verified[] PROGMEM = "Vector verified";
 const char hdr_pos[] PROGMEM = "Servo position: ";
 const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
@@ -52,7 +52,6 @@ uint16_t eeprom_addr;
 uint16_t vector_addr;
 
 char *tokens[MAX_TOKENS];
-uint8_t result = 0;
 int8_t g_joint = 1;
 int16_t g_position;
 int8_t g_vect_num = 0;
@@ -252,10 +251,11 @@ int8_t valid_add(char *j, char *p)
 
 int8_t valid_skip(char *j)
 {
-    g_joint = valid_joint(j);
-    if (g_joint == -1 )
+    int8_t r;
+    r = valid_joint(j);
+    if (r == -1)
     {
-        return g_joint;
+      return r;
     }
     g_position = 0;
     add_position();
@@ -461,7 +461,7 @@ int8_t verify_vectors(int8_t v, uint16_t addr)
     }
     else
     {
-        soft_pgmtext_write(hdr_load);
+        soft_pgmtext_write(hdr_verified);
         soft_char_NL();
         return 0;
     }
@@ -484,11 +484,11 @@ uint8_t print_voltage()
 uint16_t xArm_getBatteryVoltage()
 {
   xArm_send(CMD_GET_BATTERY_VOLTAGE, 0);
-  int8_t results = xArm_recv(CMD_GET_BATTERY_VOLTAGE);
-  if (results != -1) {
+  int8_t r = xArm_recv(CMD_GET_BATTERY_VOLTAGE);
+  if (r != -1) {
     return (xArm_in[1] << 8) + xArm_in[0];
   }
-  return results;
+  return r;
 }
 
 int8_t print_position(char *j)
@@ -541,10 +541,10 @@ uint16_t xArm_getPosition(uint8_t servo_id)
   xArm_out[0] = 1;
   xArm_out[1] = servo_id;
   xArm_send(CMD_GET_SERVO_POSITION, 2);
-  int8_t results = xArm_recv(CMD_GET_SERVO_POSITION);
-  if (results != -1) 
+  int8_t r = xArm_recv(CMD_GET_SERVO_POSITION);
+  if (r != -1) 
   {
     return (xArm_in[3] << 8) + xArm_in[2];
   }
-  return results;
+  return r;
 }
