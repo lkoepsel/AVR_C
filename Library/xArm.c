@@ -21,9 +21,10 @@ const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_skipped[] PROGMEM = "skpd ";
 const char hdr_cmd_error[] PROGMEM = "Command Error";
 const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
+const char hdr_cmd_error_eeprom[] PROGMEM = "Error in EEPROM";
 const char hdr_cmd_error_adds[] PROGMEM = "Move to add exceeds limit";
 const char hdr_cmd_default_error[] PROGMEM = "Default Error";
-const char hdr_cmd_verify_error[] PROGMEM = "EEPROM did not verify Error";
+const char hdr_cmd_verify_error[] PROGMEM = " EEPROM Vector did not verify";
 const char hdr_cmd_move[] PROGMEM = "move ";
 const char hdr_cmd_v_col[] PROGMEM = "    v";
 const char debug1[] PROGMEM = "debug:1";
@@ -46,8 +47,9 @@ struct joint
   bool wait;          // whether or not to wait until move complete
 } ;
 struct joint vectors[N_joints][N_vectors];
-#define EEPROM 0x0200
-uint16_t eeprom_address;
+#define EEPROM 0x0100
+uint16_t eeprom_addr;
+uint16_t vector_addr;
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
@@ -79,10 +81,10 @@ int8_t valid_joint(char *jnt)
     uint8_t j = atoi(jnt);
     if ((j < 1) || (j > 6))
     {
-        soft_byte_write(j + 0x30); 
+        soft_byte_write(j + ASCII_INTEGER); 
         soft_char_space();
         soft_pgmtext_write(hdr_cmd_badjoint);
-        soft_byte_write(N_joints + 0x30);
+        soft_byte_write(N_joints + ASCII_INTEGER);
         soft_char_NL();
         return -1;
     }
@@ -110,7 +112,7 @@ int8_t valid_vector(char *vect)
     {
         v = 0;
         soft_pgmtext_write(hdr_cmd_badvect);
-        soft_byte_write(N_vectors + 0x30 - 1);
+        soft_byte_write(N_vectors + ASCII_INTEGER - 1);
         soft_pgmtext_write(hdr_cmd_vect_0);
         soft_char_NL();
         return -1;
@@ -121,7 +123,7 @@ int8_t valid_vector(char *vect)
 
 void vector_prompt()
 {
-    int8_t vector_char = vect_num + 0x30;
+    int8_t vector_char = vect_num + ASCII_INTEGER;
     soft_byte_write(0x76);
     soft_byte_write(vector_char);
     soft_byte_write(0x3a);
@@ -168,9 +170,14 @@ void print_result(uint8_t e)
         soft_pgmtext_write(hdr_cmd_error_adds);
         break;
 
+      // eeprom - error in loading/saving EEPROM
+      case eeprom:
+        soft_pgmtext_write(hdr_cmd_error_eeprom);
+        break;
+
       // default: error not found
       default:
-        soft_byte_write(e + 0x30);
+        soft_byte_write(e + ASCII_INTEGER);
         soft_pgmtext_write(hdr_cmd_default_error);
         break;
   }
@@ -238,7 +245,7 @@ int8_t valid_add(char *j, char *p)
     {
         return position;
     }
-    save_position(joint_no, position);
+    add_position(joint_no, position);
     return 0;
 }
 
@@ -250,7 +257,7 @@ int8_t valid_skip(char *j)
         return joint_no;
     }
     position = 0;
-    save_position(joint_no, position);
+    add_position(joint_no, position);
     return 0;
 }
 
@@ -260,10 +267,11 @@ uint8_t show_adds()
   {
     joint_index = i + 1;
     soft_pgmtext_write(hdr_cmd_move);
-    soft_byte_write(joint_index + 48);
-    soft_char_space();
-    itoa(vectors[i][vect_num].pos, pos_string, 10);
-    soft_string_write(pos_string, pos_len);
+    show_joint(joint_index, vect_num);
+    // soft_byte_write(joint_index + 48);
+    // soft_char_space();
+    // itoa(vectors[i][vect_num].pos, pos_string, 10);
+    // soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
   return 0;
@@ -274,31 +282,36 @@ uint8_t show_vecs()
   for (int8_t i = 0; i < N_vectors; i++)
   { 
     soft_pgmtext_write(hdr_cmd_v_col);
-    soft_byte_write(i + 0x30);
+    soft_byte_write(i + ASCII_INTEGER);
     soft_char_space();
     soft_char_space();
     soft_char_space();
     soft_char_space();
   }
   soft_char_NL();
-  for (int8_t i = 0; i < N_joints; i++)
+  for (int8_t j = 0; j < N_joints; j++)
   { 
-    for (int8_t j = 0; j < N_vectors; j++)
+    for (int8_t v = 0; v < N_vectors; v++)
     {
-    joint_index = i + 1;
-    soft_pgmtext_write(hdr_cmd_move);
-    soft_byte_write(joint_index + 48);
-    soft_char_space();
-    itoa(vectors[i][j].pos, pos_string, 10);
-    soft_string_write(pos_string, pos_len);
-    soft_char_space();
-    soft_char_space();
+      joint_index = j + 1;
+      soft_pgmtext_write(hdr_cmd_move);
+      show_joint(joint_index, v);
+      soft_char_space();
+      soft_char_space();
     }
     soft_char_NL();
   }
   return 0;
 }
 
+void show_joint(int8_t j, int8_t v)
+{
+    soft_byte_write(j + ASCII_INTEGER);
+    soft_char_space();
+    itoa(vectors[j][v].pos, pos_string, 10);
+    soft_string_write(pos_string, pos_len);
+    return;
+}
 uint8_t exec_adds()
 {
   for (uint8_t i = 0; i < N_joints; i++)
@@ -313,10 +326,11 @@ uint8_t exec_adds()
     xArm_setPosition(joint_index, vectors[i][vect_num].pos);
     soft_pgmtext_write(hdr_cmd_move);
     }
-    soft_byte_write(joint_index + ASCII_ADDER);
-    soft_char_space();
-    itoa(vectors[i][vect_num].pos, pos_string, 10);
-    soft_string_write(pos_string, pos_len);
+    show_joint(joint_index, vect_num);
+    // soft_byte_write(joint_index + ASCII_JOINT);
+    // soft_char_space();
+    // itoa(vectors[i][vect_num].pos, pos_string, 10);
+    // soft_string_write(pos_string, pos_len);
     soft_char_NL();
   }
   return 0;
@@ -333,7 +347,7 @@ uint8_t reset_adds()
   return 0;
 }
 
-void save_position(uint8_t j, uint16_t p)
+void add_position(uint8_t j, uint16_t p)
 {
   uint16_t duration = 1000;
   bool wait = true;
@@ -364,21 +378,27 @@ void xArm_setPosition(uint8_t servo_id, uint16_t position)
 
 int8_t save_vectors()
 {
-  eeprom_address = EEPROM;
+  int8_t r;
+  eeprom_addr = EEPROM;
   for (int v = 0; v < N_vectors; v++)
   {
+    vector_addr = eeprom_addr;
     for (int j = 0; j < N_joints; j++)
     {
-        uint8_t joint_index = j + 1;
-        delay(5);
-        eeprom_update_word((uint16_t *)(eeprom_address), vectors[joint_index][v].pos);
-        eeprom_address += sizeof(int16_t);
-        delay(5);
-        eeprom_update_word((uint16_t *)(eeprom_address), vectors[joint_index][v].dur);
-        eeprom_address += sizeof(int16_t);
-        delay(5);
-        eeprom_update_byte((uint8_t *)(eeprom_address), vectors[joint_index][v].wait);
-        eeprom_address += sizeof(bool);
+        joint_index = j + 1;
+        eeprom_update_word((uint16_t *)(eeprom_addr), vectors[joint_index][v].pos);
+        eeprom_addr += sizeof(int16_t);
+
+        eeprom_update_word((uint16_t *)(eeprom_addr), vectors[joint_index][v].dur);
+        eeprom_addr += sizeof(int16_t);
+
+        eeprom_update_byte((uint8_t *)(eeprom_addr), vectors[joint_index][v].wait);
+        eeprom_addr += sizeof(bool);
+    }
+      r = verify_vectors(v, vector_addr);
+    if (r == -1)
+    {
+      return eeprom;
     }
   }
     soft_pgmtext_write(hdr_save);
@@ -388,62 +408,66 @@ int8_t save_vectors()
 
 int8_t load_vectors()
 {
-    eeprom_address = EEPROM;
-  for (int v = 0; v < N_vectors; v++)
+    int8_t r;
+    eeprom_addr = EEPROM;
+    for (int v = 0; v < N_vectors; v++)
   {
+    vector_addr = eeprom_addr;
     for (int j = 1; j < N_joints; j++)
     {
-        uint8_t joint_index = j + 1;
-        vectors[joint_index][v].pos = eeprom_read_word((uint16_t *)(eeprom_address));
-        eeprom_address += sizeof(int16_t);
+        joint_index = j + 1;
+        vectors[joint_index][v].pos = eeprom_read_word((uint16_t *)(eeprom_addr));
+        eeprom_addr += sizeof(int16_t);
 
-        vectors[joint_index][v].dur = eeprom_read_word((uint16_t *)(eeprom_address));
-        eeprom_address += sizeof(int16_t);
+        vectors[joint_index][v].dur = eeprom_read_word((uint16_t *)(eeprom_addr));
+        eeprom_addr += sizeof(int16_t);
 
-        vectors[joint_index][v].wait = eeprom_read_byte((uint8_t *)(eeprom_address));
-        eeprom_address += sizeof(bool);
+        vectors[joint_index][v].wait = eeprom_read_byte((uint8_t *)(eeprom_addr));
+        eeprom_addr += sizeof(bool);
+    }
+    r = verify_vectors(v, vector_addr);
+    if (r == -1)
+    {
+      return eeprom;
     }
   }
-    int8_t r = verify_vectors();
     return r;
 }
 
-int8_t verify_vectors()
+int8_t verify_vectors(int8_t v, uint16_t addr)
 {
   bool verify = TRUE;
-  eeprom_address = EEPROM;
+  eeprom_addr = addr;
   int16_t p;
   int16_t d;
   bool w;
-  for (int v = 0; v < N_vectors; v++)
-  {
     for (int j = 1; j < N_joints; j++)
     {
-        uint8_t joint_index = j + 1;
-        p = eeprom_read_word((uint16_t *)(eeprom_address));
+        joint_index = j + 1;
+        p = eeprom_read_word((uint16_t *)(eeprom_addr));
         if (p != vectors[joint_index][v].pos)
         {
           verify = FALSE;
         }
-        eeprom_address += sizeof(int16_t);
+        eeprom_addr += sizeof(int16_t);
 
-        d = eeprom_read_word((uint16_t *)(eeprom_address));
+        d = eeprom_read_word((uint16_t *)(eeprom_addr));
         if (d != vectors[joint_index][v].dur)
         {
           verify = FALSE;
         }
-        eeprom_address += sizeof(int16_t);
+        eeprom_addr += sizeof(int16_t);
 
-        w = eeprom_read_byte((uint8_t *)(eeprom_address));
+        w = eeprom_read_byte((uint8_t *)(eeprom_addr));
         if (w != vectors[joint_index][v].wait)
         {
           verify = FALSE;
         }
-        eeprom_address += sizeof(bool);
-    }
+        eeprom_addr += sizeof(bool);
   }
     if (!verify)
     {
+        soft_byte_write(v + ASCII_INTEGER);
         soft_pgmtext_write(hdr_cmd_verify_error);
         soft_char_NL();
         return -1;

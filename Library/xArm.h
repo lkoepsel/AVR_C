@@ -38,13 +38,14 @@
 #define MAX_DELIMS 1
 #define N_joints 6
 #define N_vectors 10
-#define ASCII_ADDER 0x2f // constant added to joint(1-6) to make ASCII
+#define ASCII_JOINT 0x2f // constant added to joint(1-6) to make ASCII
+#define ASCII_INTEGER 0x30 // constant added to an integer(0-9) to make ASCII
 
 extern char *tokens[MAX_TOKENS];
 
 // use the labels below to results for printing
 // 0 is success, 1 is command not found...
-enum {success, notfound, badparms, notimplemented, excess_adds, error};
+enum {success, notfound, badparms, notimplemented, excess_adds, eeprom, error};
 
 // use the labels below to reference the string parameters in tokens
 // tokens[t_cmd] is the command, tokens[t_joint] is the joint...
@@ -81,13 +82,14 @@ int8_t valid_add(char *j, char *p);
 int8_t valid_skip(char *j);
 uint8_t show_adds();
 uint8_t show_vecs();
+void show_joint(int8_t j, int8_t v);
 uint8_t exec_adds();
 uint8_t reset_adds();
-void save_position(uint8_t j, uint16_t p);
+void add_position(uint8_t j, uint16_t p);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
 int8_t save_vectors();
 int8_t load_vectors();
-int8_t verify_vectors();
+int8_t verify_vectors(int8_t v, uint16_t addr);
 uint8_t print_voltage();
 uint16_t xArm_getBatteryVoltage();
 int8_t print_position(char *j);
