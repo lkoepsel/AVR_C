@@ -5,6 +5,8 @@ char xArm_out[xArm_MAX_BUFFER + 1] = {};
 
 const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM";
 const char hdr_volt[] PROGMEM = "voltage: ";
+const char hdr_save[] PROGMEM = "Vectors saved";
+const char hdr_load[] PROGMEM = "Vectors loaded";
 const char hdr_pos[] PROGMEM = "Servo position: ";
 const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
@@ -19,8 +21,9 @@ const char hdr_cmd_success[] PROGMEM = "Success";
 const char hdr_cmd_skipped[] PROGMEM = "skpd ";
 const char hdr_cmd_error[] PROGMEM = "Command Error";
 const char hdr_cmd_error_parms[] PROGMEM = "Error in parameters";
-const char hdr_cmd_error_adds[] PROGMEM = "Moves recorded exceeds limit";
+const char hdr_cmd_error_adds[] PROGMEM = "Move to add exceeds limit";
 const char hdr_cmd_default_error[] PROGMEM = "Default Error";
+const char hdr_cmd_verify_error[] PROGMEM = "EEPROM did not verify Error";
 const char hdr_cmd_move[] PROGMEM = "move ";
 const char hdr_cmd_v_col[] PROGMEM = "    v";
 const char debug1[] PROGMEM = "debug:1";
@@ -43,6 +46,8 @@ struct joint
   bool wait;          // whether or not to wait until move complete
 } ;
 struct joint vectors[N_joints][N_vectors];
+#define EEPROM 0x0200
+uint16_t eeprom_address;
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
@@ -50,8 +55,6 @@ int8_t joint_no;
 uint16_t position;
 int8_t joint_index = 1;
 int8_t vect_num = 0;
-
-
 
 void init_xArm()
 {   
@@ -67,7 +70,7 @@ uint8_t highByte(uint16_t value) {
     return (uint8_t)((value >> 8) & 0xFF);
 }
 
-uint16_t xArm_clamp(uint16_t v) {
+int16_t xArm_clamp(int16_t v) {
     return (v < xArm_lo) ? xArm_lo : (xArm_hi < v) ? xArm_hi : v;
 }
 
@@ -160,7 +163,7 @@ void print_result(uint8_t e)
         soft_pgmtext_write(hdr_cmd_notimpl);
         break;
       
-      // excess_adds - too many moves to record
+      // excess_adds - too many moves to add
       case excess_adds:
         soft_pgmtext_write(hdr_cmd_error_adds);
         break;
@@ -235,7 +238,19 @@ int8_t valid_add(char *j, char *p)
     {
         return position;
     }
-    save_Position(joint_no, position);
+    save_position(joint_no, position);
+    return 0;
+}
+
+int8_t valid_skip(char *j)
+{
+    joint_no = valid_joint(j);
+    if (joint_no == -1 )
+    {
+        return joint_no;
+    }
+    position = 0;
+    save_position(joint_no, position);
     return 0;
 }
 
@@ -298,7 +313,7 @@ uint8_t exec_adds()
     xArm_setPosition(joint_index, vectors[i][vect_num].pos);
     soft_pgmtext_write(hdr_cmd_move);
     }
-    soft_byte_write(joint_index + 48);
+    soft_byte_write(joint_index + ASCII_ADDER);
     soft_char_space();
     itoa(vectors[i][vect_num].pos, pos_string, 10);
     soft_string_write(pos_string, pos_len);
@@ -318,7 +333,7 @@ uint8_t reset_adds()
   return 0;
 }
 
-void save_Position(uint8_t j, uint16_t p)
+void save_position(uint8_t j, uint16_t p)
 {
   uint16_t duration = 1000;
   bool wait = true;
@@ -347,7 +362,101 @@ void xArm_setPosition(uint8_t servo_id, uint16_t position)
   }
 }
 
-uint8_t print_Voltage()
+int8_t save_vectors()
+{
+  eeprom_address = EEPROM;
+  for (int v = 0; v < N_vectors; v++)
+  {
+    for (int j = 0; j < N_joints; j++)
+    {
+        uint8_t joint_index = j + 1;
+        delay(5);
+        eeprom_update_word((uint16_t *)(eeprom_address), vectors[joint_index][v].pos);
+        eeprom_address += sizeof(int16_t);
+        delay(5);
+        eeprom_update_word((uint16_t *)(eeprom_address), vectors[joint_index][v].dur);
+        eeprom_address += sizeof(int16_t);
+        delay(5);
+        eeprom_update_byte((uint8_t *)(eeprom_address), vectors[joint_index][v].wait);
+        eeprom_address += sizeof(bool);
+    }
+  }
+    soft_pgmtext_write(hdr_save);
+    soft_char_NL();
+    return 0;
+}
+
+int8_t load_vectors()
+{
+    eeprom_address = EEPROM;
+  for (int v = 0; v < N_vectors; v++)
+  {
+    for (int j = 1; j < N_joints; j++)
+    {
+        uint8_t joint_index = j + 1;
+        vectors[joint_index][v].pos = eeprom_read_word((uint16_t *)(eeprom_address));
+        eeprom_address += sizeof(int16_t);
+
+        vectors[joint_index][v].dur = eeprom_read_word((uint16_t *)(eeprom_address));
+        eeprom_address += sizeof(int16_t);
+
+        vectors[joint_index][v].wait = eeprom_read_byte((uint8_t *)(eeprom_address));
+        eeprom_address += sizeof(bool);
+    }
+  }
+    int8_t r = verify_vectors();
+    return r;
+}
+
+int8_t verify_vectors()
+{
+  bool verify = TRUE;
+  eeprom_address = EEPROM;
+  int16_t p;
+  int16_t d;
+  bool w;
+  for (int v = 0; v < N_vectors; v++)
+  {
+    for (int j = 1; j < N_joints; j++)
+    {
+        uint8_t joint_index = j + 1;
+        p = eeprom_read_word((uint16_t *)(eeprom_address));
+        if (p != vectors[joint_index][v].pos)
+        {
+          verify = FALSE;
+        }
+        eeprom_address += sizeof(int16_t);
+
+        d = eeprom_read_word((uint16_t *)(eeprom_address));
+        if (d != vectors[joint_index][v].dur)
+        {
+          verify = FALSE;
+        }
+        eeprom_address += sizeof(int16_t);
+
+        w = eeprom_read_byte((uint8_t *)(eeprom_address));
+        if (w != vectors[joint_index][v].wait)
+        {
+          verify = FALSE;
+        }
+        eeprom_address += sizeof(bool);
+    }
+  }
+    if (!verify)
+    {
+        soft_pgmtext_write(hdr_cmd_verify_error);
+        soft_char_NL();
+        return -1;
+    }
+    else
+    {
+        soft_pgmtext_write(hdr_load);
+        soft_char_NL();
+        return 0;
+    }
+}
+
+uint8_t print_voltage()
 {
     int voltage = xArm_getBatteryVoltage();
     if (voltage == -1)
@@ -410,7 +519,7 @@ uint8_t show_pos()
 {
   for (uint8_t i = 0; i < N_joints; i++)
   {
-    char j_c = i + 1 + 48;
+    char j_c = i + 0x2f;
     print_position(&j_c);
   }
   return 0;

@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <avr/pgmspace.h>
+#include <avr/eeprom.h>
 #include "delay.h"
 #include "readLine.h"
 #include "soft_serial.h"
@@ -37,6 +38,7 @@
 #define MAX_DELIMS 1
 #define N_joints 6
 #define N_vectors 10
+#define ASCII_ADDER 0x2f // constant added to joint(1-6) to make ASCII
 
 extern char *tokens[MAX_TOKENS];
 
@@ -64,7 +66,7 @@ void print_result(uint8_t e);
 
 uint8_t lowByte(uint16_t value);
 uint8_t highByte(uint16_t value);
-uint16_t clamp(uint16_t v);
+int16_t xArm_clamp(int16_t v);
 
 int8_t valid_joint(char *joint);
 int16_t valid_position(char *pos);
@@ -76,13 +78,17 @@ uint8_t xArm_recv(uint8_t cmd);
 void xArm_beep();
 int8_t valid_move(char *j, char *p);
 int8_t valid_add(char *j, char *p);
+int8_t valid_skip(char *j);
 uint8_t show_adds();
 uint8_t show_vecs();
 uint8_t exec_adds();
 uint8_t reset_adds();
-void save_Position(uint8_t j, uint16_t p);
+void save_position(uint8_t j, uint16_t p);
 void xArm_setPosition(uint8_t servo_id, uint16_t position);
-uint8_t print_Voltage();
+int8_t save_vectors();
+int8_t load_vectors();
+int8_t verify_vectors();
+uint8_t print_voltage();
 uint16_t xArm_getBatteryVoltage();
 int8_t print_position(char *j);
 int8_t get_vect_num(char *v);

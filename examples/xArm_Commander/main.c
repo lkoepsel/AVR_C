@@ -33,23 +33,27 @@ char* tokenLine(char *input)
 
 // define the available commands for controlling the xArm
 // command is converted into an int then used in execute_cmd()
-#define NUM_COMMANDS 11
+#define NUM_COMMANDS 14
 #define MAX_CMD_LENGTH 6 // # of characters + null terminator
 const char commands[NUM_COMMANDS][MAX_CMD_LENGTH] = 
 {
     "move",
     "pos",
     "add",
+    "skip",
     "show",
     "vecs",
     "exec",
     "reset",
     "all",
     "vect",
+    "save",
+    "load",
     "volt",
     "beep"
 };
-enum cmd_values {move, posn, record, show, vecs, exec, reset, all, vect, volt, beep};
+enum cmd_values {move, posn, add, skip, show, vecs, exec, reset, all, vect, \
+                save, load, volt, beep};
 
 int command_to_int(const char *command) 
 {
@@ -78,10 +82,16 @@ uint8_t execute_cmd(uint8_t c_id)
             r = print_position(tokens[t_joint]);
             break;
         
-        // record a joint position for playback
-        case record:
+        // add a joint position for playback
+        case add:
             echo_command(t_pos);
             r = valid_add(tokens[t_joint], tokens[t_pos]);
+            break;
+        
+        // skip (or delete) a joint position for playback
+        case skip:
+            echo_command(t_joint);
+            r = valid_skip(tokens[t_joint]);
             break;
         
         // show moves which have been added
@@ -120,10 +130,22 @@ uint8_t execute_cmd(uint8_t c_id)
             r = get_vect_num(tokens[t_joint]);
             break;
         
+        // save - save all of the vectors to EEPROM
+        case save:
+            echo_command(t_cmd);
+            r = save_vectors();
+            break;
+        
+        // load - load all of the vectors from EEPROM
+        case load:
+            echo_command(t_cmd);
+            r = load_vectors();
+            break;
+        
         // volt - get the battery voltage
         case volt:
             echo_command(t_cmd);
-            r = print_Voltage();
+            r = print_voltage();
             break;
         
         // beep - make arm beep
