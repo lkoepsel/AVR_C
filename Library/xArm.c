@@ -27,9 +27,9 @@ const char hdr_cmd_default_error[] PROGMEM = "Default Error";
 const char hdr_cmd_verify_error[] PROGMEM = " EEPROM Vector did not verify";
 const char hdr_cmd_move[] PROGMEM = "move ";
 const char hdr_cmd_v_col[] PROGMEM = "    v";
-const char debug1[] PROGMEM = "debug:1";
-const char debug2[] PROGMEM = "debug:2";
-const char debug3[] PROGMEM = "debug:3";
+const char debug1[] PROGMEM = "debug:1 ";
+const char debug2[] PROGMEM = "debug:2 ";
+const char debug3[] PROGMEM = "debug:3 ";
 #define debug(n) soft_pgmtext_write(debug##n)
 
 char volt_string[4] = {};
@@ -53,10 +53,9 @@ uint16_t vector_addr;
 
 char *tokens[MAX_TOKENS];
 uint8_t result = 0;
-int8_t joint_no;
-uint16_t position;
-int8_t joint_index = 1;
-int8_t vect_num = 0;
+int8_t g_joint = 1;
+int16_t g_position;
+int8_t g_vect_num = 0;
 
 void init_xArm()
 {   
@@ -78,23 +77,23 @@ int16_t xArm_clamp(int16_t v) {
 
 int8_t valid_joint(char *jnt)
 {
-    uint8_t j = atoi(jnt);
-    if ((j < 1) || (j > 6))
+    g_joint = atoi(jnt);
+    if ((g_joint < 1) || (g_joint > 6))
     {
-        soft_byte_write(j + ASCII_INTEGER); 
+        soft_byte_write(g_joint + ASCII_INTEGER); 
         soft_char_space();
         soft_pgmtext_write(hdr_cmd_badjoint);
         soft_byte_write(N_joints + ASCII_INTEGER);
         soft_char_NL();
         return -1;
     }
-    return j;
+    return 0;
 }
 
-int16_t valid_position(char *position)
+int16_t valid_position(char *c_position)
 {
-    int16_t p = atoi(position);
-    if ((p < 1) || (p > 999))
+    g_position = atoi(c_position);
+    if ((g_position < 1) || (g_position > 999))
     {
         soft_string_write(tokens[t_pos], strlen(tokens[t_pos]));
         soft_char_space();
@@ -102,7 +101,7 @@ int16_t valid_position(char *position)
         soft_char_NL();
         return -1;
     }
-    return p;
+    return 0;
 }
 
 int8_t valid_vector(char *vect)
@@ -117,13 +116,12 @@ int8_t valid_vector(char *vect)
         soft_char_NL();
         return -1;
     }
-    // v = atoi(vect);
     return v;
 }
 
 void vector_prompt()
 {
-    int8_t vector_char = vect_num + ASCII_INTEGER;
+    int8_t vector_char = g_vect_num + ASCII_INTEGER;
     soft_byte_write(0x76);
     soft_byte_write(vector_char);
     soft_byte_write(0x3a);
@@ -219,59 +217,57 @@ void xArm_beep() {
 
 int8_t valid_move(char *j, char *p)
 {
-    joint_no = valid_joint(j);
-    if (joint_no == -1 )
+    int8_t r;
+    r = valid_joint(j);
+    if (r == -1 )
     {
-        return joint_no;
+        return r;
     }
-    position = valid_position((p));
-    if (position == -1 )
+    r =valid_position(p);
+    if (r == -1 )
     {
-        return position;
+        return r;
     }
-    xArm_setPosition(joint_no, position);
+    xArm_setPosition(g_joint, g_position);
     return 0;
 }
 
 int8_t valid_add(char *j, char *p)
 {
-    joint_no = valid_joint(j);
-    if (joint_no == -1 )
+    int8_t r;
+    r = valid_joint(j);
+    if (r == -1 )
     {
-        return joint_no;
+        return r;
     }
-    position = valid_position((p));
-    if (position == -1 )
+    r =valid_position(p);
+    if (r == -1 )
     {
-        return position;
+        return r;
     }
-    add_position(joint_no, position);
+
+    add_position();
     return 0;
 }
 
 int8_t valid_skip(char *j)
 {
-    joint_no = valid_joint(j);
-    if (joint_no == -1 )
+    g_joint = valid_joint(j);
+    if (g_joint == -1 )
     {
-        return joint_no;
+        return g_joint;
     }
-    position = 0;
-    add_position(joint_no, position);
+    g_position = 0;
+    add_position();
     return 0;
 }
 
 uint8_t show_adds()
 {
-  for (int8_t i = 0; i < N_vectors; i++)
+  for (int8_t i = 1; i <= N_joints; i++)
   {
-    joint_index = i + 1;
     soft_pgmtext_write(hdr_cmd_move);
-    show_joint(joint_index, vect_num);
-    // soft_byte_write(joint_index + 48);
-    // soft_char_space();
-    // itoa(vectors[i][vect_num].pos, pos_string, 10);
-    // soft_string_write(pos_string, pos_len);
+    show_joint_pos(i, g_vect_num);
     soft_char_NL();
   }
   return 0;
@@ -289,13 +285,12 @@ uint8_t show_vecs()
     soft_char_space();
   }
   soft_char_NL();
-  for (int8_t j = 0; j < N_joints; j++)
+  for (int8_t j = 1; j <= N_joints; j++)
   { 
     for (int8_t v = 0; v < N_vectors; v++)
     {
-      joint_index = j + 1;
       soft_pgmtext_write(hdr_cmd_move);
-      show_joint(joint_index, v);
+      show_joint_pos(j, v);
       soft_char_space();
       soft_char_space();
     }
@@ -304,33 +299,28 @@ uint8_t show_vecs()
   return 0;
 }
 
-void show_joint(int8_t j, int8_t v)
+void show_joint_pos(int8_t j, int8_t v)
 {
     soft_byte_write(j + ASCII_INTEGER);
     soft_char_space();
-    itoa(vectors[j][v].pos, pos_string, 10);
-    soft_string_write(pos_string, pos_len);
+    int8_t j_index = j - 1;
+    soft_int_write(vectors[j_index][v].pos);
     return;
 }
 uint8_t exec_adds()
 {
-  for (uint8_t i = 0; i < N_joints; i++)
+  for (uint8_t i = 1; i <= N_joints; i++)
   {
-    joint_index = i + 1;
-    if (vectors[i][vect_num].pos == 0)
+    if (vectors[i-1][g_vect_num].pos == 0)
     {
           soft_pgmtext_write(hdr_cmd_skipped);
     }
     else
     {
-    xArm_setPosition(joint_index, vectors[i][vect_num].pos);
+    xArm_setPosition(i, vectors[i-1][g_vect_num].pos);
     soft_pgmtext_write(hdr_cmd_move);
     }
-    show_joint(joint_index, vect_num);
-    // soft_byte_write(joint_index + ASCII_JOINT);
-    // soft_char_space();
-    // itoa(vectors[i][vect_num].pos, pos_string, 10);
-    // soft_string_write(pos_string, pos_len);
+    show_joint_pos(i, g_vect_num);
     soft_char_NL();
   }
   return 0;
@@ -340,26 +330,26 @@ uint8_t reset_adds()
 {
   for (uint8_t i = 0; i < N_joints; i++)
   {
-    vectors[i][vect_num].pos = 0;
-    vectors[i][vect_num].dur = 1000;
-    vectors[i][vect_num].wait = true;
+    vectors[i][g_vect_num].pos = 0;
+    vectors[i][g_vect_num].dur = 1000;
+    vectors[i][g_vect_num].wait = true;
   }
   return 0;
 }
 
-void add_position(uint8_t j, uint16_t p)
+void add_position()
 {
   uint16_t duration = 1000;
   bool wait = true;
 
-  int8_t i = j - 1;     // convert joint to joints index
-  vectors[i][vect_num].pos = p;
-  vectors[i][vect_num].dur = duration;
-  vectors[i][vect_num].wait = wait;
+  int8_t i = g_joint - 1;     // convert joint to joints index
+  vectors[i][g_vect_num].pos = g_position;
+  vectors[i][g_vect_num].dur = duration;
+  vectors[i][g_vect_num].wait = wait;
   return;
 }
 
-void xArm_setPosition(uint8_t servo_id, uint16_t position)
+void xArm_setPosition(uint8_t servo_id, int16_t position)
 {
   uint16_t duration = 1000;
   bool wait = true;
@@ -383,19 +373,18 @@ int8_t save_vectors()
   for (int v = 0; v < N_vectors; v++)
   {
     vector_addr = eeprom_addr;
-    for (int j = 0; j < N_joints; j++)
+    for (int j = 1; j <= N_joints; j++)
     {
-        joint_index = j + 1;
-        eeprom_update_word((uint16_t *)(eeprom_addr), vectors[joint_index][v].pos);
+        eeprom_update_word((uint16_t *)(eeprom_addr), vectors[j-1][v].pos);
         eeprom_addr += sizeof(int16_t);
 
-        eeprom_update_word((uint16_t *)(eeprom_addr), vectors[joint_index][v].dur);
+        eeprom_update_word((uint16_t *)(eeprom_addr), vectors[j-1][v].dur);
         eeprom_addr += sizeof(int16_t);
 
-        eeprom_update_byte((uint8_t *)(eeprom_addr), vectors[joint_index][v].wait);
+        eeprom_update_byte((uint8_t *)(eeprom_addr), vectors[j-1][v].wait);
         eeprom_addr += sizeof(bool);
     }
-      r = verify_vectors(v, vector_addr);
+    r = verify_vectors(v, vector_addr);
     if (r == -1)
     {
       return eeprom;
@@ -413,16 +402,15 @@ int8_t load_vectors()
     for (int v = 0; v < N_vectors; v++)
   {
     vector_addr = eeprom_addr;
-    for (int j = 1; j < N_joints; j++)
+    for (int j = 1; j <= N_joints; j++)
     {
-        joint_index = j + 1;
-        vectors[joint_index][v].pos = eeprom_read_word((uint16_t *)(eeprom_addr));
+        vectors[j-1][v].pos = eeprom_read_word((uint16_t *)(eeprom_addr));
         eeprom_addr += sizeof(int16_t);
 
-        vectors[joint_index][v].dur = eeprom_read_word((uint16_t *)(eeprom_addr));
+        vectors[j-1][v].dur = eeprom_read_word((uint16_t *)(eeprom_addr));
         eeprom_addr += sizeof(int16_t);
 
-        vectors[joint_index][v].wait = eeprom_read_byte((uint8_t *)(eeprom_addr));
+        vectors[j-1][v].wait = eeprom_read_byte((uint8_t *)(eeprom_addr));
         eeprom_addr += sizeof(bool);
     }
     r = verify_vectors(v, vector_addr);
@@ -441,25 +429,24 @@ int8_t verify_vectors(int8_t v, uint16_t addr)
   int16_t p;
   int16_t d;
   bool w;
-    for (int j = 1; j < N_joints; j++)
+    for (int j = 1; j <= N_joints; j++)
     {
-        joint_index = j + 1;
         p = eeprom_read_word((uint16_t *)(eeprom_addr));
-        if (p != vectors[joint_index][v].pos)
+        if (p != vectors[j-1][v].pos)
         {
           verify = FALSE;
         }
         eeprom_addr += sizeof(int16_t);
 
         d = eeprom_read_word((uint16_t *)(eeprom_addr));
-        if (d != vectors[joint_index][v].dur)
+        if (d != vectors[j-1][v].dur)
         {
           verify = FALSE;
         }
         eeprom_addr += sizeof(int16_t);
 
         w = eeprom_read_byte((uint8_t *)(eeprom_addr));
-        if (w != vectors[joint_index][v].wait)
+        if (w != vectors[j-1][v].wait)
         {
           verify = FALSE;
         }
@@ -487,7 +474,7 @@ uint8_t print_voltage()
     {
         return voltage;
     }
-    itoa(voltage, volt_string, 10);
+    soft_int_write(voltage);
     soft_pgmtext_write(hdr_volt);
     soft_string_write(volt_string, volt_len);
     soft_char_NL();
@@ -506,31 +493,30 @@ uint16_t xArm_getBatteryVoltage()
 
 int8_t print_position(char *j)
 {
-    joint_no = valid_joint(j);
-    if (joint_no == -1 )
+    g_joint = valid_joint(j);
+    if (g_joint == -1 )
     {
         return badparms;
     }
-    uint16_t position = xArm_getPosition(joint_no);
+    int16_t position = xArm_getPosition(g_joint);
     if (position == -1)
     {
       return badparms;
     }
     soft_byte_write(*j);
     soft_char_space();
-    itoa(position, pos_string, 10);
     soft_pgmtext_write(hdr_pos);
-    soft_string_write(pos_string, pos_len);
+    soft_int_write(position);
     soft_char_NL();
     return 0;
 }
 
 int8_t get_vect_num(char *v)
 {
-    vect_num = valid_vector(v);
-    if (vect_num == -1 )
+    g_vect_num = valid_vector(v);
+    if (g_vect_num == -1 )
     {
-        vect_num = 0;
+        g_vect_num = 0;
         return badparms;
     }
     // soft_byte_write(*v);

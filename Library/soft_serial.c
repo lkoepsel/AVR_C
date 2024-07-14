@@ -1,5 +1,7 @@
 #include "soft_serial.h"
 
+char num_string[6] = {};
+
 void init_soft_serial() 
 {
     // Set TX pin as output, set RX pin as input, RX as input pullup
@@ -29,6 +31,11 @@ void soft_byte_write(uint8_t data)
     _delay_us(BIT_DURATION);
 }
 
+void soft_int_write(int16_t number)
+{
+    itoa(number, num_string, 10);
+    soft_string_write(num_string, strlen(num_string));
+}
 uint8_t soft_char_read() 
 {
     uint8_t data = 0;

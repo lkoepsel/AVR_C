@@ -22,6 +22,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <stdio.h>
+#include <string.h>
 #include <util/delay.h>
 #include "uart.h"
 #include "unolib.h"
@@ -36,6 +37,8 @@
 void init_soft_serial() ;
 
 void soft_byte_write(uint8_t data) ;
+void soft_int_write(int16_t number);
+
 
 uint8_t soft_char_read() ;
 
