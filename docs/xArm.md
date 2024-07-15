@@ -1,6 +1,6 @@
 # xArm Commander
 
-This document describes how to use the *examples/xArm_Commander*.
+This document describes how to use the *examples/xArm_Commander*, a serial, robototic command interpreter for the [*Lewan-Soul/HiWonder xArm Robotic Arms*](https://www.amazon.com/LewanSoul-xArm-1S-Programming-Educational/dp/B0CHY63V9P?th=1). It provides the ability to enter commands for the xArm, via a serial port, then have the xArm perform movements, based on the commands.
 
 This interface is closely modeled after the great work by Chris Courson, [here](https://github.com/ccourson/xArmServoController). His work served as inspiration and guidance in created a similar work, except this one is exclusively **C99 C**. *Thank you, Chris.*
 
@@ -25,12 +25,19 @@ The vector approach is to make the assumption that an array of six joint (or ser
 * *vector0 (v0)* - is considered the base or safe resting position of the xArm. It is determined by experimentation, and is considered the first position from which the xArm will begin to move.
 * *vector sequence* - is a series of vectors, starting with *V0*, which define a specific course of action such as picking up a marker and placing it elsewhere.
 * *vn: prompt* - indicates which vector your are modifying. All of the vector commands, *add, show, exec, reset*, will work on the *n* indicated vector. For example, at startup, the prompt is *v0:*, which indicates all changes will be applied to the base vector or vector 0.
-* *vector n* is the set vector command. This will set the vector to the *nth* vector and all changes will be made to it, until a new *vector n* command.
+* *vect n* is the set vector command. This will set the vector to the *nth* vector and all changes will be made to it, until a new *vect n* command.
+* *vecs* is the display vector command. This will display all of the vectors, aligned by joint, on your terminal.
+
+There was a programming choice I needed to make, which was whether or not, to allow joint movement to be re-ordered. By this, I mean, within a vector, can *joint 3* move prior to *joint 1*or *joint 5* move prior to *joint 2*? For example, this becomes important when attempting to open the pincher (*joint 1*) after rotating to a new position (*joint 6*).
+
+For this iteration, I decided that joint movement would need to go in sequential order. Which means, *joint 1* will **always** move first, then *joint 2*, *3* and so on. If a higher number joint needs to move prior to its lower number counterpart, then have the lower numbered joint *skip* by leaving it's position as a 0. You may also enter *skip n* to specifically set the joint to be skipped. 
+
+In summary, think in terms of vectors and not specific joint movements per vector. Each vector will perform a specific action, and in the case of higher numbered joints, they might need to have a vector specific to their action.
 
 ## Commands
 * **move** *joint position - move *joint* (1-6) to *position* (1 - 999)
 * **pos** *joint* - return the position of *joint* (1-6)
-* **vect** *n* - set the active vector, (0-4)
+* **vect** *n* - set the active vector, (0-9)
 * **add** *joint position* - the **same as the move** command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each *joint*, and is expected to express a point in space by the xArm. At this time, there five vectors, *v0* - *v4*.
 * **show** - show active vector joint move list to be executed by *exec*
 * **vecs** - show complete matrix of moves, each joint is a line and each column is a vector
@@ -43,12 +50,12 @@ The vector approach is to make the assumption that an array of six joint (or ser
 * **volt** - return the voltage of the battery
 * **beep** - cause the arm to beep
 
-Command entry doesn't allow for backspace or any editing commands. It is recommended that once you realize you've made a mistake, you either add a series of letters which will make the command illegal or hit enter if the command isn't fully-formed. 
+**Command entry doesn't allow for backspace or any editing commands.** It is recommended that once you realize you've made a mistake, you either add a series of letters which will make the command illegal or hit enter if the command isn't fully-formed. 
 
 # Important Considerations
 In the effort to not damage the xArms, please follow the rules:
-1. Always perform a *pos* command on a joint, prior to moving it
-1. Move in small increments, test the direction, before attempting a substantive move
+1. Always perform a *pos* command on a joint, prior to moving it. This will ensure you know the position of the joint.
+2. Move in small increments, test the direction, before attempting a substantive move. For example, if the position is *320*, move to position *300*, to confirm the direction is what you expect, prior to moving *100* or more steps.
 
 ## Test Protocol
 1. Place xArm in Vector 0 (*V0*), configuration using *move* commands
@@ -56,7 +63,7 @@ In the effort to not damage the xArms, please follow the rules:
 1. Use *show* to confirm the vector is correct
 1. Cycle the xArm power
 1. Use the *exec* command to execute the vector
-1. Perform a *all* commmand to show all joints are in the correct spot
+1. Perform an *all* commmand to show all joints are in the correct spot
 
 ## Program Structure
 The *AVR_C xArm Commander* program utilizes three files to create an interface, it is similar to many of the files in the *examples* folder.:
@@ -99,7 +106,12 @@ To use two different pins as the *soft serial port*, change the pin numbers in *
 If running in the command line, I use *tio*, as my serial program. If I'm able to use a *GUI* its always *CoolTerm*.
 
 As shown, you can also change the baud rate, I've had success to *28800* baud.
-
+## Debugging Steps
+Here are a few steps to ensure you are successful with connecting to the Uno and xArm.
+1. Confirm you have the latest code, by performing a *git log*. The top-most message needs to be the same message as at the top of the *AVR_C* repository.
+2. Confirm that each *TX* line is connected to an *RX* line. For example, confirm that the xArm *TX*, the third pin from the left on the xArm serial connector is connected to the *Uno pin 0*. Do this for both serial connections, 4 lines in all.
+3. Confirm that the baud rate in the env.make file is set to *9600UL* and **not** *250000UL*. To check, enter *make env* in the *CLI*, this will print out all of the env.make variables.
+4. Make sure the xArm is turned off, while uploading code to the Uno, as the Uno and xArm share the USB port.
 ## Control Example
 ```bash
 
