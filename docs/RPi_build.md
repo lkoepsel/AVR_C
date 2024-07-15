@@ -797,3 +797,12 @@ sudo fio --name=randwrite --ioengine=libaio --iodepth=1 --rw=randwrite --bs=4k -
 # read testing 4 jobs
 sudo fio --name=randread --ioengine=libaio --iodepth=16 --rw=randread --bs=4k --direct=0 --size=512M --numjobs=4 --runtime=240 --group_reporting
 ```
+
+### Fix a known hosts issue
+When attempting to login to a new Raspberry Pi, sometimes the host system won't because the *identifier* has changed. To fix:
+```bash
+nano ~/.ssh/known_hosts
+# shift ctrl-K every line which contains the name of the old Pi
+# ctrl-s to save
+# ctrl-x to exit
+```
