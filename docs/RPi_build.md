@@ -799,7 +799,7 @@ sudo fio --name=randread --ioengine=libaio --iodepth=16 --rw=randread --bs=4k --
 ```
 
 ### Fix a known hosts issue
-When attempting to login to a new Raspberry Pi, sometimes the host system won't because the *identifier* has changed. To fix:
+When attempting to login to a new Raspberry Pi, sometimes the host system won't because the *REMOTE HOST IDENTIFICATION HAS CHANGED* has changed. To fix:
 ```bash
 nano ~/.ssh/known_hosts
 # shift ctrl-K every line which contains the name of the old Pi
