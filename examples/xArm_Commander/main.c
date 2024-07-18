@@ -100,7 +100,7 @@ uint8_t execute_cmd(uint8_t c_id)
             r = show_adds();
             break;
         
-        // show all vectors 
+        // show list of vectors 
         case vecs:
             echo_command(t_joint);
             r = show_vecs();

@@ -38,14 +38,13 @@
 #define MAX_DELIMS 1
 #define N_joints 6
 #define N_vectors 10
-#define ASCII_JOINT 0x2f // constant added to joint(1-6) to make ASCII
 #define ASCII_INTEGER 0x30 // constant added to an integer(0-9) to make ASCII
 
 extern char *tokens[MAX_TOKENS];
 
 // use the labels below to results for printing
 // 0 is success, 1 is command not found...
-enum {success, notfound, badparms, notimplemented, excess_adds, eeprom, error};
+enum {success, xArm, notfound, badparms, notimplemented, excess_adds, eeprom, error};
 
 // use the labels below to reference the string parameters in tokens
 // tokens[t_cmd] is the command, tokens[t_joint] is the joint...

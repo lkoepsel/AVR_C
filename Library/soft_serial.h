@@ -37,7 +37,9 @@
 void init_soft_serial() ;
 
 void soft_byte_write(uint8_t data) ;
-void soft_int_write(int16_t number);
+void soft_int16_write(int16_t number);
+void soft_int8_write(int8_t number);
+
 
 
 uint8_t soft_char_read() ;

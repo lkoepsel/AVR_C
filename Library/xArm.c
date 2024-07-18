@@ -11,6 +11,7 @@ const char hdr_pos[] PROGMEM = "Servo position: ";
 const char hdr_input[] PROGMEM = "Input entered: ";
 const char hdr_cmd_fnd[] PROGMEM = "Command found: ";
 const char hdr_cmd_rcd[] PROGMEM = "Command received: ";
+const char hdr_cmd_xArm[] PROGMEM = "xArm has an error ";
 const char hdr_cmd_notfnd[] PROGMEM = "Command NOT found: ";
 const char hdr_cmd_notimpl[] PROGMEM = "Command NOT implemented: ";
 const char hdr_cmd_badjoint[] PROGMEM = "Bad joint, must be 1-";
@@ -147,6 +148,11 @@ void print_result(uint8_t e)
         soft_pgmtext_write(hdr_cmd_success);
         break;
       
+      // xArm error reported
+      case xArm:
+        soft_pgmtext_write(hdr_cmd_xArm);
+        break;
+
       // command not found
       case notfound:
         soft_pgmtext_write(hdr_cmd_notfnd);
@@ -200,6 +206,7 @@ void xArm_send(uint8_t cmd, uint8_t len)
 uint8_t xArm_recv(uint8_t cmd)
 {
   uint8_t num_char = readLine(xArm_in, 4);
+
   if (num_char > 0) 
   {
     if (xArm_in[0] == SIGNATURE && xArm_in[1] == SIGNATURE && xArm_in[3] == cmd) {
@@ -304,7 +311,7 @@ void show_joint_pos(int8_t j, int8_t v)
     soft_byte_write(j + ASCII_INTEGER);
     soft_char_space();
     int8_t j_index = j - 1;
-    soft_int_write(vectors[j_index][v].pos);
+    soft_int16_write(vectors[j_index][v].pos);
     return;
 }
 uint8_t exec_adds()
@@ -328,7 +335,7 @@ uint8_t exec_adds()
 
 uint8_t reset_adds()
 {
-  for (uint8_t i = 0; i < N_joints; i++)
+  for (uint8_t i = 1; i <= N_joints; i++)
   {
     vectors[i][g_vect_num].pos = 0;
     vectors[i][g_vect_num].dur = 1000;
@@ -474,9 +481,8 @@ uint8_t print_voltage()
     {
         return voltage;
     }
-    soft_int_write(voltage);
     soft_pgmtext_write(hdr_volt);
-    soft_string_write(volt_string, volt_len);
+    soft_int16_write(voltage);
     soft_char_NL();
     return 0;
 }
@@ -493,11 +499,14 @@ uint16_t xArm_getBatteryVoltage()
 
 int8_t print_position(char *j)
 {
-    g_joint = valid_joint(j);
-    if (g_joint == -1 )
+    int8_t r = valid_joint(j);
+    if (r == -1 )
     {
         return badparms;
     }
+    debug(1);
+    soft_byte_write(g_joint + ASCII_INTEGER);
+    debug(2);
     int16_t position = xArm_getPosition(g_joint);
     if (position == -1)
     {
@@ -506,7 +515,7 @@ int8_t print_position(char *j)
     soft_byte_write(*j);
     soft_char_space();
     soft_pgmtext_write(hdr_pos);
-    soft_int_write(position);
+    soft_int16_write(position);
     soft_char_NL();
     return 0;
 }
@@ -527,9 +536,9 @@ int8_t get_vect_num(char *v)
 
 uint8_t show_pos()
 {
-  for (uint8_t i = 0; i < N_joints; i++)
+  for (uint8_t i = 1; i <= N_joints; i++)
   {
-    char j_c = i + 0x2f;
+    char j_c = i + ASCII_INTEGER;
     print_position(&j_c);
   }
   return 0;
@@ -546,5 +555,5 @@ uint16_t xArm_getPosition(uint8_t servo_id)
   {
     return (xArm_in[3] << 8) + xArm_in[2];
   }
-  return r;
+  return xArm;
 }

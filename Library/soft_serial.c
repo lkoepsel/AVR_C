@@ -31,11 +31,18 @@ void soft_byte_write(uint8_t data)
     _delay_us(BIT_DURATION);
 }
 
-void soft_int_write(int16_t number)
+void soft_int16_write(int16_t number)
 {
     itoa(number, num_string, 10);
     soft_string_write(num_string, strlen(num_string));
 }
+
+void soft_int8_write(int8_t number)
+{
+    itoa(number, num_string, 10);
+    soft_string_write(num_string, strlen(num_string));
+}
+
 uint8_t soft_char_read() 
 {
     uint8_t data = 0;
