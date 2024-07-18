@@ -27,7 +27,7 @@ const char hdr_cmd_error_adds[] PROGMEM = "Move to add exceeds limit";
 const char hdr_cmd_default_error[] PROGMEM = "Default Error";
 const char hdr_cmd_verify_error[] PROGMEM = " EEPROM Vector did not verify";
 const char hdr_cmd_move[] PROGMEM = "move ";
-const char hdr_cmd_v_col[] PROGMEM = "    v";
+const char hdr_cmd_v_col[] PROGMEM = "v";
 const char debug1[] PROGMEM = "debug:1 ";
 const char debug2[] PROGMEM = "debug:2 ";
 const char debug3[] PROGMEM = "debug:3 ";
@@ -56,6 +56,8 @@ char *tokens[MAX_TOKENS];
 int8_t g_joint = 1;
 int16_t g_position;
 int8_t g_vect_num = 0;
+int8_t pos_size = 3;
+int8_t joint_size = 7;
 
 void init_xArm()
 {   
@@ -286,10 +288,11 @@ uint8_t show_vecs()
   { 
     soft_pgmtext_write(hdr_cmd_v_col);
     soft_byte_write(i + ASCII_INTEGER);
-    soft_char_space();
-    soft_char_space();
-    soft_char_space();
-    soft_char_space();
+    for (int8_t i = 0; i < joint_size + pos_size; i++)
+    {
+        soft_char_space();
+
+    }
   }
   soft_char_NL();
   for (int8_t j = 1; j <= N_joints; j++)
@@ -311,7 +314,7 @@ void show_joint_pos(int8_t j, int8_t v)
     soft_byte_write(j + ASCII_INTEGER);
     soft_char_space();
     int8_t j_index = j - 1;
-    soft_int16_write(vectors[j_index][v].pos);
+    soft_int16_writef(vectors[j_index][v].pos, pos_size);
     return;
 }
 uint8_t exec_adds()

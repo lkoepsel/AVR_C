@@ -60,7 +60,7 @@ int command_to_int(const char *command)
 {
     for (uint8_t i = 0; i < NUM_COMMANDS; ++i) {
         if (strcmp(command, commands[i]) == 0) {
-            return i; // Return 1-based index
+            return i;
         }
     }
     return -1; // Invalid command

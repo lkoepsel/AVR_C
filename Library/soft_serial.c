@@ -37,6 +37,17 @@ void soft_int16_write(int16_t number)
     soft_string_write(num_string, strlen(num_string));
 }
 
+void soft_int16_writef(int16_t number, int8_t len)
+{
+    itoa(number, num_string, 10);
+    int8_t int_len = strlen(num_string);
+    for (int8_t i = 0; i < len - int_len; i++)
+    {
+        soft_char_space();
+    }
+    soft_string_write(num_string, strlen(num_string));
+}
+
 void soft_int8_write(int8_t number)
 {
     itoa(number, num_string, 10);
