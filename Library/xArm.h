@@ -93,7 +93,8 @@ uint8_t print_voltage();
 uint16_t xArm_getBatteryVoltage();
 int8_t print_position(char *j);
 int8_t get_vect_num(char *v);
-uint8_t show_pos();
+uint8_t show_all();
+int8_t perf_all();
 uint16_t xArm_getPosition(uint8_t servo_id);
 
 #endif

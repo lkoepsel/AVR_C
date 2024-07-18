@@ -27,6 +27,7 @@ The vector approach is to make the assumption that an array of six joint (or ser
 * *vn: prompt* - indicates which vector your are modifying. All of the vector commands, *add, show, exec, reset*, will work on the *n* indicated vector. For example, at startup, the prompt is *v0:*, which indicates all changes will be applied to the base vector or vector 0.
 * *vect n* is the set vector command. This will set the vector to the *nth* vector and all changes will be made to it, until a new *vect n* command.
 * *vecs* is the display vector command. This will display all of the vectors, aligned by joint, on your terminal.
+* *perf* performs all of the vectors in order (0-9). At present it has a 1 second delay between vectors until it has been fully tested.
 
 There was a programming choice I needed to make, which was whether or not, to allow joint movement to be re-ordered. By this, I mean, within a vector, can *joint 3* move prior to *joint 1*or *joint 5* move prior to *joint 2*? For example, this becomes important when attempting to open the pincher (*joint 1*) after rotating to a new position (*joint 6*).
 
@@ -41,6 +42,7 @@ In summary, think in terms of vectors and not specific joint movements per vecto
 * **add** *joint position* - the **same as the move** command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each *joint*, and is expected to express a point in space by the xArm. At this time, there five vectors, *v0* - *v4*.
 * **show** - show active vector joint move list to be executed by *exec*
 * **vecs** - show complete matrix of moves, each joint is a line and each column is a vector
+* **perf** - perform all 10 vectors (0-9) with a one second delay between each vector move.
 * **exec** - execute active vector joint moves
 * **reset** - reset active vector joint moves to be empty
 * **all** - show all positions of servos

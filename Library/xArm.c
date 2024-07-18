@@ -504,9 +504,6 @@ int8_t print_position(char *j)
     {
         return badparms;
     }
-    debug(1);
-    soft_byte_write(g_joint + ASCII_INTEGER);
-    debug(2);
     int16_t position = xArm_getPosition(g_joint);
     if (position == -1)
     {
@@ -534,12 +531,25 @@ int8_t get_vect_num(char *v)
     return 0;
 }
 
-uint8_t show_pos()
+uint8_t show_all()
 {
   for (uint8_t i = 1; i <= N_joints; i++)
   {
     char j_c = i + ASCII_INTEGER;
     print_position(&j_c);
+  }
+  return 0;
+}
+
+int8_t perf_all()
+{
+  for (uint8_t i = 0; i < N_vectors; i++)
+  {
+    g_vect_num = i;
+    vector_prompt();
+    soft_char_NL();
+    exec_adds();
+    delay(1000);
   }
   return 0;
 }
