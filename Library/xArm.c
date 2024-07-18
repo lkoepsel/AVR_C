@@ -28,10 +28,6 @@ const char hdr_cmd_default_error[] PROGMEM = "Default Error";
 const char hdr_cmd_verify_error[] PROGMEM = " EEPROM Vector did not verify";
 const char hdr_cmd_move[] PROGMEM = "move ";
 const char hdr_cmd_v_col[] PROGMEM = "v";
-const char debug1[] PROGMEM = "debug:1 ";
-const char debug2[] PROGMEM = "debug:2 ";
-const char debug3[] PROGMEM = "debug:3 ";
-#define debug(n) soft_pgmtext_write(debug##n)
 
 char volt_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);

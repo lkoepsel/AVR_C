@@ -1,6 +1,10 @@
 #include "soft_serial.h"
 
 char num_string[6] = {};
+const char debug1[] PROGMEM = "debug:1 ";
+const char debug2[] PROGMEM = "debug:2 ";
+const char debug3[] PROGMEM = "debug:3 ";
+
 
 void init_soft_serial() 
 {
@@ -37,11 +41,11 @@ void soft_int16_write(int16_t number)
     soft_string_write(num_string, strlen(num_string));
 }
 
-void soft_int16_writef(int16_t number, int8_t len)
+void soft_int16_writef(int16_t number, int8_t size)
 {
     itoa(number, num_string, 10);
-    int8_t int_len = strlen(num_string);
-    for (int8_t i = 0; i < len - int_len; i++)
+    int8_t int_size = strlen(num_string);
+    for (int8_t i = 0; i < size - int_size; i++)
     {
         soft_char_space();
     }

@@ -13,7 +13,10 @@
 // void soft_char_NL(void) - write a new line
 // void soft_char_space(void) - write a space
 // void soft_pgmtext_write(const char* pgm_text) - write PROGMEM string
-
+// soft_int16_write - write a int16 number
+// soft_int16_writef - write a int16 number, size is width of field, fill with blanks
+// soft_int8_write - write a int8 number
+// debug(n) - write "debug n:" for debugging purposes, n = 1-3
 
 
 #ifndef SOFT_SERIAL_H
@@ -34,14 +37,17 @@
 #define SOFT_RX_PIN PIND2 // Define the RX pin
 #define SOFT_TX_PIN PIND3 // Define the TX pin
 
+extern const char debug1[] PROGMEM ;
+extern const char debug2[] PROGMEM ;
+extern const char debug3[] PROGMEM ;
+#define debug(n) soft_pgmtext_write(debug##n)
+
 void init_soft_serial() ;
 
 void soft_byte_write(uint8_t data) ;
 void soft_int16_write(int16_t number);
-void soft_int16_writef(int16_t number, int8_t len);
+void soft_int16_writef(int16_t number, int8_t size);
 void soft_int8_write(int8_t number);
-
-
 
 uint8_t soft_char_read() ;
 
