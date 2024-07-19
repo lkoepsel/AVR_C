@@ -6,14 +6,14 @@ This interface is closely modeled after the great work by Chris Courson, [here](
 
 I also took the approach to use the *Lewan-Soul/HiWonder Bus Servo Controller Communication Board* as a primitive API and developed the control intelligence in the Uno board. This gives greater programmatic control to the C programmer, however, it does require far more programming work to do so. This is a traditional programming dilemma...*the greater the control the program provides, the greater the work required*.
 ## Installation
-This process will ensure you are in the correct folder, it will fetch/merge the latest code from this repository, then compile/link/upload the new code to the Uno:
+This process will ensure you are in the correct folder, it will fetch/merge the latest code from this repository, then compile/link/upload the new code to the Uno. (*In this example, I use the directory *xArm* to hold *AVR_C*, your directory may differ such as *Documents* or *MyDocuments*. The remaining commands need to me identical.*):
 ```bash
 cd
 cd xArm/AVR_C
 git fetch
 git merge
 cd examples/xArm_Commander
-make flash
+make complete
 tio -b 9600 /dev/ttyUSB0
 ```
 
@@ -36,9 +36,10 @@ For this iteration, I decided that joint movement would need to go in sequential
 In summary, think in terms of vectors and not specific joint movements per vector. Each vector will perform a specific action, and in the case of higher numbered joints, they might need to have a vector specific to their action.
 
 ## Commands
-* **move** *joint position - move *joint* (1-6) to *position* (1 - 999)
+* **help** - print help menu, showing commands with a description
+* **move** *joint position* - move *joint* (1-6) to *position* (1 - 999)
 * **pos** *joint* - return the position of *joint* (1-6)
-* **vect** *n* - set the active vector, (0-9)
+* **vect** *v* - set the active vector, (0-9), active vector is a prompt "vn:" i.e; v0:
 * **add** *joint position* - the **same as the move** command, except it is added to a *vector* of moves which will be executed sequentially by *exec*. A *vector* can contain up to 6 moves, one for each *joint*, and is expected to express a point in space by the xArm. At this time, there five vectors, *v0* - *v4*.
 * **show** - show active vector joint move list to be executed by *exec*
 * **vecs** - show complete matrix of moves, each joint is a line and each column is a vector
@@ -56,7 +57,7 @@ In summary, think in terms of vectors and not specific joint movements per vecto
 
 # Important Considerations
 In the effort to not damage the xArms, please follow the rules:
-1. Always perform a *pos* command on a joint, prior to moving it. This will ensure you know the position of the joint.
+1. Always perform a *pos* command on a joint, prior to moving it. This will ensure you know the position of the joint. You may also perform an *all*, which will show all joint positions.
 2. Move in small increments, test the direction, before attempting a substantive move. For example, if the position is *320*, move to position *300*, to confirm the direction is what you expect, prior to moving *100* or more steps.
 
 ## Test Protocol
@@ -72,21 +73,21 @@ The *AVR_C xArm Commander* program utilizes three files to create an interface, 
 
 * *xArm_Commander* - the main.c program which is the main interface to the xArm API. It drives a command-based interface.
 * *xArm.h* - header program for the xArm primitives file, *xArm.c*
-* *xArm.c* - xArm primitives file, contains similar (if not the same) routines as those in the *Coursen xArm Arduino src* file.
+* *xArm.c* - xArm primitives file, contains similar (if not the same) routines as those in the *CCoursen xArm Arduino src* file.
 
 ## Communications
 This application has been designed to have two communication or serial ports, one uses the UART of the *ATmega328P* and the other is a software serial port which can be on any two of the digital pins. For simplicity, I use pins 2 and 3, right next to the pins 0 and 1, which comprise the Uno (ATmega328) serial port. 
 ### Adafruit Blue USB Type A to 4 Wire Red/Black/Green/White
 * red **power** **NO CONNECTION**
 * black **ground**
-* white **RX** into USB port
-* green **TX** out of the USB port.
+* white **RX** into USB port, needs to connect to *SOFT_TX_PIN*
+* green **TX** out of the USB port, needs to connect to *SOFT_RX_PIN*
 
 ### Connections
 * **Uno Pin 0** - *UART RX* to 2nd pin from the left on the xArm serial port (*TX*)
 * **Uno Pin 1** - *UART TX* to 3rd pin from the left on the xArm serial port (*RX*)
-* **Uno Pin 2** - *User designated RX* to a USB to serial cable (*TX*)
-* **Uno Pin 3** - *User designated TX* to a USB to serial cable (*RX*)
+* **Uno Pin 2** - *SOFT_RX_PIN* to a USB to serial cable (*TX*)
+* **Uno Pin 3** - *SOFT_TX_PIN* to a USB to serial cable (*RX*)
 * **Uno Pin GND** - Connect to GND on UART cable (black wire)
 * **Uno Pin GND** - Connect to GND on serial cable (black wire)
 
@@ -114,7 +115,3 @@ Here are a few steps to ensure you are successful with connecting to the Uno and
 2. Confirm that each *TX* line is connected to an *RX* line. For example, confirm that the xArm *TX*, the third pin from the left on the xArm serial connector is connected to the *Uno pin 0*. Do this for both serial connections, 4 lines in all.
 3. Confirm that the baud rate in the env.make file is set to *9600UL* and **not** *250000UL*. To check, enter *make env* in the *CLI*, this will print out all of the env.make variables.
 4. Make sure the xArm is turned off, while uploading code to the Uno, as the Uno and xArm share the USB port.
-## Control Example
-```bash
-
-```
