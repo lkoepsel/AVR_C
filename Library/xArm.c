@@ -3,7 +3,7 @@
 char xArm_in[xArm_MAX_BUFFER + 1] = {};
 char xArm_out[xArm_MAX_BUFFER + 1] = {};
 
-const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM";
+const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM, enter help to see commands";
 const char hdr_volt[] PROGMEM = "voltage: ";
 const char hdr_save[] PROGMEM = "Vectors saved";
 const char hdr_verified[] PROGMEM = "Vector verified";
@@ -28,6 +28,42 @@ const char hdr_cmd_default_error[] PROGMEM = "Default Error";
 const char hdr_cmd_verify_error[] PROGMEM = " EEPROM Vector did not verify";
 const char hdr_cmd_move[] PROGMEM = "move ";
 const char hdr_cmd_v_col[] PROGMEM = "v";
+
+const char help_0[] PROGMEM = "help     - print this menu";
+const char help_1[] PROGMEM = "move j p - move j (joint 1-6) to p (position 1 - 999)";
+const char help_2[] PROGMEM = "pos j    - return the position of j (joint 1-6)";
+const char help_3[] PROGMEM = "vect v   - set the active vector to v (vector 0-9), vn: prompt shows current vector";
+const char help_4[] PROGMEM = "add j p  - similar as move, except adds to active vector move list";
+const char help_5[] PROGMEM = "show     - show active vector move list";
+const char help_6[] PROGMEM = "vecs     - show complete matrix of moves, each joint is a line and each column is a vector";
+const char help_7[] PROGMEM = "perf     - perform all 10 vectors (0-9) with a one second delay between each vector move";
+const char help_8[] PROGMEM = "exec     - execute active vector move list";
+const char help_9[] PROGMEM = "reset    - reset all active vector moves to 0";
+const char help_10[] PROGMEM = "all      - show all positions of servos";
+const char help_11[] PROGMEM = "save     - save all vectors to EEPROM all vectors, verified on save";
+const char help_12[] PROGMEM = "load     - load all vectors from EEPROM, verified on load";
+const char help_13[] PROGMEM = "skip     - set the position of a joint to 0, skipping it on moves";
+const char help_14[] PROGMEM = "volt     - return the voltage of the battery";
+const char help_15[] PROGMEM = "beep     - cause the arm to beep";
+const char* const help_table[] PROGMEM =
+{
+    help_0,
+    help_1,
+    help_2,
+    help_3,
+    help_4,
+    help_5,
+    help_6,
+    help_7,
+    help_8,
+    help_9,
+    help_10,
+    help_11,
+    help_12,
+    help_13,
+    help_14,
+    help_15
+};
 
 char volt_string[4] = {};
 uint8_t volt_len = sizeof(volt_string)/sizeof(volt_string[0]);
@@ -59,6 +95,17 @@ void init_xArm()
 {   
     soft_pgmtext_write(title);
     soft_char_NL();
+}
+
+void print_help()
+{
+  for (uint8_t i = 0; i < N_COMMANDS; i++)
+  {
+      soft_pgmtext_write(pgm_read_ptr(&(help_table[i])));
+      soft_char_NL();
+
+  }
+  return;
 }
 
 uint8_t lowByte(uint16_t value) {

@@ -38,6 +38,8 @@
 #define MAX_DELIMS 1
 #define N_joints 6
 #define N_vectors 10
+#define N_COMMANDS 16
+
 #define ASCII_INTEGER 0x30 // constant added to an integer(0-9) to make ASCII
 
 extern char *tokens[MAX_TOKENS];
@@ -59,6 +61,8 @@ extern char xArm_in[xArm_MAX_BUFFER + 1];
 extern char xArm_out[xArm_MAX_BUFFER + 1];
 
 void init_xArm();
+void print_help();
+
 void echo_command(uint8_t n);
 void vector_prompt();
 void print_result(uint8_t e);
