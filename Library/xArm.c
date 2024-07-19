@@ -99,6 +99,8 @@ void init_xArm()
 
 void print_help()
 {
+  soft_char_NL();
+
   for (uint8_t i = 0; i < N_COMMANDS; i++)
   {
       soft_pgmtext_write(pgm_read_ptr(&(help_table[i])));
