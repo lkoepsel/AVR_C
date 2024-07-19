@@ -6,7 +6,7 @@ This interface is closely modeled after the great work by Chris Courson, [here](
 
 I also took the approach to use the *Lewan-Soul/HiWonder Bus Servo Controller Communication Board* as a primitive API and developed the control intelligence in the Uno board. This gives greater programmatic control to the C programmer, however, it does require far more programming work to do so. This is a traditional programming dilemma...*the greater the control the program provides, the greater the work required*.
 ## Installation
-This process will ensure you are in the correct folder, it will fetch/merge the latest code from this repository, then compile/link/upload the new code to the Uno. (*In this example, I use the directory *xArm* to hold *AVR_C*, your directory may differ such as *Documents* or *MyDocuments*. The remaining commands need to me identical.*):
+This process will ensure you are in the correct folder, it will fetch/merge the latest code from this repository, then compile/link/upload the new code to the Uno. (*In this example, I use the directory *xArm* to hold *AVR_C*, your directory may differ such as *Documents* or *MyDocuments*. The remaining commands need to be the same, though your device number might be different. For specific device detection, see **Communications** below.*):
 ```bash
 cd
 cd xArm/AVR_C
@@ -77,6 +77,33 @@ The *AVR_C xArm Commander* program utilizes three files to create an interface, 
 
 ## Communications
 This application has been designed to have two communication or serial ports, one uses the UART of the *ATmega328P* and the other is a software serial port which can be on any two of the digital pins. For simplicity, I use pins 2 and 3, right next to the pins 0 and 1, which comprise the Uno (ATmega328) serial port. 
+
+To determine which serial port to use, run the command *tio -l*, this will list the available ports:
+```bash
+tio -l
+Device            TID     Uptime [s] Driver           Description
+----------------- ---- ------------- ---------------- --------------------------
+/dev/ttyUSB0      yNjM     24655.088 cp210x           CP2102 USB to UART Bridge Controller
+/dev/ttyACM0      khhE         4.766 cdc_acm          USB2.0 Hub
+
+By-id
+--------------------------------------------------------------------------------
+/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0
+/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_7513533363635141E001-if00
+
+By-path
+--------------------------------------------------------------------------------
+/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0-port0
+/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0
+
+Configuration profiles (/home/lkoepsel/.tioconfig)
+--------------------------------------------------------------------------------
+acm0                acm1                usb0                xarmhex1
+xarmhex0            usb-devices
+```
+
+Notice there are two ports, *ttyUSB0* and *ttyACM0*, how do we know which one is which. Look in the next section, as the *CP2102 USB...* does **NOT** have *www.arduino.cc*, which means it is our *soft_serial* port and the other is the *Uno*.
+
 ### Adafruit Blue USB Type A to 4 Wire Red/Black/Green/White
 * red **power** **NO CONNECTION**
 * black **ground**
