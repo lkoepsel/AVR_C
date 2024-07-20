@@ -30,12 +30,15 @@
 #include "uart.h"
 #include "unolib.h"
 
-#define SOFT_BAUD 9600
-#define BIT_DURATION (1000000 / SOFT_BAUD) // Bit duration in microseconds
-#define CR 13
-
 #define SOFT_RX_PIN PIND2 // Define the RX pin
 #define SOFT_TX_PIN PIND3 // Define the TX pin
+#define SOFT_BAUD 9600
+#define BIT_DURATION (1000000 / SOFT_BAUD) // Bit duration in microseconds
+
+#define CR 13
+#define ASCII_INTEGER 0x30 // constant added to an integer(0-9) to make ASCII
+
+
 
 extern const char debug1[] PROGMEM ;
 extern const char debug2[] PROGMEM ;

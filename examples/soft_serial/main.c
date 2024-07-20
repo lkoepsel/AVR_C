@@ -6,23 +6,36 @@
 #include "soft_serial.h"
 #include "delay.h"
 
+const char prompt[] PROGMEM = "Enter up to 9 chars: ";
+const char chr_recd[] PROGMEM = " chars received\n";
+#define N_in 10
+#define N_out 10
+
 int main(void) {
     // Initialize software serial and hardware serial (UART)
     init_serial();
 
-    char soft_out[18] = {"Enter <11 chars: "};
-    char soft_in[11] = {""};
+    char soft_in[N_in] = {""};
+    char soft_out[N_out] = {""};
 
     // Example: Send and receive data
-    puts("Enter upto 10 characters on soft terminal");
     init_soft_serial();
+    soft_pgmtext_write(prompt);
+    soft_char_NL();
+    puts("Soft serial has been initialized and title printed");
+
     while (1) {
-        soft_string_write(soft_out, (sizeof(soft_out)/sizeof(soft_out[0])));
 
         // Receive data
-        uint8_t received = soft_readLine(soft_in, 10);
-        printf("On soft term %i chars received\n", received);
-        printf("Chars are: %s\n", soft_in);
+        uint8_t received = soft_readLine(soft_in, N_in - 1);
+        soft_string_write(soft_out, (sizeof(soft_out)/sizeof(soft_out[0])));
+        soft_byte_write(received + ASCII_INTEGER);
+        soft_pgmtext_write(chr_recd);
+        soft_string_write(soft_in, received + 1);
+        soft_char_NL();
+
+        printf("On soft term %i ", received);
+        printf("chars received: %s\n", soft_in);
     }
 
     return 0;

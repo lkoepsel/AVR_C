@@ -40,8 +40,6 @@
 #define N_vectors 10
 #define N_COMMANDS 16
 
-#define ASCII_INTEGER 0x30 // constant added to an integer(0-9) to make ASCII
-
 extern char *tokens[MAX_TOKENS];
 
 // use the labels below to results for printing
