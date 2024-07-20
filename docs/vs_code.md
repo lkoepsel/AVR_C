@@ -22,7 +22,7 @@ The location of libraries will be different based on how gcc was installed. If y
                 "/usr/local/avr/include/**",
                 "${workspaceFolder}/**"
             ],
-            "defines": [  ],
+            "defines": ["__AVR_ATmega328P__"],
             "compilerPath": "/usr/local/avr/bin/avr-gcc", 
             "compilerArgs": [ ],
             "cStandard": "c99",
@@ -46,7 +46,7 @@ The location of libraries will be different based on how gcc was installed. If y
                 "/usr/lib/avr/include/**",
                 "${workspaceFolder}/**"
             ],
-            "defines": [  ],
+            "defines": ["__AVR_ATmega328P__"],
             "compilerPath": "/usr/bin/avr-gcc", 
             "compilerArgs": [ ],
             "cStandard": "c99",
