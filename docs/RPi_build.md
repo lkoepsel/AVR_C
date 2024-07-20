@@ -806,3 +806,35 @@ nano ~/.ssh/known_hosts
 # ctrl-s to save
 # ctrl-x to exit
 ```
+
+### Determine exact model
+```bash
+cat /proc/cpuinfo
+processor   : 0
+BogoMIPS    : 38.40
+Features    : fp asimd evtstrm crc32 cpuid
+CPU implementer : 0x41
+CPU architecture: 8
+CPU variant : 0x0
+CPU part    : 0xd03
+CPU revision    : 4
+
+...
+
+Revision    : a22082
+Serial      : 000000009f0ea51b
+Model       : Raspberry Pi 3 Model B Rev 1.2
+```
+
+### Add USB Boot to Model 3B (not 3B+)
+```bash
+sudo nano /boot/firmware/config.txt
+[All]
+program_usb_boot_mode=1
+# Ctrl-s Ctrl-x
+sudo reboot now
+# to confirm
+vcgencmd otp_dump | grep 17:
+17:3020000a
+```
+

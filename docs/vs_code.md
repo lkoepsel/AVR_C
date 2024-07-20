@@ -9,7 +9,9 @@ Perform these steps in VS Code:
 2. Copy the content below then in *VS Code CMD-a* to select all of the existing *c_cpp_properties.json* file
 3. *CMD-v* to paste and *CMD-s* to save. 
 
-## c_cpp_properties.json
+The location of libraries will be different based on how gcc was installed. If you compiled gcc yourself (Option 3 on wellys.com), then use the first json file. If you used the default installation from Bookworm, use the second JSON file. VS Code will advise if it isn't able to find the library files.
+## User built C (gcc 14.1)
+### c_cpp_properties.json
 ```json
 {
     "configurations": [
@@ -22,6 +24,30 @@ Perform these steps in VS Code:
             ],
             "defines": [  ],
             "compilerPath": "/usr/local/avr/bin/avr-gcc", 
+            "compilerArgs": [ ],
+            "cStandard": "c99",
+            "cppStandard": "c++98",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}
+```
+
+## Bookworm Installed C (gcc 5.4)
+### c_cpp_properties.json
+```json
+{
+    "configurations": [
+        {
+            "name": "AVR",
+            "includePath": [
+                "/usr/lib/avr/",
+                "/usr/lib/avr/include/**",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [  ],
+            "compilerPath": "/usr/bin/avr-gcc", 
             "compilerArgs": [ ],
             "cStandard": "c99",
             "cppStandard": "c++98",
