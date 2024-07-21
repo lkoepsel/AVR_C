@@ -25,9 +25,10 @@ void init_soft_serial()
 
     // Configure Timer1 for bit timing
     TCCR1A = 0;                             // Normal mode
-    TCCR1B = (1 << WGM12) | (1 << CS10);    // CTC mode, prescaler 1
-    OCR1A = (F_CPU / SOFT_BAUD) - 1;        // Set compare match value
+    TCCR1B = (1 << WGM12) | (1 << CS11);    // CTC mode, prescaler 1
+    OCR1A = (F_CPU / 8 / SOFT_BAUD) - 1;        // Set compare match value
     TIMSK1 |= (1 << OCIE1A);                // Enable compare match interrupt
+
 }
 
 void soft_byte_write(uint8_t data)

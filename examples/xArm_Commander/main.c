@@ -12,6 +12,7 @@
 #include "xArm.h"
 #include "uart.h"
 #include "soft_serial.h"
+#include "delay.h"
 
 // tokenLine - break arg:input into tokens
 // on entry arg:input has tokens each separated by a delim, defined below
@@ -206,6 +207,8 @@ int main(void)
     // soft_serial is used to communicate with user
     init_serial();
     init_soft_serial();
+    // sei(); // Enable global interrupts
+    // delay(500);
     init_xArm();
 
     // input is the buffer for the soft_serial port

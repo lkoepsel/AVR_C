@@ -3,7 +3,7 @@
 char xArm_in[xArm_MAX_BUFFER + 1] = {};
 char xArm_out[xArm_MAX_BUFFER + 1] = {};
 
-const char title[] PROGMEM = "\nxArm Commander: Enter commands to interact w xARM, enter help to see commands";
+const char title[] PROGMEM = "xArm Commander: Enter commands to interact w xARM, enter help to see commands";
 const char hdr_volt[] PROGMEM = "voltage: ";
 const char hdr_save[] PROGMEM = "Vectors saved";
 const char hdr_verified[] PROGMEM = "Vector verified";
@@ -92,6 +92,7 @@ int8_t joint_size = 7;
 
 void init_xArm()
 {
+    soft_char_NL();
     soft_pgmtext_write(title);
     soft_char_NL();
 }
