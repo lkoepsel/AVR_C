@@ -74,3 +74,8 @@ PINB |= (_BV(PORTB5));
 #define set_bit(port, bit) ((port) |= (1 << (bit)))
 #define clr_bit(port, bit) ((port) &= ~(1 << (bit)))
 #define tog_bit(port, bit) ((port) |= (1 << (bit)))
+
+#define BLUE_OUT (DDRD |= (_BV(PORTD7)))
+#define RED_OUT (DDRB |= (_BV(PORTB5)))
+#define BLUE (PIND |= (_BV(PORTD7)))
+#define RED (PINB |= (_BV(PORTB5)))

@@ -30,10 +30,10 @@ void soft_serial_init()
     PORTD |= (1 << SOFT_RX_PIN);
 
     // Configure Timer1 for bit timing
-    TCCR1A = 0;                          // Normal mode
-    TCCR1B = (1 << WGM12) | (1 << CS11); // CTC mode, prescaler 8
-    OCR1A = (F_CPU / 8 / BAUD_RATE) - 1; // Set compare match value
-    TIMSK1 |= (1 << OCIE1A);             // Enable compare match interrupt
+    TCCR1A = 0;                             // Normal mode
+    TCCR1B = (1 << WGM12) | (1 << CS10);    // CTC mode, prescaler 1
+    OCR1A = (F_CPU / BAUD_RATE) - 1;        // Set compare match value
+    TIMSK1 |= (1 << OCIE1A);                // Enable compare match interrupt
 }
 
 void soft_serial_write(uint8_t data)
