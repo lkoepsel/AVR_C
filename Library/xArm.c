@@ -385,7 +385,7 @@ uint8_t exec_adds()
 
 uint8_t reset_adds()
 {
-    for (uint8_t i = 1; i <= N_joints; i++)
+    for (int8_t i = 0; i < N_joints; i++)
     {
         vectors[i][g_vect_num].pos = 0;
         vectors[i][g_vect_num].dur = 1000;
