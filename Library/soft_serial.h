@@ -32,7 +32,6 @@
 
 #define SOFT_RX_PIN PIND2 // Define the RX pin
 #define SOFT_TX_PIN PIND3 // Define the TX pin
-#define SOFT_BAUD 9600
 #define BIT_DURATION (1000000 / SOFT_BAUD) // Bit duration in microseconds
 
 #define CR 13

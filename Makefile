@@ -54,13 +54,13 @@ TARGET = main
 
 ifeq ($(LIBRARY),no_lib)
 	SOURCES=$(wildcard *.c )
-	CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD)  \
+	CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD)  -DSOFT_BAUD=$(SOFT_BAUD)  \
 	-DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
 
 else
     SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
-    CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I.  -I$(LIBDIR) \
-	-DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
+    CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD)   -DSOFT_BAUD=$(SOFT_BAUD) -I. \
+	-I$(LIBDIR) -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
 endif
 
 # See Note re: CPPFLAGS if using/not using LIBDIR, pick only one LIB or NO_LIB
