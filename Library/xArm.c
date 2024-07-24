@@ -130,10 +130,10 @@ int8_t valid_joint(char *jnt)
     g_joint = atoi(jnt);
     if ((g_joint < 1) || (g_joint > 6))
     {
-        soft_byte_write(g_joint + ASCII_INTEGER);
-        soft_char_space();
+        soft_char_write(g_joint + ASCII_INTEGER);
+        soft_char_BL();
         soft_pgmtext_write(hdr_cmd_badjoint);
-        soft_byte_write(N_joints + ASCII_INTEGER);
+        soft_char_write(N_joints + ASCII_INTEGER);
         soft_char_NL();
         return -1;
     }
@@ -146,7 +146,7 @@ int16_t valid_position(char *c_position)
     if ((g_position < 1) || (g_position > 999))
     {
         soft_string_write(tokens[t_pos], strlen(tokens[t_pos]));
-        soft_char_space();
+        soft_char_BL();
         soft_pgmtext_write(hdr_cmd_badposition);
         soft_char_NL();
         return -1;
@@ -161,7 +161,7 @@ int8_t valid_vector(char *vect)
     {
         v = 0;
         soft_pgmtext_write(hdr_cmd_badvect);
-        soft_byte_write(N_vectors + ASCII_INTEGER - 1);
+        soft_char_write(N_vectors + ASCII_INTEGER - 1);
         soft_pgmtext_write(hdr_cmd_vect_0);
         soft_char_NL();
         return -1;
@@ -172,10 +172,10 @@ int8_t valid_vector(char *vect)
 void vector_prompt()
 {
     int8_t vector_char = g_vect_num + ASCII_INTEGER;
-    soft_byte_write(0x76);
-    soft_byte_write(vector_char);
-    soft_byte_write(0x3a);
-    soft_char_space();
+    soft_char_write(0x76);
+    soft_char_write(vector_char);
+    soft_char_write(0x3a);
+    soft_char_BL();
 }
 
 void echo_command(uint8_t n)
@@ -184,7 +184,7 @@ void echo_command(uint8_t n)
     for (uint8_t i = 0; i <= n; i++)
     {
         soft_string_write(tokens[i], strlen(tokens[i]));
-        soft_char_space();
+        soft_char_BL();
     }
     soft_char_NL();
 }
@@ -230,7 +230,7 @@ void print_result(uint8_t e)
 
     // default: error not found
     default:
-        soft_byte_write(e + ASCII_INTEGER);
+        soft_char_write(e + ASCII_INTEGER);
         soft_pgmtext_write(hdr_cmd_default_error);
         break;
     }
@@ -336,10 +336,10 @@ uint8_t show_vecs()
     for (int8_t i = 0; i < N_vectors; i++)
     {
         soft_pgmtext_write(hdr_cmd_v_col);
-        soft_byte_write(i + ASCII_INTEGER);
+        soft_char_write(i + ASCII_INTEGER);
         for (int8_t i = 0; i < joint_size + pos_size; i++)
         {
-            soft_char_space();
+            soft_char_BL();
         }
     }
     soft_char_NL();
@@ -349,8 +349,8 @@ uint8_t show_vecs()
         {
             soft_pgmtext_write(hdr_cmd_move);
             show_joint_pos(j, v);
-            soft_char_space();
-            soft_char_space();
+            soft_char_BL();
+            soft_char_BL();
         }
         soft_char_NL();
     }
@@ -359,8 +359,8 @@ uint8_t show_vecs()
 
 void show_joint_pos(int8_t j, int8_t v)
 {
-    soft_byte_write(j + ASCII_INTEGER);
-    soft_char_space();
+    soft_char_write(j + ASCII_INTEGER);
+    soft_char_BL();
     int8_t j_index = j - 1;
     soft_int16_writef(vectors[j_index][v].pos, pos_size);
     return;
@@ -513,7 +513,7 @@ int8_t verify_vectors(int8_t v, uint16_t addr)
     }
     if (!verify)
     {
-        soft_byte_write(v + ASCII_INTEGER);
+        soft_char_write(v + ASCII_INTEGER);
         soft_pgmtext_write(hdr_cmd_verify_error);
         soft_char_NL();
         return -1;
@@ -562,8 +562,8 @@ int8_t print_position(char *j)
     {
         return badparms;
     }
-    soft_byte_write(*j);
-    soft_char_space();
+    soft_char_write(*j);
+    soft_char_BL();
     soft_pgmtext_write(hdr_pos);
     soft_int16_write(position);
     soft_char_NL();
@@ -578,8 +578,8 @@ int8_t get_vect_num(char *v)
         g_vect_num = 0;
         return badparms;
     }
-    // soft_byte_write(*v);
-    // soft_char_space();
+    // soft_char_write(*v);
+    // soft_char_BL();
     // soft_char_NL();
     return 0;
 }

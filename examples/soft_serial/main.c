@@ -30,7 +30,7 @@ int main(void) {
         // Receive data
         uint8_t received = soft_readLine(soft_in, N_in - 1);
         soft_string_write(soft_out, (sizeof(soft_out)/sizeof(soft_out[0])));
-        soft_byte_write(received + ASCII_INTEGER);
+        soft_char_write(received + ASCII_INTEGER);
         soft_pgmtext_write(chr_recd);
         soft_string_write(soft_in, received + 1);
         soft_char_NL();

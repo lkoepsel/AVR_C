@@ -50,7 +50,7 @@ Copy and paste the text below. Be sure to go to step 3!
 
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
 MCU = atmega328p
-SERIAL = /dev/ttyACM0
+SERIAL = /dev/tty.usbmodem3101
 F_CPU = 16000000UL
 BAUD  = 250000UL
 SOFT_RESET = 0
@@ -61,6 +61,7 @@ PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 TOOLCHAIN =
 OS =
 TC3_RESET = 0
+SOFT_BAUD = 28800UL
 
 
 # Arduino UNO and compatible boards using Atmel-ICE Debugger in atmelice_isp mode
@@ -76,6 +77,7 @@ TC3_RESET = 0
 # TOOLCHAIN = 
 # OS = mac
 # TC3_RESET = 0
+# SOFT_BAUD = 28800UL
 
 # Arduino UNO and compatible boards using Atmel Dragon
 # MCU = atmega328p
@@ -90,6 +92,7 @@ TC3_RESET = 0
 # TOOLCHAIN = 
 # OS = mac
 # TC3_RESET = 0
+# SOFT_BAUD = 28800UL
 
 # Arduino UNO and compatible boards using Atmel SNAP in ISP mode
 # MCU = atmega328p
@@ -104,6 +107,7 @@ TC3_RESET = 0
 # TOOLCHAIN = 
 # OS = mac
 # TC3_RESET = 0
+# SOFT_BAUD = 28800UL
 
 # Microchip 328PB Xplained Mini board
 # MCU = atmega328pb
@@ -118,11 +122,12 @@ TC3_RESET = 0
 # TOOLCHAIN = 
 # OS = mac
 # TC3_RESET = 0
+# SOFT_BAUD = 28800UL
 
 # Microchip Curiousity Nano AVR64DD32
 # avrdude -p avr64dd32 -c pkobn_updi -P usb -t
 # MCU = avr64dd32
-# SERIAL = /dev/cu.usbmodem3102
+# SERIAL = /dev/ttyACM0
 # F_CPU = 16000000UL
 # BAUD  = 250000UL
 # SOFT_RESET = 0
@@ -133,6 +138,7 @@ TC3_RESET = 0
 # TOOLCHAIN = 
 # OS = mac
 # TC3_RESET = 0
+# SOFT_BAUD = 28800UL
 ```
 
 ## 3. Save and close *nano*
