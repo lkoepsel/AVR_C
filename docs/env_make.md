@@ -50,7 +50,7 @@ Copy and paste the text below. Be sure to go to step 3!
 
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
 MCU = atmega328p
-SERIAL = /dev/tty.usbmodem3101
+SERIAL = /dev/ttyACM0
 F_CPU = 16000000UL
 BAUD  = 250000UL
 SOFT_RESET = 0
