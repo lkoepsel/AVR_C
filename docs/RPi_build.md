@@ -88,16 +88,18 @@ sudo apt install -y build-essential cmake pkg-config libelf-dev libhidapi-dev li
 ## 1. avr-binutils 
 ### 1.1. Download source
 ```bash
+# this process will use your home_folder/avr-build to create the tool chain
+cd
 mkdir ~/avr-build
 cd ~/avr-build
-wget https://ftp.gnu.org/gnu/binutils/binutils-2.42.tar.gz
-tar -xzf binutils-2.42.tar.gz
+wget https://ftp.gnu.org/gnu/binutils/binutils-2.43.1.tar.gz
+tar -xzf binutils-2.43.1.tar.gz
 
 ```
 
 ### 1.2. Build and install (4m 12s)
 ```bash
-cd binutils-2.42
+cd binutils-2.43.1
 ./configure --prefix=/usr/local/avr --target=avr --disable-nls --disable-werror 
 make -j 4
 sudo make install
@@ -107,13 +109,13 @@ sudo make install
 ### 2.1. Download source 
 ```bash
 cd ~/avr-build
-wget https://ftp.gnu.org/gnu/gcc/gcc-14.1.0/gcc-14.1.0.tar.gz
-tar -xzf gcc-14.1.0.tar.gz
+wget https://ftp.gnu.org/gnu/gcc/gcc-15.1.0/gcc-15.1.0.tar.gz
+tar -xzf gcc-15.1.0.tar.gz
 ```
 
 ## 2.2 Build and install (51m 14s for 9.5, 1hr 56m for 14.1)
 ```bash
-cd gcc-14.1.0
+cd gcc-15.1.0
 ./contrib/download_prerequisites
 mkdir build
 cd build
@@ -191,9 +193,9 @@ make flash
 The CLI serial monitor program *tio* is quite handy and has been upgraded significantly in the last year. The new version is at least 3.5 and will be installed.
 ```bash
 cd ~/avr-build
-wget https://github.com/tio/tio/releases/download/v3.5/tio-3.5.tar.xz
-tar -xvf tio-3.5.tar.xz
-cd tio-3.5/
+wget https://github.com/tio/tio/releases/download/v3.9/tio-3.9.tar.xz
+tar -xvf tio-3.9.tar.xz
+cd tio-3.9/
 sudo apt install -y libglib2.0-dev liblua5.2-dev
 meson setup build
 meson compile -C build

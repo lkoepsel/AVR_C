@@ -10,7 +10,7 @@
 **Documentation for using AVR_C to command [xArm Robotics Arm](./docs/xArm.md)**
 
 ## Introduction
-This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familar (Arduino) context. This serves the following:
+This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familiar (Arduino) context. This serves the following:
 * The *C language* used in this framework follows the [*C99*](https://iso-9899.info/wiki/The_Standard) standard and doesn't introduce anything which would not be considered *standard C*. This is in contrast to the Arduino software framework, which introduces classes such as *Serial* to process serial input, as well as *C++*.
 * The value of programming the *ATmega328P* in *C* is that it is easier to understand the *C* concepts using an 8-bit processor as compared to programming in *C* on a personal computer.
 * It also allows someone to learn how to program an embedded microcontroller in a less complex environment as compared to a 32-bit microcontroller such as the Raspberry Pi Pico.
@@ -37,7 +37,7 @@ If you have an existing Uno, it will work very well. If you wish to add hardware
 
 Other Microchip AVR-compatible microcontrollers will more than likely work, I haven't the time to test them. If the processor is not the ATmega328P, it will be important to set the MCU and processor frequency (F_CPU) variables in the Makefile. For specific information as to how to setup your environment specific to your board and microcontroller, see the content for **Makefile** below.
 ## Arduino Framework  and standard C Replacement Routines
-Much of the Standard C Library is provided by [AVR Libc](https://www.nongnu.org/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
+Much of the Standard C Library is provided by [AVR Libc](https://avrdudes.github.io/avr-libc/). I recommend having a link to the online manual open while developing code. The code in this repository is the code required to program the Uno using similar routines as in the Arduino Framework.
 ### Arduino Framework Functions
 
 **Each function used requires an #include in order to be used (example):**
@@ -102,7 +102,7 @@ There are six examples of multi-tasking in the examples folder. Two are 3rd part
 
 In a nutshell:
 * *multifunction* is the first iteration, simply a proof of concept that the *"single-line scheduler"* works.
-* *multi_Ard* takes the previous code example, which is fast and simplifies it using Arduino-type calls (pinMode and digitialWrite) for easier integration
+* *multi_Ard* takes the previous code example, which is fast and simplifies it using Arduino-type calls (pinMode and digitalWrite) for easier integration
 * *multi-array* moves away from a separate function framework to a common function using an array to multitask
 * *multi_struct* uses a similar approach as the previous code, however uses a struct to provide fully overlapping multi-tasking
 
@@ -150,7 +150,7 @@ There are four multitasking examples in the *examples* folder. Only one of them 
 * **multi_Ard** Based on *oneline*, this version incorporates *digitalWrite()* from the AVR_C Library.
 * **multi_array** Based on *multi_Ard*, this version incorporates *digitalWrite()* and uses an array of tasks to perform multitasking.
 * **multifunction** Based on *oneline*, this is the original version to test the limits as to how well the concept worked.
-* **oneline** [A Multitasking Kernal in One Line of code](https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/) The simplest example of round robin multitasking. Only recommended as an simple illustration as to how to multitask using pointers to functions. Highest speed, smallest footprint 466 bytes, minimal scheduling.
+* **oneline** [A Multitasking Kernel in One Line of code](https://www.embedded.com/a-multitasking-kernel-in-one-line-of-code-almost/) The simplest example of round robin multitasking. Only recommended as an simple illustration as to how to multitask using pointers to functions. Highest speed, smallest footprint 466 bytes, minimal scheduling.
 
 ### Edit the Library!
 I encourage you to play around with the Library to better understand C and programming the Uno. **IF YOU DO CHANGE THE ROUTINES IN THE LIBRARY**, you will need to run *make LIB_clean* to clean the Library folder and force it to recompile all of the functions.
@@ -240,7 +240,7 @@ If either is missing, *make* will assume you are using the GNU tool chain, **whi
 ### Code Size (LIBRARY)
 In some situations, its advantageous **to not use** the AVR_C library (*/Library*), to reduce code size. You can change this using the Makefile. 
 
-* The default is to use the AVR_C libary, which is *LIBRARY =*. This is required for the majority of all examples.
+* The default is to use the AVR_C library, which is *LIBRARY =*. This is required for the majority of all examples.
 
 * To compile to a small code size, use *LIBRARY = no_lib*. This will force the compiler to only use the code in the main.c, other files in the folder and the standard *avr-libc* code. Examples of doing this are in the example, *blink_avr*, where the code is reduced to roughly 188 bytes from over 1300 bytes.  
 
