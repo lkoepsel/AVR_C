@@ -555,40 +555,21 @@ nano bloom.yaml
 ```
 ```yaml
 environments:
-  xplain:
-    shutdownPostDebugSession: true
+  default:
+    shutdown_post_debug_session: true
 
     tool:
-      name: "xplained-mini"
-
+      name: "xplained_mini"
+ 
     target:
       name: "atmega328pb"
-      physicalInterface: "debug-wire"
-      hardwareBreakpoints: true
-      manageDwenFuseBit: true
-      variantName: "atmega328p-pu"
+      physical_interface: "debug_wire"
+      hardware_breakpoints: true
+      manage_dwen_fuse_bit: true
 
     server:
-      name: "avr-gdb-rsp"
-      ipAddress: "127.0.0.1"
-      port: 1442
-
-  snap:
-    shutdownPostDebugSession: true
-
-    tool:
-      name: "snap"
-
-    target:
-      name: "atmega328p"
-      physicalInterface: "debug-wire"
-      hardwareBreakpoints: true
-      manageDwenFuseBit: true
-      variantName: "atmega328p-pu"
-
-    server:
-      name: "avr-gdb-rsp"
-      ipAddress: "127.0.0.1"
+      name: "avr_gdb_rsp"
+      ip_address: "127.0.0.1"
       port: 1442
 ```
 *Ctrl-S* (save) *Ctrl-X* (exit)
