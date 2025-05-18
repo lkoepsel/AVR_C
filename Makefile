@@ -152,6 +152,7 @@ help:
 	@echo "make complete - delete all .o files in folder & Library then verbose flash, for complete rebuild/upload"
 	@echo "make verbose - make flash with more programming information for debugging upload"
 	@echo "make env - print active env.make variables"
+	@echo "make size - print size information of elf file"
 	@echo "make help - print this message"
 
 # Optionally create listing file from .elf
