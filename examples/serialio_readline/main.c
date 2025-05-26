@@ -20,14 +20,14 @@ int main(void) {
     init_serial();
 
     // input is the buffer for the serial port
-    // delims are the token delimitors
+    // delims are the token delimiters
     char input[MAX_BUFFER + 1] = {};
     char delims[MAX_DELIMS + 1] = {" "};
 
     puts("Serial I/O Test: readLine with tokens");
     printf("Enter text up to %i characters, or end w/ CR\n", MAX_BUFFER);
     printf("Line will be parsed into tokens\n");
-    printf("Possible delimitors are (w/ ASCII code): ");
+    printf("Possible delimiters are (w/ ASCII code): ");
     for (uint8_t delim=0; delim < MAX_DELIMS; delim++)
     {
         printf("'%c' 0x%x ", delims[delim], delims[delim]);
@@ -61,4 +61,5 @@ int main(void) {
         printf("%5i %s\n", index, tokens[index]);
 
     }
+    printf("\nNormal Termination\n");
 }
