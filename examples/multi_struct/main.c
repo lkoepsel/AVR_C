@@ -26,7 +26,7 @@ struct flasher
    uint8_t state;           // Is pin HIGH or LOW
    uint32_t on;             // Time on
    uint32_t off;            // Time off
-   uint32_t elapsed;        // Time elapsed sinced last in loop
+   uint32_t elapsed;        // Time elapsed since last in loop
 } ;
 
 // now setup an array of structs to easily manage them, we can 
@@ -79,9 +79,9 @@ int main(void)
     // initialize each flasher (struct: {pin, state, on, off, elapsed})
     // in comparison to Classy example, each LED only requires 1 line of code :)
     // AND update MAX_FLASHERS to number of flashers
-    init(0, 4, LOW, DEFAULT_ON, DEFAULT_OFF, 0);
-    init(1, 5, LOW, DEFAULT_ON << 1, DEFAULT_OFF << 1, 0);
-    init(2, 6, LOW, DEFAULT_ON << 2, DEFAULT_OFF << 2, 0);
+    init(0, 2, LOW, DEFAULT_ON, DEFAULT_OFF, 0);
+    init(1, 3, LOW, DEFAULT_ON << 1, DEFAULT_OFF << 1, 0);
+    init(2, 4, LOW, DEFAULT_ON << 2, DEFAULT_OFF << 2, 0);
 
     // same as the Adafruit example, update is very simple
     // in this case, we simply increment through our array of structs
