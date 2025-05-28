@@ -14,3 +14,7 @@ If you want to use a Raspberry Pi (3/4/5) as a C development platform, this page
 
 ## xArm.md
 In my teaching, I have begin to write code for the xArm 6DOF robotic arm. Its a nice, however, expensive robotic arm. This page will describe how to use *AVR_C* (*C99 C*) as compared to *Arduino*.
+
+## multitasking_kernel.md
+A introductory article on multi-tasking, with a great example of how to multitasking in C using a few lines of code. Article is no longer on the embedded.com site, so I've reproduced it here.
+
