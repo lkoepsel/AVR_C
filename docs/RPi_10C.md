@@ -395,6 +395,15 @@ PubkeyAuthentication yes
 sudo reboot now
 ```
 
+### Copy Your Public key to RPi
+```
+cd ~ && scp .ssh/id_rsa.pub pidev-6.local:
+ssh 173.255.210.113
+cd ~ && mkdir .ssh && mv id_rsa.pub .ssh/authorized_keys
+chown -R lkoepsel:lkoepsel .ssh && chmod 700 .ssh 
+chmod 600 .ssh/authorized_keys
+```
+
 ### Update Firmware
 [Update Raspberry Pi Bootloader](https://bret.dk/update-raspberry-pi-bootloader/)
 
