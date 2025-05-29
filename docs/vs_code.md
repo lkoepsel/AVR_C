@@ -10,7 +10,7 @@ Perform these steps in VS Code:
 3. *CMD-v* to paste and *CMD-s* to save. 
 
 The location of libraries will be different based on how gcc was installed. If you compiled gcc yourself (Option 3 on wellys.com), then use the first json file. If you used the default installation from Bookworm, use the second JSON file. VS Code will advise if it isn't able to find the library files.
-## User built C (gcc 14.1)
+## User built C (gcc 15.1)
 ### c_cpp_properties.json
 ```json
 {
@@ -20,6 +20,7 @@ The location of libraries will be different based on how gcc was installed. If y
             "includePath": [
                 "/usr/local/avr/avr/",
                 "/usr/local/avr/include/**",
+                "/usr/local/avr/avr/include/avr/",
                 "${workspaceFolder}/**"
             ],
             "defines": ["__AVR_ATmega328P__"],

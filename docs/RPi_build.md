@@ -263,9 +263,10 @@ Ensure you do not have any files open in VS Code for the next two steps.
             "includePath": [
                 "/usr/local/avr/avr/",
                 "/usr/local/avr/include/**",
+                "/usr/local/avr/avr/include/avr/",
                 "${workspaceFolder}/**"
             ],
-            "defines": [  ],
+            "defines": ["__AVR_ATmega328P__"],
             "compilerPath": "/usr/local/avr/bin/avr-gcc", 
             "compilerArgs": [ ],
             "cStandard": "c99",
@@ -274,8 +275,7 @@ Ensure you do not have any files open in VS Code for the next two steps.
         }
     ],
     "version": 4
-}
-```
+}```
 
 ## 7.3 Default Task Installation
 **If you are on Windows, use Ctrl, instead of CMD.**
