@@ -54,12 +54,12 @@ TARGET = main
 
 ifeq ($(LIBRARY),no_lib)
 	SOURCES=$(wildcard *.c )
-	CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUDRATE=$(BAUDRATE)  -DSOFT_BAUD=$(SOFT_BAUD)  \
+	CPPFLAGS = -DF_CPU=$(F_CPU) -DUSB_BAUD=$(USB_BAUD)  -DSOFT_BAUD=$(SOFT_BAUD)  \
 	-DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
 
 else
     SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
-    CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUDRATE=$(BAUDRATE)   -DSOFT_BAUD=$(SOFT_BAUD) -I. \
+    CPPFLAGS = -DF_CPU=$(F_CPU) -DUSB_BAUD=$(USB_BAUD)   -DSOFT_BAUD=$(SOFT_BAUD) -I. \
 	-I$(LIBDIR) -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
 endif
 
@@ -131,7 +131,7 @@ env:
 	@echo "MCU:"  $(MCU)
 	@echo "SERIAL:"  $(SERIAL)
 	@echo "F_CPU:" $(F_CPU)
-	@echo "BAUDRATE:"  $(BAUDRATE)
+	@echo "USB_BAUD:"  $(USB_BAUD)
 	@echo "SOFT_RESET:"  $(SOFT_RESET)
 	@echo "LIB_DIR:"  $(LIBDIR)
 	@echo "LIBRARY:"  $(LIBRARY)

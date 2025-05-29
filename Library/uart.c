@@ -1,4 +1,9 @@
 #include <avr/io.h>
+
+// changed to accomdate new AVR iom*.h headers
+// https://github.com/avrdudes/avr-libc/issues/673
+#define BAUD USB_BAUD
+
 #include <stdio.h>
 
 #include <util/setbaud.h>

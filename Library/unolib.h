@@ -11,10 +11,6 @@
 #include <util/delay.h>
 #include <avr/wdt.h>
 
-// changed to accomdate new AVR iom*.h headers
-// https://github.com/avrdudes/avr-libc/issues/673
-#define BAUD BAUDRATE
-
 // min/max functions as macros, taken from The C Language, K&R
 #define min(a, b) ((a) < (b) ? (a) : (b)) 
 #define max(a, b) ((a) > (b) ? (a) : (b))
