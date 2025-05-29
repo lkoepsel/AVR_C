@@ -543,10 +543,11 @@ end
 [Bloom](https://bloom.oscillate.io/) is a significant upgrade to avarice. It works incredibly well and provides the gdb-server connection required for avr-gdb. 
 ```bash
 cd
-wget https://github.com/bloombloombloom/Bloom/releases/download/v1.0.0/Bloom-1.0.0-headless-Linux-aarch64-unofficial.deb
-sudo apt install ./Bloom-1.0.0-headless-Linux-aarch64-unofficial.deb
-rm Bloom-1.0.0-headless-Linux-aarch64-unofficial.deb
+wget https://github.com/bloombloombloom/Bloom/releases/download/v2.0.0/Bloom-headless-2.0.0-Linux-aarch64.deb
+sudo apt install ./Bloom-headless-2.0.0-Linux-aarch64.deb
+rm Bloom-headless-2.0.0-Linux-aarch64.deb
 ```
+
 ### 9.4 Edit bloom configuration
 ```bash
 cd AVR_C
@@ -576,8 +577,8 @@ environments:
 *Ctrl-S* (save) *Ctrl-X* (exit)
 
 ### SNAP Connections
-![UNO ICSP Connection](../images/Uno_ICSP.png)
-![SNAP Pinout](../images/SNAP_pinout.png)
+![UNO ICSP Connection](./static/Uno_ICSP.png)
+![SNAP Pinout](./static/SNAP_pinout.png)
 
 ### 9.5 Test connection
 ```bash
