@@ -275,7 +275,8 @@ Ensure you do not have any files open in VS Code for the next two steps.
         }
     ],
     "version": 4
-}```
+}
+```
 
 ## 7.3 Default Task Installation
 **If you are on Windows, use Ctrl, instead of CMD.**
