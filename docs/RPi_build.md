@@ -658,11 +658,18 @@ sudo echo 1 | tee /sys/class/leds/PWR/brightness
 
 ### Saving, shrinking and sending an image
 ```bash
+# to install pishrink:
+# install dependencies
+sudo apt update && sudo apt install -y wget parted gzip pigz xz-utils udev e2fsprogs
+# install pishrink
+wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh
+chmod +x pishrink.sh
+sudo mv pishrink.sh /usr/local/bin
 # remove SD Card or USB drive containing RPi image and place in Linux PC
 # determine physical device
 lsblk
 # find specific drive "sdc", "sdd" which is the right size of RPi drive, use as input
-sudo dd if=/dev/sdb of=./pibuildv3.img bs=1M status=progress
+sudo ddrescue /dev/sda ./pibuildv3.img usb_backup.log
 # shrink the size of the image to save space
 sudo pishrink.sh -avz pibuildv3.img
 # Easy way to send a file, requires magic-wormhole to be installed on receiving system
