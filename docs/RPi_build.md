@@ -5,8 +5,8 @@
 These are the steps to create a *complete and up-to-date* Standard C development platform on a Raspberry Pi. The steps accomplish the following:
 
 0. Updates the OS and adds all prerequisites
-1. Installs avr-binutils 2.42
-2. Installs avr-gcc 14.1
+1. Installs avr-binutils (2.43.1)
+2. Installs avr-gcc (15.1)
 3. Installs latest version of avr-libc [github](https://github.com/avrdudes/avr-libc)
 4. Installs latest version of avrdude [github](https://github.com/avrdudes/avrdude/)
 5. Adds the[ AVR_C](https://github.com/lkoepsel/AVR_C/tree/main) library and uses it to test the above
@@ -190,7 +190,7 @@ make flash
 ```
 
 ## 6. Update tio to latest
-The CLI serial monitor program *tio* is quite handy and has been upgraded significantly in the last year. The new version is at least 3.5 and will be installed.
+The CLI serial monitor program *tio* is quite handy and has been upgraded significantly in the last year. The new version is at least 3.9 and will be installed.
 ```bash
 cd ~/avr-build
 wget https://github.com/tio/tio/releases/download/v3.9/tio-3.9.tar.xz
