@@ -757,6 +757,20 @@ SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2180", GROUP="plu
 ```
 
 ### Another example (from Warp) AI as to managing permissions
+#### Example with Bloom
+```bash
+bloom 
+2025-05-30 08:36:19.405 PDT [MT]: [WARNING] The Insight component has been excluded from this build. All Insight related configuration parameters will be ignored.
+2025-05-30 08:36:19.408 PDT [MT]: [INFO] Selected environment: "default"
+2025-05-30 08:36:19.409 PDT [TC]: [INFO] Starting TargetController
+2025-05-30 08:36:19.429 PDT [TC]: [INFO] Connecting to debug tool
+2025-05-30 08:36:29.451 PDT [TC]: [ERROR] The TargetController encountered a fatal error. See below for errors:
+2025-05-30 08:36:29.451 PDT [TC]: [ERROR] Failed to write data to HID interface.
+2025-05-30 08:36:29.451 PDT [TC]: [INFO] Shutting down TargetController
+2025-05-30 08:36:29.452 PDT [MT]: [ERROR] TargetController failed to start up
+2025-05-30 08:36:29.452 PDT [MT]: [INFO] Shutting down Bloom
+2025-05-30 08:36:29.452 PDT [SH]: [INFO] Shutting down SignalHandler
+```
 
 The HID interface write failure is occurring because the proper udev rules for Arduino and Atmel devices are not set up on your system. Here's what we found and what needs to be done:
 
