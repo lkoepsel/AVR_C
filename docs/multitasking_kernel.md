@@ -1,5 +1,10 @@
 # A multitasking kernel in one line of code - almost
 
+Original Article
+*A multitasking kernel in one line of code – almost*
+ September 8, 2014 Colin Walls
+ embedded.com
+
 In a world dominated by real-time operating systems with enormous arrays of functionality and full-scale operating systems like Linux, it can be useful to stand back and consider the basics. What if you just need some basic multi-threading? How complex does that need to be? In this article, some ideas are proposed for almost trivially simple multi-threading, which might even be implemented in a single line of code!
 
 ## Why multitask?
