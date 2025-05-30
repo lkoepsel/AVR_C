@@ -650,6 +650,24 @@ sudo reboot now
 # check version again
 rpi-eeprom-update
 ```
+### Change the boot-order (valuable on a Pi5)
+```bash
+# edit the config file
+sudo -E rpi-eeprom-config --edit
+```
+
+```bash
+BOOT_ORDER=0xf46
+```
+
+| Value | MODE | Description |
+| ----- | ---- | ----------- |
+| 0x4 | USB-MSD | USB Mass storage device |
+| 0x6 | NVME | NVME SSD |
+| 0xf | RESTART | Restart from the first boot-mode in the BOOT_ORDER field i.e. loop. |
+
+[Rasberry Pi BOOT_ORDER](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#BOOT_ORDER)
+
 ### Toggle the power led
 ```bash
 # turn off 
