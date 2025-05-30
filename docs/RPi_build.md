@@ -736,6 +736,35 @@ sudo nano /etc/udev/rules.d/50-myusb.rules
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", GROUP="plugdev", MODE="0660", TAG+="uaccess"
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0004", GROUP="plugdev", MODE="0660", TAG+="uaccess"
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2180", GROUP="plugdev", MODE="0660", TAG+="uaccess"
+```
+
+### Another example from Warp AI as to managing permissions
+
+The HID interface write failure is occurring because the proper udev rules for Arduino and Atmel devices are not set up on your system. Here's what we found and what needs to be done:
+
+1. Your Arduino Uno R3 (2341:0043) and ATMEGA328P-XMINI (03eb:2145) devices are detected by the system, but lack proper permissions.
+2. While you have the correct user groups (dialout, plugdev), the udev rules needed to automatically set permissions are missing.
+
+To fix this, create a new udev rules file for these devices:
+
+```
+# 1. Create a new file /etc/udev/rules.d/99-arduino-atmel.rules with the following content (use sudo):
+sudo nano /etc/udev/rules.d/99-arduino-atmel.rules
+
+# Arduino Uno R3
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0043", MODE="0666", GROUP="dialout"
+
+# Atmel ATMEGA328P-XMINI
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2145", MODE="0666", GROUP="dialout"
+*Ctrl-S* (save) *Ctrl-X* (exit)
+
+# 2. After creating the file, reload the udev rules:
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
+3. Unplug and replug your USB devices or 
+sudo reboot now
+
+```
 
 # save the file then reboot your system
 ```
