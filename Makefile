@@ -63,6 +63,7 @@ else
 	-I$(LIBDIR) -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET)
 endif
 
+# TODO: Confirm then delete, this appears to be deprecated with the addition of the LIBRARY ['' | no_lib] parameter
 # See Note re: CPPFLAGS if using/not using LIBDIR, pick only one LIB or NO_LIB
 # LIB - Uncomment if the AVR_C Library is required (default), also 
 # uncomment LIB below in CPPFLAGS (and comment NO_LIB)
