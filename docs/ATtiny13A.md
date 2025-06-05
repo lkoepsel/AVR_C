@@ -41,7 +41,7 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
 
 ## **Basic Circuit Requirements**
 
-The **ATtiny13 is a low-power CMOS 8-bit microcontroller** based on the AVR enhanced RISC architecture. To make it functional:
+The **ATtiny13 is a low-power CMOS 8-bit microcontroller** based on the AVR enhanced RISC architecture.
 
 ### **Power Supply Components**
 - **VCC**: Connect to pin 8 (supply voltage: 2.7V to 5.5V)
@@ -82,12 +82,6 @@ For In-System Programming (ISP), connect:
 
 The **ATtiny13 contains 1KB of Flash memory** for program storage and features **6 I/O pins** that can be used for various functions. This makes it ideal for simple embedded applications where space and power consumption are critical factors.
 
-For more complex applications, you might want to add:
-- External crystal oscillator (though the ATtiny13 has an internal 9.6MHz oscillator)
-- Additional filtering capacitors
-- Protection diodes on I/O pins
-- LED indicators for debugging
-
 ## **Hardware Requirements for DebugWire**
 
 ### **Modified Reset Pin Configuration**
@@ -96,7 +90,7 @@ For more complex applications, you might want to add:
 - Keep the reset line as short as possible to minimize noise
 
 ### **Simplified Connection**
-When using DebugWire, you only need:
+When using DebugWire, you need:
 - **RESET/dW** (pin 1) - Connected to debugger
 - **VCC** (pin 8) - Power supply
 - **GND** (pin 4) - Ground
