@@ -495,74 +495,135 @@ To multiplex a pin on the ATtiny13A for both input (thermistor measurement) and 
    - **LED**: Connected in series with a current-limiting resistor.
    - **ATtiny13A Pin**: Configured as an ADC input for the thermistor and as an output to drive the LED.
 
-2. **Circuit Connections**:
-   - The thermistor and its series resistor form a voltage divider. Connect one end of the thermistor to Vcc and the other end to the ADC pin (shared pin). The series resistor is connected between the ADC pin and ground.
-   - The LED is connected to the same ADC pin via a current-limiting resistor. The other end of the LED is connected to ground.
+The 74HC4053 is a triple 2:1 analog multiplexer/demultiplexer. It has three independent switches, each with two inputs and one output. The user only needs one of these switches for their application.
 
-3. **Schematic**:
-   ```
-   Vcc
-    |
-    +---- Thermistor ----+
-    |                   |
-    |                   |
-    R1                  |
-    |                   |
-   GND                 ADC Pin
-                        |
-                        |
-                   LED -- R2 -- GND
-   ```
+## **What the 74HC4053 Is:**
+It contains **three independent 2-to-1 switches** (like three SPDT switches). One switch is required for this application.
 
-   - **R1**: Resistor in series with the thermistor (voltage divider).
-   - **R2**: Current-limiting resistor for the LED.
+## **Simplified Connection for the Circuit:**
 
----
+```
+                    74HC4053
+                 +------------+
+Thermistor-R1 ---|Y0       COM|--- To ADC Pin
+                 |            |
+LED-R2 ----------|Y1        S |--- To GPIO (Select)
+                 |            |
+GND -------------|INH      VCC|--- 5V
+                 |            |
+GND -------------|VEE      GND|--- GND
+                 +------------+
+```
 
-### **Operation**
-The ATtiny13A pin is multiplexed between ADC input mode and digital output mode. The following steps explain how the circuit works:
+## **How It Works:**
 
-1. **Measuring the Thermistor (ADC Input Mode)**:
-   - Configure the pin as an **ADC input**.
-   - The thermistor forms a voltage divider with R1, and the voltage at the ADC pin depends on the thermistor's resistance (which varies with temperature).
-   - During ADC measurement, the LED is effectively disconnected because the pin is in high-impedance input mode. The current through the LED is negligible, so it will not light up or affect the thermistor measurement.
+**Pin Functions:**
+- **Y0, Y1**: The two inputs being switched
+- **COM**: Common output (connects to either Y0 or Y1)
+- **S**: Select pin (LOW = Y0, HIGH = Y1)
+- **INH**: Inhibit (tie to GND to enable the switch)
+- **VEE**: Negative supply (tie to GND for single supply)
 
-2. **Lighting the LED (Digital Output Mode)**:
-   - Configure the pin as a **digital output**.
-   - To light the LED, set the pin to LOW (0V). Current flows through the LED and R2, causing the LED to light up.
-   - The thermistor is not affected because the voltage divider circuit is effectively shorted to ground when the pin is LOW. The thermistor current is negligible compared to the LED current, so its effect is insignificant.
+**Operation:**
+- When **S = LOW**: COM connects to Y0 (thermistor circuit)
+- When **S = HIGH**: COM connects to Y1 (LED circuit)
 
-3. **Ensuring No Interference**:
-   - When the pin is set to HIGH (logic 1) or configured as an input, the LED will not light because there is no voltage difference across it.
-   - When the pin is set to LOW (logic 0), the thermistor's voltage divider is bypassed, but this does not matter because the ADC is not active during this phase.
-
----
-
-### **Circuit Analysis**
-1. **Thermistor Measurement**:
-   - The voltage at the ADC pin is given by the voltage divider formula:
-     $$ V_{ADC} = V_{cc} \cdot \frac{R_{therm}}{R_{therm} + R1} $$
-   - The LED does not interfere because the pin is in high-impedance input mode, and the current through the LED is negligible.
-
-2. **LED Lighting**:
-   - When the pin is set to LOW, the current through the LED is approximately:
-     $$ I_{LED} = \frac{V_{cc} - V_{f}}{R2} $$
-     where \( V_f \) is the forward voltage of the LED.
-   - The thermistor is effectively bypassed because the pin is at 0V, so the voltage divider does not affect the LED.
-
-3. **Key Design Considerations**:
-   - Choose \( R1 \) and \( R2 \) such that the thermistor voltage divider operates correctly for ADC measurements and the LED receives sufficient current to light up.
-   - Ensure the ADC pin is not damaged by excessive current when switching between modes. Use resistors with appropriate values to limit current.
-
----
-
-### **Example Component Values**
-- **Vcc**: 5V
-- **Thermistor**: 10kΩ at 25°C
-- **R1**: 10kΩ (to form a balanced voltage divider)
-- **R2**: 330Ω (for an LED with a forward voltage of 2V and desired current of ~10mA)
+## **Your Complete Circuit:**
+```
+    5V                          5V
+     |                           |
+Thermistor                      VCC
+     |                           |
+     +----------Y0          74HC4053
+     |           |               |
+   [10k]        COM-----ADC Pin  |
+     |           |               |
+    GND         Y1               |
+                 |               |
+                LED              |
+                 |               |
+              [330Ω]             |
+                 |               |
+                GND              |
+                                 |
+    GPIO Pin----S                |
+                                 |
+    GND--------INH, VEE, GND-----+
+```
 
 
+## **CD74HCT4053B Complete Pinout**
+[TI CD74HCT4053B Datasheet](https://www.ti.com/lit/ds/symlink/cd74hct4053.pdf?ts=1749252478329&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FCD74HCT4053)
+
+```
+                  CD74HCT4053B (16-pin PDIP)
+                    +--------U--------+
+       LED ---------|1  B1      VCC 16|------- 5V
+                    |                 |
+   Thermistor/10k --|2  B0       A1 15|------- NC
+                    |                 |
+              NC ---|3  C1       A0 14|------- NC
+                    |                 |
+              NC ---|4  C0    COM A 13|------- NC
+                    |                 |
+              NC ---|5  COM C COM B 12|------- ADC Pin
+                    |                 |
+             GND ---|6  INH      SA 11|------- NC
+                    |                 |
+             GND ---|7  VEE      SB 10|------- GPIO (Select)
+                    |                 |
+             GND ---|8  GND      SC  9|------- NC
+                    +-----------------+
+```
+
+## **Pin Connections Summary:**
+
+| Pin | Name | Connection |
+|-----|------|------------|
+| 1   | B1   | **LED anode** |
+| 2   | B0   | **Thermistor/10k junction** |
+| 3   | C1   | NC |
+| 4   | C0   | NC |
+| 5   | COM C| NC |
+| 6   | INH  | **GND** (enables all switches) |
+| 7   | VEE  | **GND** (for single supply) |
+| 8   | GND  | **GND** |
+| 9   | SC   | NC |
+| 10  | SB   | **GPIO Select Pin** |
+| 11  | SA   | NC |
+| 12  | COM B| **ADC Pin** |
+| 13  | COM A| NC |
+| 14  | A0   | NC |
+| 15  | A1   | NC |
+| 16  | VCC  | **5V** |
+
+**Control Logic:**
+- When **SB = LOW**: COM B connects to B0 (thermistor)
+- When **SB = HIGH**: COM B connects to B1 (LED)
+
+**Notes:**
+- Using only the B channel (pins 1, 2, 10, 12)
+- Channels A and C are unused
+- INH must be LOW to enable operation
+
+
+**Software Control:**
+```c
+// Read temperature
+digitalWrite(SELECT_PIN, LOW);  // Connect thermistor
+int temp = analogRead(ADC_PIN);
+
+// Control LED
+digitalWrite(SELECT_PIN, HIGH); // Connect LED
+pinMode(ADC_PIN, OUTPUT);
+digitalWrite(ADC_PIN, HIGH);    // LED on
+```
+
+**Key Benefits:**
+- **Complete isolation** between circuits
+- **No voltage limitations**
+- **No power waste**
+- **Bidirectional** - can pass analog or digital signals
 
 ## Additional Elements 
 
