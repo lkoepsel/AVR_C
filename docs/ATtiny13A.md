@@ -482,6 +482,88 @@ The ```-B``` parameter sets the ISP clock period in microseconds.
 ### Voltage Settings
 The **SNAP programmer doesn't provide target power**, so you must power the ATtiny13A externally. The Atmel-ICE can provide power, but it's often better to use external power.
 
+## Multiplex ATtiny13A pin
+I wish to multiplex an AVR ATtiny13A pin. Provide a circuit example where the microcontroller has a pin being used as both input and output. For example, I want to measure temperature with a thermistor then light an LED based on the thermistor value, with both the thermistor and led will be on the same pin.  Explain via a circuit analysis, that the thermistor won’t be affected when the LED is lit and the LED won’t light when the thermistor is being measured via the ADC of the ATtiny13A pin.
+
+To multiplex a pin on the ATtiny13A for both input (thermistor measurement) and output (LED control), you can use a clever circuit design that ensures the thermistor and LED do not interfere with each other. Below is an example circuit and explanation of how it works.
+
+---
+
+### **Circuit Design**
+1. **Components**:
+   - **Thermistor**: Connected in a voltage divider configuration with a resistor.
+   - **LED**: Connected in series with a current-limiting resistor.
+   - **ATtiny13A Pin**: Configured as an ADC input for the thermistor and as an output to drive the LED.
+
+2. **Circuit Connections**:
+   - The thermistor and its series resistor form a voltage divider. Connect one end of the thermistor to Vcc and the other end to the ADC pin (shared pin). The series resistor is connected between the ADC pin and ground.
+   - The LED is connected to the same ADC pin via a current-limiting resistor. The other end of the LED is connected to ground.
+
+3. **Schematic**:
+   ```
+   Vcc
+    |
+    +---- Thermistor ----+
+    |                   |
+    |                   |
+    R1                  |
+    |                   |
+   GND                 ADC Pin
+                        |
+                        |
+                   LED -- R2 -- GND
+   ```
+
+   - **R1**: Resistor in series with the thermistor (voltage divider).
+   - **R2**: Current-limiting resistor for the LED.
+
+---
+
+### **Operation**
+The ATtiny13A pin is multiplexed between ADC input mode and digital output mode. The following steps explain how the circuit works:
+
+1. **Measuring the Thermistor (ADC Input Mode)**:
+   - Configure the pin as an **ADC input**.
+   - The thermistor forms a voltage divider with R1, and the voltage at the ADC pin depends on the thermistor's resistance (which varies with temperature).
+   - During ADC measurement, the LED is effectively disconnected because the pin is in high-impedance input mode. The current through the LED is negligible, so it will not light up or affect the thermistor measurement.
+
+2. **Lighting the LED (Digital Output Mode)**:
+   - Configure the pin as a **digital output**.
+   - To light the LED, set the pin to LOW (0V). Current flows through the LED and R2, causing the LED to light up.
+   - The thermistor is not affected because the voltage divider circuit is effectively shorted to ground when the pin is LOW. The thermistor current is negligible compared to the LED current, so its effect is insignificant.
+
+3. **Ensuring No Interference**:
+   - When the pin is set to HIGH (logic 1) or configured as an input, the LED will not light because there is no voltage difference across it.
+   - When the pin is set to LOW (logic 0), the thermistor's voltage divider is bypassed, but this does not matter because the ADC is not active during this phase.
+
+---
+
+### **Circuit Analysis**
+1. **Thermistor Measurement**:
+   - The voltage at the ADC pin is given by the voltage divider formula:
+     $$ V_{ADC} = V_{cc} \cdot \frac{R_{therm}}{R_{therm} + R1} $$
+   - The LED does not interfere because the pin is in high-impedance input mode, and the current through the LED is negligible.
+
+2. **LED Lighting**:
+   - When the pin is set to LOW, the current through the LED is approximately:
+     $$ I_{LED} = \frac{V_{cc} - V_{f}}{R2} $$
+     where \( V_f \) is the forward voltage of the LED.
+   - The thermistor is effectively bypassed because the pin is at 0V, so the voltage divider does not affect the LED.
+
+3. **Key Design Considerations**:
+   - Choose \( R1 \) and \( R2 \) such that the thermistor voltage divider operates correctly for ADC measurements and the LED receives sufficient current to light up.
+   - Ensure the ADC pin is not damaged by excessive current when switching between modes. Use resistors with appropriate values to limit current.
+
+---
+
+### **Example Component Values**
+- **Vcc**: 5V
+- **Thermistor**: 10kΩ at 25°C
+- **R1**: 10kΩ (to form a balanced voltage divider)
+- **R2**: 330Ω (for an LED with a forward voltage of 2V and desired current of ~10mA)
+
+
+
 ## Additional Elements 
 
 * [CR2025 Vs CR2032 Batteries – Are They Interchangeable? | Battery Tools](https://batterytools.net/what-is-the-difference-between-2032-and-2025-batteries/)
