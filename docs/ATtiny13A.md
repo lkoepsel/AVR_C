@@ -4,7 +4,7 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
 ## Pin Configurations
 
 ### Note:
-1. PB3 and PB4 are unttached using ISP programmer.
+1. PB3 and PB4 are unattached using ISP programmer.
 2. 
 ### ATtiny13A Pinout
 ```
@@ -12,19 +12,19 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
                   ┌──────────┐
     RESET/PB5 ──1─┤          ├─8── VCC
           PB3 ──2─┤          ├─7── PB2/SCK
-          PB4 ──3─┤          ├─6── PB1/MOSI
-          GND ──4─┤          ├─5── PB0/MISO
+          PB4 ──3─┤          ├─6── PB1/MISO
+          GND ──4─┤          ├─5── PB0/MOSI
                   └──────────┘
 ```
 
-| ISP Pin | ATtiny13A  | Chip Pin | Uno ISP |
-|---------|------------|----------| ------- |
-| VCC     | VCC        | Pin 8    | Pin 2   |
-| GND     | GND        | Pin 4    | Pin 6   |
-| MISO    | PB0        | Pin 5    | Pin 1   |
-| MOSI    | PB1        | Pin 6    | Pin 4   |
-| SCK     | PB2        | Pin 7    | Pin 3   |
-| RESET   | PB5/RESET  | Pin 1    | Pin 5   |
+| ISP Pin | ATtiny13A  | Chip Pin | Uno ISP | Color  |
+|---------|------------|----------| ------- | ------ |
+| VCC     | VCC        | Pin 8    | Pin 2   | Red    |
+| GND     | GND        | Pin 4    | Pin 6   | Black  |
+| MISO    | PB0        | Pin 6    | Pin 1   | Yellow |
+| MOSI    | PB1        | Pin 5    | Pin 4   | Green  |
+| SCK     | PB2        | Pin 7    | Pin 3   | Orange |
+| RESET   | PB5/RESET  | Pin 1    | Pin 5   | White  
 
 
 ### ATtiny13A ISP Connections
@@ -114,8 +114,8 @@ For In-System Programming (ISP), connect:
                    ┌─────────┐
     RESET/PB5 ──1─┤          ├─8── VCC
           PB3 ──2─┤          ├─7── PB2/SCK
-          PB4 ──3─┤          ├─6── PB1/MOSI
-          GND ──4─┤          ├─5── PB0/MISO
+          PB4 ──3─┤          ├─6── PB1/MISO
+          GND ──4─┤          ├─5── PB0/MOSI
                    └─────────┘
 ```
 

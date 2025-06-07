@@ -10,19 +10,19 @@
 #include <avr/io.h>
 #include <util/delay.h>
  
-#define BLINK_DELAY_MS 1000
+#define BLINK_DELAY_MS 500
  
 int main(void)
 {
     /* set pin to output*/
-    DDRB |= (_BV(PORTB5));
+    DDRB |= (_BV(PORTB4));
 
     while(1) 
     {
         /* turn led on and off */
-        PINB |= (_BV(PORTB5));
+        PINB |= (_BV(PORTB4));
         _delay_ms(BLINK_DELAY_MS);
-        PINB |= (_BV(PORTB5));
+        PINB |= (_BV(PORTB4));
         _delay_ms(BLINK_DELAY_MS);
     }
     return 0; 
