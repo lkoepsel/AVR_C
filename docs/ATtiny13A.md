@@ -553,8 +553,9 @@ Thermistor                      VCC
 
 
 ## **CD74HCT4053B Complete Pinout**
-[TI CD74HCT4053B Datasheet](https://www.ti.com/lit/ds/symlink/cd74hct4053.pdf?ts=1749252478329&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FCD74HCT4053)
 
+* [TI CD74HCT4053B Datasheet](https://www.ti.com/lit/ds/symlink/cd74hct4053.pdf?ts=1749252478329&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FCD74HCT4053)
+* [TI CD74HCT4053](https://www.ti.com/product/CD74HCT4053)
 ```
                   CD74HCT4053B (16-pin PDIP)
                     +--------U--------+
