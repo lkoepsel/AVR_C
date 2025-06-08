@@ -23,10 +23,10 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
 | ISP Pin | ATtiny13A  | 13A Pin  | Uno ISP | Color  |
 |---------|------------|----------| ------- | ------ |
 | VCC     | VCC        | Pin 8    | Pin 2   | Red    |
-| GND     | GND        | Pin 4    | Pin 6   | Black  |
+| SCK     | PB2        | Pin 7    | Pin 3   | Orange |
 | MISO    | PB0        | Pin 6    | Pin 1   | Yellow |
 | MOSI    | PB1        | Pin 5    | Pin 4   | Green  |
-| SCK     | PB2        | Pin 7    | Pin 3   | Orange |
+| GND     | GND        | Pin 4    | Pin 6   | Black  |
 | RESET   | PB5/RESET  | Pin 1    | Pin 5   | Brown  |  
 
 
