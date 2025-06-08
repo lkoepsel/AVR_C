@@ -10,7 +10,7 @@
 
 // Uno pin numbers
 enum {LED0, LED1, LED2, LED3, LED4};
-volatile uint8_t MS0=50;
+volatile uint8_t MS0=255;
 volatile uint8_t MS1=100;
 volatile uint8_t MS2=150;
 volatile uint8_t MS3=200;
