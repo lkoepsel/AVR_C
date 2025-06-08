@@ -4,39 +4,51 @@
 // With three functions, 200kHz 33% duty cycle signal
 // With six functions, 103kHz 16% duty cycle signal
 #include <avr/io.h>
+#include "delay.h"
 
 #define NTASKS 5
 
 // Uno pin numbers
 enum {LED0, LED1, LED2, LED3, LED4};
+volatile uint8_t MS0=50;
+volatile uint8_t MS1=100;
+volatile uint8_t MS2=150;
+volatile uint8_t MS3=200;
+volatile uint8_t MS4=250;
+
 
 void zero (void) {
     /* toggle led on and off */
     PINB |= _BV(LED0);
+    delay(MS0);
     return;
 } 
 
 void one (void) {
     /* toggle led on and off */
     PINB |= _BV(LED1);
+    delay(MS1);
     return;
 } 
 
 void two (void) {
     /* toggle led on and off */
     PINB |= _BV(LED2);
+    delay(MS2);
     return;
 } 
 
 void three (void) {
     /* toggle led on and off */
     PINB |= _BV(LED3);
+    delay(MS3);
     return;
 } 
 
 void four (void) {
     /* toggle led on and off */
     PINB |= _BV(LED4);
+    delay(MS4);
     return;
 } 
 
@@ -51,6 +63,7 @@ int main(void)
     for (uint8_t taskcount=0; taskcount < NTASKS; ++taskcount)
         {
             (*tasklist[taskcount])();
+
         }
     }
     return 0; 
