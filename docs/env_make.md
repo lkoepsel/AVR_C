@@ -49,19 +49,19 @@ Copy and paste the text below. Be sure to go to step 3!
 # otherwise, leave blank
 
 # Arduino UNO et al using Optiboot (standard Arduino IDE approach)
-MCU = atmega328p
-SERIAL = /dev/ttyACM0
-F_CPU = 16000000UL
-USB_BAUD  = 250000UL
-SOFT_RESET = 0
-LIBDIR = $(DEPTH)Library
-LIBRARY = 
-PROGRAMMER_TYPE = arduino
-PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
-TOOLCHAIN =
-OS =
-TC3_RESET = 0
-SOFT_BAUD = 28800UL
+# MCU = atmega328p
+# SERIAL = /dev/ttyACM0
+# F_CPU = 16000000UL
+# USB_BAUD = 250000UL
+# SOFT_RESET = 0
+# LIBDIR = $(DEPTH)Library
+# LIBRARY = 
+# PROGRAMMER_TYPE = arduino
+# PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
+# TOOLCHAIN =
+# OS =
+# TC3_RESET = 0
+# SOFT_BAUD = 28800UL
 
 
 # Arduino UNO and compatible boards using Atmel-ICE Debugger in atmelice_isp mode
@@ -139,6 +139,21 @@ SOFT_BAUD = 28800UL
 # OS = mac
 # TC3_RESET = 0
 # SOFT_BAUD = 28800UL
+
+# ATtiny13A, be sure to set LIBRARY = no_lib as many AVR_C library functions are not compatible
+MCU = attiny13a
+SERIAL = /dev/ttyACM0
+F_CPU = 1200000UL
+USB_BAUD = 250000UL
+SOFT_RESET = 0
+LIBDIR = $(DEPTH)Library
+LIBRARY = no_lib
+PROGRAMMER_TYPE = atmelice_isp
+PROGRAMMER_ARGS = -F -V -P usb -b 115200
+TOOLCHAIN =
+OS =
+TC3_RESET = 0
+SOFT_BAUD = 28800UL
 ```
 
 ## 3. Save and close *nano*
