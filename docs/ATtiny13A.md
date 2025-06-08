@@ -830,3 +830,41 @@ OS =
 TC3_RESET = 0
 SOFT_BAUD = 28800UL
 ```
+
+## Bloom.yaml 
+```yaml
+environments:
+  default:
+    shutdown_post_debug_session: true
+
+    tool:
+      name: "xplained_mini"
+ 
+    target:
+      name: "atmega328pb"
+      physical_interface: "debug_wire"
+      hardware_breakpoints: true
+      manage_dwen_fuse_bit: true
+
+    server:
+      name: "avr_gdb_rsp"
+      ip_address: "127.0.0.1"
+      port: 1442
+
+      environments:
+  attiny13a:
+    shutdown_post_debug_session: true
+
+    tool:
+      name: "atmel_ice"
+ 
+    target:
+      name: "attiny13a"
+      physical_interface: "debug_wire"
+      manage_dwen_fuse_bit: true
+
+    server:
+      name: "avr_gdb_rsp"
+      ip_address: "127.0.0.1"
+      port: 1442
+```
