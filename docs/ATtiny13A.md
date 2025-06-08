@@ -17,14 +17,14 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
                   └──────────┘
 ```
 
-| ISP Pin | ATtiny13A  | Chip Pin | Uno ISP | Color  |
+| ISP Pin | ATtiny13A  | 13A Pin  | Uno ISP | Color  |
 |---------|------------|----------| ------- | ------ |
 | VCC     | VCC        | Pin 8    | Pin 2   | Red    |
 | GND     | GND        | Pin 4    | Pin 6   | Black  |
 | MISO    | PB0        | Pin 6    | Pin 1   | Yellow |
 | MOSI    | PB1        | Pin 5    | Pin 4   | Green  |
 | SCK     | PB2        | Pin 7    | Pin 3   | Orange |
-| RESET   | PB5/RESET  | Pin 1    | Pin 5   | White  
+| RESET   | PB5/RESET  | Pin 1    | Pin 5   | Brown  |  
 
 
 ### ATtiny13A ISP Connections
@@ -32,11 +32,11 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
 ```
                 ISP Header (2x3)
               +-------+-------+
-MISO ---------|1  ●       ●  2|--------- VCC
+MISO/YELLOW --|1  ●       ●  2|--- VCC/RED
               |       |       |
-SCK  ---------|3  ●       ●  4|--------- MOSI
+SCK/ORANGE ---|3  ●       ●  4|--- MOSI/GREEN
               |       |       |
-RESET --------|5  ●       ●  6|--------- GND
+RESET/BROWN --|5  ●       ●  6|--- GND/BLACK
               +-------+-------+
                   |||||||
                   ||||||+-- Pin 6: GND
@@ -70,14 +70,14 @@ RESET --------|5  ●       ●  6|--------- GND
 
 ## Port B Pin Functionality
 
-| Port Pin | Alternate Functions |
-|----------|-------------------|
-| **PB5** | • RESET: Reset Pin<br>• dW: debugWIRE I/O<br>• ADC0: ADC Input Channel 0<br>• PCINT5: Pin Change Interrupt, Source 5 |
-| **PB4** | • ADC2: ADC Input Channel 2<br>• PCINT4: Pin Change Interrupt 0, Source 4 |
-| **PB3** | • CLKI: External Clock Input<br>• ADC3: ADC Input Channel 3<br>• PCINT3: Pin Change Interrupt 0, Source 3 |
-| **PB2** | • SCK: Serial Clock Input<br>• ADC1: ADC Input Channel 1<br>• T0: Timer/Counter0 Clock Source<br>• PCINT2: Pin Change Interrupt 0, Source 2 |
-| **PB1** | • MISO: SPI Host Data Input / Client Data Output<br>• AIN1: Analog Comparator, Negative Input<br>• OC0B: Timer/Counter0 Compare Match B Output<br>• INT0: External Interrupt 0 Input<br>• PCINT1: Pin Change Interrupt 0, Source 1 |
-| **PB0** | • MOSI: SPI Host Data Output / Client Data Input<br>• AIN0: Analog Comparator, Positive Input<br>• OC0A: Timer/Counter0 Compare Match A output<br>• PCINT0: Pin Change Interrupt 0, Source 0 |
+| 13A PDIP | Port Pin | Alternate Functions |
+| --- |----------|-------------------|
+|  1  | **PB5** | • RESET: Reset Pin<br>• dW: debugWIRE I/O<br>• ADC0: ADC Input Channel 0<br>• PCINT5: Pin Change Interrupt, Source 5 |
+|  3  | **PB4** | • ADC2: ADC Input Channel 2<br>• PCINT4: Pin Change Interrupt 0, Source 4 |
+|  2  | **PB3** | • CLKI: External Clock Input<br>• ADC3: ADC Input Channel 3<br>• PCINT3: Pin Change Interrupt 0, Source 3 |
+|  7  | **PB2** | • SCK: Serial Clock Input<br>• ADC1: ADC Input Channel 1<br>• T0: Timer/Counter0 Clock Source<br>• PCINT2: Pin Change Interrupt 0, Source 2 |
+|  6  | **PB1** | • MISO: SPI Host Data Input / Client Data Output<br>• AIN1: Analog Comparator, Negative Input<br>• OC0B: Timer/Counter0 Compare Match B Output<br>• INT0: External Interrupt 0 Input<br>• PCINT1: Pin Change Interrupt 0, Source 1 |
+|  5  | **PB0** | • MOSI: SPI Host Data Output / Client Data Input<br>• AIN0: Analog Comparator, Positive Input<br>• OC0A: Timer/Counter0 Compare Match A output<br>• PCINT0: Pin Change Interrupt 0, Source 0 |
 
 ## ADC Features
 * 4 Channels PinB2-5
@@ -96,10 +96,10 @@ The **ATtiny13 is a low-power CMOS 8-bit microcontroller** based on the AVR enha
 
 ### **Programming Interface**
 For In-System Programming (ISP), connect:
-- **MISO** (PB0) - Pin 5
-- **MOSI** (PB1) - Pin 6  
+- **MISO** (PB1) - Pin 6
+- **MOSI** (PB0) - Pin 5  
 - **SCK** (PB2) - Pin 7
-- **RESET** - Pin 1
+- **RESET** (PB5) - Pin 1
 - **VCC** and **GND** from programmer
 
 ### **Reset Circuit**
@@ -267,14 +267,14 @@ make compile
 
 Connect your **ISP programmer** to the ATtiny13A:
 
-| ISP Pin | ATtiny13A Pin | Physical Pin |
-|---------|---------------|--------------|
-| VCC     | VCC           | Pin 8        |
-| GND     | GND           | Pin 4        |
-| MISO    | PB0           | Pin 5        |
-| MOSI    | PB1           | Pin 6        |
-| SCK     | PB2           | Pin 7        |
-| RESET   | PB5/RESET     | Pin 1        |
+| ISP Pin | ATtiny13A  | 13A Pin  | Uno ISP | Color  |
+|---------|------------|----------| ------- | ------ |
+| VCC     | VCC        | Pin 8    | Pin 2   | Red    |
+| GND     | GND        | Pin 4    | Pin 6   | Black  |
+| MISO    | PB0        | Pin 6    | Pin 1   | Yellow |
+| MOSI    | PB1        | Pin 5    | Pin 4   | Green  |
+| SCK     | PB2        | Pin 7    | Pin 3   | Orange |
+| RESET   | PB5/RESET  | Pin 1    | Pin 5   | Brown  |  
 
 ### Step 4: Check Program Size (Optional)
 ```bash

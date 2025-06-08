@@ -10,7 +10,8 @@
 #include <avr/io.h>
 #include "delay.h"
  
-volatile uint16_t BLINK_DELAY_MS=1000;
+volatile uint16_t MS=1000;
+volatile uint8_t LED=PORTB4;
  
 int main(void)
 {
@@ -21,9 +22,9 @@ int main(void)
     {
         /* turn led on and off */
         PINB |= (_BV(PORTB4));
-        delay(BLINK_DELAY_MS);
+        delay(MS);
         PINB |= (_BV(PORTB4));
-        delay(BLINK_DELAY_MS);
+        delay(MS);
     }
     return 0; 
 }
