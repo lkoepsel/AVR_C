@@ -868,3 +868,30 @@ environments:
       ip_address: "127.0.0.1"
       port: 1442
 ```
+
+## .gdbinit
+
+```
+set history save on
+set history size 10000
+set history filename ~/.gdb_history
+
+file main.elf
+target remote :1442
+set listsize 0
+set tui compact-source on
+tui focus cmd
+
+define ll
+load
+l main
+end
+
+define td
+tui disable
+end
+
+define te
+tui enable
+end
+```
