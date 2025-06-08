@@ -4,8 +4,8 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
 ## Programming Summary
 
 ### Note:
-1. PB3 and PB4 are unattached using ISP programmer
-1. PB0-PB4 are unattached using debugWire
+1. PB3 and PB4 are available using ISP programmer
+1. PB0-PB4 are available using debugWire
 1. Connect via ISP then use debugWire for debugging and loading programs. Bloom requires specific functionality of the ISP interface.
    From Bloom: "*The debugWIRE interface does not support fuse programming. Fuses can only be changed via the ISP interface (for debugWIRE AVR targets). In order for Bloom to manage the DWEN fuse bit, the debug tool must be connected to the target via the ISP interface.*"
 1. Therefore, it's best to use *load* and *mon reset* within *avr-gdb* instead of using AVRDUDE, when connected using the ATMEL ICE. 
