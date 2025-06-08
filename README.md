@@ -10,7 +10,7 @@
 **Documentation for using AVR_C to command [xArm Robotics Arm](./docs/xArm.md)**
 
 ## ATtiny13A Programming:
-**INformation as to how to program the [ATtiny13A](./docs/ATtiny13A.md)**
+**Information as to how to program the [ATtiny13A](./docs/ATtiny13A.md)**
 
 ## Introduction
 This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familiar (Arduino) context. This serves the following:
