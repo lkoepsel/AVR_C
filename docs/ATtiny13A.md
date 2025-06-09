@@ -22,14 +22,14 @@ Notes as to developing C code on the Microchip ATtiny13A. Much of this content w
                   └──────────┘
 ```
 
-| ISP Pin | ATtiny13A  | 13A Pin  | Uno ISP | Color  |
-|---------|------------|----------| ------- | ------ |
-| VCC     | VCC        | Pin 8    | Pin 2   | Red    |
-| SCK     | PB2        | Pin 7    | Pin 3   | Orange |
-| MISO    | PB0        | Pin 6    | Pin 1   | Yellow |
-| MOSI    | PB1        | Pin 5    | Pin 4   | Green  |
-| GND     | GND        | Pin 4    | Pin 6   | Black  |
-| RESET   | PB5/RESET  | Pin 1    | Pin 5   | Brown  |  
+| ISP Pin | ATtiny13A  | **13A Pin**  | Uno ISP | Color  |
+|---------|------------|------------| ------- | ------ |
+| RESET   | PB5/RESET  | **Pin 1**    | Pin 5   | Brown  |  
+| GND     | GND        | **Pin 4**    | Pin 6   | Black  |
+| MOSI    | PB0        | **Pin 5**    | Pin 4   | Green  |
+| MISO    | PB1        | **Pin 6**    | Pin 1   | Yellow |
+| SCK     | PB2        | **Pin 7**    | Pin 3   | Orange |
+| VCC     | VCC        | **Pin 8**    | Pin 2   | Red    |
 
 
 ### ATtiny13A ISP Connections
@@ -62,8 +62,7 @@ RESET/BROWN --| 5  ●     ●  6 |--- GND/BLACK
 
 ## Links to ATtiny13/A Projects
 * [Enable PWM on an ATtiny by programming its registers](https://www.hackster.io/bearislive/enable-pwm-on-an-attiny-by-programming-its-registers-565948)
-* [Programming an ATtiny13A in Assembly](https://www.hackster.io/gatoninja236/programming-an-attiny13a-in-assembly-30a529)
-* [Programming the ATTINY13 \(Microcore\)](https://bryceautomation.com/index.php/2021/08/16/programming-the-attiny13-microcore/)
+* [Use a Nano to Program the ATTINY13 \(Microcore\)](https://bryceautomation.com/index.php/2021/08/16/programming-the-attiny13-microcore/)
 * [Various programs for attiny13a](https://github.com/hack-tramp/attiny13a)
 * [Programming ATtiny13 with Arduino Uno to control a Servo Motor](https://circuitdigest.com/microcontroller-projects/programming-attiny13-with-arduino-uno-control-a-servo-motor)
 * [ATtiny13A programming - Page 1](https://www.eevblog.com/forum/microcontrollers/attiny13a-programing/)
