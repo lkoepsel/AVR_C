@@ -765,3 +765,14 @@ define te
 tui enable
 end
 ```
+
+## rules
+```bash
+sudo nano 50-atmel-ice.rules
+```
+```
+# Atmel-ICE
+SUBSYSTEM=="usb", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2141", MODE="0666", GROUP="dialout"
+# Atmel-ICE CMSIS-DAP
+SUBSYSTEM=="hidraw", KERNELS=="*03EB:2141*", MODE="0666", GROUP="dialout"
+```
