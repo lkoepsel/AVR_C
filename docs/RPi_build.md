@@ -505,10 +505,29 @@ In *hello* tab of your CLI, watch for the *RPi* to ping the server. When it does
 **Note: This step is only required if you wish to do hardware debugging. To use hardware debugging, the Reset connection must [be cut on an Uno](https://wellys.com/posts/avr_c_gdb/) or use a board with a built-in debugger such as the [*Microchip XPLAINED 328PB Mini*](https://wellys.com/posts/avr_c_328pb/).**
 
 
-### 9.1 Install avr-gdb
+### 9.1 Install avr-gdb (must be newer than 13, as bloom fails with 13.3)
 ```bash
+# install build dependencies
 sudo apt update
-sudo apt install gdb-avr
+sudo apt install build-essential texinfo libncurses5-dev libreadline-dev python3-dev flex bison libgmp-dev libmpfr-dev libmpc-dev
+
+# get latest source
+wget https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz
+tar -xf gdb-16.3.tar.xz
+cd gdb-16.3
+
+# create a build dir
+mkdir build-avr
+cd build-avr
+
+# configure the build
+../configure --target=avr --prefix=/usr/local/avr --enable-languages=c,c++
+
+# build 
+make -j$(nproc)
+
+# install
+sudo make install
 ```
 ### 9.2 Add ~/.gdbinit
 ```bash
@@ -523,18 +542,22 @@ set history filename ~/.gdb_history
 
 file main.elf
 target remote :1442
-wh src 20
+set listsize 0
+set tui compact-source on
+tui focus cmd
 
-define cll
-make
-load main.elf
+define ll
+load main
+list main
 mon reset
-refresh
-list
 end
 
-define l20
-wh src 20
+define td
+tui disable
+end
+
+define te
+tui enable
 end
 ```
 *Ctrl-S* (save) *Ctrl-X* (exit)
