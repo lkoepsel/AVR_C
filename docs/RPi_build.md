@@ -510,7 +510,9 @@ In *hello* tab of your CLI, watch for the *RPi* to ping the server. When it does
 # install build dependencies
 sudo apt update
 sudo apt install build-essential texinfo libncurses5-dev libreadline-dev python3-dev flex bison libgmp-dev libmpfr-dev libmpc-dev
+```
 
+```bash
 # get latest source
 wget https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz
 tar -xf gdb-16.3.tar.xz
@@ -519,16 +521,22 @@ cd gdb-16.3
 # create a build dir
 mkdir build-avr
 cd build-avr
+```
 
+```bash
 # configure the build
 ../configure --target=avr --prefix=/usr/local/avr --enable-languages=c,c++
+```
 
+```bash
 # build 
 make -j$(nproc)
-
 # install
 sudo make install
+
+avr-gdb --version
 ```
+
 ### 9.2 Add ~/.gdbinit
 ```bash
 cd
