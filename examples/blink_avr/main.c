@@ -11,19 +11,19 @@
 #include "delay.h"
  
 volatile uint16_t MS=1000;
-volatile uint8_t LED=PORTB4;
+volatile uint8_t LED=PORTB5;
  
 int main(void)
 {
     /* set pin to output*/
-    DDRB |= (_BV(PORTB4));
+    DDRB |= (_BV(PORTB5));
 
     while(1) 
     {
         /* turn led on and off */
-        PINB |= (_BV(PORTB4));
+        PINB |= (_BV(PORTB5));
         delay(MS);
-        PINB |= (_BV(PORTB4));
+        PINB |= (_BV(PORTB5));
         delay(MS);
     }
     return 0; 
