@@ -141,20 +141,14 @@ git clone https://github.com/avrdudes/avr-libc.git
 ### 3.2 build and install ( 19m 40s)
 This step requires a minor hack to make it work. I originally used `sudo make install`, as the last step, however, the install would fail as *sudo* loses the path to *runlib* and the install would fail. 
 
-To fix, I change the ownership temporarily to myself (*lkoepsel*), run `make install` (dropping *sudo*) and everything seems to work. At the end, I change the ownership back to *root*. 
-
-You will need to change the username `lkoepsel` in the bulletized statement below, to the username you use to login (*the name you used in the Pi Imager*):
-
-* `sudo chown -R lkoepsel /usr/local/avr` **change lkoepsel to your username**
-
-
+To fix, I change the ownership temporarily to myself (*$(USER)$*), run `make install` (dropping *sudo*) and everything seems to work. At the end, I change the ownership back to *root*. 
 
 ```bash
 cd ~/avr-build/avr-libc
 ./bootstrap
 ./configure --build=`./config.guess` --host=avr --prefix=/usr/local/avr
 # be sure to change the username!
-sudo chown -R lkoepsel /usr/local/avr
+sudo chown -R $(USER) /usr/local/avr
 make -j 4
 make install
 sudo chown -R root /usr/local/avr
