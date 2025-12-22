@@ -8,10 +8,9 @@
 //   or remove the delays and determine fastest blink is 2.68MHz w/ -Os -g
 
 #include <avr/io.h>
-#include "delay.h"
+#include <util/delay.h>
  
-volatile uint16_t MS=1000;
-volatile uint8_t LED=PORTB5;
+#define BLINK_DELAY_MS 1000
  
 int main(void)
 {
@@ -22,9 +21,9 @@ int main(void)
     {
         /* turn led on and off */
         PINB |= (_BV(PORTB5));
-        delay(MS);
+        _delay_ms(BLINK_DELAY_MS);
         PINB |= (_BV(PORTB5));
-        delay(MS);
+        _delay_ms(BLINK_DELAY_MS);
     }
     return 0; 
 }
