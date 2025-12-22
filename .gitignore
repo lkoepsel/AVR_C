@@ -24,3 +24,5 @@ env.make
 bloom.yaml
 .gdbinit
 *.stc
+!optiboot_atmega328.hex
+
