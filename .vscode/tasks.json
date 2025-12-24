@@ -1,0 +1,54 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "make",
+            "detail": "Run make",
+            "type": "shell",
+            "command": "/usr/bin/make ${input:makeTarget}",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "makeTarget",
+            "description": "Select a make target",
+            "options": [
+                {   
+                    "value": "compile",
+                },
+                {   
+                    "value": "flash",
+                },
+                {   
+                    "value": "clean",
+                },
+                {   
+                    "value": "complete",
+                },
+                {   
+                    "value": "verbose",
+                },
+                {   
+                    "value": "env",
+                },
+                {   
+                    "value": "help",
+                }
+            ],
+            "default": " flash"
+        }
+    ]
+}

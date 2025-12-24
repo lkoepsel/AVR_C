@@ -1,5 +1,4 @@
 .idea
-.vscode
 _deps
 cmake-*
 build
