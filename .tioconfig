@@ -1,0 +1,20 @@
+[default]
+baudrate = 250000
+databits = 8
+parity = none
+stopbits = 1
+local-echo = true
+color = 11
+
+[acm]
+device = /dev/ttyACM0
+color = 12
+
+[usb]
+device = /dev/ttyUSB0
+color = 15
+
+[usb-devices]
+pattern = ^usb([0-9]*)
+device = /dev/ttyUSB%m1
+color = 14
