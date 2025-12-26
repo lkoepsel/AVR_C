@@ -66,5 +66,6 @@
     "marp-team.marp-vscode",
     "paulober.pico-w-go"
   ],
-    "remote.defaultExtensionsIfInstalledLocally": []
+    "remote.defaultExtensionsIfInstalledLocally": [],
+    "workbench.panel.defaultLocation": "right"
 }

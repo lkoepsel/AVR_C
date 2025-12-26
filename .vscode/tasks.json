@@ -10,14 +10,13 @@
                 "cwd": "${fileDirname}"
             },
             "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            },
+                "reveal": "silent",
+                "panel": "shared"
+              },        
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "problemMatcher": []
+            }
         }
     ],
     "inputs": [
@@ -27,25 +26,40 @@
             "description": "Select a make target",
             "options": [
                 {   
-                    "value": "compile",
+                    "value": "flash",
+                    "label": "compile and upload code (upload)"
                 },
                 {   
-                    "value": "flash",
+                    "value": "compile",
+                    "label": "only compile code (verify)"
                 },
                 {   
                     "value": "clean",
+                    "label": "remove non-source files"
                 },
                 {   
                     "value": "complete",
+                    "label": "complete re-compile with verbose upload"
                 },
                 {   
                     "value": "verbose",
+                    "label": "verbose upload to debug serial connection"
                 },
                 {   
                     "value": "env",
+                    "label": "print env variables being used"
+                },
+                {   
+                    "value": "size",
+                    "label": "print size information of elf file"
+                },
+                {   
+                    "value": "disasm",
+                    "label": "create an assembly listing of the file, main.lst"
                 },
                 {   
                     "value": "help",
+                    "label": "print make commands"
                 }
             ],
             "default": " flash"
