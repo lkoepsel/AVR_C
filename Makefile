@@ -131,6 +131,7 @@ env:
 	@echo "SOFT_RESET:"  $(SOFT_RESET)
 	@echo "LIB_DIR:"  $(LIBDIR)
 	@echo "LIBRARY:"  $(LIBRARY)
+	@echo "FLOAT:"  $(FLOAT)
 	@echo "PROGRAMMER_TYPE:"  $(PROGRAMMER_TYPE)
 	@echo "PROGRAMMER_ARGS:"  $(PROGRAMMER_ARGS)
 	@echo "TOOLCHAIN:"  $(TOOLCHAIN)
