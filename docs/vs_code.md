@@ -1,6 +1,6 @@
 # VS Code Configuration Files
 
-Perform these steps in VS Code:
+These files are now tracked by git in the *.vscode* folder. The text below shows a current version.
 
 ## C/C++ Configuration Installation
 **If you are on Windows, use Ctrl, instead of CMD.**
@@ -18,33 +18,9 @@ The location of libraries will be different based on how gcc was installed. If y
         {
             "name": "AVR",
             "includePath": [
-                "/usr/local/avr/avr/",
-                "/usr/local/avr/include/**",
-                "/usr/local/avr/avr/include/avr/",
-                "${workspaceFolder}/**"
-            ],
-            "defines": ["__AVR_ATmega328P__"],
-            "compilerPath": "/usr/local/avr/bin/avr-gcc", 
-            "compilerArgs": [ ],
-            "cStandard": "c99",
-            "cppStandard": "c++98",
-            "intelliSenseMode": "${default}"
-        }
-    ],
-    "version": 4
-}
-```
-
-## Bookworm Installed C (gcc 5.4)
-### c_cpp_properties.json
-```json
-{
-    "configurations": [
-        {
-            "name": "AVR",
-            "includePath": [
-                "/usr/lib/avr/",
-                "/usr/lib/avr/include/**",
+                "/usr/lib/gcc/avr/14.2.0/include/",
+                "/usr/lib/gcc/avr/14.2.0/include-fixed/**",
+                "/usr/lib/avr/include",
                 "${workspaceFolder}/**"
             ],
             "defines": ["__AVR_ATmega328P__"],
@@ -80,8 +56,8 @@ The location of libraries will be different based on how gcc was installed. If y
                 "cwd": "${fileDirname}"
             },
             "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
+                "reveal": "silent",
+                "panel": "shared"
               },        
             "group": {
                 "kind": "build",
@@ -120,6 +96,14 @@ The location of libraries will be different based on how gcc was installed. If y
                     "label": "print env variables being used"
                 },
                 {   
+                    "value": "size",
+                    "label": "print size information of elf file"
+                },
+                {   
+                    "value": "disasm",
+                    "label": "create an assembly listing of the file, main.lst"
+                },
+                {   
                     "value": "help",
                     "label": "print make commands"
                 }
@@ -127,5 +111,101 @@ The location of libraries will be different based on how gcc was installed. If y
             "default": " flash"
         }
     ]
+}
+```
+
+## extensions.json
+
+```json
+{
+    "recommendations": [
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode-remote.remote-ssh",
+    "ms-vscode-remote.remote-ssh-edit",
+    "ms-vscode.cpptools",
+    "ms-vscode.cpptools-themes",
+    "ms-vscode.remote-explorer"
+  ],
+  "unwantedRecommendations": [
+    "qili.vscode-lc3",
+    "yzane.markdown-pdf",
+    "marp-team.marp-vscode"
+  ]
+}
+```
+
+## settings.json
+
+```json
+{
+    "files.associations": {
+        "*.make": "makefile",
+        "*.S": "avr",
+        "xarm.h": "c"
+    },
+    "workbench.colorCustomizations": {
+      "terminal.background": "#1e1e1e",
+      "terminal.foreground": "#cccccc",
+      "terminal.ansiBlack": "#000000",
+      "terminal.ansiRed": "#cd3131",
+      "terminal.ansiGreen": "#0dbc79",
+      "terminal.ansiYellow": "#e5e510",
+      "terminal.ansiBlue": "#2472c8",
+      "terminal.ansiMagenta": "#bc3fbc",
+      "terminal.ansiCyan": "#11a8cd",
+      "terminal.ansiWhite": "#e5e5e5"
+    },
+    "cSpell.words": [
+      "Adafruit",
+      "AREF",
+      "atmega",
+      "Atmel",
+      "avrdude",
+      "binutils",
+      "cppcheck",
+      "Datasheet",
+      "functionname",
+      "getchar",
+      "invalidscanf",
+      "Libc",
+      "makefiles",
+      "Mersenne",
+      "microcontroller",
+      "Microcontrollers",
+      "millis",
+      "minicom",
+      "MPLAB",
+      "objdump",
+      "oneline",
+      "Optiboot",
+      "outerpins",
+      "Pico",
+      "pidev",
+      "Pmem",
+      "PULLUP",
+      "pushbuttons",
+      "recompiles",
+      "scanf",
+      "serialio",
+      "studentn",
+      "sysclock",
+      "tinymt",
+      "uart",
+      "unolib",
+      "usbserial",
+      "wrapprint",
+      "Wundef",
+      "Xplained"
+    ],
+  "extensions.ignoreRecommendations": true,
+  // to disable specific extensions:
+  "extensions.disabled": [
+    "qili.vscode-lc3",
+    "yzane.markdown-pdf",
+    "marp-team.marp-vscode",
+    "paulober.pico-w-go"
+  ],
+    "remote.defaultExtensionsIfInstalledLocally": [],
+    "workbench.panel.defaultLocation": "right"
 }
 ```

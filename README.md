@@ -1,16 +1,19 @@
 # Programming the Arduino Uno in Standard C
 
-## Setup Files:
-**Setup files for [env.make](./docs/env_make.md) and [VS Code](./docs/vs_code.md)**
+## Updated: Setup Files:
+* Latest version now tracks *env.def*, which can simply be copied to *env.make* using `cp env.def env.make`, then make local adjustments to *env.make*.
+* The *.vscode* folder is tracked via git, which means the VS Code environment will be automatically setup. Some extensions might have to be installed for remote development, VS Code will prompt for missing extensions. 🤞
+* Setup files for [env.make](./docs/env_make.md) and [VS Code](./docs/vs_code.md), these pages remain for legacy information
 
 ## Raspberry Pi Build Instructions:
-**Documentation for building a [C development platform](./docs/RPi_build.md)**
+1. **Easy version - [Raspberry Pi and VS Code Setup Part 1 Trixie](https://wellys.com/posts/avr_c_raspberrypi_v2/)**
+2. **Documentation for building a [C development platform](./docs/RPi_build.md) from scratch.**
 
 ## xArm Command Interface:
 **Documentation for using AVR_C to command [xArm Robotics Arm](./docs/xArm.md)**
 
 ## ATtiny13A Programming:
-**Information as to how to program the [ATtiny13A](./docs/ATtiny13A.md)**
+**Information as to how to program the [ATtiny13A](https://github.com/lkoepsel/ATtiny).**  (*Moved to a repository, dedicated to the ATtiny13A.*) 
 
 ## Introduction
 This repository provides a framework in  [*C* (ANSI C99)](http://avr-libc.nongnu.org) which aligns to that of the Arduino framework. This allows a student to program the ATmega328P or equivalents using standardized **C** in a relatively familiar (Arduino) context. This serves the following:
@@ -195,19 +198,21 @@ The file, [*env.make*](./docs/env_make.md) is **not tracked by git** and the *Un
 
 ### Latest parameters for Arduino Uno R3
 ```make
-# Arduino UNO or exact equivalents using Optiboot (standard Arduino IDE approach)
+# Arduino UNO et al using Optiboot (standard Arduino IDE approach)
 MCU = atmega328p
-SERIAL = /dev/cu.usbserial-0001
+SERIAL = /dev/ttyACM0
 F_CPU = 16000000UL
-BAUD  = 250000UL
+USB_BAUD = 250000UL
 SOFT_RESET = 0
 LIBDIR = $(DEPTH)Library
-LIBRARY = 
+LIBRARY = YES
+FLOAT = 
 PROGRAMMER_TYPE = arduino
 PROGRAMMER_ARGS = -F -V -P $(SERIAL) -b 115200
 TOOLCHAIN =
 OS =
 TC3_RESET = 0
+SOFT_BAUD = 28800UL
 ```
 
 ### Instructions
@@ -269,7 +274,7 @@ Set this as appropriate for your programming methodology. See examples for metho
 ## env.make for multiple boards
 Here is an env.make with multiple sections, one for each board to be used. Notice that only one section is active at a time, the non-used sections have been commented out.
 
-**[Full version of the env.make file I am using](./docs/env_make.md):**
+**[Full version of the env.make file I am using](./env.def)** Use `cp env.def env.make`, and make local edits to *env.make*.  
 
 ## Static Testing
 I used [*cppcheck*](http://cppcheck.net) to perform a static analysis of the code. It was extremely helpful in pointing out a few buffer issues, I had. That said, there were a few false positives or some issues, which I knew existed and didn't wish to fix. Here is the suppressions-list I used:
@@ -294,20 +299,59 @@ unusedFunction:Library/tinymt32.c
 ```
 
 To perform static testing, run `make static` at the root level and the output from cppcheck will appear in cppcheck.txt. If you want to see all issues, none suppressed, then remove '--suppressions-list=$(DEPTH)suppressions.txt' from the `make static` line in the Makefile (line 89)
-## VS Code files
-[VS Code json Files to Support](./docs/vs_code.md)
+
+## Flashing optiboot on to an Uno
+
+Due to a variety of reasons, you might want to reflash the bootloader onto your Uno. Here are the instructions using either an Atmel-ICE programmer or the Microchip SNAP. One may also use another Arduino Uno, if that Uno is programmed as a *Arduino as ISP*.
+
+1. Re-flash Arduino Bootloader, exact instructions using Atmel-ICE Debugger. This version uses the [GitHub version of optiboot-X](https://github.com/Optiboot/optiboot). Instructions assume, optiboot has been cloned to computer.
+2. Both the packaged (white plastic case) and unpackaged (PCB only) versions of the Atmel-ICE have been confirmed to work.
+3. Plug the * 50-mil 10-pin IDC flat cable with 6-pin ISP and 10-pin connectors into the AVR connector on the ICE.
+4. Plug the 6-pin ISP connector to the ISP connector on the UNO with the raised notch facing the Uno board. (Pin 1 arrow, will be at the opposite end of the pin 1 on the Uno ISP connector in the top row.)
+5. When Uno is properly connected and programmed, left green LED will light. Middle red LED indicates ICE is powered. Right green LED is for debugging.
+
+### Using Atmel-ICE
+```
+# 1. Test the connection, easy way to confirm setup is correct
+avrdude -p m328p -P usb  -c atmelice_isp -t
+part
+quit
+# 2. Set fuses and lock bits to enable re-loading of boot loader
+avrdude -p atmega328p  -c atmelice_isp -P usb -e -U lock:w:0x3f:m -U efuse:w:0x05:m -U hfuse:w:0xDE:m -U lfuse:w:0xFF:m
+# 3. Copy hex file to desktop
+cp optiboot/optiboot/bootloaders/optiboot/optiboot_atmega328.hex ~/Desktop/
+# 4. Burn Arduino bootloader & set lock bits to lockbootloader section
+avrdude -p atmega328p  -c atmelice_isp -P usb -U flash:w:./optiboot_atmega328.hex -U lock:w:0x0f:m
+```
+### Using SNAP
+```
+# 1. Test the connection
+avrdude -p m328p -P usb  -c snap_isp -t
+part
+quit
+# 2. Set fuses and lock bits to enable re-loading of boot loader
+avrdude -p atmega328p  -c snap_isp -P usb -e -U lock:w:0x3f:m -U efuse:w:0x05:m -U hfuse:w:0xDE:m -U lfuse:w:0xFF:m
+# 3. Copy hex file to desktop
+cp /Users/lkoepsel/Documents/optiboot/optiboot/bootloaders/optiboot/optiboot_atmega328.hex ~/Desktop/
+# 4a. Burn Arduino bootloader & set lock bits to lockbootloader section
+avrdude -p atmega328p  -c snap_isp -P usb -U flash:w:./optiboot_atmega328.hex -U lock:w:0x0f:m
+# 4b. Burn FlashForth & set lock bits to lockbootloader section
+avrdude -p atmega328p  -c snap_isp -P usb -U flash:w:./328-16MHz-38400.hex -U lock:w:0x0f:m
+```
 
 ## Sources
 I also write about C, MicroPython and Forth programming on microcontrollers at [Wellys](https://wellys.com).
 
 Other sources of information which were helpful:
-* [AVR Libc](https://www.nongnu.org/avr-libc/)
+* [AVR Libc](https://github.com/avrdudes/avr-libc)
 * [AVR Freaks Community](https://www.avrfreaks.net/)
 * [Arduino in C | Freedom Embedded](https://balau82.wordpress.com/arduino-in-c/)
 * [Programming Arduino in "Pure C"](http://audiodiwhy.blogspot.com/2019/01/programming-arduino-in-pure-c-now-were.html)
 * [EMBEDDS: AVR Tutorials](https://embedds.com/avr-tutorials/)
 * [CCRMA: AVR](https://ccrma.stanford.edu/wiki/AVR#AVR_Microcontrollers)
 * [Efundies Electronics and Programming Guides: AVR](https://efundies.com/avr/)
+
+### Links for the avr-size issue, resolved in *Makefile*
 * [avr-size issue](https://mightyohm.com/blog/2010/08/fix-for-broken-avr-size-in-ubuntu-10-04-lucid/)
 * [avr-size patch](https://gist.github.com/larsimmisch/4190960/#file-avr-binutils-size-patch)
 * [avr-size replacement](https://www.avrfreaks.net/s/topic/a5C3l000000UbQ6EAK/t157634)

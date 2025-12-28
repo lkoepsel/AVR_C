@@ -2,7 +2,9 @@
 
 ## Introduction
 
-These are the steps to create a *complete and up-to-date* Standard C development platform on a Raspberry Pi. The steps accomplish the following:
+These are the steps to create a *complete, latest version* of Standard C development platform on a Raspberry Pi. While nice-to-have, given *Raspberry Pi OS Trixie* on the Raspberry Pi, is fairly up-to-date, [this version](https://wellys.com/posts/avr_c_raspberrypi_v2/) is recommended. 
+
+**The steps accomplish the following:**
 
 0. Updates the OS and adds all prerequisites
 1. Installs avr-binutils (2.43.1)
