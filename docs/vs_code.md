@@ -1,6 +1,6 @@
 # VS Code Configuration Files
 
-These files are now tracked by git in the *.vscode* folder. The text below shows a current version.
+These files are now tracked by git in the *.vscode* folder. The text below shows as of *Trixie December 2025*.
 
 ## C/C++ Configuration Installation
 **If you are on Windows, use Ctrl, instead of CMD.**
@@ -9,8 +9,7 @@ These files are now tracked by git in the *.vscode* folder. The text below shows
 2. Copy the content below then in *VS Code CMD-a* to select all of the existing *c_cpp_properties.json* file
 3. *CMD-v* to paste and *CMD-s* to save. 
 
-The location of libraries will be different based on how gcc was installed. If you compiled gcc yourself (Option 3 on wellys.com), then use the first json file. If you used the default installation from Bookworm, use the second JSON file. VS Code will advise if it isn't able to find the library files.
-## User built C (gcc 15.1)
+## Trixie version C (gcc 14.2)
 ### c_cpp_properties.json
 ```json
 {
