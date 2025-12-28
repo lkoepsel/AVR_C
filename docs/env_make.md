@@ -44,7 +44,8 @@ Copy and paste the text below. Be sure to go to step 3!
 # For GCC native, both TOOLCHAIN and OS need to be blank
 
 # To reduce code size dramatically by not using AVR_C library, 
-# set LIBRARY = no_lib, see examples/blink_avr
+# set LIBRARY = , see examples/blink_avr
+# default is YES
 # All functions must be in avr-libc (standard library), main.c or files in folder
 # otherwise, leave blank
 

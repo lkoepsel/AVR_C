@@ -212,7 +212,7 @@ Use *blink_avr*, as it doesn't depend on any *AVR_C* Library functions. Much of 
 ```c
 //  blink_avr - uses bit setting by registers instead of digitalWrite()
 //  version uses PB3 as PB5, doubles as debugWire on ATtiny13A
-//  for smallest code size, set LIBRARY = no_lib in env.make 
+//  for smallest code size, set LIBRARY =  in env.make 
 //   Smallest code size allows you to use a scope to confirm delay 
 //   is exactly 1 millisecondor other timing exercises.
 //   For example: (when measured):

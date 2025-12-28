@@ -52,15 +52,14 @@ TARGET = main
 #  and in LIBDIR.  If you have any other (sub-)directories with code,
 #  you can add them in to SOURCES below in the wildcard statement.
 
-ifeq ($(LIBRARY),no_lib)
-	SOURCES=$(wildcard *.c )
-	CPPFLAGS = -DF_CPU=$(F_CPU) -DUSB_BAUD=$(USB_BAUD)  -DSOFT_BAUD=$(SOFT_BAUD)  \
-	-DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET) -DFLOAT=$(FLOAT)
-
-else
+ifeq ($(LIBRARY),YES)
     SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
     CPPFLAGS = -DF_CPU=$(F_CPU) -DUSB_BAUD=$(USB_BAUD)   -DSOFT_BAUD=$(SOFT_BAUD) -I. \
 	-I$(LIBDIR) -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET) -DFLOAT=$(FLOAT)
+else
+	SOURCES=$(wildcard *.c )
+	CPPFLAGS = -DF_CPU=$(F_CPU) -DUSB_BAUD=$(USB_BAUD)  -DSOFT_BAUD=$(SOFT_BAUD)  \
+	-DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET) -DFLOAT=$(FLOAT)
 endif
 
 OBJECTS=$(SOURCES:.c=.o)

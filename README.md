@@ -240,12 +240,23 @@ You *may* use the latter by performing the following steps in the env.make file:
 
 If either is missing, *make* will assume you are using the GNU tool chain, **which is the preferable solution**.
 
-### Code Size (LIBRARY)
-In some situations, its advantageous **to not use** the AVR_C library (*/Library*), to reduce code size. You can change this using the Makefile. 
+### Code Size (LIBRARY and FLOAT)
+In some situations, its advantageous **to not use** the AVR_C library (*/Library*), to reduce code size. You can change by setting LIBRARY = YES. Be aware that doing so, will require all of your code to reside in the same folder. AVR_C will continue to use the Standard C libary, *AVR_LIBC*. 
 
 * The default is to use the AVR_C library, which is *LIBRARY =*. This is required for the majority of all examples.
 
-* To compile to a small code size, use *LIBRARY = no_lib*. This will force the compiler to only use the code in the main.c, other files in the folder and the standard *avr-libc* code. Examples of doing this are in the example, *blink_avr*, where the code is reduced to roughly 188 bytes from over 1300 bytes.  
+* To compile to a small code size, use *LIBRARY = YES*. This will force the compiler to only use the code in the main.c, other files in the folder and the standard *avr-libc* code. Examples of doing this are in the example, *blink_avr*, where the code is reduced to roughly 188 bytes from over 1300 bytes.
+
+* Another way to reduce code size is to remove the floating point library. To do this, set *FLOAT =* (remove *YES*). This will reduce the code size dramatically as well.
+
+Here is a comparison using *blink_avr* when setting the parameters:
+
+| Library | FLOAT  | Program | Data |
+|---------|--------|---------| ---- |
+|         |        | 188     | 0    |   
+| YES     |        | 1356    | 42   |
+|         | YES    | 3128    | 0    |
+| YES     | YES    | 4296    | 42   |
 
 ### Board Changes (SOFT_RESET and TC3_RESET)
 The *Microchip ATmega328PB Xplained Mini* has greater capabilities and is not configured like the *Uno*. With the *ATmega328PB* microcontroller it has 3 additional timer/counters, *TC3, TC4, TC5*.
