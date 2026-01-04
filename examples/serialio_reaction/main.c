@@ -1,5 +1,5 @@
 // Serial I/O Wrap Print - Add timestamps to every printf() call
-// Use a feature of the GNU linker to ‘wrap’ around any symbol or function,
+// Use a feature of the GNU linker to 'wrap' around any symbol or function,
 // including the ones in the standard library. For example, add to the printf()
 // a wrapper, which adds a timestamp for every call.
 // [GNU Linker Wizardry: Wrapping printf() with Timestamps | MCU on Eclipse]
@@ -7,8 +7,8 @@
 // [Variable Argument Lists in C using va_list]
 // (https://www.cprogramming.com/tutorial/c/lesson17.html)
 // Use __real_printf() for calls w/o timestamp
-// Set WRAP = YES to use
- 
+// Uncomment line: LDFLAGS += -Wl,--wrap=printf in main Makefile
+
 #include <stdio.h>
 #include <stdarg.h>
 #include "sysclock.h"
@@ -17,32 +17,39 @@
 // uses CR as end of line, might need to be changed to LF
 #define CR 13
 
+// Global variable to track last time for delta calculation
+static unsigned long last_print_time = 0;
+
 uint16_t __real_printf(const char *fmt, ...);
 
-uint16_t __wrap_printf(const char *fmt, ...) 
+uint16_t __wrap_printf(const char *fmt, ...)
 {
   va_list args;
   uint16_t count0, count1;
-  count0 = __real_printf("%ld", millis());
+  unsigned long current = millis();
+  unsigned long delta = current - last_print_time;
+  last_print_time = current;
+  count0 = __real_printf("%ld", delta);
   va_start(args, fmt);
   count1 = vprintf(fmt, args);
   va_end(args);
   return count0+count1;
 }
 
-int main(void) 
-{    
+int main(void)
+{
     init_serial();
     init_sysclock_2 ();
 
     char input;
 
     __real_printf("printf wrapper Example\n");
-    __real_printf("Press any key to show elapsed time(ms)\n");
+    __real_printf("Press any key to show delta time(ms) between presses\n");
     __real_printf("Press Return to exit program\n");
-    while((input = getchar())!= CR) 
+
+    while((input = getchar())!= CR)
     {
-        printf(" ms since reset, %c key pressed\n", input);
+        printf(" ms since last press, %c key pressed\n", input);
     }
     __real_printf("Program Exit\n");
 }
