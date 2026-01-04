@@ -1,5 +1,7 @@
 // analogRead - Read an analog voltage on an analog pin (A0-A5)
 // Reference voltage is assumed to be 5V, each step 5V/1024 or .00488
+// To see floating point values, set FLOAT = YES in env.make
+
 #include <stdio.h>
 #include "uart.h"
 #include "delay.h"
