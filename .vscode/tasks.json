@@ -38,6 +38,10 @@
                     "label": "remove non-source files"
                 },
                 {   
+                    "value": "clean_examples",
+                    "label": "remove non-source files from all example folders"
+                },
+                {   
                     "value": "complete",
                     "label": "complete re-compile with verbose upload"
                 },
