@@ -1,80 +1,65 @@
-// Simple conversion program to show Uno pin to ATmega328P port address and bit 
+// Simple conversion program to show Uno pin to ATmega328P port address and bit
+// The PSTR() macro stores the string in program memory, 
+//  and printf_P() reads format strings from program memory instead of RAM.
 #include <stdio.h>
+#include <avr/pgmspace.h>
 #include "uart.h"
 #include "unolib.h"
 
-void valid(uint8_t p, char c)
+// Clear input buffer to end of line
+static void clear_eol(void)
 {
-    volatile uint8_t *PORTn = NULL;
-    volatile uint8_t *PINn = NULL;
-
-    uint8_t bit = pintoBit(p);
-    PORTn = pintoPort(p);
-    PINn = PORTn;
-    PINn--;
-    PINn--;
-    printf("Pin %d PIN%c %p PORT%c %p Bit %u\n",\
-        p, c, PINn, c, PORTn, bit);        
+    int c;
+    while ((c = getchar()) != '\n' && c != '\r' && c != EOF);
 }
 
-int main(void) {    
+void valid(uint8_t p, char c)
+{
+    volatile uint8_t *PORTn = pintoPort(p);
+    volatile uint8_t *PINn = PORTn - 2;  // PIN is 2 addresses below PORT
+
+    printf_P(PSTR("Pin %d PIN%c %p PORT%c %p Bit %u\n"),
+        p, c, PINn, c, PORTn, pintoBit(p));
+}
+
+int main(void) {
 
     init_serial();
-    puts("Testing pintoBit and pintoPort, enter an Uno Pin number (0-13)");
-    puts("PORTB 0x23-25 and PORTD 0x29-2b");
-    char port = 'x';
+    printf_P(PSTR("Testing pintoBit and pintoPort, enter Uno Pin (0-13)\nPORTB 0x23-25 PORTD 0x29-2b\n"));
+
     while(1)
     {
         int c = getchar();
 
-        // Skip carriage returns and newlines when nothing has been entered
-        if (c == '\n' || c == '\r')
-        {
-            continue;
-        }
+        if (c == '\n' || c == '\r') continue;
 
-        // Check if it's a digit
         if (c >= '0' && c <= '9')
         {
-            uint8_t Unopin = c - '0';
-
-            // Check for second digit (peek ahead)
+            uint8_t pin = c - '0';
             int next = getchar();
+
             if (next >= '0' && next <= '9')
             {
-                Unopin = Unopin * 10 + (next - '0');
-            }
-
-            // Clear to end of line (consume '\r' and '\n')
-            while (next != '\n' && next != '\r' && next != EOF)
-            {
+                pin = pin * 10 + (next - '0');
                 next = getchar();
             }
 
-            if (Unopin <= 7)
+            // Clear remaining input
+            if (next != '\n' && next != '\r') clear_eol();
+
+            if (pin <= 13)
             {
-                port = 'D';
-                valid(Unopin, port);
-            }
-            else if (Unopin <= 13)
-            {
-                port = 'B';
-                valid(Unopin, port);
+                valid(pin, (pin <= 7) ? 'D' : 'B');
             }
             else
             {
-                printf("Invalid entry %u\n", Unopin);
+                printf_P(PSTR("Invalid: %u\n"), pin);
             }
         }
         else
         {
-            // Invalid input - clear rest of line
-            int temp = getchar();
-            while (temp != '\n' && temp != '\r' && temp != EOF)
-            {
-                temp = getchar();
-            }
-            printf("Invalid entry %c\n", c);
+            clear_eol();
+            printf_P(PSTR("Invalid: %c\n"), c);
         }
     }
 
