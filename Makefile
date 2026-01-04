@@ -144,6 +144,7 @@ env:
 	@echo "BIN:"  $(BIN)
 	@echo "TC3_RESET:"  $(TC3_RESET)
 	@echo "SOFT_BAUD:"  $(SOFT_BAUD)
+	@echo "WRAP:"  $(WRAP)
 	@echo
 	@echo "Source files:"   $(SOURCES)
 	@echo	
