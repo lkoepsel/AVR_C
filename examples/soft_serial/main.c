@@ -3,8 +3,10 @@
 // Change serial pins in soft_serial.h: SOFT_RX_PIN/SOFT_TX_PIN
 // Set baud rate in soft_serial.h: SOFT_BAUD
 
+#include <stdint.h>
 #include <stdio.h>
 #include "soft_serial.h"
+#include "serial_asm.h"
 #include "uart.h"
 
 const char prompt[] PROGMEM = "Enter up to 9 chars: ";
@@ -37,6 +39,12 @@ int main(void) {
 
         printf("On soft term %i ", received);
         printf("chars received: %s\n", soft_in);
+
+        // clear buffer for next read
+        for (uint8_t i = 0; i < N_out; i++)
+        {
+            soft_in[i] = 0;
+        }
     }
 
     return 0;

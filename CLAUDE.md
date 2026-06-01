@@ -30,26 +30,38 @@ nano env.make  # Update SERIAL = /dev/ttyACM0 (or /dev/ttyUSB0, COM3, etc.)
 - `USB_BAUD` - Serial baud rate (250000UL recommended)
 - `LIBRARY` - Set to "YES" to use AVR_C library, leave blank for minimal code size
 - `FLOAT` - Set to "YES" to include floating point printf support, leave blank otherwise
-- `PROGRAMMER_TYPE` - arduino, atmelice_isp, snap_isp, xplainedmini, etc.
+- `WRAP` - Set to "YES" to enable the `__wrap_printf` timestamp wrapper (adds `-Wl,--wrap=printf`). Required by any example that wraps `printf` (e.g. `serialio_wrapprint`); link error `undefined reference to '__wrap_printf'` means this is unset.
+- `SOFT_BAUD` - Baud rate for the software serial port (soft_serial), max 28800UL
+- `PROGRAMMER_TYPE` - arduino, atmelice_isp, snap_isp, xplainedmini, dragon, pkobn_updi, etc.
 - `PROGRAMMER_ARGS` - Programmer-specific arguments
+- `TOOLCHAIN` / `OS` - Set both to `arduino` / `mac|windows|raspberry` to use the Arduino-bundled avr toolchain; leave both blank for a native GCC install (avr-gcc on PATH)
+- `TC3_RESET` - ATmega328PB only: use Timer/Counter 3 for the 1ms clock
+
+After changing the board/MCU in `env.make`, the Library must be recompiled — use `make complete` (see below).
 
 ### Make Commands
 
 Common commands (run from example directories):
 
 ```bash
-make              # Compile only (equivalent to Arduino verify)
+make              # Build main.elf only (compile + link, equivalent to Arduino verify)
+make compile      # Build main.hex
 make flash        # Compile, show size, and upload to board (Arduino upload)
-make verbose      # Flash with detailed programming output
-make clean        # Delete compiled files in current directory
-make env          # Print all env.make variables
-make size         # Show program size information
+make verbose      # Flash with detailed (avrdude -v -v) programming output
+make clean        # Delete this example's compiled files
+make env          # Print all active env.make variables + source file list
+make size         # Show program size (avr-objdump -Pmem-usage)
+make help         # List the documented targets
+make static       # Run cppcheck static analysis -> cppcheck.txt
+make disassemble  # (alias: disasm) Emit main.lst, an annotated disassembly listing
 
-# Library development commands
-make LIB_clean    # Delete all Library object files (use after modifying Library code)
-make all_clean    # Delete all .o files in current directory and Library
-make LIB_clean && make all_clean && make flash  # Complete rebuild after Library changes
+# Library development — there is NO `make LIB_clean` target
+make all_clean    # Delete all .o files in current dir AND Library/ (forces Library rebuild)
+make complete     # = all_clean + verbose flash; the full rebuild after editing Library code
+make clean_examples  # Run `make clean` in every examples/*/ directory (run from root or any example)
 ```
+
+> Note: `make all_clean` is what clears stale `Library/*.o`. Use `make complete` (or `make all_clean && make flash`) after modifying any file under `Library/`, since the default build only rebuilds object files whose `.c`/`.h` changed.
 
 ### Project Structure
 
@@ -58,12 +70,17 @@ AVR_C/
 ├── Makefile           # Main makefile (symlinked in examples)
 ├── env.def            # Template environment configuration
 ├── env.make           # Local environment config (not tracked by git)
-├── Library/           # AVR_C library functions
-│   ├── analogRead.c/h
-│   ├── digitalWrite.c/h
-│   ├── pinMode.c/h
-│   ├── uart.c/h
+├── Library/           # AVR_C library functions (all *.c compiled when LIBRARY=YES)
+│   ├── analogRead/Write, digitalRead/Write, pinMode, map  # Arduino-compatible I/O
+│   ├── uart.c/h       # Hardware USART serial (init_serial, printf/puts/getchar backing)
+│   ├── soft_serial.c/h + serial_asm.S/.h  # Bit-banged software serial (TX=PD3, RX=PD2);
+│   │                                       #   timing-critical primitives are in AVR asm
+│   ├── readLine.c/h   # Line-buffered serial input
+│   ├── servo.c/h, tone.c/h        # Servo PWM and tone generation
+│   ├── button.c/h     # Debounced buttons (needs sysclock_2)
 │   ├── sysclock.c/h   # Timekeeping (millis, micros)
+│   ├── tinymt32.c/h   # Mersenne Twister (TinyMT32) RNG
+│   ├── xArm.c/h       # xArm robotics arm command interface (see docs/xArm.md)
 │   └── unolib.h       # Common definitions and macros
 └── examples/          # Example programs
     ├── blink/         # Each example has:
@@ -178,10 +195,12 @@ When editing Library code:
 
 ```bash
 cd examples/your_example
-make LIB_clean && make all_clean && make flash
+make complete          # = all_clean + verbose flash
+# or, to rebuild without flashing:
+make all_clean && make
 ```
 
-This ensures all object files are rebuilt with your changes.
+`make all_clean` removes `Library/*.o` so your changes are picked up; the default incremental build will not otherwise re-link stale Library objects reliably.
 
 ### Hardware Debugging
 
@@ -266,4 +285,14 @@ int main(void)
 - If using serial I/O, pins 0 and 1 are unavailable for other uses
 - Digital functions (pinMode, digitalWrite, digitalRead) work on pins 0-13 only, not A0-A5
 - The framework targets C99 standard, not C++ or Arduino-specific C++ extensions
-- When LIBRARY=YES, all Library .c files are compiled; include only needed .h files
+- When LIBRARY=YES, all Library `.c` files are compiled; include only needed `.h` files
+- The default `CFLAGS` build is a **debug** build (`-Og -ggdb`) with `-Wall -Wundef -Werror` — warnings fail the build. Size-optimized flags (`-Os`) are present but commented out in the Makefile.
+- `SOURCES` is `$(wildcard *.c $(LIBDIR)/*.c)` — only `.c` files are auto-compiled. Assembly (`.S`, e.g. `Library/serial_asm.S`) is **not** picked up automatically; it must be added explicitly to the build to be linked.
+
+## Editor / Code Intelligence (`.clangd`)
+
+`.clangd` at the repo root configures clangd for the AVR examples. It pins avr-gcc as the compiler and hardcodes two macOS Homebrew paths that must be updated after `brew upgrade avr-gcc@9`:
+- `Compiler: /opt/homebrew/bin/avr-gcc`
+- the `-isystem /opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include` AVR header path
+
+It forces `-xc` (so standalone `.h` files aren't misparsed as Objective-C) and disables clangd's include-cleaner diagnostics (which misfire on headers included for side effects).

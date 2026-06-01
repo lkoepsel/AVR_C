@@ -52,17 +52,24 @@ TARGET = main
 #  and in LIBDIR.  If you have any other (sub-)directories with code,
 #  you can add them in to SOURCES below in the wildcard statement.
 
+# Soft-serial bit timing: hand the assembler UL-stripped clock/baud values so
+# it can compute period/half_period at assemble time. $(var:UL=) drops the
+# trailing UL the C code needs but the assembler can't parse in arithmetic.
+SOFT_TIMING = -DSOFT_F_CPU=$(F_CPU:UL=) -DSOFT_BAUD_HZ=$(SOFT_BAUD:UL=)
+
 ifeq ($(LIBRARY),YES)
     SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
+	ASM_SOURCES = $(wildcard *.S) $(ASM_LIBS)
     CPPFLAGS = -DF_CPU=$(F_CPU) -DUSB_BAUD=$(USB_BAUD)   -DSOFT_BAUD=$(SOFT_BAUD) -I. \
-	-I$(LIBDIR) -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET) -DFLOAT=$(FLOAT)
+	-I$(LIBDIR) -DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET) -DFLOAT=$(FLOAT) $(SOFT_TIMING)
 else
 	SOURCES=$(wildcard *.c )
+	ASM_SOURCES = $(wildcard *.S) $(ASM_LIBS)
 	CPPFLAGS = -DF_CPU=$(F_CPU) -DUSB_BAUD=$(USB_BAUD)  -DSOFT_BAUD=$(SOFT_BAUD)  \
-	-DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET) -DFLOAT=$(FLOAT)
+	-DSOFT_RESET=$(SOFT_RESET) -DTC3_RESET=$(TC3_RESET) -DFLOAT=$(FLOAT) $(SOFT_TIMING)
 endif
 
-OBJECTS=$(SOURCES:.c=.o)
+OBJECTS=$(SOURCES:.c=.o) $(ASM_SOURCES:.S=.o)
 HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious. 
@@ -101,9 +108,17 @@ endif
 TARGET_ARCH = -mmcu=$(MCU)
 
 ## Explicit pattern rules:
-##  To make .o files from .c files 
-%.o: %.c $(HEADERS) Makefile
+## Prerequisite is $(DEPTH)Makefile (the real makefile); examples hold a
+## lowercase `makefile`, so a literal `Makefile` prereq never matches and make
+## would silently fall back to its built-in rules. The built-in .S rule uses
+## $(TARGET_MACH) (undefined here) instead of $(TARGET_ARCH), dropping -mmcu.
+##  To make .o files from .c files
+%.o: %.c $(HEADERS) $(DEPTH)Makefile
 	 $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c -o $@ $<;
+
+## Assemble .S files (uppercase S runs the C preprocessor first)
+%.o: %.S $(DEPTH)Makefile
+	$(CC) $(CPPFLAGS) $(TARGET_ARCH) -g -c -o $@ $<
 
 $(TARGET).elf: $(OBJECTS)
 	$(CC) $(LDFLAGS) $(TARGET_ARCH) $^ $(LDLIBS) -o $@

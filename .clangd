@@ -1,0 +1,34 @@
+# clangd configuration for the AVR / ATmega328P C examples (examples/*/main.c).
+# macOS version
+# clangd uses avr-gcc as the reference compiler to discover the AVR system
+# headers automatically (no version-pinned paths to maintain). This requires
+# clangd to be launched with --query-driver permitting avr-gcc 
+CompileFlags:
+  Compiler: /opt/homebrew/bin/avr-gcc
+  Add:
+    # Force C language. Without this, clangd treats standalone .h files
+    # as Objective-C (its default guess for headers), then rejects
+    # `-std=gnu99` with "invalid argument not allowed with ObjectiveC".
+    - -xc
+    - --target=avr
+    - -mmcu=atmega328p
+    - -D__AVR_ATmega328p__
+    - -std=gnu99
+    - -DF_CPU=16000000UL
+    - -DSOFT_BAUD = 28800UL
+    # Absolute path: clangd resolves relative -I entries against the source
+    # file's directory, not against .clangd's directory, so a relative path
+    # would only work for files at the repo root.
+    - -I/Users/lkoepsel/Development/AVR_C/Library
+    # AVR system headers (avr/io.h, avr/pgmspace.h, etc.). Listed explicitly
+    # because --query-driver isn't reliable with Apple's clangd; this path is
+    # version-pinned and will need updating after `brew upgrade avr-gcc@9`.
+    - -isystem
+    - /opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include
+ 
+
+# clangd's Include Cleaner flags #include lines it judges "unused" — it
+# misfires on embedded headers included for side effects (e.g. <stdio.h>).
+Diagnostics:
+  UnusedIncludes: None
+  MissingIncludes: None

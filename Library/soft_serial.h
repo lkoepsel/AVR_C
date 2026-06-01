@@ -1,6 +1,6 @@
 // soft serial - adds a software defined serial port
 // Slow serial port, use for non-intensive serial interaction
-// Set serial pins below: SOFT_RX_PIN/SOFT_TX_PIN
+// Set serial pins in registers.S: SOFT_RX_PIN/SOFT_TX_PIN
 // Set baud rate below: SOFT_BAUD
 // Highest baud rate is 28800
 
@@ -29,10 +29,8 @@
 #include <util/delay.h>
 #include "uart.h"
 #include "unolib.h"
+#include "serial_asm.h"
 
-#define SOFT_RX_PIN PIND2 // Define the RX pin
-#define SOFT_TX_PIN PIND3 // Define the TX pin
-#define BIT_DURATION (1000000 / SOFT_BAUD) // Bit duration in microseconds
 
 #define CR 13		// carriage return
 #define LF 10		// line feed
@@ -45,9 +43,9 @@ extern const char debug2[] PROGMEM ;
 extern const char debug3[] PROGMEM ;
 #define debug(n) soft_pgmtext_write(debug##n)
 
-void init_soft_serial() ;
-void soft_char_write(char data) ;
-int8_t soft_char_read() ;
+// void init_soft_serial() ;
+// void soft_char_write(char data) ;
+// int8_t soft_char_read() ;
 
 int8_t soft_string_write(char * buffer, int8_t len) ;
 int8_t soft_readLine(char *buffer, int8_t SIZE) ;
