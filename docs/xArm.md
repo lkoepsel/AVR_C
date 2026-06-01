@@ -122,15 +122,14 @@ Notice there are two ports, *ttyUSB0* and *ttyACM0*, how do we know which one is
 I've tested both the [Adafruit Blue USB Type A to 4 Wire Red/Black/Green/White](https://www.adafruit.com/product/954) and the [Adafruit FTDI Friend USB Mini](https://www.adafruit.com/product/284) and they both work well.
 
 ### User-designated Pins
-To use two different pins as the *soft serial port*, change the pin numbers in *soft_serial.h*:
+To use two different pins as the *soft serial port*, change the pin numbers in *registers.S* and use SOFT_BAUD in env.make to set the baud rate. Make sure that all of the port designations are the same.:
 
 ```C
-#define SOFT_BAUD 9600
-#define BIT_DURATION (1000000 / SOFT_BAUD) // Bit duration in microseconds
-#define CR 13
-
-#define SOFT_RX_PIN PIND2 // Define the RX pin
-#define SOFT_TX_PIN PIND3 // Define the TX pin
+#define SOFT_TX_PIN PD3                     ; transmit pin, output
+#define SOFT_RX_PIN PD2                     ; receive pin, input pullup
+#define IO_PORT    _SFR_IO_ADDR(PORTD)
+#define IO_DDR      _SFR_IO_ADDR(DDRD)
+#define IO_PIN     _SFR_IO_ADDR(PIND)
 ``` 
 
 If running in the command line, I use *tio*, as my serial program. If I'm able to use a *GUI* its always *CoolTerm*.

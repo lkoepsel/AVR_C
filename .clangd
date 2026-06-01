@@ -15,7 +15,7 @@ CompileFlags:
     - -D__AVR_ATmega328p__
     - -std=gnu99
     - -DF_CPU=16000000UL
-    - -DSOFT_BAUD = 28800UL
+    - -DSOFT_BAUD = 57600UL
     # Absolute path: clangd resolves relative -I entries against the source
     # file's directory, not against .clangd's directory, so a relative path
     # would only work for files at the repo root.

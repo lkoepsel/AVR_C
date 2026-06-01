@@ -31,7 +31,7 @@ nano env.make  # Update SERIAL = /dev/ttyACM0 (or /dev/ttyUSB0, COM3, etc.)
 - `LIBRARY` - Set to "YES" to use AVR_C library, leave blank for minimal code size
 - `FLOAT` - Set to "YES" to include floating point printf support, leave blank otherwise
 - `WRAP` - Set to "YES" to enable the `__wrap_printf` timestamp wrapper (adds `-Wl,--wrap=printf`). Required by any example that wraps `printf` (e.g. `serialio_wrapprint`); link error `undefined reference to '__wrap_printf'` means this is unset.
-- `SOFT_BAUD` - Baud rate for the software serial port (soft_serial), max 28800UL
+- `SOFT_BAUD` - Baud rate for the software serial port (soft_serial), ranges from 28800UL to 230400UL
 - `PROGRAMMER_TYPE` - arduino, atmelice_isp, snap_isp, xplainedmini, dragon, pkobn_updi, etc.
 - `PROGRAMMER_ARGS` - Programmer-specific arguments
 - `TOOLCHAIN` / `OS` - Set both to `arduino` / `mac|windows|raspberry` to use the Arduino-bundled avr toolchain; leave both blank for a native GCC install (avr-gcc on PATH)

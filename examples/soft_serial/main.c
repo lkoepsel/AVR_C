@@ -25,7 +25,8 @@ int main(void) {
     init_soft_serial();
     soft_pgmtext_write(prompt);
     soft_char_NL();
-    puts("Soft serial has been initialized and title printed");
+    puts("Soft serial initialized and title printed");
+    printf("SOFT_BAUD set to %ld ", SOFT_BAUD);
 
     while (1) {
 

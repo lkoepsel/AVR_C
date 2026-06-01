@@ -1,8 +1,8 @@
 // soft serial - adds a software defined serial port
 // Slow serial port, use for non-intensive serial interaction
 // Set serial pins in registers.S: SOFT_RX_PIN/SOFT_TX_PIN
-// Set baud rate below: SOFT_BAUD
-// Highest baud rate is 28800
+// Set baud rate via env.make: SOFT_BAUD
+// Baud rate range is 28800 - 230400
 
 // API:
 // init_soft_serial(); initialize the ports, REQUIRED
