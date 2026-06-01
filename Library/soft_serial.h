@@ -43,10 +43,6 @@ extern const char debug2[] PROGMEM ;
 extern const char debug3[] PROGMEM ;
 #define debug(n) soft_pgmtext_write(debug##n)
 
-// void init_soft_serial() ;
-// void soft_char_write(char data) ;
-// int8_t soft_char_read() ;
-
 int8_t soft_string_write(char * buffer, int8_t len) ;
 int8_t soft_readLine(char *buffer, int8_t SIZE) ;
 

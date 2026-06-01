@@ -136,21 +136,6 @@ read_bit:
 ; --------------------------------------------------------------------
 
 
-; void flash_write(uint8_t addr)
-;   Set the Z  r31/r30 address to PROGMEM text on entry
-;   Calling convention: AVR-GCC ABI (r31/r30 FLASH address, r24 out, r18 scratch).
-
-.global flash_write
-flash_write:
-        lpm     char_reg, Z+     ; load byte at Z into r24, the char_write register
-        tst     char_reg          ; exit if null byte
-        breq    print_done
-        rcall   soft_char_write  ; write char to console
-        rjmp    flash_write
-
-print_done:
-    ret
-
 ; --------------------------------------------------------------------
 
 ; ====================================================================
